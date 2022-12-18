@@ -40,7 +40,7 @@ const Navbar = () => {
       <li className='flex items-center mb-6'> <BsCone /><h1 className='ml-3 '>My Connections</h1></li>
       <li className='flex items-center mb-6'> <BsFolderFill /><h1 className='ml-3 '>My Forums</h1></li>
     </ul>
-    <div className='text-xs '>Who's Online</div>
+    <div className='text-xs '>Who is Online</div>
      <p className='text-xs mt-4 ml-2'>There are currently no users online</p>
   
   </nav>
