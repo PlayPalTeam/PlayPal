@@ -3,13 +3,14 @@ import Link from "next/link";
 
 const Home = () => {
 	return (
-		<div>
+		<div className="flex justify-between items-center">
 			<Navbar />
-			<div className="flex h-screen items-center justify-center">
-				<div className="rounded-md bg-green-600 p-2 text-white">
-					<Link href={"/auth/signup"}>Sign Up</Link>
-				</div>
-			</div>
+			<Link
+				className="rounded-md bg-green-600 p-2 text-white"
+				href={"/auth/signup"}
+			>
+				Sign Up
+			</Link>
 		</div>
 	);
 };
