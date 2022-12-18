@@ -8,60 +8,107 @@ import { BsPeopleFill } from "react-icons/bs";
 import { BsMessenger } from "react-icons/bs";
 import { BsFolderFill } from "react-icons/bs";
 import { BsCone } from "react-icons/bs";
-import {BsDot} from "react-icons/bs";
+import { BsDot } from "react-icons/bs";
 
 const Navbar = () => {
-  const [nav , setNav]= React.useState(true);
-  function navclick(){
-    setNav(prevState=>(
-      !prevState
-    ))
-  }
+	const [nav, setNav] = React.useState(true);
+	function navclick() {
+		setNav((prevState) => !prevState);
+	}
 
-  return (
-    <>
-      {nav ? 
-      <nav className='w-72 h-[100vh] p-6 bg-green-500 text-white '>
-      <div className=" flex justify-between mb-10">
-      {/* <Image 
+	return (
+		<>
+			{nav ? (
+				<nav className="h-[100vh] w-72 bg-green-500 p-6 text-white ">
+					<div className=" mb-10 flex justify-between">
+						{/* <Image 
       src={logo}
       alt="logo"
       width={400}
       /> */}
-      <h1>logo</h1>
-      <button onClick={navclick}><BsArrowLeftRight /></button>
-    </div>
-    
-    <div className='text-xs mb-7'>MY CERA</div>
-    <ul>
-      <li className='flex items-center mb-6'> <BsGrid3X3GapFill /><h1 className='ml-3 '>My Dashboard</h1></li>
-      <li className='flex items-center mb-6'> <BsCollectionFill /><h1 className='ml-3 '>My Course</h1></li>
-      <li className='flex items-center mb-6'> <BsPeopleFill /><h1 className='ml-3 '>My Groups</h1></li>
-      <li className='flex items-center mb-6'> <BsMessenger /><h1 className='ml-3 '>My Messages</h1></li>
-      <li className='flex items-center mb-6'> <BsCone /><h1 className='ml-3 '>My Connections</h1></li>
-      <li className='flex items-center mb-6'> <BsFolderFill /><h1 className='ml-3 '>My Forums</h1></li>
-    </ul>
-    <div className='text-xs '>Who is Online</div>
-     <p className='text-xs mt-4 ml-2'>There are currently no users online</p>
-  
-  </nav>
-      : 
-  <div className=" nav w-16 h-[100vh] p-6 pt-7  bg-green-500  text-white">
-        <button  onClick={navclick} className="mb-12"><BsArrowLeftRight /></button>   
-  <ul>
-  <li className='flex items-center mb-8'> <BsDot /></li>
-    <li className='flex items-center mb-8'> <BsGrid3X3GapFill /></li>
-    <li className='flex items-center mb-8'> <BsCollectionFill /></li>
-    <li className='flex items-center mb-8'> <BsPeopleFill /></li>
-    <li className='flex items-center mb-8'> <BsMessenger /></li>
-    <li className='flex items-center mb-8'> <BsCone /></li>
-    <li className='flex items-center mb-8'> <BsFolderFill /></li>
-  </ul>
+						<h1>logo</h1>
+						<button onClick={navclick}>
+							<BsArrowLeftRight />
+						</button>
+					</div>
 
-   </div>
-}
-    </>
-  );
+					<div className="mb-7 text-xs">MY CERA</div>
+					<ul>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsGrid3X3GapFill />
+							<h1 className="ml-3 ">My Dashboard</h1>
+						</li>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsCollectionFill />
+							<h1 className="ml-3 ">My Course</h1>
+						</li>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsPeopleFill />
+							<h1 className="ml-3 ">My Groups</h1>
+						</li>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsMessenger />
+							<h1 className="ml-3 ">My Messages</h1>
+						</li>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsCone />
+							<h1 className="ml-3 ">My Connections</h1>
+						</li>
+						<li className="mb-6 flex items-center">
+							{" "}
+							<BsFolderFill />
+							<h1 className="ml-3 ">My Forums</h1>
+						</li>
+					</ul>
+					<div className="text-xs ">Who is Online</div>
+					<p className="mt-4 ml-2 text-xs">
+						There are currently no users online
+					</p>
+				</nav>
+			) : (
+				<div className=" nav h-[100vh] w-16 bg-green-500 p-6  pt-7  text-white">
+					<button onClick={navclick} className="mb-12">
+						<BsArrowLeftRight />
+					</button>
+					<ul>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsDot />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsGrid3X3GapFill />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsCollectionFill />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsPeopleFill />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsMessenger />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsCone />
+						</li>
+						<li className="mb-8 flex items-center">
+							{" "}
+							<BsFolderFill />
+						</li>
+					</ul>
+				</div>
+			)}
+		</>
+	);
 };
 
 export default Navbar;
