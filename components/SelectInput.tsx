@@ -1,4 +1,4 @@
-import { SelectInputProps } from "../types";
+import { SelectInputProps } from "../types/types";
 
 const SelectInput = ({ options, label, register }: SelectInputProps) => {
 	return (

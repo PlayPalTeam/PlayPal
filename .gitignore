@@ -32,3 +32,6 @@ yarn-error.log*
 .vercel
 
 .env
+prisma
+prisma/schema.prisma
+supabase

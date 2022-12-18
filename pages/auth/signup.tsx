@@ -1,7 +1,10 @@
 import Head from "next/head";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "../../components";
-import { Option, SignUpForm } from "../../types";
+import { Option, SignUpForm } from "../../types/types";
+import { useState } from "react";
+import Link from "next/link";
 
 const options: Option[] = [
 	{
@@ -19,10 +22,32 @@ const options: Option[] = [
 ];
 
 const SignUp = () => {
-	const { register, handleSubmit } = useForm<SignUpForm>();
+	const [message, setMessage] = useState<string>("");
 
-	const onSubmit: SubmitHandler<SignUpForm> = (data) => {
-		alert(JSON.stringify(data, null, 2));
+	const { register, handleSubmit, reset } = useForm<SignUpForm>();
+
+	const supabase = useSupabaseClient();
+
+	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
+		const { error } = await supabase.auth.signUp({
+			email: data.email,
+			password: data.password,
+			options: {
+				data: {
+					username: data.username,
+					role: data.role,
+				},
+				emailRedirectTo: "http://localhost:3000/auth/signin",
+			},
+		});
+
+		if (error) {
+			setMessage(JSON.stringify(error, null, 2));
+		} else {
+			setMessage("Check your email.");
+			reset();
+			setMessage("");
+		}
 	};
 
 	return (
@@ -30,7 +55,7 @@ const SignUp = () => {
 			<Head>
 				<title>PlayPal | Sign Up</title>
 			</Head>
-			<main className="flex h-screen items-center justify-center">
+			<main className="flex h-screen flex-col items-center justify-center">
 				<form
 					className="w-[90%] max-w-md space-y-5 rounded-xl border p-5 shadow-sm shadow-green-300"
 					onSubmit={handleSubmit(onSubmit)}
@@ -67,7 +92,11 @@ const SignUp = () => {
 					>
 						Submit
 					</Button>
+					<Link className="" href={"/auth/signin"}>Already have an account? Sign In</Link>
 				</form>
+				<p className="p-2 text-center text-base font-semibold text-green-500">
+					{message}
+				</p>
 			</main>
 		</>
 	);

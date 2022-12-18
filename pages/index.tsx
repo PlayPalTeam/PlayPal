@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Home = () => {
 	return (
-		<div className="flex justify-between items-center">
+		<div className="flex items-center justify-between">
 			<Navbar />
 			<Link
 				className="rounded-md bg-green-600 p-2 text-white"
