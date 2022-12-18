@@ -1,7 +1,11 @@
 import { ButtonProps } from "../types";
 
-const Button = ({ text, type }: ButtonProps) => {
-	return <button type={type}>{text}</button>;
+const Button = ({ children, type, className }: ButtonProps) => {
+	return (
+		<button className={className} type={type}>
+			{children}
+		</button>
+	);
 };
 
 export default Button;

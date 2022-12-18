@@ -5,7 +5,7 @@ const SelectInput = ({ options, label, register }: SelectInputProps) => {
 		<div>
 			<label htmlFor={label}>{label}</label>
 			<select
-				className="form-select w-full rounded-lg focus:ring-green-600"
+				className="form-select mt-1 w-full rounded-lg focus:ring-green-600"
 				id={label}
 				{...register("role")}
 			>

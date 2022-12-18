@@ -28,5 +28,6 @@ export interface SelectInputProps {
 
 export interface ButtonProps {
 	type: "button" | "reset" | "submit";
-	text: string;
+	children: any;
+	className: string;
 }
