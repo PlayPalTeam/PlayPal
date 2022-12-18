@@ -1,5 +1,5 @@
-import Button from "./Button"
-import Input from "./Input"
-import SelectInput from "./SelectInput"
+import Button from "./Button";
+import Input from "./Input";
+import SelectInput from "./SelectInput";
 
-export {Button, Input,  SelectInput}
+export { Button, Input, SelectInput };

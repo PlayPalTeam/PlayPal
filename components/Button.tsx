@@ -1,9 +1,7 @@
-import { ButtonProps } from "../types"
+import { ButtonProps } from "../types";
 
-const Button = ({text, type}:ButtonProps) => {
-  return (
-    <button type={type}>{text}</button>
-  )
-}
+const Button = ({ text, type }: ButtonProps) => {
+	return <button type={type}>{text}</button>;
+};
 
-export default Button
+export default Button;
