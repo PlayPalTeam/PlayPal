@@ -55,7 +55,6 @@ const Navbar = () => {
 							<BsArrowLeftRight />
 						</button>
 					</div>
-
 					<div className="mb-7 text-xs">MY CERA</div>
 					<ul>
 						{NavBarList.slice(1).map((nav, index) => (
