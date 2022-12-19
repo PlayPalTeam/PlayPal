@@ -37,7 +37,9 @@ const SignUp = () => {
 					username: data.username,
 					role: data.role,
 				},
-				emailRedirectTo: "http://localhost:3000/auth/signin",
+				emailRedirectTo:
+					"http://localhost:3000/auth/signin" ||
+					"https://playpal-eta.vercel.app/auth/signin",
 			},
 		});
 
@@ -92,7 +94,9 @@ const SignUp = () => {
 					>
 						Submit
 					</Button>
-					<Link className="" href={"/auth/signin"}>Already have an account? Sign In</Link>
+					<Link className="" href={"/auth/signin"}>
+						Already have an account? Sign In
+					</Link>
 				</form>
 				<p className="p-2 text-center text-base font-semibold text-green-500">
 					{message}
