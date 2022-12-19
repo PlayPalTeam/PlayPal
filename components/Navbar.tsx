@@ -1,4 +1,3 @@
-import React from "react";
 import {
 	BsGrid3X3GapFill,
 	BsArrowLeftRight,
@@ -57,7 +56,7 @@ const Navbar = () => {
 					</div>
 
 					<div className="mb-7 text-xs">MY CERA</div>
-					<ul>
+          <ul>
 						{NavBarList.slice(1).map((nav, index) => (
 							<li key={index} className="mb-6 flex items-center">
 								{nav.icons}
