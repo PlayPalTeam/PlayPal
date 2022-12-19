@@ -1,6 +1,6 @@
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { InputProps } from "../types";
+import { InputProps } from "../types/types";
 
 const Input = ({ label, type, register, name }: InputProps) => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
