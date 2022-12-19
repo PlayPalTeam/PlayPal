@@ -1,17 +1,45 @@
-import React from "react";
-import Image from "next/image";
-import logo from "../public/logo.svg";
-import { BsGrid3X3GapFill } from "react-icons/bs";
-import { BsArrowLeftRight } from "react-icons/bs";
-import { BsCollectionFill } from "react-icons/bs";
-import { BsPeopleFill } from "react-icons/bs";
-import { BsMessenger } from "react-icons/bs";
-import { BsFolderFill } from "react-icons/bs";
-import { BsCone } from "react-icons/bs";
-import { BsDot } from "react-icons/bs";
+import {
+	BsGrid3X3GapFill,
+	BsArrowLeftRight,
+	BsCollectionFill,
+	BsPeopleFill,
+	BsMessenger,
+	BsCone,
+	BsFolderFill,
+	BsDot,
+} from "react-icons/bs";
+
+const NavBarList = [
+	{ icons: <BsDot /> },
+	{
+		text: "My DashBoard",
+		icons: <BsGrid3X3GapFill />,
+	},
+	{
+		text: "My Course",
+		icons: <BsCollectionFill />,
+	},
+	{
+		text: "My Group",
+		icons: <BsPeopleFill />,
+	},
+	{
+		text: "My Message",
+		icons: <BsMessenger />,
+	},
+	{
+		text: "My Connections",
+		icons: <BsCone />,
+	},
+	{
+		text: "My Forums",
+		icons: <BsFolderFill />,
+	},
+];
 
 const Navbar = () => {
 	const [nav, setNav] = React.useState(true);
+
 	function navclick() {
 		setNav((prevState) => !prevState);
 	}
@@ -21,11 +49,6 @@ const Navbar = () => {
 			{nav ? (
 				<nav className="h-[100vh] w-72 bg-green-500 p-6 text-white ">
 					<div className=" mb-10 flex justify-between">
-						{/* <Image 
-      src={logo}
-      alt="logo"
-      width={400}
-      /> */}
 						<h1>logo</h1>
 						<button onClick={navclick}>
 							<BsArrowLeftRight />
@@ -33,42 +56,14 @@ const Navbar = () => {
 					</div>
 
 					<div className="mb-7 text-xs">MY CERA</div>
-					<ul>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsGrid3X3GapFill />
-							<h1 className="ml-3 ">My Dashboard</h1>
-						</li>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsCollectionFill />
-							<h1 className="ml-3 ">My Course</h1>
-						</li>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsPeopleFill />
-							<h1 className="ml-3 ">My Groups</h1>
-						</li>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsMessenger />
-							<h1 className="ml-3 ">My Messages</h1>
-						</li>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsCone />
-							<h1 className="ml-3 ">My Connections</h1>
-						</li>
-						<li className="mb-6 flex items-center">
-							{" "}
-							<BsFolderFill />
-							<h1 className="ml-3 ">My Forums</h1>
-						</li>
+          <ul>
+						{NavBarList.slice(1).map((nav, index) => (
+							<li key={index} className="mb-6 flex items-center">
+								{nav.icons}
+								<p className="ml-3">{nav.text}</p>
+							</li>
+						))}
 					</ul>
-					<div className="text-xs ">Who is Online</div>
-					<p className="mt-4 ml-2 text-xs">
-						There are currently no users online
-					</p>
 				</nav>
 			) : (
 				<div className=" nav h-[100vh] w-16 bg-green-500 p-6  pt-7  text-white">
@@ -76,34 +71,11 @@ const Navbar = () => {
 						<BsArrowLeftRight />
 					</button>
 					<ul>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsDot />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsGrid3X3GapFill />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsCollectionFill />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsPeopleFill />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsMessenger />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsCone />
-						</li>
-						<li className="mb-8 flex items-center">
-							{" "}
-							<BsFolderFill />
-						</li>
+						{NavBarList.map((nav, index) => (
+							<li key={index} className="mb-8 flex items-center">
+								{nav.icons}
+							</li>
+						))}
 					</ul>
 				</div>
 			)}
