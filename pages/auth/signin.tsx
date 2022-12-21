@@ -30,6 +30,7 @@ const SignUp = () => {
 			setMessage(JSON.stringify(error, null, 2));
 		}
 
+		// TODO Chaneg url base on role
 		router.push("/user");
 	};
 

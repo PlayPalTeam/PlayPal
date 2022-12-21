@@ -2,7 +2,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import {
 	BsGrid3X3GapFill,
 	BsCollectionFill,
@@ -10,6 +10,8 @@ import {
 	BsMessenger,
 } from "react-icons/bs";
 
+
+// TODO Change the links 
 const NavBarList = [
 	{
 		text: "Profile",
