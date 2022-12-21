@@ -1,10 +1,11 @@
 import Head from "next/head";
+import Link from "next/link";
+
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "../../components";
 import { Option, SignUpForm } from "../../types/types";
 import { useState } from "react";
-import Link from "next/link";
 
 const options: Option[] = [
 	{
@@ -22,12 +23,16 @@ const options: Option[] = [
 ];
 
 const SignUp = () => {
+	// Stores the message to show.
 	const [message, setMessage] = useState<string>("");
 
+	// useForm hook to handle the form.
 	const { register, handleSubmit, reset } = useForm<SignUpForm>();
 
+	// instance of supabaseclient to use in the form.
 	const supabase = useSupabaseClient();
 
+	// A function to submit the data.
 	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
 		const { error } = await supabase.auth.signUp({
 			email: data.email,
@@ -37,9 +42,7 @@ const SignUp = () => {
 					username: data.username,
 					role: data.role,
 				},
-				emailRedirectTo:
-					"http://localhost:3000/auth/signin" ||
-					"https://playpal-eta.vercel.app/auth/signin",
+				emailRedirectTo: "http://localhost:3000/auth/signin",
 			},
 		});
 
@@ -48,7 +51,6 @@ const SignUp = () => {
 		} else {
 			setMessage("Check your email.");
 			reset();
-			setMessage("");
 		}
 	};
 
@@ -94,9 +96,9 @@ const SignUp = () => {
 					>
 						Submit
 					</Button>
-					<Link className="" href={"/auth/signin"}>
-						Already have an account? Sign In
-					</Link>
+					<p className="text-center hover:underline hover:underline-offset-1">
+						<Link href={"/auth/signin"}>Already have an account? Sign In</Link>
+					</p>
 				</form>
 				<p className="p-2 text-center text-base font-semibold text-green-500">
 					{message}

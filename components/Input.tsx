@@ -1,22 +1,23 @@
+import { useState, memo, useCallback } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { useState } from "react";
-import { InputProps } from "../types/types";
 
-const Input = ({ label, type, register, name }: InputProps) => {
+const Input = ({ label, type, name, register }) => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 
-	const handleShowPassword = () => {
+	const handleShowPassword = useCallback(() => {
 		setShowPassword(!showPassword);
-	};
+	}, [showPassword]);
+
+	const inputClassName =
+		"form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600";
+	const iconClassName = "h-6 w-6";
 
 	return (
 		<div>
-			<label className="" htmlFor={label}>
-				{label}
-			</label>
+			<label htmlFor={label}>{label}</label>
 			<div className="relative flex items-center">
 				<input
-					className="form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600"
+					className={inputClassName}
 					type={type === "password" && showPassword ? "text" : type}
 					{...register(name, { required: true })}
 				/>
@@ -27,9 +28,9 @@ const Input = ({ label, type, register, name }: InputProps) => {
 						type="button"
 					>
 						{showPassword ? (
-							<AiFillEyeInvisible className="h-6 w-6" />
+							<AiFillEyeInvisible className={iconClassName} />
 						) : (
-							<AiFillEye className="h-6 w-6" />
+							<AiFillEye className={iconClassName} />
 						)}
 					</button>
 				)}
@@ -38,4 +39,4 @@ const Input = ({ label, type, register, name }: InputProps) => {
 	);
 };
 
-export default Input;
+export default memo(Input);

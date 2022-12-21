@@ -1,12 +1,15 @@
 import "../styles/globals.css";
-
 import type { AppProps } from "next/app";
-import React, { useState } from "react";
+
+import { useState } from "react";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import {
 	createBrowserSupabaseClient,
 	Session,
 } from "@supabase/auth-helpers-nextjs";
+
+import { SWRConfig } from "swr";
+import Layout from "../components/Layout";
 
 function App({
 	Component,
@@ -18,12 +21,18 @@ function App({
 	const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
 	return (
-		<SessionContextProvider
-			supabaseClient={supabaseClient}
-			initialSession={pageProps.initialSession}
+		<SWRConfig
+			value={{
+				refreshInterval: 10000,
+			}}
 		>
-			<Component {...pageProps} />
-		</SessionContextProvider>
+			<SessionContextProvider
+				supabaseClient={supabaseClient}
+				initialSession={pageProps.initialSession}
+			>
+				<Component {...pageProps} />
+			</SessionContextProvider>
+		</SWRConfig>
 	);
 }
 
