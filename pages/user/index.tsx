@@ -4,7 +4,7 @@ const User = () => {
 	return (
 		<div>
 			<Navbar />
-			Hello
+			
 		</div>
 	);
 };

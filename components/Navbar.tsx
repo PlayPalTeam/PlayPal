@@ -10,8 +10,9 @@ import {
 	BsMessenger,
 } from "react-icons/bs";
 
-
+import { getRole } from "../utils/helper";
 // TODO Change the links 
+
 const NavBarList = [
 	{
 		text: "Profile",
@@ -47,7 +48,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="h-screen w-72 bg-green-500 p-6 text-white transition-all duration-300 ease-in-out ">
+		<nav className="h-screen w-72 sticky top-0 bg-green-500 p-6 text-white ">
 			<div className="mb-10 flex justify-between">
 				<h1>logo</h1>
 			</div>
@@ -64,6 +65,7 @@ const Navbar = () => {
 			</ul>
 			<button onClick={handleLogOut}>Log Out</button>
 		</nav>
+		
 	);
 };
 
