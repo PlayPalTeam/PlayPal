@@ -2,7 +2,7 @@ import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 export interface SignInForm {
-	username: string;
+	email: string;
 	password: string;
 }
 

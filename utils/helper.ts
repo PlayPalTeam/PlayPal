@@ -1,21 +1,7 @@
 import { supabase } from "./supabase";
 
-export const getRole = async () => {
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
+export const getRole = async (id: string) => {
+	const role = supabase.from("profiles").select("role").eq("id", id).single();
 
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-
-	const { data } = await supabase
-		.from("profiles")
-		.select("role")
-		.eq("id", user.id)
-		.single();
-
-	if (session) {
-		return data.role;
-	}
+	return role;
 };

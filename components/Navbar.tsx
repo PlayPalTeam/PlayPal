@@ -1,4 +1,4 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,28 +10,25 @@ import {
 	BsMessenger,
 } from "react-icons/bs";
 
-import { getRole } from "../utils/helper";
-// TODO Change the links 
-
 const NavBarList = [
 	{
 		text: "Profile",
-		link: "/user/profile",
+		link: "profile",
 		icons: <BsGrid3X3GapFill />,
 	},
 	{
 		text: "Requests",
-		link: "/user/request",
+		link: "request",
 		icons: <BsCollectionFill />,
 	},
 	{
 		text: "Turfs Booking",
-		link: "/user/booking",
+		link: "booking",
 		icons: <BsPeopleFill />,
 	},
 	{
 		text: "Community",
-		link: "/user/community",
+		link: "community",
 		icons: <BsMessenger />,
 	},
 ];
@@ -41,6 +38,10 @@ const Navbar = () => {
 
 	const supabase = useSupabaseClient();
 
+	const user = useUser();
+
+	const role = user?.user_metadata.role;
+
 	const handleLogOut = async () => {
 		await supabase.auth.signOut();
 		Cookies.remove("supabase-auth-token");
@@ -48,7 +49,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="h-screen w-72 sticky top-0 bg-green-500 p-6 text-white ">
+		<nav className="sticky top-0 h-screen w-72 bg-green-500 p-6 text-white ">
 			<div className="mb-10 flex justify-between">
 				<h1>logo</h1>
 			</div>
@@ -57,7 +58,11 @@ const Navbar = () => {
 				{NavBarList.map((nav, index) => (
 					<li key={index} className="mb-6 flex items-center">
 						{nav.icons}
-						<Link href={nav.link}>
+						<Link
+							href={
+								role === "user" ? `/user/${nav.link}` : `/lister/${nav.link}`
+							}
+						>
 							<p className="ml-3">{nav.text}</p>
 						</Link>
 					</li>
@@ -65,7 +70,6 @@ const Navbar = () => {
 			</ul>
 			<button onClick={handleLogOut}>Log Out</button>
 		</nav>
-		
 	);
 };
 

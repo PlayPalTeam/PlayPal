@@ -5,7 +5,8 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "../../components";
 import { Option, SignUpForm } from "../../types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const options: Option[] = [
 	{
@@ -26,33 +27,48 @@ const SignUp = () => {
 	// Stores the message to show.
 	const [message, setMessage] = useState<string>("");
 
+	const [signUpData, setSignUpData] = useState<SignUpForm | null>(null);
+
+	const router = useRouter();
+
 	// useForm hook to handle the form.
 	const { register, handleSubmit, reset } = useForm<SignUpForm>();
 
 	// instance of supabaseclient to use in the form.
 	const supabase = useSupabaseClient();
 
-	// A function to submit the data.
-	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
-		const { error } = await supabase.auth.signUp({
-			email: data.email,
-			password: data.password,
-			options: {
-				data: {
-					username: data.username,
-					role: data.role,
-				},
-				emailRedirectTo: "http://localhost:3000/auth/signin",
-			},
-		});
-
-		if (error) {
-			setMessage(JSON.stringify(error, null, 2));
-		} else {
-			setMessage("Check your email.");
-			reset();
-		}
+	const onSubmit: SubmitHandler<SignUpForm> = (data) => {
+		setSignUpData(data);
 	};
+
+	useEffect(() => {
+		const signUp = async () => {
+			if (!signUpData) {
+				return;
+			}
+
+			const { error } = await supabase.auth.signUp({
+				email: signUpData.email,
+				password: signUpData.password,
+				options: {
+					data: {
+						username: signUpData.username,
+						role: signUpData.role,
+					},
+					emailRedirectTo: "https://playpal-eta.vercel.app/auth/signin",
+				},
+			});
+
+			if (error) {
+				setMessage(JSON.stringify(error, null, 2));
+			} else {
+				setMessage("Check your email.");
+				reset();
+			}
+		};
+
+		signUp();
+	}, [reset, router, signUpData, supabase.auth]);
 
 	return (
 		<>

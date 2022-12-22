@@ -4,35 +4,58 @@ import Link from "next/link";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input } from "../../components";
-import { SignUpForm } from "../../types/types";
-import { useState } from "react";
+import { SignInForm } from "../../types/types";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Database } from "../../types/database.types";
 
-const SignUp = () => {
-	const [message, setMessage] = useState("");
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+
+const SignIn = () => {
+	const [message, setMessage] = useState<string>("");
+
+	const [signInData, setSignInData] = useState<SignInForm | null>(null);
+
+	const { register, handleSubmit, reset } = useForm<SignInForm>();
+
+	const supabase = useSupabaseClient<Database>();
 
 	const router = useRouter();
 
-	// useForm hook to handle the form.
-	const { register, handleSubmit, reset } = useForm<SignUpForm>();
-
-	// instance of supabaseclient to use in the form.
-	const supabase = useSupabaseClient();
-
-	// A function to submit the data.
-	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
-		const { error } = await supabase.auth.signInWithPassword({
-			email: data.email,
-			password: data.password,
-		});
-
-		if (error) {
-			setMessage(JSON.stringify(error, null, 2));
-		}
-
-		// TODO Chaneg url base on role
-		router.push("/user");
+	const onSubmit: SubmitHandler<SignInForm> = (data) => {
+		setSignInData(data);
 	};
+
+	useEffect(() => {
+		const signIn = async () => {
+			if (!signInData) {
+				return;
+			}
+
+			const {
+				error,
+				data: { user },
+			} = await supabase.auth.signInWithPassword({
+				email: signInData.email,
+				password: signInData.password,
+			});
+
+			console.log(JSON.stringify(user, null, 2));
+
+			if (error) {
+				setMessage(JSON.stringify(error, null, 2));
+			}
+
+			router.push(`/${user?.user_metadata.role}`);
+
+			reset();
+			setSignInData(null);
+		};
+
+		signIn();
+	}, [reset, router, signInData, supabase.auth]);
 
 	return (
 		<>
@@ -66,7 +89,9 @@ const SignUp = () => {
 						Submit
 					</Button>
 					<p className="text-center hover:underline hover:underline-offset-1">
-						<Link href={"/auth/signup"}>Already have an account? Sign In</Link>
+						<Link href={"/auth/SignIn"}>
+							Don&apos;t have an account? Sign Up
+						</Link>
 					</p>
 				</form>
 				<p>{message}</p>
@@ -75,4 +100,29 @@ const SignUp = () => {
 	);
 };
 
-export default SignUp;
+export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = async (
+	ctx: GetServerSidePropsContext
+) => {
+	// Create authenticated Supabase Client
+	const supabase = createServerSupabaseClient(ctx);
+
+	// Check if we have a session
+	const {
+		data: { session },
+	} = await supabase.auth.getSession();
+
+	if (session) {
+		return {
+			redirect: {
+				destination: `/${session.user.user_metadata.role}`,
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
+};

@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useMemo } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Input = ({ label, type, name, register }) => {
@@ -8,9 +8,13 @@ const Input = ({ label, type, name, register }) => {
 		setShowPassword(!showPassword);
 	}, [showPassword]);
 
-	const inputClassName =
-		"form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600";
-	const iconClassName = "h-6 w-6";
+	const inputClassName = useMemo(() => {
+		return "form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600";
+	}, []);
+
+	const iconClassName = useMemo(() => {
+		return "h-6 w-6";
+	}, []);
 
 	return (
 		<div>
