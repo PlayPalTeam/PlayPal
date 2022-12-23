@@ -89,7 +89,7 @@ const SignIn = () => {
 						Submit
 					</Button>
 					<p className="text-center hover:underline hover:underline-offset-1">
-						<Link href={"/auth/SignIn"}>
+						<Link href={"/auth/signup"}>
 							Don&apos;t have an account? Sign Up
 						</Link>
 					</p>
