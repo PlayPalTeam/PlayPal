@@ -87,7 +87,7 @@ const UserProfile = () => {
 						<form>
 							<div>
 								{data.map((user) => (
-									<section key={user.role}>
+									<section key={user?.role}>
 										<p>Username: {user.username}</p>
 										<p>Full Name:{user.full_name}</p>
 									</section>

@@ -1,4 +1,8 @@
-import { DetailedHTMLProps, HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
+import {
+	DetailedHTMLProps,
+	HTMLInputTypeAttribute,
+	InputHTMLAttributes,
+} from "react";
 import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
 
 export interface SignInForm {
@@ -12,7 +16,6 @@ export interface SignUpForm {
 	password: string;
 	role: string;
 }
-
 
 export interface Option {
 	value: string;
@@ -32,6 +35,7 @@ export interface ButtonProps {
 }
 
 export interface UserProfile {
+	role: string;
 	username: string;
 	full_name: string;
 	avatar_url: string;
