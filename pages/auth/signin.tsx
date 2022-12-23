@@ -1,128 +1,104 @@
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string } from "yup";
+import Form from "../../components/FormWrapper";
+import { Input } from "../../components";
 import Head from "next/head";
 import Link from "next/link";
-
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, Input } from "../../components";
-import { SignInForm } from "../../types/types";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { Database } from "../../types/database.types";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+interface SignInForm {
+	email: string;
+	password: string;
+}
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+const SignInSchema = object().shape({
+	email: string().email("Enter a valid email").required("Email is required"),
+	password: string()
+		.min(6, "Minimum length is 6")
+		.required("Password is required"),
+});
 
 const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
-
-	const [signInData, setSignInData] = useState<SignInForm | null>(null);
-
-	const { register, handleSubmit, reset } = useForm<SignInForm>();
 
 	const supabase = useSupabaseClient<Database>();
 
 	const router = useRouter();
 
-	const onSubmit: SubmitHandler<SignInForm> = (data) => {
-		setSignInData(data);
-	};
+	const {
+		register,
+		handleSubmit,
+		formState: {
+			errors: { email, password },
+		},
+	} = useForm<SignInForm>({ resolver: yupResolver(SignInSchema) });
 
-	useEffect(() => {
-		const signIn = async () => {
-			if (!signInData) {
-				return;
-			}
+	const onSubmit: SubmitHandler<SignInForm> = async (data) => {
+		const {
+			error,
+			data: { user },
+		} = await supabase.auth.signInWithPassword({
+			email: data.email,
+			password: data.password,
+		});
 
-			const {
-				error,
-				data: { user },
-			} = await supabase.auth.signInWithPassword({
-				email: signInData.email,
-				password: signInData.password,
-			});
+		if (error) {
+			setMessage(error.message);
+		}
 
-			console.log(JSON.stringify(user, null, 2));
-
-			if (error) {
-				setMessage(JSON.stringify(error, null, 2));
-			}
-
+		if (user?.user_metadata) {
 			router.push(`/${user?.user_metadata.role}`);
-
-			reset();
-			setSignInData(null);
-		};
-
-		signIn();
-	}, [reset, router, signInData, supabase.auth]);
+		}
+	};
 
 	return (
 		<>
 			<Head>
 				<title>PlayPal | Sign In</title>
 			</Head>
-			<main className="flex h-screen flex-col items-center justify-center">
-				<form
+			<div className="flex h-screen flex-col items-center justify-center">
+				<p className="p-2 text-center text-base font-semibold text-green-500">
+					{message}
+				</p>
+				<Form
+					buttonLabel="Log In"
+					register={register}
+					handleSubmit={handleSubmit}
+					onSubmit={onSubmit}
 					className="w-[90%] max-w-md space-y-5 rounded-xl border p-5 shadow-sm shadow-green-300"
-					onSubmit={handleSubmit(onSubmit)}
+					btnCss="w-full rounded-lg bg-green-300 px-4 py-2 text-xl font-semibold text-black hover:bg-green-400"
 				>
 					<h1 className="text-center text-2xl font-semibold">
 						PlayPal | Sign In
 					</h1>
 					<Input
-						register={register}
-						type={"email"}
-						name="email"
 						label="Email"
+						name={"email"}
+						type="email"
+						placeholder="Enter your email"
+						error={email?.message}
+						className="inputCss"
+						autoFocus
 					/>
 					<Input
-						register={register}
-						type={"password"}
-						name="password"
 						label="Password"
+						name={"password"}
+						type="password"
+						placeholder="Enter your password"
+						error={password?.message}
+						className="inputCss"
 					/>
-					<Button
-						className="w-full rounded-lg bg-green-300 px-4 py-2 text-xl font-semibold text-black hover:bg-green-400"
-						type="submit"
-					>
-						Submit
-					</Button>
-					<p className="text-center hover:underline hover:underline-offset-1">
-						<Link href={"/auth/signup"}>
-							Don&apos;t have an account? Sign Up
-						</Link>
-					</p>
-				</form>
-				<p>{message}</p>
-			</main>
+				</Form>
+				<p className="mt-2 text-center hover:underline hover:underline-offset-1">
+					<Link href={"/auth/signup"}>Don&apos;t have an account? Sign Up</Link>
+				</p>
+			</div>
 		</>
 	);
 };
 
 export default SignIn;
-
-export const getServerSideProps: GetServerSideProps = async (
-	ctx: GetServerSidePropsContext
-) => {
-	// Create authenticated Supabase Client
-	const supabase = createServerSupabaseClient(ctx);
-
-	// Check if we have a session
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
-
-	if (session) {
-		return {
-			redirect: {
-				destination: `/${session.user.user_metadata.role}`,
-				permanent: false,
-			},
-		};
-	}
-
-	return {
-		props: {},
-	};
-};

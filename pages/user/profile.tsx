@@ -1,8 +1,10 @@
 import useSWR from "swr";
-import Navbar from "../../components/Navbar";
 import Image from "next/image";
 import logo1 from "../../public/logo1.jpg";
-import { UserProfile } from "../../types/types";
+import Navbar from "../../components/Navbar";
+import { useForm } from "react-hook-form";
+
+// TODO Fix the page. Do not make changes
 
 const profilesettings = [
 	{
@@ -27,16 +29,18 @@ const fetcher = (url: string) =>
 	fetch(url, { method: "GET" }).then((res) => res.json());
 
 const UserProfile = () => {
-	const { data, error } = useSWR<UserProfile[]>("/api/profile", fetcher);
+	const { data, error } = useSWR<Schema>("/api/profile", fetcher);
 
-	console.log(error);
+	const { register, handleSubmit } = useForm<Schema>({
+		defaultValues: {
+			username: data?.username,
+			full_name: data?.full_name,
+			avatar_url: data?.avatar_url,
+		},
+	});
 
 	if (error) {
 		return <div>Error: {error}</div>;
-	}
-
-	if (!data) {
-		return <div>Loading.....</div>;
 	}
 
 	function decide() {
@@ -47,7 +51,7 @@ const UserProfile = () => {
 		<div className="flex">
 			<Navbar />
 
-			<div className=" flex w-[100vw] gap-10 p-12 ">
+			<div className=" flex w-screen gap-10 p-12 ">
 				{/* main 1 */}
 				<div className=" grow-[1]">
 					<div className="p-2">
@@ -85,23 +89,13 @@ const UserProfile = () => {
 						</div>
 						{/* form  */}
 						<form>
-							<div>
-								{data.map((user) => (
-									<section key={user.role}>
-										<p>Username: {user.username}</p>
-										<p>Full Name:{user.full_name}</p>
-									</section>
-								))}
-							</div>
-
-							<div className="flex gap-9 p-4 pl-0 ">
-								<div className="grow-[1] ">
+							<div className="flex gap-9 p-4 pl-0">
+								<div className="grow-[1]">
 									<div className="pb-2 text-sm">Full Name *</div>
 									<div className="">
 										<input
 											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2 "
 											type="text"
-											placeholder="Full Name"
 										/>
 									</div>
 								</div>
@@ -111,7 +105,6 @@ const UserProfile = () => {
 										<input
 											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
 											type="text"
-											placeholder="User Name"
 										/>
 									</div>
 								</div>

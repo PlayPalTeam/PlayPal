@@ -1,14 +1,15 @@
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string } from "yup";
+import Form from "../../components/FormWrapper";
+import { Input, SelectInput } from "../../components";
 import Head from "next/head";
 import Link from "next/link";
-
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, Input, SelectInput } from "../../components";
-import { Option, SignUpForm } from "../../types/types";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { Database } from "../../types/database.types";
+import { useState } from "react";
 
-const options: Option[] = [
+const options = [
 	{
 		value: "#",
 		label: "Select your choice",
@@ -23,105 +24,117 @@ const options: Option[] = [
 	},
 ];
 
-const SignUp = () => {
-	// Stores the message to show.
+interface SignUpForm {
+	username: string;
+	email: string;
+	password: string;
+	role: string;
+}
+
+const SignInSchema = object().shape({
+	username: string().required("Username is required"),
+	email: string().email("Enter a valid email").required("Email is required"),
+	password: string()
+		.min(6, "Minimum length is 6")
+		.required("Password is required"),
+	role: string()
+		.oneOf(["lister", "user"], "Please select a valid option")
+		.required("Please select an option"),
+});
+
+const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
 
-	const [signUpData, setSignUpData] = useState<SignUpForm | null>(null);
+	const {
+		register,
+		handleSubmit,
+		formState: {
+			errors: { email, password, username },
+		},
+		reset,
+	} = useForm<SignUpForm>({ resolver: yupResolver(SignInSchema) });
 
-	const router = useRouter();
+	const supabase = useSupabaseClient<Database>();
 
-	// useForm hook to handle the form.
-	const { register, handleSubmit, reset } = useForm<SignUpForm>();
-
-	// instance of supabaseclient to use in the form.
-	const supabase = useSupabaseClient();
-
-	const onSubmit: SubmitHandler<SignUpForm> = (data) => {
-		setSignUpData(data);
-	};
-
-	useEffect(() => {
-		const signUp = async () => {
-			if (!signUpData) {
-				return;
-			}
-
-			const { error } = await supabase.auth.signUp({
-				email: signUpData.email,
-				password: signUpData.password,
-				options: {
-					data: {
-						username: signUpData.username,
-						role: signUpData.role,
-					},
-					emailRedirectTo: "https://playpal-eta.vercel.app/auth/signin",
+	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
+		const { error } = await supabase.auth.signUp({
+			email: data.email,
+			password: data.password,
+			options: {
+				data: {
+					username: data.username,
+					role: data.role,
 				},
-			});
+				emailRedirectTo: "https://playpal-eta.vercel.app/auth/signin",
+			},
+		});
 
-			if (error) {
-				setMessage(JSON.stringify(error, null, 2));
-			} else {
-				setMessage("Check your email.");
-				reset();
-			}
-		};
-
-		signUp();
-	}, [reset, router, signUpData, supabase.auth]);
+		if (error) {
+			setMessage(JSON.stringify(error, null, 2));
+		} else {
+			setMessage("Check your email.");
+			reset();
+		}
+	};
 
 	return (
 		<>
 			<Head>
 				<title>PlayPal | Sign Up</title>
 			</Head>
-			<main className="flex h-screen flex-col items-center justify-center">
-				<form
+			<div className="flex h-screen flex-col items-center justify-center">
+				<p className="p-2 text-center text-base font-semibold text-green-500">
+					{message}
+				</p>
+				<Form
+					buttonLabel="Log In"
+					register={register}
+					handleSubmit={handleSubmit}
+					onSubmit={onSubmit}
 					className="w-[90%] max-w-md space-y-5 rounded-xl border p-5 shadow-sm shadow-green-300"
-					onSubmit={handleSubmit(onSubmit)}
+					btnCss="w-full rounded-lg bg-green-300 px-4 py-2 text-xl font-semibold text-black hover:bg-green-400"
 				>
 					<h1 className="text-center text-2xl font-semibold">
 						PlayPal | Sign Up
 					</h1>
 					<Input
-						register={register}
-						type={"text"}
-						name="username"
 						label="Username"
+						name="username"
+						type={"text"}
+						placeholder="Enter a username"
+						error={username?.message}
+						className="inputCss"
+						autoFocus
 					/>
 					<Input
-						register={register}
-						type={"email"}
-						name="email"
 						label="Email"
+						name={"email"}
+						type="email"
+						placeholder="Enter your email"
+						error={email?.message}
+						className="inputCss"
 					/>
 					<Input
-						register={register}
-						type={"password"}
-						name="password"
 						label="Password"
+						name={"password"}
+						type="password"
+						placeholder="Enter your password"
+						error={password?.message}
+						className="inputCss"
 					/>
 					<SelectInput
 						label="What you want to do?"
 						options={options}
 						register={register}
+						name={"role"}
 					/>
-					<Button
-						className="w-full rounded-lg bg-green-300 px-4 py-2 text-xl font-semibold text-black hover:bg-green-400"
-						type="submit"
-					>
-						Submit
-					</Button>
-					<p className="text-center hover:underline hover:underline-offset-1">
-						<Link href={"/auth/signin"}>Already have an account? Sign In</Link>
-					</p>
-				</form>
-				<p className="p-2 text-center text-base font-semibold text-green-500">
-					{message}
+				</Form>
+				<p className="mt-2 text-center hover:underline hover:underline-offset-1">
+					<Link href={"/auth/signin"}>Already have an account? Sign In</Link>
 				</p>
-			</main>
+			</div>
 		</>
 	);
 };
 
-export default SignUp;
+export default SignIn;

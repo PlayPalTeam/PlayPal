@@ -1,46 +1,32 @@
-import { useState, memo, useCallback, useMemo } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FC, InputHTMLAttributes } from "react";
 
-const Input = ({ label, type, name, register }) => {
-	const [showPassword, setShowPassword] = useState<boolean>(false);
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+	name: string;
+	label?: string;
+	error?: string;
+	register?: any;
+	wrapperClass?: string;
+}
 
-	const handleShowPassword = useCallback(() => {
-		setShowPassword(!showPassword);
-	}, [showPassword]);
-
-	const inputClassName = useMemo(() => {
-		return "form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600";
-	}, []);
-
-	const iconClassName = useMemo(() => {
-		return "h-6 w-6";
-	}, []);
-
+const Input = ({
+	register,
+	name,
+	error,
+	label,
+	wrapperClass,
+	...rest
+}: InputProps) => {
 	return (
-		<div>
-			<label htmlFor={label}>{label}</label>
-			<div className="relative flex items-center">
-				<input
-					className={inputClassName}
-					type={type === "password" && showPassword ? "text" : type}
-					{...register(name, { required: true })}
-				/>
-				{type === "password" && (
-					<button
-						className="absolute right-4 top-3"
-						onClick={handleShowPassword}
-						type="button"
-					>
-						{showPassword ? (
-							<AiFillEyeInvisible className={iconClassName} />
-						) : (
-							<AiFillEye className={iconClassName} />
-						)}
-					</button>
-				)}
-			</div>
+		<div className={wrapperClass}>
+			{label && <label htmlFor={name}>{label}</label>}
+			<input
+				aria-invalid={error ? "true" : "false"}
+				{...register(name)}
+				{...rest}
+			/>
+			{error && <span role="alert" className="text-red-500 text-sm">{error}</span>}
 		</div>
 	);
 };
 
-export default memo(Input);
+export default Input;

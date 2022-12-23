@@ -9,7 +9,6 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 
 import { SWRConfig } from "swr";
-import Layout from "../components/Layout";
 
 function App({
 	Component,
