@@ -5,7 +5,7 @@ import { SignUpschema, SignUpForm } from "../../types/types";
 import { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { supabase } from "../../utils/supabase";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type FormType = {
 	label: string;
@@ -34,6 +34,8 @@ const SignUp = () => {
 	const [message, setMessage] = useState<string>("");
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+
+	const supabase = useSupabaseClient()
 
 	const handleShowPassword = useCallback(() => {
 		setShowPassword(!showPassword);

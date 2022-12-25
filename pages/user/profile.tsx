@@ -36,7 +36,6 @@ const UserProfile = () => {
 	return (
 		<div className="flex">
 			<Navbar />
-
 			<div className=" flex w-screen gap-10 p-12 ">
 				{/* main 1 */}
 				<div className=" grow-[1]">

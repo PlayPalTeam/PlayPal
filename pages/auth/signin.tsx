@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
-import { supabase } from "../../utils/supabase";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type FormType = {
 	label: string;
@@ -28,6 +28,8 @@ const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+
+	const supabase = useSupabaseClient()
 
 	const router = useRouter();
 
