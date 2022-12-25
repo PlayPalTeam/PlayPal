@@ -2,11 +2,10 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpschema, SignUpForm } from "../../types/types";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Database } from "../../types/database.types";
+import { supabase } from "../../utils/supabase";
 
 type FormType = {
 	label: string;
@@ -48,7 +47,6 @@ const SignUp = () => {
 		resolver: zodResolver(SignUpschema),
 	});
 
-	const supabase = useSupabaseClient<Database>();
 
 	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
 		const { error } = await supabase.auth.signUp({

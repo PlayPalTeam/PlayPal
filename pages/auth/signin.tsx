@@ -1,13 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
-import { Database } from "../../types/database.types";
+import { supabase } from "../../utils/supabase";
 
 type FormType = {
 	label: string;
@@ -29,8 +28,6 @@ const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
-
-	const supabase = useSupabaseClient<Database>();
 
 	const router = useRouter();
 
