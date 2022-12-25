@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+// import {BsPersonSquare} from 'react-icons/bs'
 const Links = [
 	{
 		text: "User",
@@ -11,10 +10,26 @@ const Links = [
 	},
 ];
 
+import Link from "next/link";
+
 const Home = () => {
 	return (
-		<div className="flex h-screen items-center justify-center bg-fuchsia-200">
-			<div className="flex gap-x-5">
+		// <div className="">
+		// 	<div className='flex justify-between p-8 ml-16 mr-16 '> 
+		// 		<div>
+		// 			PlayPal
+		// 		</div>
+		// 		<div className='flex items-center gap-2'> 
+		// 			<BsPersonSquare/>Contact
+		// 		</div>
+		// 	</div>
+		// 	<div className="absolute top-0 z-[-1]">
+		// 	<video autoPlay muted loop>
+		// 		<source src="https://www.playspots.in/wp-content/themes/playspots/assets/videos/beach-soccer.mp4" type='video/mp4' />
+		// 	</video>
+		// 	</div>
+			
+			 <div className="flex gap-x-5">
 				{Links.map((link, index) => (
 					<Link key={index} href={link.href}>
 						<p className="rounded-xl bg-red-200 p-5 text-2xl font-semibold duration-300 ease-linear hover:bg-red-500 hover:text-white">
@@ -23,7 +38,7 @@ const Home = () => {
 					</Link>
 				))}
 			</div>
-		</div>
+		// </div>
 	);
 };
 export default Home;
