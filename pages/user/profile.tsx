@@ -1,9 +1,13 @@
-
 import Image from "next/image";
 import logo1 from "../../public/logo1.jpg";
 import Navbar from "../../components/Navbar";
+import useSWR from "swr";
 
 import { useSession } from "@supabase/auth-helpers-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserProfileSchema, UserProfileType } from "../../types/types";
+import Avatar from "../../components/Avatar";
 
 // TODO Fix the page. Do not make changes
 
@@ -12,21 +16,36 @@ const profilesettings = [
 		name: "Account Settings",
 		info: "Details about your personal information",
 	},
-	{
-		name: "Notification",
-		info: "Details about your personal information",
-	},
-	{
-		name: "Membership Plan ",
-		info: "Details about your personal information",
-	},
+	// {
+	// 	name: "Notification",
+	// 	info: "Details about your personal information",
+	// },
+	// {
+	// 	name: "Membership Plan ",
+	// 	info: "Details about your personal information",
+	// },
 	{
 		name: "Password and Security",
 		info: "Details about your personal information",
 	},
 ];
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const UserProfile = () => {
+	const { data } = useSWR<UserProfileType>("/api/profile", fetcher, {
+		refreshInterval: 10000,
+	});
+
+	const { register } = useForm({
+		defaultValues: {
+			username: data?.username,
+			full_name: data?.full_name,
+			avatar_url: data?.avatar_url,
+		},
+		resolver: zodResolver(UserProfileSchema),
+	});
+
 	const session = useSession();
 
 	function decide() {
@@ -54,9 +73,17 @@ const UserProfile = () => {
 				{/* main 2 */}
 				<div className="mr-14 grow-[4]">
 					<div className="flex gap-2 border-2 p-12 pl-14">
-						<div className=" ">
+						{/* <div className=" ">
 							<Image src={logo1} alt="img" height={160} width={140} />
-						</div>
+						</div> */}
+						{/* <Avatar
+							uid={user.id}
+							url={avatar_url}
+							size={150}
+							onUpload={(url) => {
+								setAvatarUrl(url);
+							}}
+						/> */}
 						<div className="m-auto ml-14 grow-[2] ">
 							<div>Upload a new Photo</div>
 							<div>Image name </div>
@@ -89,6 +116,7 @@ const UserProfile = () => {
 										<input
 											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
 											type="text"
+											{...register("username")}
 										/>
 									</div>
 								</div>

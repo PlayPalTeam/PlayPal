@@ -1,5 +1,11 @@
 import * as z from "zod";
 
+const username = z
+	.string({
+		required_error: "Username is required",
+	})
+	.min(3, "Username must be more than 3 character");
+
 const email = z
 	.string({ required_error: "Email is required" })
 	.email({ message: "Invalid email address" });
@@ -16,11 +22,7 @@ const password = z
 	.min(8, "Must be at least 8 characters in length");
 
 export const SignUpschema = z.object({
-	username: z
-		.string({
-			required_error: "Username is required",
-		})
-		.min(3, "Username must be more than 3 character"),
+	username: username,
 	email: email,
 	password: password,
 	role: z.enum(["user", "lister"], {
@@ -37,3 +39,11 @@ export const SignInschema = z.object({
 });
 
 export type SignInForm = z.infer<typeof SignInschema>;
+
+export const UserProfileSchema = z.object({
+	username: username,
+	full_name: z.string(),
+	avatar_url: z.string(),
+});
+
+export type UserProfileType = z.infer<typeof UserProfileSchema>;

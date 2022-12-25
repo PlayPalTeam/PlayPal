@@ -1,9 +1,10 @@
 import { NextApiHandler } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "../../types/database.types";
 
 const ProtectedRoute: NextApiHandler = async (req, res) => {
 	// Create authenticated Supabase Client
-	const supabase = createServerSupabaseClient({ req, res });
+	const supabase = createServerSupabaseClient<Database>({ req, res });
 	// Check if we have a session
 	const {
 		data: { session },
@@ -20,7 +21,8 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 	const { data } = await supabase
 		.from("profiles")
 		.select(`username, full_name, avatar_url`)
-		.eq("id", session.user.id);
+		.eq("id", session.user.id)
+		.single();
 
 	res.json(data);
 };
