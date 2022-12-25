@@ -33,11 +33,9 @@ const profilesettings = [
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const UserProfile = () => {
-	const { data } = useSWR<UserProfileType>("/api/profile", fetcher, {
-		refreshInterval: 10000,
-	});
+	const { data } = useSWR("/api/profile", fetcher);
 
-	const { register } = useForm({
+	const { register, getValues } = useForm({
 		defaultValues: {
 			username: data?.username,
 			full_name: data?.full_name,
@@ -45,6 +43,8 @@ const UserProfile = () => {
 		},
 		resolver: zodResolver(UserProfileSchema),
 	});
+
+	console.log(getValues());
 
 	const session = useSession();
 
@@ -76,14 +76,6 @@ const UserProfile = () => {
 						{/* <div className=" ">
 							<Image src={logo1} alt="img" height={160} width={140} />
 						</div> */}
-						{/* <Avatar
-							uid={user.id}
-							url={avatar_url}
-							size={150}
-							onUpload={(url) => {
-								setAvatarUrl(url);
-							}}
-						/> */}
 						<div className="m-auto ml-14 grow-[2] ">
 							<div>Upload a new Photo</div>
 							<div>Image name </div>
@@ -102,14 +94,14 @@ const UserProfile = () => {
 						{/* form  */}
 						<form>
 							<div className="flex gap-9 p-4 pl-0">
-								<div className="grow-[1]">
+								{/* <div className="grow-[1]">
 									<label className="block pb-2 text-sm">Email</label>
 									<input
 										className="h-8 w-[100%] max-w-[280px] rounded-md border-2 "
 										value={session?.user.email}
 										disabled
 									/>
-								</div>
+								</div> */}
 								<div className="grow-[1]">
 									<div className="pb-2 text-sm">User Name *</div>
 									<div>
