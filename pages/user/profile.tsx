@@ -1,62 +1,50 @@
-import useSWR from "swr";
-import Navbar from "../../components/Navbar";
+
 import Image from "next/image";
 import logo1 from "../../public/logo1.jpg";
-import { UserProfile } from "../../types/types";
-import { useState } from "react";
-import { Input } from "../../components";
+import Navbar from "../../components/Navbar";
 
-const fetcher = (url: string) =>
-	fetch(url, { method: "GET" }).then((res) => res.json());
+import { useSession } from "@supabase/auth-helpers-react";
+
+// TODO Fix the page. Do not make changes
+
+const profilesettings = [
+	{
+		name: "Account Settings",
+		info: "Details about your personal information",
+	},
+	{
+		name: "Notification",
+		info: "Details about your personal information",
+	},
+	{
+		name: "Membership Plan ",
+		info: "Details about your personal information",
+	},
+	{
+		name: "Password and Security",
+		info: "Details about your personal information",
+	},
+];
 
 const UserProfile = () => {
-	const { data, error } = useSWR<UserProfile[]>("/api/profile", fetcher);
+	const session = useSession();
 
-	console.log(error);
-
-	if (error) {
-		return <div>Error: {error}</div>;
-	}
-
-	if (!data) {
-		return <div>Loading.....</div>;
-	}
-
-	const profilesettings = [
-		{
-			name: "Account Settings",
-			info: "Details about your personal information",
-		},
-		{
-			name: "Notification",
-			info: "Details about your personal information",
-		},
-		{
-			name: "Membership Plan ",
-			info: "Details about your personal information",
-		},
-		{
-			name: "Password and Security",
-			info: "Details about your personal information",
-		},
-	];
-
-	function decide(){
-		console.log("few")
+	function decide() {
+		console.log("few");
 	}
 
 	return (
-		
 		<div className="flex">
-
 			<Navbar />
-	
-			<div className=" flex w-[100vw] gap-10 p-12 ">
+			<div className=" flex w-screen gap-10 p-12 ">
 				{/* main 1 */}
 				<div className=" grow-[1]">
 					<div className="p-2">
 						{profilesettings.map((data, index) => (
-							<div key={index} className=" m-5 border-2 p-3 pt-2 flex flex-col items-start">
+							<div
+								key={index}
+								className=" m-5 flex flex-col items-start border-2 p-3 pt-2"
+							>
 								<button onClick={decide}>{data.name}</button>
 								<div className="text-xs">{data.info} </div>
 							</div>
@@ -64,8 +52,8 @@ const UserProfile = () => {
 					</div>
 				</div>
 				{/* main 2 */}
-				<div className="grow-[4] mr-14">
-					<div className="flex gap-2 p-12 pl-14 border-2">
+				<div className="mr-14 grow-[4]">
+					<div className="flex gap-2 border-2 p-12 pl-14">
 						<div className=" ">
 							<Image src={logo1} alt="img" height={160} width={140} />
 						</div>
@@ -79,95 +67,87 @@ const UserProfile = () => {
 							</button>
 						</div>
 					</div>
-					
-					<div className="p-12 pt-2 border-2 mt-5" >
+
+					<div className="mt-5 border-2 p-12 pt-2">
 						<div className="mt-3">
-							<div className="text-lg mb-5 ">Change User Information here</div>
+							<div className="mb-5 text-lg ">Change User Information here</div>
 						</div>
 						{/* form  */}
 						<form>
-
-							{/* <div>
-				{data.map((user) => (
-					<section key={user.role}>
-						<p>Username: {user.username}</p>
-						<p>Full Name:{user.full_name}</p>
-					</section>
-				))}
-			</div> */}
-			
-
-			
-
-			
-						<div className="flex p-4 pl-0 gap-9 ">
-							
-							<div className="grow-[1] ">
-								<div className="pb-2 text-sm">Full Name *</div>
-								<div className="">
-									<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2 "   type="text" placeholder="Full Name" />
+							<div className="flex gap-9 p-4 pl-0">
+								<div className="grow-[1]">
+									<label className="block pb-2 text-sm">Email</label>
+									<input
+										className="h-8 w-[100%] max-w-[280px] rounded-md border-2 "
+										value={session?.user.email}
+										disabled
+									/>
 								</div>
-							</div>
-							<div className="grow-[1]">
-								<div className="pb-2 text-sm">User Name *</div>
-								<div>
-								<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2"  type="text" placeholder="User Name" />
+								<div className="grow-[1]">
+									<div className="pb-2 text-sm">User Name *</div>
+									<div>
+										<input
+											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
+											type="text"
+										/>
+									</div>
 								</div>
 							</div>
 
-						</div>
+							<div className="flex gap-9 p-4 pl-0 ">
+								<div className="grow-[1] ">
+									<div className="pb-2 text-sm">City *</div>
+									<div className="">
+										<input
+											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
+											type="text"
+											placeholder="City"
+										/>
+									</div>
+								</div>
+								<div className="grow-[1]">
+									<div className="pb-2 text-sm">State *</div>
+									<div>
+										<input
+											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2 "
+											type="text"
+											placeholder="State"
+										/>
+									</div>
+								</div>
+							</div>
 
-						<div className="flex p-4 pl-0 gap-9 ">
-							<div className="grow-[1] ">
-								<div className="pb-2 text-sm">City *</div>
-								<div className="">
-									<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2" type="text" placeholder="City" />
+							<div className="flex gap-9 p-4 pl-0 ">
+								<div className="grow-[1] ">
+									<div className="pb-2 text-sm">Zip-Code *</div>
+									<div className="">
+										<input
+											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
+											type="text"
+											placeholder="Zip-Code"
+										/>
+									</div>
+								</div>
+								<div className="grow-[1]">
+									<div className="pb-2 text-sm">Country*</div>
+									<div>
+										<input
+											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2 "
+											type="text"
+											placeholder="Coountry"
+										/>
+									</div>
 								</div>
 							</div>
-							<div className="grow-[1]">
-								<div className="pb-2 text-sm">State *</div>
-								<div>
-								<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2 " type="text" placeholder="State" />
-								</div>
+							<div className="mt-3 bg-green-400">
+								<button className="w-[100%] border-2 p-2">
+									Update Information
+								</button>
 							</div>
-						</div>
-
-						<div className="flex p-4 pl-0 gap-9 ">
-							<div className="grow-[1] ">
-								<div className="pb-2 text-sm">Zip-Code *</div>
-								<div className="">
-									<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2" type="text" placeholder="Zip-Code" />
-								</div>
-							</div>
-							<div className="grow-[1]">
-								<div className="pb-2 text-sm">Country*</div>
-								<div>
-								<input className=" rounded-md h-8 w-[100%] max-w-[280px] border-2 " type="text" placeholder="Coountry" />
-								</div>
-							</div>
-						</div>
-						<div className="mt-3 bg-green-400">
-							<button className="border-2 p-2 w-[100%]">Update Information</button>
-						</div>
-
 						</form>
-
-
-		
-
 					</div>
-				
 				</div>
 			</div>
-
-			{/* <div>
-				{data.map((user) => (
-					<section key={user.role}>
-						<p>Username: {user.username}</p>
-						<p>Full Name:{user.full_name}</p>
-					</section>
-				))}
-			</div> */}
 		</div>
 	);
 };

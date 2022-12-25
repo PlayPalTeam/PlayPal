@@ -8,8 +8,6 @@ import {
 	Session,
 } from "@supabase/auth-helpers-nextjs";
 
-import { SWRConfig } from "swr";
-import Layout from "../components/Layout";
 
 function App({
 	Component,
@@ -21,18 +19,12 @@ function App({
 	const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
 	return (
-		<SWRConfig
-			value={{
-				refreshInterval: 10000,
-			}}
+		<SessionContextProvider
+			supabaseClient={supabaseClient}
+			initialSession={pageProps.initialSession}
 		>
-			<SessionContextProvider
-				supabaseClient={supabaseClient}
-				initialSession={pageProps.initialSession}
-			>
-				<Component {...pageProps} />
-			</SessionContextProvider>
-		</SWRConfig>
+			<Component {...pageProps} />
+		</SessionContextProvider>
 	);
 }
 
