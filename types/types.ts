@@ -1,42 +1,39 @@
-import {
-	DetailedHTMLProps,
-	HTMLInputTypeAttribute,
-	InputHTMLAttributes,
-} from "react";
-import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
+import * as z from "zod";
 
-export interface SignInForm {
-	email: string;
-	password: string;
-}
+const email = z
+	.string({ required_error: "Email is required" })
+	.email({ message: "Invalid email address" });
 
-export interface SignUpForm {
-	username: string;
-	email: string;
-	password: string;
-	role: string;
-}
+const password = z
+	.string()
+	.regex(new RegExp(".*[A-Z].*"), "One uppercase character")
+	.regex(new RegExp(".*[a-z].*"), "One lowercase character")
+	.regex(new RegExp(".*\\d.*"), "One number")
+	.regex(
+		new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+		"One special character"
+	)
+	.min(8, "Must be at least 8 characters in length");
 
-export interface Option {
-	value: string;
-	label: string;
-}
+export const SignUpschema = z.object({
+	username: z
+		.string({
+			required_error: "Username is required",
+		})
+		.min(3, "Username must be more than 3 character"),
+	email: email,
+	password: password,
+	role: z.enum(["user", "lister"], {
+		required_error: "Select one of the choice",
+	}),
+});
 
-export interface SelectInputProps {
-	label: string;
-	register: UseFormRegister<SignUpForm>;
-	options: Option[];
-}
+export type SignUpForm = z.infer<typeof SignUpschema>;
 
-export interface ButtonProps {
-	type: "button" | "reset" | "submit";
-	children: any;
-	className: string;
-}
+// Zod schema for sign in page
+export const SignInschema = z.object({
+	email: email,
+	password: password,
+});
 
-export interface UserProfile {
-	role: string;
-	username: string;
-	full_name: string;
-	avatar_url: string;
-}
+export type SignInForm = z.infer<typeof SignInschema>;

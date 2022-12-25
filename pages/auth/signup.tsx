@@ -1,58 +1,52 @@
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
-import Form from "../../components/FormWrapper";
-import { Input, SelectInput } from "../../components";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignUpschema, SignUpForm } from "../../types/types";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../../types/database.types";
-import { useState } from "react";
 
-const options = [
+type FormType = {
+	label: string;
+	type: string;
+	name: "username" | "email" | "password";
+	css: string;
+}[];
+
+const Form: FormType = [
 	{
-		value: "#",
-		label: "Select your choice",
+		label: "Username",
+		type: "text",
+		name: "username",
+		css: "inputCss",
 	},
 	{
-		value: "user",
-		label: "Do you want to use the app?",
+		label: "Email",
+		type: "email",
+		name: "email",
+		css: "inputCss",
 	},
-	{
-		value: "lister",
-		label: "Do you want to list your place?",
-	},
+	{ label: "Password", type: "password", name: "password", css: "inputCss" },
 ];
 
-interface SignUpForm {
-	username: string;
-	email: string;
-	password: string;
-	role: string;
-}
-
-const SignInSchema = object().shape({
-	username: string().required("Username is required"),
-	email: string().email("Enter a valid email").required("Email is required"),
-	password: string()
-		.min(6, "Minimum length is 6")
-		.required("Password is required"),
-	role: string()
-		.oneOf(["lister", "user"], "Please select a valid option")
-		.required("Please select an option"),
-});
-
-const SignIn = () => {
+const SignUp = () => {
 	const [message, setMessage] = useState<string>("");
+
+	const [showPassword, setShowPassword] = useState<boolean>(false);
+
+	const handleShowPassword = useCallback(() => {
+		setShowPassword(!showPassword);
+	}, [showPassword]);
 
 	const {
 		register,
 		handleSubmit,
-		formState: {
-			errors: { email, password, username },
-		},
-		reset,
-	} = useForm<SignUpForm>({ resolver: yupResolver(SignInSchema) });
+		formState: { errors },
+	} = useForm<SignUpForm>({
+		resolver: zodResolver(SignUpschema),
+	});
 
 	const supabase = useSupabaseClient<Database>();
 
@@ -65,76 +59,157 @@ const SignIn = () => {
 					username: data.username,
 					role: data.role,
 				},
-				emailRedirectTo: "https://playpal-eta.vercel.app/auth/signin",
+				emailRedirectTo: "http://localhost:3000/auth/signin",
 			},
 		});
 
 		if (error) {
-			setMessage(JSON.stringify(error, null, 2));
+			setMessage(error.message);
 		} else {
-			setMessage("Check your email.");
-			reset();
+			setMessage("Check your email");
 		}
 	};
 
 	return (
 		<>
 			<Head>
-				<title>PlayPal | Sign Up</title>
+				<title>Sign Up</title>
 			</Head>
 			<div className="flex h-screen flex-col items-center justify-center">
-				<p className="p-2 text-center text-base font-semibold text-green-500">
-					{message}
-				</p>
-				<Form
-					buttonLabel="Log In"
-					register={register}
-					handleSubmit={handleSubmit}
-					onSubmit={onSubmit}
-					className="w-[90%] max-w-md space-y-5 rounded-xl border p-5 shadow-sm shadow-green-300"
-					btnCss="w-full rounded-lg bg-green-300 px-4 py-2 text-xl font-semibold text-black hover:bg-green-400"
+				<p className="mb-2 text-center text-xl text-green-500">{message}</p>
+				<form
+					className="w-full max-w-[35rem] space-y-5 rounded-lg px-8 py-4 shadow-sm shadow-green-500 max-md:w-[90%]"
+					onSubmit={handleSubmit(onSubmit)}
 				>
-					<h1 className="text-center text-2xl font-semibold">
-						PlayPal | Sign Up
+					<h1 className="text-center text-xl font-bold text-gray-700">
+						Sign Up
 					</h1>
-					<Input
-						label="Username"
-						name="username"
-						type={"text"}
-						placeholder="Enter a username"
-						error={username?.message}
-						className="inputCss"
-						autoFocus
-					/>
-					<Input
-						label="Email"
-						name={"email"}
-						type="email"
-						placeholder="Enter your email"
-						error={email?.message}
-						className="inputCss"
-					/>
-					<Input
-						label="Password"
-						name={"password"}
-						type="password"
-						placeholder="Enter your password"
-						error={password?.message}
-						className="inputCss"
-					/>
-					<SelectInput
-						label="What you want to do?"
-						options={options}
-						register={register}
-						name={"role"}
-					/>
-				</Form>
-				<p className="mt-2 text-center hover:underline hover:underline-offset-1">
-					<Link href={"/auth/signin"}>Already have an account? Sign In</Link>
-				</p>
+					<div className="flex flex-col max-md:space-y-5 md:flex-row md:justify-between">
+						<div className="md:mr-5 md:w-1/2">
+							<label htmlFor={Form[0].name} className="font-bold text-gray-700">
+								{Form[0].label}
+							</label>
+							<div className="relative flex items-center">
+								<input
+									type={Form[0].type}
+									name={Form[0].name}
+									{...register(Form[0].name)}
+									className={`${Form[0].css} placeholder-gray-700`}
+									placeholder={Form[0].label}
+								/>
+							</div>
+							{errors.username && (
+								<p className="text-xs italic text-red-500">
+									{errors.username.message}
+								</p>
+							)}
+						</div>
+						<div className="md:w-1/2">
+							<label htmlFor={Form[1].name} className="font-bold text-gray-700">
+								{Form[1].label}
+							</label>
+							<div className="relative flex items-center">
+								<input
+									type={Form[1].type}
+									name={Form[1].name}
+									{...register(Form[1].name)}
+									className={`${Form[1].css} placeholder-gray-700`}
+									placeholder={Form[1].label}
+								/>
+							</div>
+							{errors.email && (
+								<p className="text-xs italic text-red-500">
+									{errors.email.message}
+								</p>
+							)}
+						</div>
+					</div>
+					<div className="flex flex-col max-md:space-y-5 md:flex-row md:justify-between">
+						<div className="md:mr-5 md:w-1/2">
+							<label htmlFor={Form[2].name} className="font-bold text-gray-700">
+								{Form[2].label}
+							</label>
+							<div className="relative flex items-center">
+								<input
+									type={
+										Form[2].type === "password" && showPassword
+											? "text"
+											: Form[2].type
+									}
+									name={Form[2].name}
+									{...register(Form[2].name)}
+									className={`${Form[2].css} placeholder-gray-700`}
+									placeholder={Form[2].label}
+								/>
+								<button
+									type="button"
+									onClick={handleShowPassword}
+									className="absolute right-3"
+								>
+									{Form[2].type === "password" ? (
+										<>
+											{showPassword ? (
+												<AiFillEye
+													className="h-6 w-6"
+													onClick={handleShowPassword}
+												/>
+											) : (
+												<AiFillEyeInvisible
+													className="h-6 w-6"
+													onClick={handleShowPassword}
+												/>
+											)}
+										</>
+									) : null}
+								</button>
+							</div>
+							{errors.password && (
+								<p className="text-xs italic text-red-500">
+									{errors.password.message}
+								</p>
+							)}
+							{Form[2].type === "password" && (
+								<ul className="text-xs italic text-gray-600">
+									<li>At least 8 characters</li>
+									<li>At least one lowercase letter</li>
+									<li>At least one upper letter</li>
+									<li>At least one number</li>
+								</ul>
+							)}
+						</div>
+						<div className="md:w-1/2">
+							<label htmlFor="role" className="font-bold text-gray-700">
+								Role
+							</label>
+							<div className="relative flex items-center">
+								<select
+									name="role"
+									{...register("role")}
+									className="inputCss placeholder-gray-700"
+								>
+									<option value="user">Member</option>
+									<option value="lister">Admin</option>
+								</select>
+							</div>
+							{errors.role && (
+								<p className="text-xs italic text-red-500">
+									{errors.role.message}
+								</p>
+							)}
+						</div>
+					</div>
+					<button
+						type="submit"
+						className="w-full rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
+					>
+						Sign Up
+					</button>
+					<div className="text-center font-medium text-green-500 hover:underline">
+						<Link href="/auth/signin">Already have an account?</Link>
+					</div>
+				</form>
 			</div>
 		</>
 	);
 };
-
-export default SignIn;
+export default SignUp;

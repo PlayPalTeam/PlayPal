@@ -9,7 +9,6 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 		data: { session },
 	} = await supabase.auth.getSession();
 
-
 	if (!session)
 		return res.status(401).json({
 			error: "not_authenticated",
@@ -18,7 +17,10 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 		});
 
 	// Run queries with RLS on the server
-	const { data } = await supabase.from("profiles").select(`username, full_name, avatar_url`).eq("id", session.user.id);
+	const { data } = await supabase
+		.from("profiles")
+		.select(`username, full_name, avatar_url`)
+		.eq("id", session.user.id);
 
 	res.json(data);
 };
