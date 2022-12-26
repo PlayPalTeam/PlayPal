@@ -2,11 +2,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type FormType = {
 	label: string;
@@ -29,7 +29,9 @@ const SignIn = () => {
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 
-	const supabase = useSupabaseClient()
+	const supabase = useSupabaseClient();
+
+	const session = useSession();
 
 	const router = useRouter();
 
@@ -62,6 +64,12 @@ const SignIn = () => {
 	const handleShowPassword = useCallback(() => {
 		setShowPassword(!showPassword);
 	}, [showPassword]);
+
+	useEffect(() => {
+		if (session && session.user.user_metadata) {
+			router.push(`/${session?.user.user_metadata.role}/profile`);
+		}
+	}, [router, session]);
 
 	return (
 		<>

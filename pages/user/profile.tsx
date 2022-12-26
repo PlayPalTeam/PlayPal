@@ -3,11 +3,9 @@ import logo1 from "../../public/logo1.jpg";
 import Navbar from "../../components/Navbar";
 import useSWR from "swr";
 
-import { useSession } from "@supabase/auth-helpers-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserProfileSchema, UserProfileType } from "../../types/types";
-import Avatar from "../../components/Avatar";
 
 // TODO Fix the page. Do not make changes
 
@@ -43,10 +41,6 @@ const UserProfile = () => {
 		},
 		resolver: zodResolver(UserProfileSchema),
 	});
-
-	console.log(getValues());
-
-	const session = useSession();
 
 	function decide() {
 		console.log("few");
