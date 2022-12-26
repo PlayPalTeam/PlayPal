@@ -80,23 +80,26 @@ const Home = () => {
 						<Link href={"/auth/signin"}>Start Your Search</Link>
 					</div>
 				</div>
-				<div className="mt-[100vh] h-[300px] bg-red-300 p-4">
-					<div className="mt-5 flex justify-around gap-2 ">
+
+				<div className="mt-[90vh] p-4 h-[400px] flex justify-center">
+					<div className="flex justify-around gap-4  pl-10 pr-10 m-auto ">
 						{displayData.map((data, index) => (
 							<div
 								key={index}
-								className="items-center justify-center bg-green-600"
+								className=""
 							>
-								<div className="">
+								<div className=" flex justify-center">
 									<Image src={data.img} alt="img" />
 								</div>
-								<div>{data.name}</div>
-								<div>{data.text}</div>
+								<div className="flex justify-center mt-3 font-medium text-lg tracking-wider">{data.name}</div>
+								<div className="flex justify-center text-center mt-3">
+									{data.text}
+								</div>
 							</div>
 						))}
 					</div>
 				</div>
-				thi
+				thi				
 			</div>
 		</>
 	);
