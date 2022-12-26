@@ -7,7 +7,7 @@ import {
 	createBrowserSupabaseClient,
 	Session,
 } from "@supabase/auth-helpers-nextjs";
-
+import { UserProfileProvider } from "../context/UserProfileContext";
 
 function App({
 	Component,
@@ -23,7 +23,9 @@ function App({
 			supabaseClient={supabaseClient}
 			initialSession={pageProps.initialSession}
 		>
-			<Component {...pageProps} />
+			<UserProfileProvider>
+				<Component {...pageProps} />
+			</UserProfileProvider>
 		</SessionContextProvider>
 	);
 }

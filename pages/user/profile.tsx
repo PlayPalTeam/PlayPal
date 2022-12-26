@@ -1,46 +1,35 @@
-import Image from "next/image";
-import logo1 from "../../public/logo1.jpg";
 import Navbar from "../../components/Navbar";
 import useSWR from "swr";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserProfileSchema, UserProfileType } from "../../types/types";
-
-// TODO Fix the page. Do not make changes
+import { useUserProfile } from "../../context/UserProfileContext";
 
 const profilesettings = [
 	{
 		name: "Account Settings",
 		info: "Details about your personal information",
 	},
-	// {
-	// 	name: "Notification",
-	// 	info: "Details about your personal information",
-	// },
-	// {
-	// 	name: "Membership Plan ",
-	// 	info: "Details about your personal information",
-	// },
 	{
 		name: "Password and Security",
 		info: "Details about your personal information",
 	},
 ];
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 const UserProfile = () => {
-	const { data } = useSWR("/api/profile", fetcher);
+	const { userProfile, setUserProfile } = useUserProfile();
 
-	const { register, getValues } = useForm({
-		defaultValues: {
-			username: data?.username,
-			full_name: data?.full_name,
-			avatar_url: data?.avatar_url,
-		},
-		resolver: zodResolver(UserProfileSchema),
-	});
+	console.log(userProfile);
+
+	// const { register } = useForm({
+	// 	defaultValues: data && {
+	// 		username: data?.username,
+	// 		full_name: data?.full_name,
+	// 		avatar_url: data?.avatar_url,
+	// 	},
+	// 	resolver: zodResolver(UserProfileSchema),
+	// });
 
 	function decide() {
 		console.log("few");
@@ -102,7 +91,7 @@ const UserProfile = () => {
 										<input
 											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
 											type="text"
-											{...register("username")}
+											// {...register("username")}
 										/>
 									</div>
 								</div>
