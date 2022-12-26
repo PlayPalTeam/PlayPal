@@ -11,6 +11,7 @@ import {
 } from "react-icons/bs";
 
 import { AiOutlineLogout } from "react-icons/ai";
+import { useUserProfile } from "../context/UserProfileContext";
 
 const NavBarList = [
 	{
@@ -38,6 +39,10 @@ const NavBarList = [
 const Navbar = () => {
 	const router = useRouter();
 
+	const { userProfile } = useUserProfile();
+
+	const { username } = userProfile;
+
 	const supabase = useSupabaseClient();
 
 	const user = useUser();
@@ -55,7 +60,9 @@ const Navbar = () => {
 			<div className="mb-10 flex justify-between">
 				<h1>logo</h1>
 			</div>
-			<div className="mb-7 text-xs">MY CERA</div>
+			<div className="mb-7 text-xs">
+				<p>{username}</p>
+			</div>
 			<ul>
 				{NavBarList.map((nav, index) => (
 					<li key={index} className="mb-6 flex items-center">
@@ -71,7 +78,9 @@ const Navbar = () => {
 				))}
 				<li className="mb-6 flex items-center">
 					<AiOutlineLogout />
-					<button className="ml-3" onClick={handleLogOut}>Log Out</button>
+					<button className="ml-3" onClick={handleLogOut}>
+						Log Out
+					</button>
 				</li>
 			</ul>
 		</nav>
