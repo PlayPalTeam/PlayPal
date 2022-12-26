@@ -19,15 +19,17 @@ const profilesettings = [
 
 const UserProfile = () => {
 	const { userProfile } = useUserProfile();
+	
 
 	const { username, full_name } = userProfile;
-
+	
 	const { register } = useForm<UserProfileType>({
 		defaultValues: {
 			username: username,
 			full_name: full_name,
 		},
 		resolver: zodResolver(UserProfileSchema),
+
 	});
 
 	function decide() {

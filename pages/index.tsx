@@ -2,20 +2,23 @@ import { BsPersonSquare } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import offer from "../public/offer.jpeg"
+import { Footer } from "../components/Footer";
+
 
 const displayData = [
 	{
-		img: "",
+		img: "/search.png",
 		name: "Search",
 		text: "Are you looking to play after work, organize your Sunday Five's football match? Explore the largest network of sports facilities whole over the India",
 	},
 	{
-		img: "",
+		img: "/book.png",
 		name: "Book",
 		text: "Once you’ve found the perfect ground, court or gym, Connect with the venue through the Book Now Button to make online booking & secure easier payment",
 	},
 	{
-		img: "",
+		img: "/play.png",
 		name: "Play",
 		text: "You’re the hero, you’ve found a stunning turf or court, booked with ease and now its time to play. The scene is set for your epic match.",
 	},
@@ -39,7 +42,7 @@ const Home = () => {
 		<>
 			<div>
 				{colour ? (
-					<div className="sticky top-0 z-[1] flex justify-between bg-green-500 p-4 pl-32 pr-32 font-bold tracking-wider text-white brightness-[0.9] transition-all duration-700 ease-in-out">
+					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white  transition-all duration-700 ease-in-out">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -81,15 +84,15 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="mt-[90vh] p-4 h-[400px] flex justify-center">
-					<div className="flex justify-around gap-4  pl-10 pr-10 m-auto ">
+				<div className="mt-[90vh] p-4 h-[500px] flex justify-center">
+					<div className="flex justify-around gap-6 pl-14 pr-14 m-auto ">
 						{displayData.map((data, index) => (
 							<div
 								key={index}
 								className=""
 							>
 								<div className=" flex justify-center">
-									<Image src={data.img} alt="img" />
+									<Image src={data.img} alt="img" width={40} height={40}/>
 								</div>
 								<div className="flex justify-center mt-3 font-medium text-lg tracking-wider">{data.name}</div>
 								<div className="flex justify-center text-center mt-3">
@@ -99,7 +102,47 @@ const Home = () => {
 						))}
 					</div>
 				</div>
-				thi				
+				
+				<div className=" bg-purple-100 h-[650px] flex items-center justify-between gap-16">
+					<div className="ml-24 grow-[1]">
+						<div className=" text-5xl font-bold tracking-widest "> 
+						MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
+						</div>
+						<p className="mt-5 tracking-wider">
+						Playspots is an online platform to connect sports facilities to its users, Were breaking down <br></br> barriers to getting more people active
+						</p>
+					</div>
+					<div className="mr-24 grow-[1] ">
+						<Image 
+						src={ offer }
+						alt="offerImage"
+						width={350}
+						height={350}
+						/>
+					</div>
+				</div>	
+
+				<div className=" bg-[#060b1e] text-white h-[800px] flex items-center justify-between gap-16 ">
+					<div className="ml-24 grow-[1]">
+						<div className=" text-5xl font-bold tracking-widest "> 
+						MEET YOUR PALS<br></br> OVER GAME <br />
+						</div>
+						<p className="mt-5 tracking-wider">
+						Want to play games ? <br></br>
+						But dont get an opponent team?<br></br>
+						You can Invite a team or Join a pre scheduled match Through Playspots
+						</p>
+					</div>
+					<div className="mr-24 grow-[1] ">
+						<Image 
+						src='/meetpals.png'
+						alt="offerImage"
+						width={350}
+						height={350}
+						/>
+					</div>
+				</div>	
+				<Footer />
 			</div>
 		</>
 	);
