@@ -55,7 +55,7 @@ const Home = () => {
 						</div>
 					</div>
 				)}
-				<div className=" absolute top-0 z-[-1]  ">
+				<div className="absolute top-0 z-[-1]  ">
 					<video
 						autoPlay
 						muted
@@ -68,12 +68,12 @@ const Home = () => {
 						/>
 					</video>
 				</div>
-				<div className=" absolute top-[25%] left-[15%] text-white">
+				<div className="absolute top-[25%] left-[15%] text-white">
 					<div className="text-7xl font-bold tracking-widest ">
 						YOUR <br></br>NEAREST <br></br>TURF <br></br>
 					</div>
 
-					<div className=" mt-4 text-2xl font-semibold tracking-widest text-green-500">
+					<div className="mt-4 text-2xl font-semibold tracking-widest text-green-500">
 						IS JUST A TAP AWAY
 					</div>
 					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 text-white">
