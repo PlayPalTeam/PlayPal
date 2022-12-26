@@ -10,6 +10,8 @@ import {
 	BsMessenger,
 } from "react-icons/bs";
 
+import { AiOutlineLogout } from "react-icons/ai";
+
 const NavBarList = [
 	{
 		text: "Profile",
@@ -67,8 +69,11 @@ const Navbar = () => {
 						</Link>
 					</li>
 				))}
+				<li className="mb-6 flex items-center">
+					<AiOutlineLogout />
+					<button className="ml-3" onClick={handleLogOut}>Log Out</button>
+				</li>
 			</ul>
-			<button onClick={handleLogOut}>Log Out</button>
 		</nav>
 	);
 };
