@@ -1,14 +1,8 @@
 import { BsPersonSquare } from "react-icons/bs";
-const Links = [
-	{
-		text: "User",
-		href: "/auth/signin",
-	},
-	{
-		text: "List you place",
-		href: "/auth/signin",
-	},
-];
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 const displayData = [
 	{
 		img: "",
@@ -26,10 +20,7 @@ const displayData = [
 		text: "You’re the hero, you’ve found a stunning turf or court, booked with ease and now its time to play. The scene is set for your epic match.",
 	},
 ];
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-// import { search } from "../public/search.png";
+
 const Home = () => {
 	const [colour, setColour] = useState(false);
 
@@ -48,7 +39,7 @@ const Home = () => {
 		<>
 			<div>
 				{colour ? (
-					<div className=" sticky top-0 z-[1] flex justify-between bg-green-500 p-4 pl-32 pr-32 font-bold tracking-wider text-white brightness-[0.9] transition-all duration-700 ease-in-out">
+					<div className="sticky top-0 z-[1] flex justify-between bg-green-500 p-4 pl-32 pr-32 font-bold tracking-wider text-white brightness-[0.9] transition-all duration-700 ease-in-out">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -56,7 +47,7 @@ const Home = () => {
 						</div>
 					</div>
 				) : (
-					<div className=" sticky top-0 flex justify-between p-4 pl-32 pr-32 font-bold tracking-wider text-white">
+					<div className="sticky top-0 flex justify-between p-4 pl-32 pr-32 font-bold tracking-wider text-white">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -64,7 +55,6 @@ const Home = () => {
 						</div>
 					</div>
 				)}
-
 				<div className=" absolute top-0 z-[-1]  ">
 					<video
 						autoPlay
@@ -78,7 +68,6 @@ const Home = () => {
 						/>
 					</video>
 				</div>
-
 				<div className=" absolute top-[25%] left-[15%] text-white">
 					<div className="text-7xl font-bold tracking-widest ">
 						YOUR <br></br>NEAREST <br></br>TURF <br></br>
@@ -91,23 +80,23 @@ const Home = () => {
 						<Link href={"/auth/signin"}>Start Your Search</Link>
 					</div>
 				</div>
-
-				<div className="mt-[100vh] p-4 bg-red-300 h-[300px]">
-					<div className="flex justify-around gap-2 mt-5 ">
+				<div className="mt-[100vh] h-[300px] bg-red-300 p-4">
+					<div className="mt-5 flex justify-around gap-2 ">
 						{displayData.map((data, index) => (
-							<div key={index} className="items-center justify-center bg-green-600">
+							<div
+								key={index}
+								className="items-center justify-center bg-green-600"
+							>
 								<div className="">
 									<Image src={data.img} alt="img" />
 								</div>
 								<div>{data.name}</div>
-								<div>
-									{data.text}
-								</div>
+								<div>{data.text}</div>
 							</div>
 						))}
 					</div>
 				</div>
-				thi				
+				thi
 			</div>
 		</>
 	);

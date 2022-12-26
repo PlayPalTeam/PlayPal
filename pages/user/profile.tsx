@@ -18,18 +18,17 @@ const profilesettings = [
 ];
 
 const UserProfile = () => {
-	const { userProfile, setUserProfile } = useUserProfile();
+	const { userProfile } = useUserProfile();
 
-	console.log(userProfile);
+	const { username, full_name } = userProfile;
 
-	// const { register } = useForm({
-	// 	defaultValues: data && {
-	// 		username: data?.username,
-	// 		full_name: data?.full_name,
-	// 		avatar_url: data?.avatar_url,
-	// 	},
-	// 	resolver: zodResolver(UserProfileSchema),
-	// });
+	const { register } = useForm<UserProfileType>({
+		defaultValues: {
+			username: username,
+			full_name: full_name,
+		},
+		resolver: zodResolver(UserProfileSchema),
+	});
 
 	function decide() {
 		console.log("few");
@@ -91,7 +90,7 @@ const UserProfile = () => {
 										<input
 											className=" h-8 w-[100%] max-w-[280px] rounded-md border-2"
 											type="text"
-											// {...register("username")}
+											{...register("username")}
 										/>
 									</div>
 								</div>
