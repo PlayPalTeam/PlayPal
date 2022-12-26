@@ -38,6 +38,7 @@ const Home = () => {
 
 		window.addEventListener("scroll", changeColour);
 	}, []);
+	
 	return (
 		<>
 			<div>
