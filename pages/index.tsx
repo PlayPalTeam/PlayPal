@@ -1,4 +1,5 @@
 import { BsPersonSquare } from "react-icons/bs";
+// import { offer } from "../public/offer.jpeg"
 const Links = [
 	{
 		text: "User",
@@ -92,22 +93,43 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="mt-[100vh] p-4 bg-red-300 h-[300px]">
-					<div className="flex justify-around gap-2 mt-5 ">
+				<div className="mt-[90vh] p-4 h-[400px] flex justify-center">
+					<div className="flex justify-around gap-4  pl-10 pr-10 m-auto ">
 						{displayData.map((data, index) => (
-							<div key={index} className="items-center justify-center bg-green-600">
-								<div className="">
+							<div key={index} className="">
+								<div className=" flex justify-center">
 									<Image src={data.img} alt="img" />
 								</div>
-								<div>{data.name}</div>
-								<div>
+								<div className="flex justify-center mt-3 font-medium text-lg tracking-wider">{data.name}</div>
+								<div className="flex justify-center text-center mt-3">
 									{data.text}
 								</div>
 							</div>
 						))}
 					</div>
 				</div>
-				thi				
+
+				<div className=" bg-purple-100 h-[500px] flex items-center justify-between ">
+					<div className="ml-24 grow-[1]">
+						<div className=" text-5xl font-bold tracking-widest "> 
+						MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
+						</div>
+						{/* <p>
+						Playspots is an online platform to connect sports facilities to its users, We're breaking down <br /> barriers to getting more people active
+						</p> */}
+					</div>
+					<div className="mr-32 grow-[1] bg-red-500">
+						{/* <Image 
+						src={ offer }
+						alt="offerImage"
+						width={10}
+						height={10}
+						/> */}
+					</div>
+				</div>	
+
+				<div className="mt-7">
+					Next Topic </div>		
 			</div>
 		</>
 	);
