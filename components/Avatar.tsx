@@ -53,7 +53,19 @@ export default function Avatar({
 				.upload(filePath, file, { upsert: true });
 
 			if (uploadError) {
-				throw uploadError;
+				alert(uploadError);
+			}
+
+			const { error } = await supabase
+				.from("profiles")
+				.update({
+					avatar_url: filePath,
+					updated_at: new Date().toISOString(),
+				})
+				.eq("id", uid);
+
+			if (error) {
+				alert(error);
 			}
 		} catch (error) {
 			alert("Error uploading avatar!");
@@ -69,7 +81,8 @@ export default function Avatar({
 				<Image
 					src={avatarUrl}
 					alt="Avatar"
-					style={{ height: size, width: size }}
+					width={size}
+					height={size}
 				/>
 			) : (
 				<div
