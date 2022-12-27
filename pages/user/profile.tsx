@@ -118,7 +118,7 @@ const UserProfile = () => {
 						))}
 					</div>
 					<div className="grow-[4]">
-						<div className="flex rounded-md border border-green-500">
+						<div className="flex rounded-lg border border-green-500">
 							<Avatar uid={user?.id} size={100} url={avatar_url} />
 						</div>
 

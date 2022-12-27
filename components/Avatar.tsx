@@ -79,6 +79,7 @@ export default function Avatar({
 		<div className="flex w-full items-center justify-between p-10">
 			{avatarUrl ? (
 				<Image
+					className="border border-green-500 rounded-md"
 					src={avatarUrl}
 					alt="Avatar"
 					width={size}
