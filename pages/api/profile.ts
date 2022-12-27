@@ -20,7 +20,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 	// Run queries with RLS on the server
 	const { data } = await supabase
 		.from("profiles")
-		.select(`username, full_name, avatar_url`)
+		.select(`username, full_name, avatar_url, locality`)
 		.eq("id", session.user.id)
 		.single();
 
