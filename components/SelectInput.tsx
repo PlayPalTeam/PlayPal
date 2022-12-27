@@ -1,13 +1,35 @@
-import { SelectInputProps } from "../types/types";
+interface Option {
+	value: string;
+	label: string;
+}
+interface SelectInputProps {
+	name: string;
+	label?: string;
+	error?: string;
+	register?: any;
+	options: Option[];
+	wrapperClass?: string;
+}
 
-const SelectInput = ({ options, label, register }: SelectInputProps) => {
+const SelectInput = ({
+	name,
+	options,
+	error,
+	label,
+	register,
+	wrapperClass,
+	...rest
+}: SelectInputProps) => {
 	return (
-		<div>
-			<label htmlFor={label}>{label}</label>
+		<div className={wrapperClass}>
+			{label && <label htmlFor={name}>{label}</label>}
+
 			<select
-				className="form-select mt-1 w-full rounded-lg focus:ring-green-600"
+				className="form-select mt-1 w-full rounded-lg border-green-500 focus:ring-green-600"
 				id={label}
-				{...register("role")}
+				aria-invalid={error ? "true" : "false"}
+				{...register(name)}
+				{...rest}
 			>
 				{options.map((option) => (
 					<option value={option.value} key={option.label}>
@@ -15,6 +37,11 @@ const SelectInput = ({ options, label, register }: SelectInputProps) => {
 					</option>
 				))}
 			</select>
+			{error && (
+				<span role="alert" className="text-sm text-red-500">
+					{error}
+				</span>
+			)}
 		</div>
 	);
 };
