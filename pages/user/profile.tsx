@@ -63,6 +63,7 @@ const UserProfile = () => {
 	});
 
 	const onSubmit: SubmitHandler<UserProfileType> = async (info) => {
+		console.log("Click");
 		const { status } = await supabase
 			.from("profiles")
 			.update({

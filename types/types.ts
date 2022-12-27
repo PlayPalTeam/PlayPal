@@ -45,7 +45,7 @@ export const UserProfileSchema = z.object({
 	email: email,
 	username: username,
 	full_name: z.string(),
-	avatar_url: z.string(),
+	avatar_url: z.optional(z.string()),
 	locality: z.string(),
 });
 
