@@ -56,7 +56,9 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="sticky top-0 h-screen w-72 bg-green-500 p-6 text-white ">
+		<nav
+			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden`}
+		>
 			<div className="mb-10 flex justify-between">
 				<h1>logo</h1>
 			</div>

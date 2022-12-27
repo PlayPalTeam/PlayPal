@@ -53,20 +53,16 @@ export default function Avatar({
 				.upload(filePath, file, { upsert: true });
 
 			if (uploadError) {
-				alert(uploadError);
+				alert(uploadError.message);
 			}
 
-			const { error } = await supabase
+			await supabase
 				.from("profiles")
 				.update({
 					avatar_url: filePath,
 					updated_at: new Date().toISOString(),
 				})
 				.eq("id", uid);
-
-			if (error) {
-				alert(error);
-			}
 		} catch (error) {
 			alert("Error uploading avatar!");
 			console.log(error);
@@ -76,10 +72,10 @@ export default function Avatar({
 	};
 
 	return (
-		<div className="flex w-full items-center justify-between p-10">
+		<div className="flex w-full items-center justify-evenly p-10">
 			{avatarUrl ? (
 				<Image
-					className="border border-green-500 rounded-md"
+					className="rounded-md border border-green-500"
 					src={avatarUrl}
 					alt="Avatar"
 					width={size}
@@ -92,7 +88,10 @@ export default function Avatar({
 				/>
 			)}
 			<div style={{ width: size }}>
-				<label className="" htmlFor="single">
+				<label
+					className="cursor-pointer rounded-md border border-green-500 p-2 duration-300 ease-in-out hover:border-transparent hover:bg-green-500 hover:text-white"
+					htmlFor="single"
+				>
 					{uploading ? "Uploading ..." : "Upload"}
 				</label>
 				<input

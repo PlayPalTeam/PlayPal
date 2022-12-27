@@ -102,10 +102,10 @@ const UserProfile = () => {
 			<Head>
 				<title>Profile</title>
 			</Head>
-			<div className="flex">
+			<main className="flex">
 				<Navbar />
 				<section className="flex flex-wrap gap-10 p-12">
-					<div className="grow-[1] p-2">
+					<div className="grow p-2">
 						{profilesettings.map((data, index) => (
 							<button
 								key={index}
@@ -157,7 +157,7 @@ const UserProfile = () => {
 						</div>
 					</div>
 				</section>
-			</div>
+			</main>
 		</>
 	);
 };
