@@ -1,3 +1,4 @@
+import { HTMLInputTypeAttribute } from "react";
 import * as z from "zod";
 
 const username = z
@@ -41,9 +42,19 @@ export const SignInschema = z.object({
 export type SignInForm = z.infer<typeof SignInschema>;
 
 export const UserProfileSchema = z.object({
+	email: email,
 	username: username,
 	full_name: z.string(),
 	avatar_url: z.string(),
+	locality: z.string(),
 });
 
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
+
+export type FormUIType = {
+	label: string;
+	name: "email" | "username" | "full_name" | "locality";
+	type?: HTMLInputTypeAttribute;
+	placeholder?: string;
+	disabled?: boolean;
+};

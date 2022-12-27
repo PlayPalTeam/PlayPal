@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../types/database.types";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
@@ -7,39 +8,34 @@ export default function Avatar({
 	uid,
 	url,
 	size,
-	onUpload,
 }: {
 	uid: string;
 	url: Profiles["avatar_url"];
 	size: number;
-	onUpload: (url: string) => void;
 }) {
 	const supabase = useSupabaseClient<Database>();
-	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
+	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>("");
 	const [uploading, setUploading] = useState(false);
 
 	useEffect(() => {
-		if (url) downloadImage(url);
-	}, [url]);
-
-	async function downloadImage(path: string) {
-		try {
-			const { data, error } = await supabase.storage
-				.from("avatars")
-				.download(path);
-			if (error) {
-				throw error;
+		const downloadImage = async (path: string) => {
+			try {
+				const { data, error } = await supabase.storage
+					.from("avatars")
+					.download(path);
+				if (error) {
+					throw error;
+				}
+				const url = URL.createObjectURL(data);
+				setAvatarUrl(url);
+			} catch (error) {
+				console.log("Error downloading image: ", error);
 			}
-			const url = URL.createObjectURL(data);
-			setAvatarUrl(url);
-		} catch (error) {
-			console.log("Error downloading image: ", error);
-		}
-	}
+		};
+		if (url) downloadImage(url);
+	}, [supabase.storage, url]);
 
-	const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
-		event
-	) => {
+	const uploadAvatar: ChangeEventHandler<HTMLInputElement> = async (event) => {
 		try {
 			setUploading(true);
 
@@ -59,8 +55,6 @@ export default function Avatar({
 			if (uploadError) {
 				throw uploadError;
 			}
-
-			onUpload(filePath);
 		} catch (error) {
 			alert("Error uploading avatar!");
 			console.log(error);
@@ -70,22 +64,21 @@ export default function Avatar({
 	};
 
 	return (
-		<div>
+		<div className="flex w-full items-center justify-between p-10">
 			{avatarUrl ? (
-				<img
+				<Image
 					src={avatarUrl}
 					alt="Avatar"
-					className="avatar image"
 					style={{ height: size, width: size }}
 				/>
 			) : (
 				<div
-					className="avatar no-image"
+					className="rounded-full border"
 					style={{ height: size, width: size }}
 				/>
 			)}
 			<div style={{ width: size }}>
-				<label className="button primary block" htmlFor="single">
+				<label className="" htmlFor="single">
 					{uploading ? "Uploading ..." : "Upload"}
 				</label>
 				<input

@@ -11,31 +11,34 @@ export interface Database {
 		Tables: {
 			profiles: {
 				Row: {
-					id: string;
-					username: string | null;
-					full_name: string | null;
 					avatar_url: string | null;
-					role: string | null;
+					full_name: string | null;
+					id: string;
 					inserted_at: string;
+					locality: string | null;
+					role: string | null;
 					updated_at: string;
+					username: string | null;
 				};
 				Insert: {
-					id: string;
-					username?: string | null;
-					full_name?: string | null;
 					avatar_url?: string | null;
-					role?: string | null;
+					full_name?: string | null;
+					id: string;
 					inserted_at?: string;
+					locality?: string | null;
+					role?: string | null;
 					updated_at?: string;
+					username?: string | null;
 				};
 				Update: {
-					id?: string;
-					username?: string | null;
-					full_name?: string | null;
 					avatar_url?: string | null;
-					role?: string | null;
+					full_name?: string | null;
+					id?: string;
 					inserted_at?: string;
+					locality?: string | null;
+					role?: string | null;
 					updated_at?: string;
+					username?: string | null;
 				};
 			};
 		};

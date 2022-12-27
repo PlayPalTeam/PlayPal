@@ -2,9 +2,8 @@ import { BsPersonSquare } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import offer from "../public/offer.jpeg"
+import offer from "../public/offer.jpeg";
 import { Footer } from "../components/Footer";
-
 
 const displayData = [
 	{
@@ -38,7 +37,7 @@ const Home = () => {
 
 		window.addEventListener("scroll", changeColour);
 	}, []);
-	
+
 	return (
 		<>
 			<div>
@@ -85,64 +84,61 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="mt-[90vh] p-4 h-[500px] flex justify-center">
-					<div className="flex justify-around gap-6 pl-14 pr-14 m-auto ">
+				<div className="mt-[90vh] flex h-[500px] justify-center p-4">
+					<div className="m-auto flex justify-around gap-6 pl-14 pr-14 ">
 						{displayData.map((data, index) => (
-							<div
-								key={index}
-								className=""
-							>
+							<div key={index} className="">
 								<div className=" flex justify-center">
-									<Image src={data.img} alt="img" width={40} height={40}/>
+									<Image src={data.img} alt="img" width={40} height={40} />
 								</div>
-								<div className="flex justify-center mt-3 font-medium text-lg tracking-wider">{data.name}</div>
-								<div className="flex justify-center text-center mt-3">
+								<div className="mt-3 flex justify-center text-lg font-medium tracking-wider">
+									{data.name}
+								</div>
+								<div className="mt-3 flex justify-center text-center">
 									{data.text}
 								</div>
 							</div>
 						))}
 					</div>
 				</div>
-				
-				<div className=" bg-purple-100 h-[650px] flex items-center justify-between gap-16">
-					<div className="ml-24 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest "> 
-						MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
-						</div>
-						<p className="mt-5 tracking-wider">
-						Playspots is an online platform to connect sports facilities to its users, Were breaking down <br></br> barriers to getting more people active
-						</p>
-					</div>
-					<div className="mr-24 grow-[1] ">
-						<Image 
-						src={ offer }
-						alt="offerImage"
-						width={350}
-						height={350}
-						/>
-					</div>
-				</div>	
 
-				<div className=" bg-[#060b1e] text-white h-[800px] flex items-center justify-between gap-16 ">
+				<div className=" flex h-[650px] items-center justify-between gap-16 bg-purple-100">
 					<div className="ml-24 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest "> 
-						MEET YOUR PALS<br></br> OVER GAME <br />
+						<div className=" text-5xl font-bold tracking-widest ">
+							MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
 						</div>
 						<p className="mt-5 tracking-wider">
-						Want to play games ? <br></br>
-						But dont get an opponent team?<br></br>
-						You can Invite a team or Join a pre scheduled match Through Playspots
+							PlayPal is an online platform to connect sports facilities to
+							its users, We&apos;re breaking down <br></br> barriers to getting more
+							people active
 						</p>
 					</div>
 					<div className="mr-24 grow-[1] ">
-						<Image 
-						src='/meetpals.png'
-						alt="offerImage"
-						width={350}
-						height={350}
+						<Image src={offer} alt="offerImage" width={350} height={350} />
+					</div>
+				</div>
+
+				<div className="flex h-[800px] items-center justify-between gap-16 bg-[#060b1e] text-white ">
+					<div className="ml-24 grow-[1]">
+						<div className=" text-5xl font-bold tracking-widest ">
+							MEET YOUR PALS<br></br> OVER GAME <br />
+						</div>
+						<p className="mt-5 tracking-wider">
+							Want to play games ? <br></br>
+							But don&apos;t get an opponent team?<br></br>
+							You can Invite a team or Join a pre scheduled match Through
+							Playspots
+						</p>
+					</div>
+					<div className="mr-24 grow-[1] ">
+						<Image
+							src="/meetpals.png"
+							alt="offerImage"
+							width={350}
+							height={350}
 						/>
 					</div>
-				</div>	
+				</div>
 				<Footer />
 			</div>
 		</>
