@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import offer from "../public/offer.jpeg";
-import { Footer } from "../components/Footer";
+import { Footer } from "../components";
 
 const displayData = [
 	{
@@ -108,8 +108,8 @@ const Home = () => {
 							MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
 						</div>
 						<p className="mt-5 tracking-wider">
-							PlayPal is an online platform to connect sports facilities to
-							its users, We&apos;re breaking down <br></br> barriers to getting more
+							PlayPal is an online platform to connect sports facilities to its
+							users, We&apos;re breaking down <br></br> barriers to getting more
 							people active
 						</p>
 					</div>

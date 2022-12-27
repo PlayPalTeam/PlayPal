@@ -6,7 +6,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Navbar, Avatar } from "../../components";
 import { useUserProfile } from "../../context/UserProfileContext";
 import { Database } from "../../types/database.types";
-import { FormUIType, UserProfileSchema, UserProfileType } from "../../types/types";
+import {
+	FormUIType,
+	UserProfileSchema,
+	UserProfileType,
+} from "../../types/types";
 
 const profilesettings = [
 	{
