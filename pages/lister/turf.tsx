@@ -1,41 +1,39 @@
-import { useSession, useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
-import React, { useEffect, useState } from 'react'
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { useEffect, useState } from "react";
+import { Database } from "../../types/database.types";
 
-const Turf = () => {
-    const supabase = useSupabaseClient()
-    const user = useUser()
-    const session = useSession()
-    const [username ,setUsername] = useState("")
-    const [name, setName] = useState("")
+const Turfs = () => {
+	const supabase = useSupabaseClient<Database>();
+	const user = useUser();
+	const [data, setData] = useState({});
 
-    useEffect(() => {
-        getProfile()
-      }, [session])
-    
-      async function getProfile() {
-        const { data, error } = await supabase
-        .from('profiles')
-        .select(`
-        username,
-        turfid(name)
-        `).eq("id",user?.id)
-        .single()
-        console.log(data)
-        if(data && !error){
-            setUsername(data.username)
+	useEffect(() => {
+		const getTurfData = async () => {
+			const { data, error } = await supabase
+				.from("profiles")
+				.select(`*, turfs(*)`)
+				.eq("id", user?.id)
+				.single();
+			if (error) {
+				console.log(error.code);
+				console.log(error.hint);
+				console.log(error.message);
+				console.log(error.details);
+			}
+			if (data) {
+				setData(data);
+			}
+		};
 
-        }
-      }
-      console.log(name)
+		getTurfData();
+	}, [supabase, user?.id]);
 
-  return (
-    <div>
-        <div>
-            {username} <br></br>
-            {name}
-        </div>
-    </div>
-  )
-}
+	return (
+		<div>
+      {JSON.stringify(data)}
+			<form></form>
+		</div>
+	);
+};
 
-export default Turf
+export default Turfs;

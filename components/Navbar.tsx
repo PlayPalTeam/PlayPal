@@ -25,8 +25,8 @@ const NavBarList = [
 		icons: <BsCollectionFill />,
 	},
 	{
-		text: "Turfs Booking",
-		link: "booking",
+		text: "Turfs",
+		link: "turf",
 		icons: <BsPeopleFill />,
 	},
 	{
