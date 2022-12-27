@@ -1,33 +1,60 @@
 import { HTMLInputTypeAttribute } from "react";
-import { UseFormRegister } from "react-hook-form";
+import * as z from "zod";
 
-export interface SignUpForm {
-	username: string;
-	email: string;
-	password: string;
-	role: string;
-}
+const username = z
+	.string({
+		required_error: "Username is required",
+	})
+	.min(3, "Username must be more than 3 character");
 
-export interface InputProps {
+const email = z
+	.string({ required_error: "Email is required" })
+	.email({ message: "Invalid email address" });
+
+const password = z
+	.string()
+	.regex(new RegExp(".*[A-Z].*"), "One uppercase character")
+	.regex(new RegExp(".*[a-z].*"), "One lowercase character")
+	.regex(new RegExp(".*\\d.*"), "One number")
+	.regex(
+		new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+		"One special character"
+	)
+	.min(8, "Must be at least 8 characters in length");
+
+export const SignUpschema = z.object({
+	username: username,
+	email: email,
+	password: password,
+	role: z.enum(["user", "lister"], {
+		required_error: "Select one of the choice",
+	}),
+});
+
+export type SignUpForm = z.infer<typeof SignUpschema>;
+
+// Zod schema for sign in page
+export const SignInschema = z.object({
+	email: email,
+	password: password,
+});
+
+export type SignInForm = z.infer<typeof SignInschema>;
+
+export const UserProfileSchema = z.object({
+	email: email,
+	username: username,
+	full_name: z.string(),
+	avatar_url: z.optional(z.string()),
+	locality: z.string(),
+});
+
+export type UserProfileType = z.infer<typeof UserProfileSchema>;
+
+export type FormUIType = {
 	label: string;
-	register: UseFormRegister<SignUpForm>;
-	type: HTMLInputTypeAttribute;
-	name: "email" | "password" | "role" | "username";
-}
-
-export interface Option {
-	value: string;
-	label: string;
-}
-
-export interface SelectInputProps {
-	label: string;
-	register: UseFormRegister<SignUpForm>;
-	options: Option[];
-}
-
-export interface ButtonProps {
-	type: "button" | "reset" | "submit";
-	children: any;
-	className: string;
-}
+	name: "email" | "username" | "full_name" | "locality";
+	type?: HTMLInputTypeAttribute;
+	placeholder?: string;
+	disabled?: boolean;
+};

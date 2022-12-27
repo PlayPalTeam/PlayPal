@@ -1,12 +1,13 @@
 import "../styles/globals.css";
-
 import type { AppProps } from "next/app";
-import React, { useState } from "react";
+
+import { useState } from "react";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import {
 	createBrowserSupabaseClient,
 	Session,
 } from "@supabase/auth-helpers-nextjs";
+import { UserProfileProvider } from "../context/UserProfileContext";
 
 function App({
 	Component,
@@ -22,7 +23,9 @@ function App({
 			supabaseClient={supabaseClient}
 			initialSession={pageProps.initialSession}
 		>
-			<Component {...pageProps} />
+			<UserProfileProvider>
+				<Component {...pageProps} />
+			</UserProfileProvider>
 		</SessionContextProvider>
 	);
 }
