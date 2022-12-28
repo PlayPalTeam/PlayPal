@@ -1,4 +1,4 @@
-import { useSupabaseClient , useUser } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import {
 	createContext,
 	ReactNode,
@@ -9,16 +9,15 @@ import {
 import { Database } from "../types/database.types";
 
 const TurfContext = createContext({
-    turfData :{
-    },
-})
+	turfData: {},
+});
 
-export const TurfProvider = ({ children }) =>{
-    const supabase = useSupabaseClient<Database>();
+export const TurfProvider = ({ children }) => {
+	const supabase = useSupabaseClient<Database>();
 	const user = useUser();
-    const [turfData ,setturfData] = useState({})
+	const [turfData, setturfData] = useState({});
 
-    useEffect(() => {
+	useEffect(() => {
 		const getTurfData = async () => {
 			const { data, error } = await supabase
 				.from("turfs")
@@ -37,15 +36,12 @@ export const TurfProvider = ({ children }) =>{
 		};
 
 		getTurfData();
-        console.log("")
+		console.log("");
 	}, [supabase, user?.id]);
 
-    return (
-		<TurfContext.Provider value={{ turfData }}>
-			{children}
-		</TurfContext.Provider>
+	return (
+		<TurfContext.Provider value={{ turfData }}>{children}</TurfContext.Provider>
 	);
-}
+};
 
-
-export const useTurfData =()=> useContext(TurfContext)
+export const useTurfData = () => useContext(TurfContext);
