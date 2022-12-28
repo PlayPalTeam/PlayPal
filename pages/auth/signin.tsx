@@ -2,16 +2,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-	AiFillEye,
-	AiFillEyeInvisible,
-	AiOutlineLoading3Quarters,
-} from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SignInForm as Form } from "../../content/contents";
+import { Button } from "../../components";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
@@ -19,8 +18,6 @@ const SignIn = () => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	const supabase = useSupabaseClient();
-
-	const session = useSession();
 
 	const router = useRouter();
 
@@ -53,12 +50,6 @@ const SignIn = () => {
 	const handleShowPassword = useCallback(() => {
 		setShowPassword(!showPassword);
 	}, [showPassword]);
-
-	useEffect(() => {
-		if (session && session.user.user_metadata) {
-			router.push(`/${session?.user.user_metadata.role}/profile`);
-		}
-	}, [router, session]);
 
 	return (
 		<>
@@ -117,19 +108,14 @@ const SignIn = () => {
 							</>
 						</div>
 					))}
-					<button
-						type="submit"
-						disabled={isSubmitting}
-						className="flex w-full items-center justify-center rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
-					>
-						{isSubmitting ? (
-							<AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" />
-						) : (
-							"Log In"
-						)}
-					</button>
-					<div className="text-center font-medium text-green-500 hover:underline">
-						<Link href="/auth/signup">Don&apos;t have an account? Sign Up</Link>
+					<Button isSubmitting={isSubmitting} text={"Log In"} />
+					<div className="flex flex-col text-center font-medium text-green-500">
+						<Link className="hover:underline" href="/auth/signup">
+							Don&apos;t have an account? Sign Up
+						</Link>
+						<Link className="hover:underline" href={"/auth/reset"}>
+							Forgot Password
+						</Link>
 					</div>
 				</form>
 			</div>
@@ -138,3 +124,26 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = async (
+	context: GetServerSidePropsContext
+) => {
+	const supabase = createServerSupabaseClient(context);
+
+	const {
+		data: { session },
+	} = await supabase.auth.getSession();
+
+	if (session) {
+		return {
+			redirect: {
+				destination: `/${session?.user.user_metadata.role}`,
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
+};
