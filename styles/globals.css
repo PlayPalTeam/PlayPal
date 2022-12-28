@@ -4,10 +4,6 @@
 
 @layer utilities {
 	.inputCss {
-		@apply form-input mt-1 w-full rounded-lg border-green-500 focus:ring-green-600;
-	}
-
-	.iconCss {
-		@apply h-6 w-6;
+		@apply w-full rounded-md border border-green-500 py-2 px-3 placeholder-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-1 focus:ring-green-600 sm:text-sm sm:leading-5;
 	}
 }
