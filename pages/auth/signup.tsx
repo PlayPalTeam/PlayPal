@@ -4,11 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-	AiFillEye,
-	AiFillEyeInvisible,
-	AiOutlineLoading3Quarters,
-} from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Button } from "../../components";
 import { SignUpForm as Form } from "../../content/contents";
 import { SignUpForm, SignUpschema } from "../../types/types";
 
@@ -124,18 +121,7 @@ const SignUp = () => {
 							</div>
 						))}
 					</div>
-
-					<button
-						type="submit"
-						disabled={isSubmitting}
-						className="flex w-full items-center justify-center rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
-					>
-						{isSubmitting ? (
-							<AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" />
-						) : (
-							"Sign Up"
-						)}
-					</button>
+					<Button isSubmitting={isSubmitting} text="Sign Up" />
 					<div className="text-center font-medium text-green-500 hover:underline">
 						<Link href="/auth/signin">Already have an account? Sign In</Link>
 					</div>
