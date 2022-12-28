@@ -58,7 +58,7 @@ const Home = () => {
 						</div>
 					</div>
 				)}
-				<div className="-z-1 absolute top-0">
+				<div className=" z-[-1] absolute top-0">
 					<video
 						autoPlay
 						muted
@@ -119,7 +119,7 @@ const Home = () => {
 				</div>
 
 				<div className="flex h-[800px] items-center justify-between gap-16 bg-[#060b1e] text-white ">
-					<div className="ml-24 grow-[1]">
+					<div className="ml-32 grow-[1]">
 						<div className=" text-5xl font-bold tracking-widest ">
 							MEET YOUR PALS<br></br> OVER GAME <br />
 						</div>
