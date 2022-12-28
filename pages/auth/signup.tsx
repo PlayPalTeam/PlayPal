@@ -4,14 +4,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast, Toaster } from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Button } from "../../components";
 import { SignUpForm as Form } from "../../content/contents";
 import { SignUpForm, SignUpschema } from "../../types/types";
 
 const SignUp = () => {
-	const [message, setMessage] = useState<string>("");
-
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	const supabase = useSupabaseClient();
@@ -42,9 +41,14 @@ const SignUp = () => {
 		});
 
 		if (error) {
-			setMessage(error.message);
+			toast.error(error.message, {
+				duration: 5000,
+				style: {
+					border: "1px solid red",
+				},
+			});
 		} else {
-			setMessage("Check your email");
+			toast.success("Check your email", { duration: 5000 });
 		}
 	};
 
@@ -54,7 +58,7 @@ const SignUp = () => {
 				<title>Sign Up</title>
 			</Head>
 			<div className="flex h-screen flex-col items-center justify-center">
-				<p className="mb-2 text-center text-xl text-green-500">{message}</p>
+				<Toaster />
 				<form
 					className="w-full max-w-[35rem] space-y-5 rounded-lg px-8 py-4 shadow-sm shadow-green-500 transition duration-200 ease-in-out max-md:w-[90%]"
 					onSubmit={handleSubmit(onSubmit)}

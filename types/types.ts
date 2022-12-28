@@ -51,6 +51,13 @@ export const UserProfileSchema = z.object({
 
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
 
+export const ForgotSchema = z.object({
+	password: password,
+	confirmpassword: password,
+});
+
+export type ForgortType = z.infer<typeof ForgotSchema>;
+
 export type FormUIType = {
 	label: string;
 	name: "email" | "username" | "full_name" | "locality";

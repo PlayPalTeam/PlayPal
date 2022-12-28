@@ -12,6 +12,7 @@ import {
 
 import { AiOutlineLogout } from "react-icons/ai";
 import { useUserProfile } from "../context/UserProfileContext";
+import Image from "next/image";
 
 const NavBarList = [
 	{
@@ -59,8 +60,13 @@ const Navbar = () => {
 		<nav
 			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden`}
 		>
-			<div className="mb-10 flex justify-between">
-				<h1>logo</h1>
+			<div className="mb-10 flex justify-between mix-blend-color-burn">
+				<Image
+					src="/playpal-high-resolution-color-logo.svg"
+					alt="Logo"
+					width={1000}
+					height={1000}
+				/>
 			</div>
 			<div className="mb-7 text-xs">
 				<p>{username}</p>

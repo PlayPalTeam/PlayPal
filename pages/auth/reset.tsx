@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Database } from "../../types/database.types";
 import { Button } from "../../components";
 import Link from "next/link";
-import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 
 type ResetForm = {
@@ -11,8 +10,6 @@ type ResetForm = {
 };
 
 const ResetPasswordLink = () => {
-	const [message, setMessage] = useState<String>("");
-
 	const {
 		register,
 		handleSubmit,
@@ -28,10 +25,10 @@ const ResetPasswordLink = () => {
 		});
 
 		if (error) {
-			toast.error(error.message, { duration: 1000 });
+			toast.error(error.message, { duration: 5000 });
 		}
 
-		toast.success("Check your email", { duration: 1000 });
+		toast.success("Check your email", { duration: 5000 });
 		reset();
 	};
 
@@ -39,16 +36,19 @@ const ResetPasswordLink = () => {
 		<div className="flex h-[25rem] flex-col items-center justify-center md:h-screen">
 			<Toaster />
 			<form
-				className="w-[90%] max-w-sm space-y-5 md:w-full"
+				className="w-[90%] max-w-sm space-y-5"
 				onSubmit={handleSubmit(submit)}
 			>
 				<div>
-					<label htmlFor="email">Email</label>
+					<label className="mb-2 block font-bold text-gray-700" htmlFor="email">
+						Email
+					</label>
 					<input
 						className="inputCss"
 						type="email"
 						name="email"
 						id="email"
+						placeholder="e.g. stevenking@gmail.com"
 						{...register("email", { required: true })}
 					/>
 					{errors.email && <p>{errors.email.message}</p>}

@@ -3,6 +3,7 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { Navbar, Avatar } from "../../components";
 import { useUserProfile } from "../../context/UserProfileContext";
 import { Database } from "../../types/database.types";
@@ -75,7 +76,13 @@ const ListerProfile = () => {
 			.eq("id", user.id);
 
 		if (status === 204) {
-			alert("Your data is updated.");
+			toast.success("Your data is updated", {
+				duration: 5000,
+				style: {
+					border: "1px solid green",
+					color: "green",
+				},
+			});
 		}
 	};
 

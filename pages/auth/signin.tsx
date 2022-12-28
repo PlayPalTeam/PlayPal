@@ -6,20 +6,19 @@ import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { SignInForm as Form } from "../../content/contents";
 import { Button } from "../../components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import toast, { Toaster } from "react-hot-toast";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const SignIn = () => {
-	const [message, setMessage] = useState<string>("");
-
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 
-	const supabase = useSupabaseClient();
-
 	const router = useRouter();
+
+	const supabase = useSupabaseClient();
 
 	const {
 		register,
@@ -39,7 +38,13 @@ const SignIn = () => {
 		});
 
 		if (error) {
-			setMessage(error.message);
+			toast.error(error.message, {
+				duration: 5000,
+				style: {
+					border: "1px solid red",
+					color: "red",
+				},
+			});
 		}
 
 		if (session?.user.user_metadata) {
@@ -57,7 +62,7 @@ const SignIn = () => {
 				<title>Sign In</title>
 			</Head>
 			<div className="flex h-screen flex-col items-center justify-center">
-				<p className="mb-2 text-center text-xl text-green-500">{message}</p>
+				<Toaster />
 				<form
 					className="w-full max-w-sm space-y-5 rounded-lg px-8 py-4 shadow-sm shadow-green-500 max-md:w-[90%]"
 					onSubmit={handleSubmit(onSubmit)}
@@ -83,7 +88,7 @@ const SignIn = () => {
 										}
 										name={field.name}
 										placeholder={field.placeholder}
-										className={`inputCss`}
+										className={`inputCss text-lg caret-green-600`}
 										{...register(field.name)}
 									/>
 									{field.type === "password" && (
