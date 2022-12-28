@@ -42,7 +42,7 @@ const Home = () => {
 		<>
 			<div>
 				{colour ? (
-					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white  transition-all duration-700 ease-in-out">
+					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white transition-all duration-700 ease-in-out">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -58,12 +58,12 @@ const Home = () => {
 						</div>
 					</div>
 				)}
-				<div className="absolute top-0 z-[-1]  ">
+				<div className="-z-1 absolute top-0">
 					<video
 						autoPlay
 						muted
 						loop
-						className="h-[100vh] w-[100vw] object-cover brightness-[0.8]"
+						className="h-screen w-screen object-cover brightness-[0.8]"
 					>
 						<source
 							src="https://www.playspots.in/wp-content/themes/playspots/assets/videos/beach-soccer.mp4"
