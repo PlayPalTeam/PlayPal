@@ -11,36 +11,35 @@ const Footer = () => {
 	return (
 		<>
 			<div className="bg-green-400">
-				<div className="ml-24 mr-24 h-[270px] ">
-					<div className="flex justify-between pt-16 pl-32 pr-32">
-						<h1 className="text-2xl font-semibold tracking-widest">PLAYPAL</h1>
-						<ul className="flex gap-4">
-							<li>
-								<BsInstagram size={30} />
+				<div className="sm:ml-24 sm:mr-24 sm:h-[270px] h-[200px]">
+					<div className="flex justify-between sm:pt-16 sm:pl-32 sm:pr-32 pt-10 pr-4 items-center">
+						<h1 className="text-2xl  font-semibold tracking-widest">PLAYPAL</h1>
+						<ul className="flex sm:gap-4 gap-3 ">
+							<li className="">
+								<BsInstagram size={25} />
 							</li>
 							<li>
-								<BsFacebook size={30} />
+								<BsFacebook size={25} />
 							</li>
 							<li>
-								<BsTwitter size={30} />
+								<BsTwitter size={25} />
 							</li>
 							<li>
-								<BsTwitch size={30} />
+								<BsTwitch size={25} />
 							</li>
 							<li>
-								<BsYoutube size={30} />
+								<BsYoutube size={25} />
 							</li>
 						</ul>
 					</div>
 
-					<div className="flex justify-between pt-16 pl-32 pr-32">
-						<div className="flex gap-16">
+					<div className="flex justify-between pt-8 sm:pt-16 sm:pl-32 sm:pr-32 gap-16 sm:gap-0">
+						<div className="flex sm:gap-16 gap-6 ">
 							<h1>Privacy</h1>
 							<h1>Policy</h1>
 						</div>
-						<ul className="flex gap-4">
+						<ul className="flex sm:gap-4 sm:flex-nowrap flex-wrap gap-2 gap-x-12  ">
 							<li>Home</li>
-							<li>Our Works</li>
 							<li>Blog</li>
 							<li>About</li>
 							<li>Contact</li>

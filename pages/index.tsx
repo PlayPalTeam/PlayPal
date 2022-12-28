@@ -28,7 +28,7 @@ const Home = () => {
 
 	useEffect(() => {
 		const changeColour = () => {
-			if (window.scrollY >= 200) {
+			if (window.scrollY >= 90) {
 				setColour(true);
 			} else {
 				setColour(false);
@@ -40,11 +40,9 @@ const Home = () => {
 
 	return (
 		<>
-
-		
 			<div>
 				{colour ? (
-					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white transition-all duration-700 ease-in-out">
+					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 sm:p-4 sm:pl-32 sm:pr-32 p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all duration-0 sm:duration-700 ease-in-out">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -52,7 +50,7 @@ const Home = () => {
 						</div>
 					</div>
 				) : (
-					<div className="sticky top-0 flex justify-between p-4 pl-32 pr-32 font-bold tracking-wider text-white">
+					<div className="sticky top-0 flex justify-between sm:p-4 sm:pl-32 sm:pr-32 p-3 pl-5 pr-5 font-bold tracking-wider text-white">
 						<div>PlayPal</div>
 						<div className="flex items-center gap-4">
 							<BsPersonSquare />
@@ -65,7 +63,7 @@ const Home = () => {
 						autoPlay
 						muted
 						loop
-						className="h-screen w-screen object-cover brightness-[0.8]"
+						className="sm:h-screen w-screen object-cover brightness-[0.8] h-[630px]"
 					>
 						<source
 							src="https://www.playspots.in/wp-content/themes/playspots/assets/videos/beach-soccer.mp4"
@@ -74,11 +72,11 @@ const Home = () => {
 					</video>
 				</div>
 				<div className="absolute top-[25%] left-[15%] text-white">
-					<div className="text-7xl font-bold tracking-widest ">
+					<div className="sm:text-7xl font-bold tracking-widest text-2xl ">
 						YOUR <br></br>NEAREST <br></br>TURF <br></br>
 					</div>
 
-					<div className="mt-4 text-2xl font-semibold tracking-widest text-green-500">
+					<div className="mt-4 sm:text-2xl font-semibold tracking-widest text-green-500 text-md">
 						IS JUST A TAP AWAY
 					</div>
 					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 text-white">
@@ -86,8 +84,8 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="mt-[90vh] flex h-[500px] justify-center p-4">
-					<div className="m-auto flex justify-around gap-6 pl-14 pr-14 ">
+				<div className="mt-[90vh] flex sm:h-[500px] justify-center p-4 ">
+					<div className="sm:m-auto flex justify-around gap-10 sm:pl-14 sm:pr-14 flex-wrap sm:flex-nowrap mb-16 ">
 						{displayData.map((data, index) => (
 							<div key={index} className="">
 								<div className=" flex justify-center">
@@ -104,9 +102,9 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="flex h-[650px] items-center justify-between gap-16 bg-purple-100">
-					<div className="ml-24 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest ">
+				<div className="flex sm:h-[600px] h-[500px] items-center sm:justify-between justify-around sm:gap-16 bg-purple-100 flex-wrap sm:flex-nowrap">
+					<div className="sm:ml-24 sm:grow-[1] ml-8">
+						<div className=" sm:text-5xl font-bold tracking-widest ">
 							MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
 						</div>
 						<p className="mt-5 tracking-wider">
@@ -115,14 +113,14 @@ const Home = () => {
 							people active
 						</p>
 					</div>
-					<div className="mr-24 grow-[1] ">
-						<Image src={offer} alt="offerImage" width={350} height={350} />
+					<div className="sm:mr-24 sm:grow-[1]  ">
+						<Image src={offer} alt="offerImage" width={300} height={300} />
 					</div>
 				</div>
 
-				<div className="flex h-[800px] items-center justify-between gap-16 bg-[#060b1e] text-white ">
-					<div className="ml-32 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest ">
+				<div className="flex sm:h-[600px] h-[650px] items-center sm:justify-between  justify-around sm:gap-16 bg-[#060b1e] text-white sm:flex-nowrap flex-wrap ">
+					<div className="sm:ml-32 sm:grow-[1] ml-8">
+						<div className=" sm:text-5xl font-bold tracking-widest ">
 							MEET YOUR PALS<br></br> OVER GAME <br />
 						</div>
 						<p className="mt-5 tracking-wider">
@@ -131,13 +129,14 @@ const Home = () => {
 							You can Invite a team or Join a pre scheduled match Through
 							Playspots
 						</p>
+
 					</div>
-					<div className="mr-24 grow-[1] ">
+					<div className="sm:mr-24 sm:grow-[1] ">
 						<Image
 							src="/meetpals.png"
 							alt="offerImage"
-							width={350}
-							height={350}
+							width={300}
+							height={300}
 						/>
 					</div>
 				</div>
