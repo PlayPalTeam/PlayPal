@@ -40,6 +40,8 @@ const Home = () => {
 
 	return (
 		<>
+
+		
 			<div>
 				{colour ? (
 					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white transition-all duration-700 ease-in-out">

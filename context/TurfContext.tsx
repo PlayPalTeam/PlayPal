@@ -9,10 +9,10 @@ import {
 import { Database } from "../types/database.types";
 
 const TurfContext = createContext({
-	turfData: {},
+	turfData: {}
 });
 
-export const TurfProvider = ({ children }) => {
+export const TurfProvider = ({ children } : {children : ReactNode}) => {
 	const supabase = useSupabaseClient<Database>();
 	const user = useUser();
 	const [turfData, setturfData] = useState({});
