@@ -58,7 +58,7 @@ const Home = () => {
 						</div>
 					</div>
 				)}
-				<div className="-z-1 absolute top-0">
+				<div className="z-[-1] absolute top-0">
 					<video
 						autoPlay
 						muted

@@ -58,3 +58,18 @@ export type FormUIType = {
 	placeholder?: string;
 	disabled?: boolean;
 };
+
+export interface SignUpFormType {
+	label: string;
+	type: HTMLInputTypeAttribute;
+	name: "username" | "email" | "password" | "role";
+	placeholder?: string;
+	options?: { value: string; label: string }[];
+}
+
+export type SignInFormType = {
+	label: string;
+	type: HTMLInputTypeAttribute;
+	name: "email" | "password";
+	placeholder: string;
+};

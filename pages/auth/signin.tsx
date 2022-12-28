@@ -4,26 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import {
+	AiFillEye,
+	AiFillEyeInvisible,
+	AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { SignInForm as Form } from "../../content/contents";
 
-type FormType = {
-	label: string;
-	type: string;
-	name: "email" | "password";
-	css: string;
-}[];
-
-const Form: FormType = [
-	{
-		label: "Email",
-		type: "email",
-		name: "email",
-		css: "inputCss",
-	},
-	{ label: "Password", type: "password", name: "password", css: "inputCss" },
-];
 const SignIn = () => {
 	const [message, setMessage] = useState<string>("");
 
@@ -38,7 +27,7 @@ const SignIn = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm<SignInForm>({
 		resolver: zodResolver(SignInschema),
 	});
@@ -85,77 +74,62 @@ const SignIn = () => {
 					<h1 className="text-center text-xl font-bold text-gray-700">
 						Sign In
 					</h1>
-					<div>
-						<label htmlFor={Form[0].name} className="font-bold text-gray-700">
-							{Form[0].label}
-						</label>
-						<div className="relative flex items-center">
-							<input
-								type={Form[0].type}
-								name={Form[0].name}
-								{...register(Form[0].name)}
-								className={`${Form[0].css} placeholder-gray-700`}
-								placeholder={Form[0].label}
-							/>
-						</div>
-						{errors.email && (
-							<p className="text-xs italic text-red-500">
-								{errors.email.message}
-							</p>
-						)}
-					</div>
-					<div>
-						<label htmlFor={Form[1].name} className="font-bold text-gray-700">
-							{Form[1].label}
-						</label>
-						<div className="relative flex items-center">
-							<input
-								type={
-									Form[1].type === "password" && showPassword
-										? "text"
-										: Form[1].type
-								}
-								name={Form[1].name}
-								{...register(Form[1].name)}
-								className={`${Form[1].css} placeholder-gray-700`}
-								placeholder={Form[1].label}
-							/>
-							<button
-								type="button"
-								onClick={handleShowPassword}
-								className="absolute right-3"
+					{Form.map((field) => (
+						<div key={field.name}>
+							<label
+								htmlFor={field.name}
+								className="mb-2 block font-bold text-gray-700"
 							>
-								{Form[1].type === "password" ? (
-									<>
-										{showPassword ? (
-											<AiFillEye
-												className="h-6 w-6"
-												onClick={handleShowPassword}
-											/>
-										) : (
-											<AiFillEyeInvisible
-												className="h-6 w-6"
-												onClick={handleShowPassword}
-											/>
-										)}
-									</>
-								) : null}
-							</button>
+								{field.label}
+							</label>
+							<>
+								<div className="relative flex items-center">
+									<input
+										type={
+											field.type === "password" && showPassword
+												? "text"
+												: field.type
+										}
+										name={field.name}
+										placeholder={field.placeholder}
+										className={`inputCss`}
+										{...register(field.name)}
+									/>
+									{field.type === "password" && (
+										<button
+											type="button"
+											className="absolute right-2"
+											onClick={handleShowPassword}
+										>
+											{showPassword ? (
+												<AiFillEye className="h-6 w-6" />
+											) : (
+												<AiFillEyeInvisible className="h-6 w-6" />
+											)}
+										</button>
+									)}
+								</div>
+								{errors[field.name] && (
+									<p className="mt-1 text-xs italic text-red-500">
+										{errors[field.name].message}
+									</p>
+								)}
+							</>
 						</div>
-						{errors.password && (
-							<p className="text-xs italic text-red-500">
-								{errors.password.message}
-							</p>
-						)}
-					</div>
+					))}
 					<button
 						type="submit"
-						className="w-full rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
+						disabled={isSubmitting}
+						className="flex w-full items-center justify-center rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
 					>
-						Log In
+						{isSubmitting ? (
+							<AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" />
+						) : (
+							"Log In"
+						)}
 					</button>
 					<div className="text-center font-medium text-green-500 hover:underline">
-						<Link href="/auth/signup">Don&apos;t have an account?</Link>
+						<Link href="/auth/signup">Don&apos;t have an account? Sign Up</Link>
 					</div>
 				</form>
 			</div>
