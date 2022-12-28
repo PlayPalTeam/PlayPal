@@ -102,7 +102,7 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className=" flex h-[650px] items-center justify-between gap-16 bg-purple-100">
+				<div className="flex h-[650px] items-center justify-between gap-16 bg-purple-100">
 					<div className="ml-24 grow-[1]">
 						<div className=" text-5xl font-bold tracking-widest ">
 							MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
