@@ -5,5 +5,15 @@ import Avatar from "./Avatar";
 import Button from "./Button";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
+import ShowHideButton from "./ShowHideButton";
 
-export { SelectInput, Navbar, Footer, Avatar, Button, Profile, ChangePassword };
+export {
+	SelectInput,
+	Navbar,
+	Footer,
+	Avatar,
+	Button,
+	Profile,
+	ChangePassword,
+	ShowHideButton,
+};

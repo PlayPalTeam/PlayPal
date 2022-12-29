@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Button } from "../../components";
+import { Button, ShowHideButton } from "../../components";
 import { SignUpForm as Form } from "../../content/contents";
 import { SignUpForm, SignUpschema } from "../../types/types";
 
@@ -102,17 +101,10 @@ const SignUp = () => {
 												{...register(field.name)}
 											/>
 											{field.type === "password" && (
-												<button
-													type="button"
-													className="absolute right-2"
-													onClick={handleShowPassword}
-												>
-													{showPassword ? (
-														<AiFillEye className="h-6 w-6" />
-													) : (
-														<AiFillEyeInvisible className="h-6 w-6" />
-													)}
-												</button>
+												<ShowHideButton
+													handleShowPassword={handleShowPassword}
+													showPassword={showPassword}
+												/>
 											)}
 										</div>
 										{errors[field.name] && (

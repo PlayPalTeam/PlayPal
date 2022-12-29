@@ -3,45 +3,46 @@ import {
 	createContext,
 	ReactNode,
 	useContext,
-	useEffect,
 	useState,
+	useEffect,
 } from "react";
+import { toast } from "react-hot-toast";
 import { Database } from "../types/database.types";
 
 const TurfContext = createContext({
-	turfData: {}
+	TurfData: {},
 });
 
-export const TurfProvider = ({ children } : {children : ReactNode}) => {
+export const TurfProvider = ({ children }: { children: ReactNode }) => {
+	const [TurfData, setTurfData] = useState({});
+
 	const supabase = useSupabaseClient<Database>();
+
 	const user = useUser();
-	const [turfData, setturfData] = useState({});
 
 	useEffect(() => {
 		const getTurfData = async () => {
 			const { data, error } = await supabase
 				.from("turfs")
-				.select(`*`)
-				.eq("profile_id", user?.id)
-				.single();
+				.select("*")
+				.eq("profile_id", user.id);
+
 			if (error) {
-				console.log(error.code);
-				console.log(error.hint);
-				console.log(error.message);
-				console.log(error.details);
+				toast.error(error.message);
 			}
+
 			if (data) {
-				setturfData(data);
+				setTurfData(data);
 			}
 		};
-
-		getTurfData();
-		console.log("");
-	}, [supabase, user?.id]);
+		if (user) {
+			getTurfData();
+		}
+	}, [supabase, user, user?.id]);
 
 	return (
-		<TurfContext.Provider value={{ turfData }}>{children}</TurfContext.Provider>
+		<TurfContext.Provider value={{ TurfData }}>{children}</TurfContext.Provider>
 	);
 };
 
-export const useTurfData = () => useContext(TurfContext);
+export const useTurfContext = () => useContext(TurfContext);

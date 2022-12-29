@@ -8,6 +8,7 @@ import {
 	Session,
 } from "@supabase/auth-helpers-nextjs";
 import { UserProfileProvider } from "../context/UserProfileContext";
+import { TurfProvider } from "../context/TurfContext";
 
 function App({
 	Component,
@@ -23,9 +24,11 @@ function App({
 			supabaseClient={supabaseClient}
 			initialSession={pageProps.initialSession}
 		>
-			<UserProfileProvider>
-				<Component {...pageProps} />
-			</UserProfileProvider>
+			<TurfProvider>
+				<UserProfileProvider>
+					<Component {...pageProps} />
+				</UserProfileProvider>
+			</TurfProvider>
 		</SessionContextProvider>
 	);
 }
