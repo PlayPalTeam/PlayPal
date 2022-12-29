@@ -1,7 +1,7 @@
 import { BsPersonSquare } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Footer } from "../components";
 
 const displayData = [

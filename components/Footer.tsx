@@ -1,4 +1,4 @@
-import React from "react";
+import Image from "next/image";
 import {
 	BsInstagram,
 	BsTwitter,
@@ -38,6 +38,14 @@ const Footer = () => {
 			<div className="mx-auto max-w-7xl">
 				<div className="flex items-center justify-between py-4 sm:py-8">
 					<h1 className="text-lg-semibold">PLAYPAL</h1>
+					<Image
+						className="mix-blend-color-burn"
+						src="/playpal-high-resolution-color-logo.svg"
+						alt=""
+						width={200}
+						height={200}
+					/>
+
 					<div className="inline-flex gap-4">
 						{socialLinks.map((link) => (
 							<span key={link.name}>
