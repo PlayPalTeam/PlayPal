@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SignInForm, SignInschema } from "../../types/types";
 import { SignInForm as Form } from "../../content/contents";
-import { Button } from "../../components";
+import { Button, ShowHideButton } from "../../components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import toast, { Toaster } from "react-hot-toast";
@@ -48,7 +47,7 @@ const SignIn = () => {
 		}
 
 		if (session?.user.user_metadata) {
-			router.push(`/${session.user.user_metadata.role}/profile`);
+			router.push(`/${session.user.user_metadata.role}`);
 		}
 	};
 
@@ -92,17 +91,10 @@ const SignIn = () => {
 										{...register(field.name)}
 									/>
 									{field.type === "password" && (
-										<button
-											type="button"
-											className="absolute right-2"
-											onClick={handleShowPassword}
-										>
-											{showPassword ? (
-												<AiFillEye className="h-6 w-6" />
-											) : (
-												<AiFillEyeInvisible className="h-6 w-6" />
-											)}
-										</button>
+										<ShowHideButton
+											handleShowPassword={handleShowPassword}
+											showPassword={showPassword}
+										/>
 									)}
 								</div>
 								{errors[field.name] && (

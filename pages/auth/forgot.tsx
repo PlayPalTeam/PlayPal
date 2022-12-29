@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Button } from "../../components";
+import { Button, ShowHideButton } from "../../components";
 import { ForgortType, ForgotSchema } from "../../types/types";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -119,31 +118,17 @@ const ForgotPassword = () => {
 								{...register(field.name)}
 							/>
 							{field.name === "password" && (
-								<button
-									type="button"
-									className="absolute right-2"
-									onClick={handlePasswordShow}
-								>
-									{passwordVisible ? (
-										<AiFillEye className="h-6 w-6" />
-									) : (
-										<AiFillEyeInvisible className="h-6 w-6" />
-									)}
-								</button>
+								<ShowHideButton
+									handleShowPassword={handlePasswordShow}
+									showPassword={passwordVisible}
+								/>
 							)}
 
 							{field.name === "confirmpassword" && (
-								<button
-									type="button"
-									className="absolute right-2"
-									onClick={handleConfirmPasswordShow}
-								>
-									{confirmPasswordVisible ? (
-										<AiFillEye className="h-6 w-6" />
-									) : (
-										<AiFillEyeInvisible className="h-6 w-6" />
-									)}
-								</button>
+								<ShowHideButton
+									handleShowPassword={handleConfirmPasswordShow}
+									showPassword={confirmPasswordVisible}
+								/>
 							)}
 						</div>
 						{field.error && (

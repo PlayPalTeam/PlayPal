@@ -25,9 +25,9 @@ function App({
 			initialSession={pageProps.initialSession}
 		>
 			<TurfProvider>
-			<UserProfileProvider>
-				<Component {...pageProps} />
-			</UserProfileProvider>
+				<UserProfileProvider>
+					<Component {...pageProps} />
+				</UserProfileProvider>
 			</TurfProvider>
 		</SessionContextProvider>
 	);

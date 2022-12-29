@@ -1,19 +1,8 @@
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useEffect, useState } from "react";
-import { useTurfData } from "../../context/TurfContext";
-import { Database } from "../../types/database.types";
+import { useTurfContext } from "../../context/TurfContext";
 
 const Turfs = () => {
-	const { turfData } = useTurfData()
-	console.log(turfData)
-
-	return (
-		<div>
-
-			
-			<form></form>
-		</div>
-	);
+	const { TurfData } = useTurfContext();
+	return <div>{JSON.stringify(TurfData, null, 2)}</div>;
 };
 
 export default Turfs;

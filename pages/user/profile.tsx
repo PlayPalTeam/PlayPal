@@ -46,7 +46,7 @@ const ListerProfile = () => {
 								<p className="transition-colors ease-in group-hover:text-white">
 									{data.name}
 								</p>
-								<p className="text-xs transition-colors ease-in  group-hover:text-white">
+								<p className="text-xs transition-colors ease-in group-hover:text-white">
 									{data.info}{" "}
 								</p>
 							</button>

@@ -39,7 +39,7 @@ const Footer = () => {
 				<div className="flex items-center justify-between py-4 sm:py-8">
 					<h1 className="text-lg-semibold">PLAYPAL</h1>
 					<Image
-						className="mix-blend-color-burn"
+						className="mix-blend-color-burn max-md:hidden"
 						src="/playpal-high-resolution-color-logo.svg"
 						alt=""
 						width={200}

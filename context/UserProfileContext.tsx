@@ -7,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { UserProfileType } from "../types/types";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
 type UserProfileContextType = {
 	userProfile: UserProfileType;
@@ -16,18 +17,33 @@ const UserProfileContext = createContext<UserProfileContextType>({
 	userProfile: {},
 });
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
-	const { data, error } = useSWR<UserProfileType>("/api/profile", fetcher);
-
 	const [userProfile, setUserProfile] = useState({});
 
+	const supabase = useSupabaseClient();
+
+	const user = useUser();
+
 	useEffect(() => {
-		if (!error && data) {
-			setUserProfile(data);
+		const getUserData = async () => {
+			const { data, error } = await supabase
+				.from("profiles")
+				.select(`username, full_name, avatar_url, locality`)
+				.eq("id", user.id)
+				.single();
+
+			if (error) {
+				console.log(error.message);
+			}
+
+			if (data) {
+				setUserProfile(data);
+			}
+		};
+		if (user) {
+			getUserData();
 		}
-	}, [data, error]);
+	}, [supabase, user, user?.id]);
 
 	return (
 		<UserProfileContext.Provider value={{ userProfile }}>
