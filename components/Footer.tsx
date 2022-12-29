@@ -59,7 +59,7 @@ const Footer = () => {
 						<p>Privacy</p>
 						<p>Policy</p>
 					</div>
-					<div className="inline-flex gap-4 sm:gap-12">
+					<div className="inline-flex gap-2 sm:gap-12">
 						{pageLinks.map((link) => (
 							<span key={link}>{link}</span>
 						))}

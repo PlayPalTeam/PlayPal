@@ -8,7 +8,7 @@ const User = () => {
 		<main className="flex">
 			<Navbar />
 			<section>
-				<div className="grid-cols-2">
+				<div className="bg-red-500 ">
 					<div> Profile</div>
 					<div>Past Booking</div>
 					<div>Past Request</div>
