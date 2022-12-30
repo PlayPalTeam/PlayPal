@@ -63,7 +63,7 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden`}
+			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden sm:max-w-[290x] sm:min-w-[290px]`}
 		>
 			<div className="mb-10 flex justify-between mix-blend-color-burn">
 				<Image

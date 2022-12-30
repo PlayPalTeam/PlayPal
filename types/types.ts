@@ -66,6 +66,25 @@ export type FormUIType = {
 	disabled?: boolean;
 };
 
+
+
+export type FormUIType1 = {
+	label: string;
+	name: "turf_name" | "location" | "price_per_hour" | "capacity" | "availability" ;
+	type?: HTMLInputTypeAttribute;
+	placeholder?: string;
+};
+
+export const TurfProfileSchema = z.object({
+	turfname: z.string(),
+	location: z.string(),
+	priceperhour: z.number(),
+	capacity: z.number(),
+	availability: z.boolean()
+});
+
+export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
+
 export interface SignUpFormType {
 	label: string;
 	type: HTMLInputTypeAttribute;
