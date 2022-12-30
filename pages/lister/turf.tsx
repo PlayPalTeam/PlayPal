@@ -37,7 +37,8 @@ const Turfs = () => {
 			type:"number",
 			placeholder:" Capacity ",
 			val:true
-		},
+		}
+		,
 		{
 			label:"Availability",
 			name:"availability",
@@ -66,6 +67,7 @@ const Turfs = () => {
 				location : info.location,
 				price_per_hour :info.price_per_hour,
 				capacity : info.capacity,
+				profile_id:user.id,
 				availability : info.availability
 			})
 		
