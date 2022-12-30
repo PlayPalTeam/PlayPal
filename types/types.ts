@@ -73,12 +73,13 @@ export type FormUIType1 = {
 	name: "turf_name" | "location" | "price_per_hour" | "capacity" | "availability" ;
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
+	val?:boolean;
 };
 
 export const TurfProfileSchema = z.object({
-	turfname: z.string(),
+	turf_name: z.string(),
 	location: z.string(),
-	priceperhour: z.number(),
+	price_per_hour: z.number(),
 	capacity: z.number(),
 	availability: z.boolean()
 });

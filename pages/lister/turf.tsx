@@ -9,38 +9,41 @@ import { Database } from "../../types/database.types";
 
 
 const Turfs = () => {
-
 	const FormData: FormUIType1[] = [
 		{
 			label:"turfName",
-			name:"turfname",
+			name:"turf_name",
 			type:"text",
-			placeholder:" Turf Name "
+			placeholder:" Turf Name ",
+			val:false
 		},
 		{
 			label:"Location",
 			name:"location",
 			type:"text",
-			placeholder:" Location "
+			placeholder:" Location ",
+			val:false
 		},
 		{
 			label:"pricePerHour",
-			name:"priceperhour",
+			name:"price_per_hour",
 			type:"number",
-			placeholder:" Price Per Hour "
+			placeholder:" Price Per Hour ",
+			val:true
 		},
 		{
 			label:"Capacity",
 			name:"capacity",
 			type:"number",
-			placeholder:" Capacity "
+			placeholder:" Capacity ",
+			val:true
 		},
 		{
 			label:"Availability",
 			name:"availability",
 			type:"checkbox",
-			placeholder:" Availability "
-
+			placeholder:" Availability ",
+			val:false
 		},
 	]
 	const supabase = useSupabaseClient<Database>();
@@ -59,14 +62,12 @@ const Turfs = () => {
 		const {status , error } = await supabase
 		.from("turfs")
 		.insert({
-				turf_name : info.turfname,
+				turf_name : info.turf_name,
 				location : info.location,
-				price_per_hour : info.priceperhour,
+				price_per_hour :info.price_per_hour,
 				capacity : info.capacity,
 				availability : info.availability
 			})
-			.select()
-
 		
 			if (error) {
 				toast.success(error.message, {
@@ -112,7 +113,7 @@ const Turfs = () => {
 								type={data.type}
 								placeholder={data.placeholder}
 								className="inputCss"
-					
+								{...register(data.name,{valueAsNumber:data.val})}
 								/>
 
 							</div>
