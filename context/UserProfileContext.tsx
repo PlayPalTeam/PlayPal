@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import {
 	createContext,
 	ReactNode,
@@ -28,7 +27,7 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 		const getUserData = async () => {
 			const { data, error } = await supabase
 				.from("profiles")
-				.select(`username, full_name, avatar_url, locality`)
+				.select(`username, full_name, avatar_url`)
 				.eq("id", user.id)
 				.single();
 

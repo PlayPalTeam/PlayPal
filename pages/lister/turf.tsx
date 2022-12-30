@@ -1,8 +1,17 @@
-import { useTurfContext } from "../../context/TurfContext";
+import Head from "next/head";
+import { Navbar } from "../../components";
 
 const Turfs = () => {
-	const { TurfData } = useTurfContext();
-	return <div>{JSON.stringify(TurfData, null, 2)}</div>;
+	return (
+		<>
+			<Head>
+				<title>Add Turfs</title>
+			</Head>
+			<main>
+				<Navbar />
+			</main>
+		</>
+	);
 };
 
 export default Turfs;

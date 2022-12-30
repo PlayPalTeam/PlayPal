@@ -14,29 +14,6 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { useUserProfile } from "../context/UserProfileContext";
 import Image from "next/image";
 
-const NavBarList = [
-	{
-		text: "Profile",
-		link: "profile",
-		icons: <BsGrid3X3GapFill />,
-	},
-	{
-		text: "Requests",
-		link: "request",
-		icons: <BsCollectionFill />,
-	},
-	{
-		text: "Turfs",
-		link: "turf",
-		icons: <BsPeopleFill />,
-	},
-	{
-		text: "Community",
-		link: "community",
-		icons: <BsMessenger />,
-	},
-];
-
 const Navbar = () => {
 	const router = useRouter();
 
@@ -55,6 +32,34 @@ const Navbar = () => {
 		Cookies.remove("supabase-auth-token");
 		router.push("/auth/signin");
 	};
+
+	const NavBarList = [
+		{
+			text: "Dashboard",
+			link: "",
+			icons: <BsGrid3X3GapFill />,
+		},
+		{
+			text: "Profile",
+			link: "profile",
+			icons: <BsGrid3X3GapFill />,
+		},
+		{
+			text: "Requests",
+			link: "request",
+			icons: <BsCollectionFill />,
+		},
+		{
+			text: role === "user" ? "Turfs" : "Add Turfs",
+			link: "turf",
+			icons: <BsPeopleFill />,
+		},
+		{
+			text: "Community",
+			link: "community",
+			icons: <BsMessenger />,
+		},
+	];
 
 	return (
 		<nav

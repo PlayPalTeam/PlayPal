@@ -67,7 +67,7 @@ const Home = () => {
 					<div className="text-md mt-4 font-semibold tracking-widest text-green-500 sm:text-2xl">
 						IS JUST A TAP AWAY
 					</div>
-					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 text-white">
+					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 font-semibold text-black hover:bg-green-600">
 						<Link href={"/auth/signin"}>Start Your Search</Link>
 					</div>
 				</div>

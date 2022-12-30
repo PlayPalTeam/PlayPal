@@ -37,6 +37,7 @@ const FormUI: FormUIType[] = [
 
 const Profile = () => {
 	const { userProfile } = useUserProfile();
+	console.log(userProfile)
 
 	const supabase = useSupabaseClient<Database>();
 
