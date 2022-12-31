@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
-import { Button, ShowHideButton } from "../../components";
-import { SignUpForm as Form } from "../../content/contents";
-import { SignUpForm, SignUpschema } from "../../types/types";
+import { Button, ShowHideButton } from "../../src/components";
+import { SignUpForm as Form } from "../../src/content/contents";
+import { SignUpForm, SignUpschema } from "../../src/types/types";
 
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);

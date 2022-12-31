@@ -7,8 +7,8 @@ import {
 	createBrowserSupabaseClient,
 	Session,
 } from "@supabase/auth-helpers-nextjs";
-import { UserProfileProvider } from "../context/UserProfileContext";
-import { TurfProvider } from "../context/TurfContext";
+import { UserProfileProvider } from "../src/context/UserProfileContext";
+import { TurfProvider } from "../src/context/TurfContext";
 
 function App({
 	Component,

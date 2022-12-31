@@ -6,6 +6,7 @@ import Button from "./Button";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
 import ShowHideButton from "./ShowHideButton";
+import Input from "./Input";
 
 export {
 	SelectInput,
@@ -16,4 +17,5 @@ export {
 	Profile,
 	ChangePassword,
 	ShowHideButton,
+	Input,
 };

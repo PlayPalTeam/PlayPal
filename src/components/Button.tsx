@@ -3,12 +3,13 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 type ButtonType = {
 	isSubmitting: boolean;
 	text: string;
+	type: "submit" | "reset" | "button";
 };
 
-const Button = ({ isSubmitting, text }: ButtonType) => {
+const Button = ({ isSubmitting, text, type }: ButtonType) => {
 	return (
 		<button
-			type="submit"
+			type={type}
 			disabled={isSubmitting}
 			className="flex w-full items-center justify-center rounded-lg bg-green-500 py-2 font-bold text-white duration-300 ease-in hover:bg-green-600"
 		>

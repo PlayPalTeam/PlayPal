@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Navbar from "../../components/Navbar";
-import { useTurfContext } from "../../context/TurfContext";
+import { useTurfContext } from "../../src/context/TurfContext";
 
 const Lister = () => {
 	const { TurfData } = useTurfContext();

@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SignInForm, SignInschema } from "../../types/types";
-import { SignInForm as Form } from "../../content/contents";
-import { Button, ShowHideButton } from "../../components";
+import { SignInForm, SignInschema } from "../../src/types/types";
+import { SignInForm as Form } from "../../src/content/contents";
+import { Button, ShowHideButton } from "../../src/components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import toast, { Toaster } from "react-hot-toast";
@@ -105,7 +105,7 @@ const SignIn = () => {
 							</>
 						</div>
 					))}
-					<Button isSubmitting={isSubmitting} text={"Log In"} />
+					<Button type="submit" isSubmitting={isSubmitting} text={"Log In"} />
 					<div className="flex flex-col text-center font-medium text-green-500">
 						<Link className="hover:underline" href="/auth/signup">
 							Don&apos;t have an account? Sign Up

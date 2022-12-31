@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, ShowHideButton } from "../../components";
-import { ForgortType, ForgotSchema } from "../../types/types";
+import { ForgortType, ForgotSchema } from "../../src/types/types";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { Button, ShowHideButton } from "../../src/components";
 
 interface FormField {
 	label: string;

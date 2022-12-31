@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "../types/database.types";
+import { Database } from "../src/types/database.types";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
 export default function Avatar({
