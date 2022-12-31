@@ -29,7 +29,7 @@ const Turfs = () => {
 			name:"price_per_hour",
 			type:"number",
 			placeholder:" Price Per Hour ",
-			val:true
+			val:true	
 		},
 		{
 			label:"Capacity",
