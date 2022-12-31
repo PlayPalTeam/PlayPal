@@ -35,12 +35,13 @@ const Turfs = () => {
 			val: true,
 		},
 		{
-			label: "Capacity",
-			name: "capacity",
-			type: "number",
-			placeholder: " Capacity ",
-			val: true,
-		},
+			label:"Capacity",
+			name:"capacity",
+			type:"number",
+			placeholder:" Capacity ",
+			val:true
+		}
+		,
 		{
 			label: "Availability",
 			name: "availability",
@@ -61,35 +62,38 @@ const Turfs = () => {
 		resolver: zodResolver(TurfProfileSchema),
 	});
 
-	const onSubmit: SubmitHandler<TurfProfileType> = async (info) => {
-		const { status, error } = await supabase.from("turfs").insert({
-			turf_name: info.turf_name,
-			location: info.location,
-			price_per_hour: info.price_per_hour,
-			capacity: info.capacity,
-			availability: info.availability,
-		});
-
-		if (error) {
-			toast.success(error.message, {
-				duration: 3000,
-				style: {
-					border: "1px solid red",
-					color: "red",
-				},
-			});
-		}
-
-		if (status === 204) {
-			toast.success("Your data is updated", {
-				duration: 3000,
-				style: {
-					border: "1px solid green",
-					color: "green",
-				},
-			});
-		}
-	};
+	const onSubmit:SubmitHandler<TurfProfileType>= async (info)=>{
+		const {status , error } = await supabase
+		.from("turfs")
+		.insert({
+				turf_name : info.turf_name,
+				location : info.location,
+				price_per_hour :info.price_per_hour,
+				capacity : info.capacity,
+				profile_id:user.id,
+				availability : info.availability
+			})
+		
+			if (error) {
+				toast.success(error.message, {
+					duration: 3000,
+					style: {
+						border: "1px solid red",
+						color: "red",
+					},
+				});
+			}
+	
+			if (status === 204) {
+				toast.success("Your data is updated", {
+					duration: 3000,
+					style: {
+						border: "1px solid green",
+						color: "green",
+					},
+				});
+			}
+	}
 
 	return (
 		<>
