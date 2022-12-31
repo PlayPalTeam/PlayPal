@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, Navbar } from "../../components";
+import { Button, Navbar } from "../../src/components";
 import {
 	FormUIType1,
 	TurfProfileSchema,
