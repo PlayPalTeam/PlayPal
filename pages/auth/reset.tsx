@@ -1,7 +1,7 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Database } from "../../types/database.types";
-import { Button } from "../../components";
+import { Database } from "../../src/types/database.types";
+import { Button } from "../../src/components";
 import Link from "next/link";
 import { toast, Toaster } from "react-hot-toast";
 

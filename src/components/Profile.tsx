@@ -37,7 +37,7 @@ const FormUI: FormUIType[] = [
 
 const Profile = () => {
 	const { userProfile } = useUserProfile();
-	console.log(userProfile)
+	console.log(userProfile);
 
 	const supabase = useSupabaseClient<Database>();
 
@@ -132,7 +132,11 @@ const Profile = () => {
 							</>
 						))}
 					</div>
-					<Button text="Update Information" isSubmitting={isSubmitting} />
+					<Button
+						text="Update Information"
+						isSubmitting={isSubmitting}
+						type={"submit"}
+					/>
 				</form>
 			</div>
 		</div>

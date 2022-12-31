@@ -11,8 +11,8 @@ import {
 } from "react-icons/bs";
 
 import { AiOutlineLogout } from "react-icons/ai";
-import { useUserProfile } from "../context/UserProfileContext";
 import Image from "next/image";
+import { useUserProfile } from "../context/UserProfileContext";
 
 const Navbar = () => {
 	const router = useRouter();
@@ -63,7 +63,7 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden sm:max-w-[290x] sm:min-w-[290px]`}
+			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
 		>
 			<div className="mb-10 flex justify-between mix-blend-color-burn">
 				<Image
