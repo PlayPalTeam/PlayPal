@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { useReducer, useMemo, useCallback } from "react";
-import { ChangePassword, Navbar, Profile } from "../../components";
+import { useReducer, useMemo } from "react";
+import { ChangePassword, Navbar, Profile } from "../../src/components";
 
 const ListerProfile = () => {
 	// Initialize state variable to store the component to display

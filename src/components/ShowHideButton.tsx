@@ -9,7 +9,7 @@ const ShowHideButton = ({ handleShowPassword, showPassword }: Props) => {
 	return (
 		<button
 			type="button"
-			className="absolute right-2"
+			className="absolute right-2 top-2"
 			onClick={handleShowPassword}
 		>
 			{showPassword ? (

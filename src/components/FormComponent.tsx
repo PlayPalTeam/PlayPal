@@ -1,48 +1,76 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button, Input } from "./index";
+import { Button, Input, SelectInput } from "./index";
+import {
+	SignInFormProps,
+	SignInschema,
+	SignUpFormProps,
+	SignUpschema,
+} from "../types/types";
 
-interface FormValues {
-	// Define the fields and their types in the form
-}
-
-const schema = z.object({});
-
-interface Props {
-	onSubmit: SubmitHandler<FormData>;
-	formFields: { name: string; label: string; type: string }[];
+interface FormProps {
+	formFields: {
+		name: string;
+		label: string;
+		placeholder?: string;
+		type: string;
+		options?: { value: string; label: string }[];
+	}[];
+	onSubmit: SubmitHandler<SignInFormProps | SignUpFormProps>;
+	form: "SignIn" | "SignUp";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
+	className?: string;
 }
 
-const FormComponent = ({
+const Form = ({
 	onSubmit,
 	formFields,
 	buttonText,
 	buttonType,
-}: Props) => {
+	form,
+	className,
+}: FormProps) => {
+	const schema = form === "SignIn" ? SignInschema : SignUpschema;
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<FormValues>({ resolver: zodResolver(schema) });
+	} = useForm<SignInFormProps | SignUpFormProps>({
+		resolver: zodResolver(schema),
+	});
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			{formFields.map((field) => (
-				<Input
-					key={field.name}
-					label={field.label}
-					name={field.name}
-					type={field.type}
-					register={register}
-					errors={errors}
-				/>
+				<>
+					{field.type === "select" ? (
+						<SelectInput
+							label={field.label}
+							name={field.name}
+							placeholder={field.placeholder}
+							register={register}
+							errors={errors}
+							options={field.options}
+						/>
+					) : (
+						<Input
+							key={field.name}
+							label={field.label}
+							name={field.name}
+							placeholder={field.placeholder}
+							type={field.type}
+							register={register}
+							errors={errors}
+							className={className}
+						/>
+					)}
+				</>
 			))}
 			<Button type={buttonType} text={buttonText} isSubmitting={isSubmitting} />
 		</form>
 	);
 };
 
-export default FormComponent;
+export default Form;

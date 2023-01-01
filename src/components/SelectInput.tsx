@@ -2,46 +2,46 @@ interface Option {
 	value: string;
 	label: string;
 }
+
 interface SelectInputProps {
+	label: string;
 	name: string;
-	label?: string;
-	error?: string;
-	register?: any;
+	placeholder: string;
+	register: (name: string) => { name: string };
+	errors: any;
 	options: Option[];
-	wrapperClass?: string;
 }
 
 const SelectInput = ({
 	name,
-	options,
-	error,
 	label,
+	options,
+	errors,
+	placeholder,
 	register,
-	wrapperClass,
-	...rest
 }: SelectInputProps) => {
 	return (
-		<div className={wrapperClass}>
-			{label && <label htmlFor={name}>{label}</label>}
-
+		<div className="mb-4">
+			<label
+				htmlFor={name}
+				className="block text-sm font-medium leading-5 text-gray-700"
+			>
+				{label}
+			</label>
 			<select
-				className="form-select mt-1 w-full rounded-lg border-green-500 focus:ring-green-600"
-				id={label}
-				aria-invalid={error ? "true" : "false"}
+				name={name}
+				id={name}
 				{...register(name)}
-				{...rest}
+				placeholder={placeholder}
+				className="inputCss"
 			>
 				{options.map((option) => (
-					<option value={option.value} key={option.label}>
+					<option key={option.value} value={option.value}>
 						{option.label}
 					</option>
 				))}
 			</select>
-			{error && (
-				<span role="alert" className="text-sm text-red-500">
-					{error}
-				</span>
-			)}
+			{errors[name] && <p>{errors[name].message}</p>}
 		</div>
 	);
 };

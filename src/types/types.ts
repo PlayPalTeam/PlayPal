@@ -31,7 +31,7 @@ export const SignUpschema = z.object({
 	}),
 });
 
-export type SignUpForm = z.infer<typeof SignUpschema>;
+export type SignUpFormProps = z.infer<typeof SignUpschema>;
 
 // Zod schema for sign in page
 export const SignInschema = z.object({
@@ -39,7 +39,7 @@ export const SignInschema = z.object({
 	password: password,
 });
 
-export type SignInForm = z.infer<typeof SignInschema>;
+export type SignInFormProps = z.infer<typeof SignInschema>;
 
 export const UserProfileSchema = z.object({
 	email: email,
@@ -66,14 +66,12 @@ export type FormUIType = {
 	disabled?: boolean;
 };
 
-
-
 export type FormUIType1 = {
 	label: string;
-	name: "turf_name" | "location" | "price_per_hour" | "capacity" | "availability" ;
+	name: "turf_name" | "location" | "price_per_hour" | "capacity";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
-	val?:boolean;
+	val?: boolean;
 };
 
 export const TurfProfileSchema = z.object({
@@ -81,7 +79,6 @@ export const TurfProfileSchema = z.object({
 	location: z.string(),
 	price_per_hour: z.number(),
 	capacity: z.number(),
-	availability: z.boolean()
 });
 
 export type TurfProfileType = z.infer<typeof TurfProfileSchema>;

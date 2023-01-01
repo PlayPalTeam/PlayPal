@@ -1,33 +1,21 @@
 import Head from "next/head";
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { SignInForm, SignInschema } from "../../src/types/types";
-import { SignInForm as Form } from "../../src/content/contents";
-import { Button, ShowHideButton } from "../../src/components";
+import { SubmitHandler } from "react-hook-form";
+import { SignInFormProps } from "../../src/types/types";
+import { SignInForm } from "../../src/content/contents";
+import { Form, FormTitle } from "../../src/components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import toast, { Toaster } from "react-hot-toast";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const SignIn = () => {
-	const [showPassword, setShowPassword] = useState<boolean>(false);
-
 	const router = useRouter();
 
 	const supabase = useSupabaseClient();
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<SignInForm>({
-		resolver: zodResolver(SignInschema),
-	});
-
-	const onSubmit: SubmitHandler<SignInForm> = async (data) => {
+	const onSubmit: SubmitHandler<SignInFormProps> = async (data) => {
 		const {
 			error,
 			data: { session },
@@ -51,61 +39,22 @@ const SignIn = () => {
 		}
 	};
 
-	const handleShowPassword = useCallback(() => {
-		setShowPassword(!showPassword);
-	}, [showPassword]);
-
 	return (
 		<>
 			<Head>
 				<title>Sign In</title>
 			</Head>
 			<div className="flex h-screen flex-col items-center justify-center">
-				<Toaster />
-				<form
-					className="w-full max-w-sm space-y-5 rounded-lg px-8 py-4 shadow-sm shadow-green-500 max-md:w-[90%]"
-					onSubmit={handleSubmit(onSubmit)}
-				>
-					<h1 className="text-center text-xl font-bold text-gray-700">
-						Sign In
-					</h1>
-					{Form.map((field) => (
-						<div key={field.name}>
-							<label
-								htmlFor={field.name}
-								className="mb-2 block font-bold text-gray-700"
-							>
-								{field.label}
-							</label>
-							<>
-								<div className="relative flex items-center">
-									<input
-										type={
-											field.type === "password" && showPassword
-												? "text"
-												: field.type
-										}
-										name={field.name}
-										placeholder={field.placeholder}
-										className={`inputCss text-lg caret-green-600`}
-										{...register(field.name)}
-									/>
-									{field.type === "password" && (
-										<ShowHideButton
-											handleShowPassword={handleShowPassword}
-											showPassword={showPassword}
-										/>
-									)}
-								</div>
-								{errors[field.name] && (
-									<p className="mt-1 text-xs italic text-red-500">
-										{errors[field.name].message}
-									</p>
-								)}
-							</>
-						</div>
-					))}
-					<Button type="submit" isSubmitting={isSubmitting} text={"Log In"} />
+				<div className="formCss">
+					<FormTitle title="PlayPal | SignIn" />
+					<Form
+						formFields={SignInForm}
+						onSubmit={onSubmit}
+						form={"SignIn"}
+						buttonType={"submit"}
+						buttonText={"Log In"}
+						className="my-5"
+					/>
 					<div className="flex flex-col text-center font-medium text-green-500">
 						<Link className="hover:underline" href="/auth/signup">
 							Don&apos;t have an account? Sign Up
@@ -114,7 +63,7 @@ const SignIn = () => {
 							Forgot Password
 						</Link>
 					</div>
-				</form>
+				</div>
 			</div>
 		</>
 	);

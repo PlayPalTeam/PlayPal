@@ -1,10 +1,9 @@
 import Head from "next/head";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../src/components/Navbar";
 import { useTurfContext } from "../../src/context/TurfContext";
 
 const Lister = () => {
-	const { TurfData } = useTurfContext();
-	console.log(TurfData);
+	const { turfs } = useTurfContext();
 	return (
 		<>
 			<Head>
@@ -12,7 +11,7 @@ const Lister = () => {
 			</Head>
 			<div className="flex">
 				<Navbar />
-				<div className="grid"></div>
+				<div></div>
 			</div>
 		</>
 	);

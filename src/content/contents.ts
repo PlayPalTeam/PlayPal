@@ -24,7 +24,6 @@ const SignUpForm: SignUpFormType[] = [
 		type: "select",
 		name: "role",
 		options: [
-			{ value: "#", label: "Select" },
 			{ value: "lister", label: "List your Turf" },
 			{ value: "user", label: "Use the app" },
 		],

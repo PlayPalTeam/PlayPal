@@ -7,93 +7,60 @@ import {
 	TurfProfileSchema,
 	TurfProfileType,
 } from "../../src/types/types";
-import { toast, Toaster } from "react-hot-toast";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { Database } from "../../src/types/database.types";
+import { useTurfContext } from "../../src/context/TurfContext";
+import toast, { Toaster } from "react-hot-toast";
 
 const Turfs = () => {
+	const { addTurf } = useTurfContext();
+
 	const FormData: FormUIType1[] = [
 		{
 			label: "turfName",
 			name: "turf_name",
 			type: "text",
-			placeholder: " Turf Name ",
+			placeholder: "Turf Name",
 			val: false,
 		},
 		{
 			label: "Location",
 			name: "location",
 			type: "text",
-			placeholder: " Location ",
+			placeholder: "Location",
 			val: false,
 		},
 		{
 			label: "pricePerHour",
 			name: "price_per_hour",
 			type: "number",
-			placeholder: " Price Per Hour ",
+			placeholder: "Price Per Hour",
 			val: true,
 		},
 		{
-			label:"Capacity",
-			name:"capacity",
-			type:"number",
-			placeholder:" Capacity ",
-			val:true
-		}
-		,
-		{
-			label: "Availability",
-			name: "availability",
-			type: "checkbox",
-			placeholder: " Availability ",
-			val: false,
+			label: "Capacity",
+			name: "capacity",
+			type: "number",
+			placeholder: "Capacity",
+			val: true,
 		},
 	];
-	const supabase = useSupabaseClient<Database>();
-	const user = useUser();
 
 	const {
 		register,
-		reset,
 		handleSubmit,
+		reset,
 		formState: { errors, isSubmitting },
 	} = useForm<TurfProfileType>({
 		resolver: zodResolver(TurfProfileSchema),
 	});
 
-	const onSubmit:SubmitHandler<TurfProfileType>= async (info)=>{
-		const {status , error } = await supabase
-		.from("turfs")
-		.insert({
-				turf_name : info.turf_name,
-				location : info.location,
-				price_per_hour :info.price_per_hour,
-				capacity : info.capacity,
-				profile_id:user.id,
-				availability : info.availability
-			})
-		
-			if (error) {
-				toast.success(error.message, {
-					duration: 3000,
-					style: {
-						border: "1px solid red",
-						color: "red",
-					},
-				});
-			}
-	
-			if (status === 204) {
-				toast.success("Your data is updated", {
-					duration: 3000,
-					style: {
-						border: "1px solid green",
-						color: "green",
-					},
-				});
-			}
-	}
+	const onSubmit: SubmitHandler<TurfProfileType> = (info) => {
+		toast.promise(addTurf(info), {
+			loading: `Adding turf ${info.turf_name}`,
+			success: `Added turf ${info.turf_name}`,
+			error: "Something went wrong",
+		});
+		reset();
+	};
 
 	return (
 		<>
@@ -107,9 +74,9 @@ const Turfs = () => {
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{FormData.map((data) => (
 							<>
-								<div key={data.name}>
-									<label htmlFor={data.label} className="pb-2 text-sm">
-										{data.name} {""}
+								<div key={data.label}>
+									<label htmlFor={data.name} className="pb-2 text-sm">
+										{data.label} {""}
 										<span className="font-bold text-red-900">*</span>
 									</label>
 									<input
@@ -122,7 +89,11 @@ const Turfs = () => {
 								{errors[data.name] && <p>{errors[data.name].message}</p>}
 							</>
 						))}
-						<Button text="Enter listing " isSubmitting={isSubmitting} />
+						<Button
+							type="submit"
+							text="Enter listing "
+							isSubmitting={isSubmitting}
+						/>
 					</form>
 				</div>
 			</main>

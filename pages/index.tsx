@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Footer } from "../src/components";
+import { Toaster } from "react-hot-toast";
 
 const displayData = [
 	{
@@ -39,6 +40,7 @@ const Home = () => {
 	return (
 		<>
 			<div>
+				<Toaster />
 				<div className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
 					<div>PlayPal</div>
 					<div className="flex items-center gap-4">
@@ -67,9 +69,11 @@ const Home = () => {
 					<div className="text-md mt-4 font-semibold tracking-widest text-green-500 sm:text-2xl">
 						IS JUST A TAP AWAY
 					</div>
-					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 font-semibold text-black hover:bg-green-600">
-						<Link href={"/auth/signin"}>Start Your Search</Link>
-					</div>
+					<Link href={"/auth/signin"}>
+						<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 font-semibold text-black hover:bg-green-600">
+							Start Your Search
+						</div>
+					</Link>
 				</div>
 
 				<div className="mt-[90vh] flex justify-center p-4 sm:h-[500px] ">

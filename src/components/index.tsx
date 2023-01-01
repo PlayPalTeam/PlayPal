@@ -7,6 +7,8 @@ import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
 import ShowHideButton from "./ShowHideButton";
 import Input from "./Input";
+import Form from "./FormComponent";
+import FormTitle from "./FormTitle";
 
 export {
 	SelectInput,
@@ -18,4 +20,6 @@ export {
 	ChangePassword,
 	ShowHideButton,
 	Input,
+	Form,
+	FormTitle,
 };
