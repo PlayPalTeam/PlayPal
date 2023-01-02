@@ -139,7 +139,7 @@ const ForgotPassword = () => {
 					</div>
 				))}
 
-				<Button text="Reset Password" isSubmitting={isSubmitting} />
+				<Button type="submit" text="Reset Password" isSubmitting={isSubmitting} />
 			</form>
 		</div>
 	);
