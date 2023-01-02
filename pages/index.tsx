@@ -28,9 +28,9 @@ const Home = () => {
 		const changeColour = () => {
 			const header = document.querySelector(".header");
 			if (window.scrollY >= 20) {
-				header.classList.add("fixed-landing");
+				header?.classList.add("fixed-landing");
 			} else {
-				header.classList.remove("fixed-landing");
+				header?.classList.remove("fixed-landing");
 			}
 		};
 
@@ -45,7 +45,7 @@ const Home = () => {
 					<div>PlayPal</div>
 					<div className="flex items-center gap-4">
 						<BsPersonSquare />
-						Contact
+						<Link href={"/auth/signin"}>Sign In</Link>
 					</div>
 				</div>
 				<div className="absolute top-0 -z-10">

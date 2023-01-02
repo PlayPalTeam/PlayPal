@@ -17,8 +17,8 @@ type TurfInsert = Database["public"]["Tables"]["turfs"]["Insert"];
 type TurfUpdate = Database["public"]["Tables"]["turfs"]["Update"];
 
 interface TurfContextType {
-	turfs: Turf | Turf[];
-	setTurfs: Dispatch<SetStateAction<Turf | Turf[]>>;
+	turfs: Turf[];
+	setTurfs: Dispatch<SetStateAction<Turf[]>>;
 	addTurf: (turf: TurfInsert) => Promise<void>;
 	updateTurf: (id: string, update: TurfUpdate) => Promise<void>;
 	deleteTurf: (id: string) => Promise<void>;
@@ -33,7 +33,7 @@ export const TurfContext = createContext<TurfContextType>({
 });
 
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
-	const [turfs, setTurfs] = useState<Turf | Turf[]>([]);
+	const [turfs, setTurfs] = useState<Turf[]>([]);
 
 	const supabase = useSupabaseClient<Database>();
 

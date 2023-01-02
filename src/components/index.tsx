@@ -9,6 +9,8 @@ import ShowHideButton from "./ShowHideButton";
 import Input from "./Input";
 import Form from "./FormComponent";
 import FormTitle from "./FormTitle";
+import TurfCard from "./TurfCard";
+import ProfileCard from "./ProfileCard";
 
 export {
 	SelectInput,
@@ -22,4 +24,6 @@ export {
 	Input,
 	Form,
 	FormTitle,
+	TurfCard,
+	ProfileCard,
 };
