@@ -43,7 +43,7 @@ const Profile = () => {
 
 	const user = useUser();
 
-	const { username, full_name, locality, avatar_url } = userProfile;
+	const { username, full_name, avatar_url } = userProfile;
 
 	const {
 		register,
@@ -96,9 +96,8 @@ const Profile = () => {
 		defaultValues.email = user?.email;
 		defaultValues.username = username;
 		defaultValues.full_name = full_name;
-		defaultValues.locality = locality;
 		reset({ ...defaultValues });
-	}, [full_name, locality, reset, user?.email, username]);
+	}, [full_name, reset, user?.email, username]);
 
 	return (
 		<div className="grow-[4]">
