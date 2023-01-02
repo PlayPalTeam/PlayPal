@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "update-types": "npx supabase gen types typescript --project-id \"$PROJECT_ID\" > src/types/database.types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
