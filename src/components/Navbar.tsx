@@ -11,30 +11,8 @@ import {
 } from "react-icons/bs";
 
 import { AiOutlineLogout } from "react-icons/ai";
+import Image from "next/image";
 import { useUserProfile } from "../context/UserProfileContext";
-
-const NavBarList = [
-	{
-		text: "Profile",
-		link: "profile",
-		icons: <BsGrid3X3GapFill />,
-	},
-	{
-		text: "Requests",
-		link: "request",
-		icons: <BsCollectionFill />,
-	},
-	{
-		text: "Turfs Booking",
-		link: "booking",
-		icons: <BsPeopleFill />,
-	},
-	{
-		text: "Community",
-		link: "community",
-		icons: <BsMessenger />,
-	},
-];
 
 const Navbar = () => {
 	const router = useRouter();
@@ -55,12 +33,45 @@ const Navbar = () => {
 		router.push("/auth/signin");
 	};
 
+	const NavBarList = [
+		{
+			text: "Dashboard",
+			link: "",
+			icons: <BsGrid3X3GapFill />,
+		},
+		{
+			text: "Profile",
+			link: "profile",
+			icons: <BsGrid3X3GapFill />,
+		},
+		{
+			text: "Requests",
+			link: "request",
+			icons: <BsCollectionFill />,
+		},
+		{
+			text: role === "user" ? "Turfs" : "Add Turfs",
+			link: "turf",
+			icons: <BsPeopleFill />,
+		},
+		{
+			text: "Community",
+			link: "community",
+			icons: <BsMessenger />,
+		},
+	];
+
 	return (
 		<nav
-			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden`}
+			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
 		>
-			<div className="mb-10 flex justify-between">
-				<h1>logo</h1>
+			<div className="mb-10 flex justify-between mix-blend-color-burn">
+				<Image
+					src="/playpal-high-resolution-color-logo.svg"
+					alt="Logo"
+					width={1000}
+					height={1000}
+				/>
 			</div>
 			<div className="mb-7 text-xs">
 				<p>{username}</p>

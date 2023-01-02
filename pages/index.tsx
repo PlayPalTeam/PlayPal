@@ -1,9 +1,9 @@
 import { BsPersonSquare } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import offer from "../public/offer.jpeg";
-import { Footer } from "../components";
+import { useEffect } from "react";
+import { Footer } from "../src/components";
+import { Toaster } from "react-hot-toast";
 
 const displayData = [
 	{
@@ -24,14 +24,13 @@ const displayData = [
 ];
 
 const Home = () => {
-	const [colour, setColour] = useState(false);
-
 	useEffect(() => {
 		const changeColour = () => {
-			if (window.scrollY >= 200) {
-				setColour(true);
+			const header = document.querySelector(".header");
+			if (window.scrollY >= 20) {
+				header?.classList.add("fixed-landing");
 			} else {
-				setColour(false);
+				header?.classList.remove("fixed-landing");
 			}
 		};
 
@@ -41,29 +40,20 @@ const Home = () => {
 	return (
 		<>
 			<div>
-				{colour ? (
-					<div className="sticky top-0 z-[1] flex justify-between bg-green-400 p-4 pl-32 pr-32 font-bold tracking-wider text-white  transition-all duration-700 ease-in-out">
-						<div>PlayPal</div>
-						<div className="flex items-center gap-4">
-							<BsPersonSquare />
-							Contact
-						</div>
+				<Toaster />
+				<div className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
+					<div>PlayPal</div>
+					<div className="flex items-center gap-4">
+						<BsPersonSquare />
+						<Link href={"/auth/signin"}>Sign In</Link>
 					</div>
-				) : (
-					<div className="sticky top-0 flex justify-between p-4 pl-32 pr-32 font-bold tracking-wider text-white">
-						<div>PlayPal</div>
-						<div className="flex items-center gap-4">
-							<BsPersonSquare />
-							Contact
-						</div>
-					</div>
-				)}
-				<div className="absolute top-0 z-[-1]  ">
+				</div>
+				<div className="absolute top-0 -z-10">
 					<video
 						autoPlay
 						muted
 						loop
-						className="h-[100vh] w-[100vw] object-cover brightness-[0.8]"
+						className="h-[630px] w-screen object-cover brightness-[0.8] sm:h-screen"
 					>
 						<source
 							src="https://www.playspots.in/wp-content/themes/playspots/assets/videos/beach-soccer.mp4"
@@ -72,23 +62,25 @@ const Home = () => {
 					</video>
 				</div>
 				<div className="absolute top-[25%] left-[15%] text-white">
-					<div className="text-7xl font-bold tracking-widest ">
+					<div className="text-2xl font-bold tracking-widest sm:text-7xl ">
 						YOUR <br></br>NEAREST <br></br>TURF <br></br>
 					</div>
 
-					<div className="mt-4 text-2xl font-semibold tracking-widest text-green-500">
+					<div className="text-md mt-4 font-semibold tracking-widest text-green-500 sm:text-2xl">
 						IS JUST A TAP AWAY
 					</div>
-					<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 text-white">
-						<Link href={"/auth/signin"}>Start Your Search</Link>
-					</div>
+					<Link href={"/auth/signin"}>
+						<div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 font-semibold text-black hover:bg-green-600">
+							Start Your Search
+						</div>
+					</Link>
 				</div>
 
-				<div className="mt-[90vh] flex h-[500px] justify-center p-4">
-					<div className="m-auto flex justify-around gap-6 pl-14 pr-14 ">
+				<div className="mt-[90vh] flex justify-center p-4 sm:h-[500px] ">
+					<div className="mb-16 flex justify-around gap-10 max-sm:flex-wrap sm:m-auto sm:pl-14 sm:pr-14 ">
 						{displayData.map((data, index) => (
 							<div key={index} className="">
-								<div className=" flex justify-center">
+								<div className="flex justify-center">
 									<Image src={data.img} alt="img" width={40} height={40} />
 								</div>
 								<div className="mt-3 flex justify-center text-lg font-medium tracking-wider">
@@ -102,9 +94,9 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className=" flex h-[650px] items-center justify-between gap-16 bg-purple-100">
-					<div className="ml-24 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest ">
+				<div className="flex h-[500px] items-center justify-around bg-purple-100 max-sm:flex-wrap sm:h-[600px]  sm:justify-between sm:gap-16">
+					<div className="ml-8 sm:ml-24 sm:grow-[1]">
+						<div className=" font-bold tracking-widest sm:text-5xl ">
 							MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
 						</div>
 						<p className="mt-5 tracking-wider">
@@ -113,14 +105,19 @@ const Home = () => {
 							people active
 						</p>
 					</div>
-					<div className="mr-24 grow-[1] ">
-						<Image src={offer} alt="offerImage" width={350} height={350} />
+					<div className="sm:mr-24 sm:grow-[1]">
+						<Image
+							src="/offer.jpeg"
+							alt="offerImage"
+							width={300}
+							height={300}
+						/>
 					</div>
 				</div>
 
-				<div className="flex h-[800px] items-center justify-between gap-16 bg-[#060b1e] text-white ">
-					<div className="ml-24 grow-[1]">
-						<div className=" text-5xl font-bold tracking-widest ">
+				<div className="flex h-[650px] items-center justify-around bg-[#060b1e] text-white max-sm:flex-wrap sm:h-[600px]  sm:justify-between sm:gap-16 ">
+					<div className="ml-8 sm:ml-32 sm:grow-[1]">
+						<div className=" font-bold tracking-widest sm:text-5xl ">
 							MEET YOUR PALS<br></br> OVER GAME <br />
 						</div>
 						<p className="mt-5 tracking-wider">
@@ -130,12 +127,12 @@ const Home = () => {
 							Playspots
 						</p>
 					</div>
-					<div className="mr-24 grow-[1] ">
+					<div className="sm:mr-24 sm:grow-[1] ">
 						<Image
 							src="/meetpals.png"
 							alt="offerImage"
-							width={350}
-							height={350}
+							width={300}
+							height={300}
 						/>
 					</div>
 				</div>

@@ -31,7 +31,7 @@ export const SignUpschema = z.object({
 	}),
 });
 
-export type SignUpForm = z.infer<typeof SignUpschema>;
+export type SignUpFormProps = z.infer<typeof SignUpschema>;
 
 // Zod schema for sign in page
 export const SignInschema = z.object({
@@ -39,7 +39,7 @@ export const SignInschema = z.object({
 	password: password,
 });
 
-export type SignInForm = z.infer<typeof SignInschema>;
+export type SignInFormProps = z.infer<typeof SignInschema>;
 
 export const UserProfileSchema = z.object({
 	email: email,
@@ -51,10 +51,49 @@ export const UserProfileSchema = z.object({
 
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
 
+export const ForgotSchema = z.object({
+	password: password,
+	confirmpassword: password,
+});
+
+export type ForgortType = z.infer<typeof ForgotSchema>;
+
 export type FormUIType = {
 	label: string;
 	name: "email" | "username" | "full_name" | "locality";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
 	disabled?: boolean;
+};
+
+export type FormUIType1 = {
+	label: string;
+	name: "turf_name" | "location" | "price_per_hour" | "capacity";
+	type?: HTMLInputTypeAttribute;
+	placeholder?: string;
+	val?: boolean;
+};
+
+export const TurfProfileSchema = z.object({
+	turf_name: z.string(),
+	location: z.string(),
+	price_per_hour: z.number(),
+	capacity: z.number(),
+});
+
+export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
+
+export interface SignUpFormType {
+	label: string;
+	type: HTMLInputTypeAttribute;
+	name: "username" | "email" | "password" | "role";
+	placeholder?: string;
+	options?: { value: string; label: string }[];
+}
+
+export type SignInFormType = {
+	label: string;
+	type: HTMLInputTypeAttribute;
+	name: "email" | "password";
+	placeholder: string;
 };
