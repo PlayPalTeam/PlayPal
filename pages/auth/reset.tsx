@@ -53,7 +53,7 @@ const ResetPasswordLink = () => {
 					/>
 					{errors.email && <p>{errors.email.message}</p>}
 				</div>
-				<Button isSubmitting={isSubmitting} text={"Send Password Reset Link"} />
+				<Button type="submit" isSubmitting={isSubmitting} text={"Send Password Reset Link"} />
 				<div className="text-center font-medium text-green-500 hover:underline">
 					<Link href="/auth/signin">Already have an account? Sign In</Link>
 				</div>
