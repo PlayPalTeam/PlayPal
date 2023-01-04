@@ -12,7 +12,7 @@ import { TurfProvider } from "../src/context/TurfContext";
 
 import { Inter } from "@next/font/google";
 
-const inter = Inter({ weight: "400" });
+const inter = Inter({ weight: "400", subsets: ["cyrillic"] });
 
 function App({
 	Component,
@@ -31,8 +31,7 @@ function App({
 			<TurfProvider>
 				<UserProfileProvider>
 					<main className={inter.className}>
-
-					<Component {...pageProps} />
+						<Component {...pageProps} />
 					</main>
 				</UserProfileProvider>
 			</TurfProvider>

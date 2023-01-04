@@ -5,7 +5,7 @@ import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { ForgortType, ForgotSchema } from "../types/types";
+import { ForgortType, ForgotPasswordFormSchema } from "../types/types";
 import { Button } from "./index";
 
 interface FormField {
@@ -27,7 +27,7 @@ const ChangePassword = () => {
 		reset,
 		handleSubmit,
 	} = useForm<ForgortType>({
-		resolver: zodResolver(ForgotSchema),
+		resolver: zodResolver(ForgotPasswordFormSchema),
 	});
 
 	const supabase = useSupabaseClient();
