@@ -41,10 +41,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
 
 	const getData = useMemo(() => {
 		return async () => {
-			const { data, error } = await supabase
-				.from("turfs")
-				.select("*")
-				.eq("profile_id", user.id);
+			const { data, error } = await supabase.from("turfs").select("*");
 
 			if (error) {
 				toast.error(error.message);
@@ -54,7 +51,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
 				setTurfs(data);
 			}
 		};
-	}, [supabase, user?.id]);
+	}, [supabase]);
 
 	useEffect(() => {
 		if (user) {

@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { HTMLInputTypeAttribute, useState } from "react";
+import { UseFormRegister } from "react-hook-form";
+import { SignInFormProps, SignUpFormProps } from "../types/types";
 import ShowHideButton from "./ShowHideButton";
 
 interface Props {
 	label: string;
-	name: string;
-	type: string;
+	name:
+		| "email"
+		| "password"
+		| "username"
+		| "role"
+		| "date"
+		| "start-time"
+		| "end-time"
+		| "player";
+	type: HTMLInputTypeAttribute;
 	placeholder: string;
-	register: (name: string) => { name: string };
+	register: UseFormRegister<SignInFormProps | SignUpFormProps>;
 	errors: any;
 	className: string;
 }

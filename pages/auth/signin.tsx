@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler } from "react-hook-form";
-import { SignInFormProps } from "../../src/types/types";
+import { SignInType } from "../../src/types/types";
 import { SignInForm } from "../../src/content/contents";
 import { Form, FormTitle } from "../../src/components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -15,7 +15,7 @@ const SignIn = () => {
 
 	const supabase = useSupabaseClient();
 
-	const onSubmit: SubmitHandler<SignInFormProps> = async (data) => {
+	const onSubmit: SubmitHandler<SignInType> = async (data) => {
 		const {
 			error,
 			data: { session },
@@ -44,8 +44,9 @@ const SignIn = () => {
 			<Head>
 				<title>Sign In</title>
 			</Head>
-			<div className="flex h-screen flex-col items-center justify-center">
-				<div className="formCss">
+			<div className="flex h-screen flex-col items-center justify-center bg-gray-100">
+				<Toaster />
+				<div className="formCss bg-white">
 					<FormTitle title="PlayPal | SignIn" />
 					<Form
 						formFields={SignInForm}

@@ -63,7 +63,7 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`sticky top-0 h-screen w-72 bg-green-500 p-6 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
+			className={`sticky top-0 h-screen w-72 bg-green-500 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
 		>
 			<div className="mb-10 flex justify-between mix-blend-color-burn">
 				<Image
@@ -78,7 +78,10 @@ const Navbar = () => {
 			</div>
 			<ul>
 				{NavBarList.map((nav, index) => (
-					<li key={index} className="mb-6 flex items-center">
+					<li
+						key={index}
+						className="flex items-center py-2 px-6 hover:bg-green-700"
+					>
 						{nav.icons}
 						<Link
 							href={
@@ -89,7 +92,7 @@ const Navbar = () => {
 						</Link>
 					</li>
 				))}
-				<li className="mb-6 flex items-center">
+				<li className="flex items-center px-6">
 					<AiOutlineLogout />
 					<button className="ml-3" onClick={handleLogOut}>
 						Log Out

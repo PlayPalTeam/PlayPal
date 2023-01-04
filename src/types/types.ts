@@ -1,17 +1,21 @@
 import { HTMLInputTypeAttribute } from "react";
-import * as z from "zod";
+import { z } from "zod";
 
-const username = z
+// Validates that the input is a non-empty string with at least 3 characters
+const usernameValidation = z
 	.string({
 		required_error: "Username is required",
 	})
-	.min(3, "Username must be more than 3 character");
+	.min(3, "Username must be more than 3 characters");
 
-const email = z
+// Validates that the input is a non-empty string that is a valid email address
+const emailValidation = z
 	.string({ required_error: "Email is required" })
 	.email({ message: "Invalid email address" });
 
-const password = z
+// Validates that the input is a non-empty string that is at least 8 characters long and contains at least one uppercase letter,
+// one lowercase letter, one number, and one special character
+const passwordValidation = z
 	.string()
 	.regex(new RegExp(".*[A-Z].*"), "One uppercase character")
 	.regex(new RegExp(".*[a-z].*"), "One lowercase character")
@@ -22,51 +26,71 @@ const password = z
 	)
 	.min(8, "Must be at least 8 characters in length");
 
-export const SignUpschema = z.object({
-	username: username,
-	email: email,
-	password: password,
+// Schema for validating the input for a sign up form
+export const SignUpSchema = z.object({
+	username: usernameValidation,
+	email: emailValidation,
+	password: passwordValidation,
 	role: z.enum(["user", "lister"], {
-		required_error: "Select one of the choice",
+		required_error: "Select one of the choices",
 	}),
 });
 
-export type SignUpFormProps = z.infer<typeof SignUpschema>;
-
-// Zod schema for sign in page
-export const SignInschema = z.object({
-	email: email,
-	password: password,
-});
-
-export type SignInFormProps = z.infer<typeof SignInschema>;
-
-export const UserProfileSchema = z.object({
-	email: email,
-	username: username,
-	full_name: z.string(),
-	avatar_url: z.optional(z.string()),
-	locality: z.string(),
-});
-
-export type UserProfileType = z.infer<typeof UserProfileSchema>;
-
-export const ForgotSchema = z.object({
-	password: password,
-	confirmpassword: password,
-});
-
-export type ForgortType = z.infer<typeof ForgotSchema>;
-
-export type FormUIType = {
+export interface SignUpFormProps {
 	label: string;
-	name: "email" | "username" | "full_name" | "locality";
+	type: HTMLInputTypeAttribute;
+	name: "username" | "email" | "password" | "role";
+	placeholder?: string;
+	options?: { value: string; label: string }[];
+}
+
+// Type representing the shape of an object that conforms to the SignUpFormSchema
+export type SignUpType = z.infer<typeof SignUpSchema>;
+
+// Schema for validating the input for a sign in form
+export const SignInSchema = z.object({
+	email: emailValidation,
+	password: passwordValidation,
+});
+
+export type SignInFormProps = {
+	label: string;
+	type: HTMLInputTypeAttribute;
+	name: "email" | "password";
+	placeholder: string;
+};
+
+// Type representing the shape of an object that conforms to the SignInFormSchema
+export type SignInType = z.infer<typeof SignInSchema>;
+
+// Schema for validating the input for a user profile form
+export const UserProfileFormSchema = z.object({
+	email: emailValidation,
+	username: usernameValidation,
+	full_name: z.string(),
+});
+
+// Type representing the shape of an object that conforms to the UserProfileFormSchema
+export type UserProfileFormProps = z.infer<typeof UserProfileFormSchema>;
+
+// Schema for validating the input for a password reset form
+export const ForgotPasswordFormSchema = z.object({
+	password: passwordValidation,
+	confirmpassword: passwordValidation,
+});
+
+// Type representing the shape of an object that
+export type ForgortType = z.infer<typeof ForgotPasswordFormSchema>;
+
+export type ProfileFormProps = {
+	label: string;
+	name: "email" | "username" | "full_name";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
 	disabled?: boolean;
 };
 
-export type FormUIType1 = {
+export type TurfFormProps = {
 	label: string;
 	name: "turf_name" | "location" | "price_per_hour" | "capacity";
 	type?: HTMLInputTypeAttribute;
@@ -83,17 +107,14 @@ export const TurfProfileSchema = z.object({
 
 export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
 
-export interface SignUpFormType {
-	label: string;
-	type: HTMLInputTypeAttribute;
-	name: "username" | "email" | "password" | "role";
-	placeholder?: string;
-	options?: { value: string; label: string }[];
-}
+export const BookingSchema = z.object({
+	date: z.string(),
+});
 
-export type SignInFormType = {
+export type BookingFormProps = {
 	label: string;
+	name: "date" | "start-time" | "end-time" | "player";
 	type: HTMLInputTypeAttribute;
-	name: "email" | "password";
-	placeholder: string;
+	valueAsDate?: boolean;
+	valueAsNumber?: boolean;
 };

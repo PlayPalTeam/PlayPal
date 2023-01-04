@@ -1,16 +1,15 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { Button, Form, FormTitle } from "../../src/components";
+import { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { Form, FormTitle } from "../../src/components";
 import { SignUpForm } from "../../src/content/contents";
 import { SignUpFormProps } from "../../src/types/types";
 
 const SignUp = () => {
-	const {
-		formState: { isSubmitting },
-	} = useForm();
+	const { reset } = useForm();
 
 	const supabase = useSupabaseClient();
 
@@ -37,6 +36,8 @@ const SignUp = () => {
 		} else {
 			toast.success("Check your email", { duration: 5000 });
 		}
+
+		reset();
 	};
 
 	return (
@@ -44,6 +45,7 @@ const SignUp = () => {
 			<Head>
 				<title>Sign Up</title>
 			</Head>
+			<Toaster />
 			<main className="flex h-screen flex-col items-center justify-center">
 				<div className="formCss">
 					<FormTitle title="PlayPal | SignUp" />
@@ -53,7 +55,7 @@ const SignUp = () => {
 							onSubmit={onSubmit}
 							form={"SignUp"}
 							buttonType={"submit"}
-							buttonText={"Sign Up"}
+							buttonText={"SignUp"}
 							className="mb-5"
 						/>
 					</div>

@@ -1,15 +1,13 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useUserProfile } from "../context/UserProfileContext";
 import { Database } from "../types/database.types";
-import { FormUIType, UserProfileSchema, UserProfileType } from "../types/types";
 import Avatar from "./Avatar";
 import { Button } from "./index";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast, Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 
-const FormUI: FormUIType[] = [
+const FormUI = [
 	{
 		label: "Email",
 		name: "email",
@@ -27,17 +25,10 @@ const FormUI: FormUIType[] = [
 		type: "text",
 		placeholder: "e.g. Steven King",
 	},
-	{
-		label: "Locality",
-		name: "locality",
-		type: "text",
-		placeholder: "e.g. Andheri",
-	},
 ];
 
 const Profile = () => {
 	const { userProfile } = useUserProfile();
-	console.log(userProfile);
 
 	const supabase = useSupabaseClient<Database>();
 
@@ -49,12 +40,10 @@ const Profile = () => {
 		register,
 		reset,
 		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<UserProfileType>({
-		resolver: zodResolver(UserProfileSchema),
-	});
+		formState: { isSubmitting },
+	} = useForm();
 
-	const onSubmit: SubmitHandler<UserProfileType> = async (info) => {
+	const onSubmit = async (info) => {
 		const { status, error } = await supabase
 			.from("profiles")
 			.update({
@@ -91,7 +80,6 @@ const Profile = () => {
 			email: "",
 			username: "",
 			full_name: "",
-			locality: "",
 		};
 		defaultValues.email = user?.email;
 		defaultValues.username = username;
@@ -127,7 +115,6 @@ const Profile = () => {
 										disabled={field.disabled}
 									/>
 								</div>
-								{errors[field.name] && <p>{errors[field.name].message}</p>}
 							</>
 						))}
 					</div>
