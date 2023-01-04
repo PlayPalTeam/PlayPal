@@ -2,22 +2,32 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "./index";
 import {
-	SignInFormProps,
-	SignInschema,
-	SignUpFormProps,
-	SignUpschema,
+	SignInSchema,
+	SignInType,
+	SignUpSchema,
+	SignUpType,
+	BookingSchema,
+	BookingType,
 } from "../types/types";
+import { HTMLInputTypeAttribute } from "react";
 
 interface FormProps {
 	formFields: {
-		name: string;
+		name:
+			| "email"
+			| "password"
+			| "username"
+			| "role"
+			| "date"
+			| "start_time"
+			| "end_time";
 		label: string;
 		placeholder?: string;
-		type: string;
+		type: HTMLInputTypeAttribute;
 		options?: { value: string; label: string }[];
 	}[];
-	onSubmit: SubmitHandler<SignInFormProps | SignUpFormProps>;
-	form: "SignIn" | "SignUp";
+	onSubmit: SubmitHandler<SignInType | SignUpType | BookingType>;
+	form: "SignIn" | "SignUp" | "Booking";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;
@@ -31,20 +41,23 @@ const Form = ({
 	form,
 	className,
 }: FormProps) => {
-	const schema = form === "SignIn" ? SignInschema : SignUpschema;
+	const schema =
+		(form === "SignIn" && SignInSchema) ||
+		(form === "SignUp" && SignUpSchema) ||
+		(form === "Booking" && BookingSchema);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignInFormProps | SignUpFormProps>({
+	} = useForm<SignInType | SignUpType | BookingType>({
 		resolver: zodResolver(schema),
 	});
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			{formFields.map((field) => (
-				<>
+				<div key={field.name}>
 					{field.type === "select" ? (
 						<SelectInput
 							label={field.label}
@@ -56,7 +69,6 @@ const Form = ({
 						/>
 					) : (
 						<Input
-							key={field.name}
 							label={field.label}
 							name={field.name}
 							placeholder={field.placeholder}
@@ -66,7 +78,7 @@ const Form = ({
 							className={className}
 						/>
 					)}
-				</>
+				</div>
 			))}
 			<Button type={buttonType} text={buttonText} isSubmitting={isSubmitting} />
 		</form>

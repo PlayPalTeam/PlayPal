@@ -1,6 +1,10 @@
-import { SignInFormType, SignUpFormType } from "../types/types";
+import {
+	BookingFormProps,
+	SignInFormProps,
+	SignUpFormProps,
+} from "../types/types";
 
-const SignUpForm: SignUpFormType[] = [
+const SignUpForm: SignUpFormProps[] = [
 	{
 		label: "Username",
 		type: "text",
@@ -30,7 +34,7 @@ const SignUpForm: SignUpFormType[] = [
 	},
 ];
 
-const SignInForm: SignInFormType[] = [
+const SignInForm: SignInFormProps[] = [
 	{
 		label: "Email",
 		type: "email",
@@ -45,4 +49,22 @@ const SignInForm: SignInFormType[] = [
 	},
 ];
 
-export { SignInForm, SignUpForm };
+const BookingForm: BookingFormProps[] = [
+	{
+		label: "Date",
+		type: "date",
+		name: "date",
+	},
+	{
+		label: "Start Time",
+		type: "time",
+		name: "start_time",
+	},
+	{
+		label: "End Time",
+		type: "time",
+		name: "end_time",
+	},
+];
+
+export { SignInForm, SignUpForm, BookingForm };

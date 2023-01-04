@@ -13,7 +13,7 @@ const Lister = () => {
 			</Head>
 			<div className="flex">
 				<Navbar />
-				<div className="w-full">
+				<div className="w-full p-10">
 					<h2>Profile Card</h2>
 					{/* Profile Card */}
 					<hr />

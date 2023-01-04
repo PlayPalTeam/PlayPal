@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ForgortType, ForgotSchema } from "../../src/types/types";
+import { ForgortType, ForgotPasswordFormSchema } from "../../src/types/types";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { Button, ShowHideButton } from "../../src/components";
@@ -26,7 +26,7 @@ const ForgotPassword = () => {
 		reset,
 		handleSubmit,
 	} = useForm<ForgortType>({
-		resolver: zodResolver(ForgotSchema),
+		resolver: zodResolver(ForgotPasswordFormSchema),
 	});
 
 	const supabase = useSupabaseClient();
@@ -139,7 +139,11 @@ const ForgotPassword = () => {
 					</div>
 				))}
 
-				<Button type="submit" text="Reset Password" isSubmitting={isSubmitting} />
+				<Button
+					type="submit"
+					text="Reset Password"
+					isSubmitting={isSubmitting}
+				/>
 			</form>
 		</div>
 	);

@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Navbar } from "../../../src/components";
 import {
-	FormUIType1,
+	TurfFormProps,
 	TurfProfileSchema,
 	TurfProfileType,
 } from "../../../src/types/types";
@@ -13,7 +13,7 @@ import toast, { Toaster } from "react-hot-toast";
 const Turfs = () => {
 	const { addTurf } = useTurfContext();
 
-	const FormData: FormUIType1[] = [
+	const FormData: TurfFormProps[] = [
 		{
 			label: "turfName",
 			name: "turf_name",
