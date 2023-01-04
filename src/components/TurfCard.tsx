@@ -4,7 +4,7 @@ interface TurfCardProps {
 	turf_id: string;
 	turf_name: string;
 	location: string;
-	book: boolean;
+	book?: boolean;
 }
 
 const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
