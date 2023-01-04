@@ -1,5 +1,5 @@
 import { UseFormRegister } from "react-hook-form";
-import { SignUpType } from "../types/types";
+import { BookingType, SignUpType } from "../types/types";
 
 interface Option {
 	value: string;
@@ -14,11 +14,10 @@ interface SelectInputProps {
 		| "username"
 		| "role"
 		| "date"
-		| "start-time"
-		| "end-time"
-		| "player";
+		| "start_time"
+		| "end_time";
 	placeholder: string;
-	register: UseFormRegister<SignUpType>;
+	register: UseFormRegister<SignUpType | BookingType>;
 	errors: any;
 	options: Option[];
 }

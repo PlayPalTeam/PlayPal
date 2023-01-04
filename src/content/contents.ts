@@ -58,17 +58,12 @@ const BookingForm: BookingFormProps[] = [
 	{
 		label: "Start Time",
 		type: "time",
-		name: "start-time",
+		name: "start_time",
 	},
 	{
 		label: "End Time",
 		type: "time",
-		name: "end-time",
-	},
-	{
-		label: "Player",
-		type: "number",
-		name: "player",
+		name: "end_time",
 	},
 ];
 

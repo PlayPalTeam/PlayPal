@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { SignInFormProps, SignUpFormProps } from "../types/types";
+import { BookingType, SignInType, SignUpType } from "../types/types";
 import ShowHideButton from "./ShowHideButton";
 
 interface Props {
@@ -11,12 +11,12 @@ interface Props {
 		| "username"
 		| "role"
 		| "date"
-		| "start-time"
-		| "end-time"
-		| "player";
+		| "start_time"
+		| "end_time";
 	type: HTMLInputTypeAttribute;
 	placeholder: string;
-	register: UseFormRegister<SignInFormProps | SignUpFormProps>;
+	register: UseFormRegister<SignInType | SignUpType | BookingType>;
+	valueAsDate?: boolean;
 	errors: any;
 	className: string;
 }

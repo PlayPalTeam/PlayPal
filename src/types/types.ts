@@ -107,14 +107,17 @@ export const TurfProfileSchema = z.object({
 
 export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
 
+//
 export const BookingSchema = z.object({
 	date: z.string(),
+	start_time: z.string(),
+	end_time: z.string(),
 });
 
 export type BookingFormProps = {
 	label: string;
-	name: "date" | "start-time" | "end-time" | "player";
+	name: "date" | "start_time" | "end_time";
 	type: HTMLInputTypeAttribute;
-	valueAsDate?: boolean;
-	valueAsNumber?: boolean;
 };
+
+export type BookingType = z.infer<typeof BookingSchema>;

@@ -6,14 +6,14 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { Form, FormTitle } from "../../src/components";
 import { SignUpForm } from "../../src/content/contents";
-import { SignUpFormProps } from "../../src/types/types";
+import { SignUpType } from "../../src/types/types";
 
 const SignUp = () => {
 	const { reset } = useForm();
 
 	const supabase = useSupabaseClient();
 
-	const onSubmit: SubmitHandler<SignUpFormProps> = async (data) => {
+	const onSubmit: SubmitHandler<SignUpType> = async (data) => {
 		const { error } = await supabase.auth.signUp({
 			email: data.email,
 			password: data.password,

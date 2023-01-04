@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "./index";
 import {
-	SignInFormProps,
 	SignInSchema,
 	SignInType,
-	SignUpFormProps,
 	SignUpSchema,
 	SignUpType,
+	BookingSchema,
+	BookingType,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
 
@@ -19,21 +19,18 @@ interface FormProps {
 			| "username"
 			| "role"
 			| "date"
-			| "start-time"
-			| "end-time"
-			| "player";
+			| "start_time"
+			| "end_time";
 		label: string;
 		placeholder?: string;
 		type: HTMLInputTypeAttribute;
 		options?: { value: string; label: string }[];
 	}[];
-	onSubmit: SubmitHandler<SignInType | SignUpType>;
-	form: "SignIn" | "SignUp";
+	onSubmit: SubmitHandler<SignInType | SignUpType | BookingType>;
+	form: "SignIn" | "SignUp" | "Booking";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;
-	valueAsDate?: boolean;
-	valueAsNumber?: boolean;
 }
 
 const Form = ({
@@ -45,13 +42,15 @@ const Form = ({
 	className,
 }: FormProps) => {
 	const schema =
-		(form === "SignIn" && SignInSchema) || (form === "SignUp" && SignUpSchema);
+		(form === "SignIn" && SignInSchema) ||
+		(form === "SignUp" && SignUpSchema) ||
+		(form === "Booking" && BookingSchema);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignInType | SignUpType>({
+	} = useForm<SignInType | SignUpType | BookingType>({
 		resolver: zodResolver(schema),
 	});
 

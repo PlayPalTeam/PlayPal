@@ -10,6 +10,10 @@ import {
 import { UserProfileProvider } from "../src/context/UserProfileContext";
 import { TurfProvider } from "../src/context/TurfContext";
 
+import { Inter } from "@next/font/google";
+
+const inter = Inter({ weight: "400" });
+
 function App({
 	Component,
 	pageProps,
@@ -26,7 +30,10 @@ function App({
 		>
 			<TurfProvider>
 				<UserProfileProvider>
+					<main className={inter.className}>
+
 					<Component {...pageProps} />
+					</main>
 				</UserProfileProvider>
 			</TurfProvider>
 		</SessionContextProvider>

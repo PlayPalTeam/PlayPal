@@ -50,7 +50,7 @@ const Navbar = () => {
 			icons: <BsCollectionFill />,
 		},
 		{
-			text: role === "user" ? "Turfs" : "Add Turfs",
+			text: "Add Turfs",
 			link: "turf",
 			icons: <BsPeopleFill />,
 		},
