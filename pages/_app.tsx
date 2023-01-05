@@ -11,6 +11,7 @@ import { UserProfileProvider } from "../src/context/UserProfileContext";
 import { TurfProvider } from "../src/context/TurfContext";
 
 import { Inter } from "@next/font/google";
+import { BookingProvider } from "../src/context/BookingContext";
 
 const inter = Inter({ weight: "400", subsets: ["cyrillic"] });
 
@@ -28,13 +29,15 @@ function App({
 			supabaseClient={supabaseClient}
 			initialSession={pageProps.initialSession}
 		>
-			<TurfProvider>
-				<UserProfileProvider>
-					<main className={inter.className}>
-						<Component {...pageProps} />
-					</main>
-				</UserProfileProvider>
-			</TurfProvider>
+			<BookingProvider>
+				<TurfProvider>
+					<UserProfileProvider>
+						<main className={inter.className}>
+							<Component {...pageProps} />
+						</main>
+					</UserProfileProvider>
+				</TurfProvider>
+			</BookingProvider>
 		</SessionContextProvider>
 	);
 }

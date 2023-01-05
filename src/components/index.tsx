@@ -1,29 +1,14 @@
-import SelectInput from "./SelectInput";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import Avatar from "./Avatar";
-import Button from "./Button";
-import Profile from "./Profile";
-import ChangePassword from "./ChangePassword";
-import ShowHideButton from "./ShowHideButton";
-import Input from "./Input";
-import Form from "./FormComponent";
-import FormTitle from "./FormTitle";
-import TurfCard from "./TurfCard";
-import ProfileCard from "./ProfileCard";
-
-export {
-	SelectInput,
-	Navbar,
-	Footer,
-	Avatar,
-	Button,
-	Profile,
-	ChangePassword,
-	ShowHideButton,
-	Input,
-	Form,
-	FormTitle,
-	TurfCard,
-	ProfileCard,
-};
+export { default as SelectInput } from "./SelectInput";
+export { default as Navbar } from "./Navbar";
+export { default as Footer } from "./Footer";
+export { default as Avatar } from "./Avatar";
+export { default as Button } from "./Button";
+export { default as Profile } from "./Profile";
+export { default as ChangePassword } from "./ChangePassword";
+export { default as ShowHideButton } from "./ShowHideButton";
+export { default as Input } from "./Input";
+export { default as Form } from "./FormComponent";
+export { default as FormTitle } from "./FormTitle";
+export { default as TurfCard } from "./TurfCard";
+export { default as ProfileCard } from "./ProfileCard";
+export { default as BookingCard } from "./BookingCard";
