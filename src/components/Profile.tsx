@@ -91,7 +91,7 @@ const Profile = () => {
 		<div className="grow-[4]">
 			<Toaster />
 			<div className="flex rounded-lg border border-green-500">
-				<Avatar uid={user?.id} size={100} url={avatar_url} />
+				<Avatar uid={user?.id} size={100} url={avatar_url} navs={true} />
 			</div>
 
 			<div className="mt-3 rounded-md border border-green-500 px-8 py-6">
