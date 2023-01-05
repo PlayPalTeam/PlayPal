@@ -26,6 +26,7 @@ const Lister = () => {
 					))}
 				</div>
 			</div>
+			
 		</>
 	);
 };

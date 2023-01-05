@@ -84,11 +84,11 @@ const Profile = () => {
 		defaultValues.email = user?.email;
 		defaultValues.username = username;
 		defaultValues.full_name = full_name;
-		reset({ ...defaultValues });
+		reset({ ...defaultValues }); 
 	}, [full_name, reset, user?.email, username]);
 
 	return (
-		<div className="grow-[4]">
+		<div className="grow-[4] ">
 			<Toaster />
 			<div className="flex rounded-lg border border-green-500">
 				<Avatar uid={user?.id} size={100} url={avatar_url} navs={true} />
