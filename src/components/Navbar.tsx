@@ -8,18 +8,23 @@ import {
 	BsCollectionFill,
 	BsPeopleFill,
 	BsMessenger,
+	BsLockFill,
+	
 } from "react-icons/bs";
 
 import { AiOutlineLogout } from "react-icons/ai";
 import Image from "next/image";
 import { useUserProfile } from "../context/UserProfileContext";
+import Avatar from "./Avatar";
 
 const Navbar = () => {
 	const router = useRouter();
 
 	const { userProfile } = useUserProfile();
 
-	const { username } = userProfile;
+	const { username , avatar_url } = userProfile;
+
+	
 
 	const supabase = useSupabaseClient();
 
@@ -58,42 +63,40 @@ const Navbar = () => {
 			text: "Community",
 			link: "community",
 			icons: <BsMessenger />,
-		},
+		}
+	
 	];
 
 	return (
 		<nav
 			className={`sticky top-0 h-screen w-72 bg-green-500 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
 		>
-			<div className="mb-10 flex justify-between mix-blend-color-burn">
-				<Image
-					src="/playpal-high-resolution-color-logo.svg"
-					alt="Logo"
-					width={1000}
-					height={1000}
-				/>
+			<div className=" mt-10 flex justify-between ">
+			<Avatar uid={user?.id} size={100} url={avatar_url} navs={false} />
 			</div>
-			<div className="mb-7 text-xs">
+			<div className=" mb-7 flex justify-center text-lg">
 				<p>{username}</p>
 			</div>
 			<ul>
 				{NavBarList.map((nav, index) => (
 					<li
 						key={index}
-						className="flex items-center py-2 px-6 hover:bg-green-700"
+						className="flex items-center py-3 px-10 hover:bg-green-700"
 					>
 						{nav.icons}
 						<Link
 							href={
 								role === "user" ? `/user/${nav.link}` : `/lister/${nav.link}`
 							}
+
 						>
 							<p className="ml-3">{nav.text}</p>
+										
 						</Link>
 					</li>
 				))}
-				<li className="flex items-center px-6">
-					<AiOutlineLogout />
+				<li className="flex items-center px-10 py-3 hover:bg-green-700">
+					<BsLockFill />
 					<button className="ml-3" onClick={handleLogOut}>
 						Log Out
 					</button>

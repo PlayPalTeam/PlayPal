@@ -8,14 +8,17 @@ export default function Avatar({
 	uid,
 	url,
 	size,
+	navs,
 }: {
 	uid: string;
 	url: Profiles["avatar_url"];
 	size: number;
+	navs:boolean;
 }) {
 	const supabase = useSupabaseClient<Database>();
 	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>("");
 	const [uploading, setUploading] = useState(false);
+	
 
 	useEffect(() => {
 		const downloadImage = async (path: string) => {
@@ -87,25 +90,30 @@ export default function Avatar({
 					style={{ height: size, width: size }}
 				/>
 			)}
-			<div style={{ width: size }}>
-				<label
-					className="cursor-pointer rounded-md border border-green-500 p-2 duration-300 ease-in-out hover:border-transparent hover:bg-green-500 hover:text-white"
-					htmlFor="single"
-				>
-					{uploading ? "Uploading ..." : "Upload"}
-				</label>
-				<input
-					style={{
-						visibility: "hidden",
-						position: "absolute",
-					}}
-					type="file"
-					id="single"
-					accept="image/*"
-					onChange={uploadAvatar}
-					disabled={uploading}
-				/>
-			</div>
+			{
+				navs && (
+					<div style={{ width: size }}>
+					<label
+						className="cursor-pointer rounded-md border border-green-500 p-2 duration-300 ease-in-out hover:border-transparent hover:bg-green-500 hover:text-white"
+						htmlFor="single"
+					>
+						{uploading ? "Uploading ..." : "Upload"}
+					</label>
+					<input
+						style={{
+							visibility: "hidden",
+							position: "absolute",
+						}}
+						type="file"
+						id="single"
+						accept="image/*"
+						onChange={uploadAvatar}
+						disabled={uploading}
+					/>
+				</div>
+				)
+			}
+		
 		</div>
 	);
 }
