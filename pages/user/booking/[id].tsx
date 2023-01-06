@@ -23,8 +23,6 @@ const Book = () => {
 	const turf = turfs.find((t) => t.turf_id === id);
 
 	const onSubmit: SubmitHandler<BookingType> = async (data) => {
-		console.log("Click")
-		console.log(data)
 		const { error } = await supabase
 			.from("bookings")
 			.insert({ ...data, profile_id: user.id, turf_id: id as string });
