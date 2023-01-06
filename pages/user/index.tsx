@@ -28,7 +28,7 @@ const User = () => {
 								<AiOutlinePlus />
 							</Link>
 						</div>
-						<div>
+						<div className="flex flex-col space-y-5 mt-5">
 							{books.map((book) => (
 								<BookingCard key={book.booking_id} {...book} />
 							))}

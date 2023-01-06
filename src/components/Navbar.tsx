@@ -9,11 +9,8 @@ import {
 	BsPeopleFill,
 	BsMessenger,
 	BsLockFill,
-	
 } from "react-icons/bs";
 
-import { AiOutlineLogout } from "react-icons/ai";
-import Image from "next/image";
 import { useUserProfile } from "../context/UserProfileContext";
 import Avatar from "./Avatar";
 
@@ -22,9 +19,7 @@ const Navbar = () => {
 
 	const { userProfile } = useUserProfile();
 
-	const { username , avatar_url } = userProfile;
-
-	
+	const { username, avatar_url } = userProfile;
 
 	const supabase = useSupabaseClient();
 
@@ -63,16 +58,15 @@ const Navbar = () => {
 			text: "Community",
 			link: "community",
 			icons: <BsMessenger />,
-		}
-	
+		},
 	];
 
 	return (
 		<nav
 			className={`sticky top-0 h-screen w-72 bg-green-500 text-white max-md:hidden sm:min-w-[290px] sm:max-w-[290x]`}
 		>
-			<div className=" mt-10 flex justify-between ">
-			<Avatar uid={user?.id} size={100} url={avatar_url} navs={false} />
+			<div className="mt-10 flex justify-between ">
+				<Avatar uid={user?.id} size={100} url={avatar_url} navs={false} />
 			</div>
 			<div className=" mb-7 flex justify-center text-lg">
 				<p>{username}</p>
@@ -88,10 +82,8 @@ const Navbar = () => {
 							href={
 								role === "user" ? `/user/${nav.link}` : `/lister/${nav.link}`
 							}
-
 						>
 							<p className="ml-3">{nav.text}</p>
-										
 						</Link>
 					</li>
 				))}
