@@ -74,8 +74,8 @@ const Navbar = () => {
 				// max-md:hidden
 				className={`hidden w-72 bg-green-500 text-white sm:sticky sm:top-0  sm:block sm:h-screen sm:min-w-[290px] sm:max-w-[290x] `}
 			>
-				<div className=" mt-10 flex justify-between ">
-					<Avatar uid={user?.id} size={100} url={avatar_url} navs={false} />
+				<div className="mt-10 flex justify-between ">
+					<Avatar />
 				</div>
 				<div className=" mb-7 flex justify-center text-lg">
 					<p>{username}</p>
