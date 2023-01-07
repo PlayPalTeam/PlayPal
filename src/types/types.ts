@@ -92,7 +92,7 @@ export type ProfileFormProps = {
 
 export type TurfFormProps = {
 	label: string;
-	name: "turf_name" | "location" | "price_per_hour" | "capacity";
+	name: "turf_name" | "location" | "price_per_hour" | "capacity" | "description";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
 	val?: boolean;
@@ -103,6 +103,7 @@ export const TurfProfileSchema = z.object({
 	location: z.string(),
 	price_per_hour: z.number(),
 	capacity: z.number(),
+	description: z.string(),
 });
 
 export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
