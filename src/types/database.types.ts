@@ -83,6 +83,8 @@ export interface Database {
           created_at: string | null
           updated_at: string | null
           profile_id: string | null
+          description: string | null
+          avatar_url: string | null
         }
         Insert: {
           turf_id?: string
@@ -93,6 +95,8 @@ export interface Database {
           created_at?: string | null
           updated_at?: string | null
           profile_id?: string | null
+          description?: string | null
+          avatar_url?: string | null
         }
         Update: {
           turf_id?: string
@@ -103,6 +107,8 @@ export interface Database {
           created_at?: string | null
           updated_at?: string | null
           profile_id?: string | null
+          description?: string | null
+          avatar_url?: string | null
         }
       }
     }
