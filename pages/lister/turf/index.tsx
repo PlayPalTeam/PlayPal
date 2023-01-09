@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Avatar, Button, Navbar } from "../../../src/components";
+import {  Button, Navbar } from "../../../src/components";
 import {
 	TurfFormProps,
 	TurfProfileSchema,
@@ -9,6 +9,7 @@ import {
 } from "../../../src/types/types";
 import { useTurfContext } from "../../../src/context/TurfContext";
 import toast, { Toaster } from "react-hot-toast";
+import Avatar1 from "../../../src/components/Avatar1";
 
 
 
@@ -81,7 +82,7 @@ const Turfs = () => {
 				<Navbar />
 				<div className="p-14">
 					<div className="flex rounded-lg border border-green-500">
-						<Avatar navs={true} />
+						<Avatar1 navs={true} />
 					</div>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{FormData.map((data) => (
