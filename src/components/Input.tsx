@@ -56,7 +56,9 @@ const Input = ({
 					/>
 				)}
 			</div>
-			{errors[name] && <p>{errors[name].message}</p>}
+			{errors[name] && (
+				<p className="text-xs text-red-500">{errors[name].message}</p>
+			)}
 		</div>
 	);
 };
