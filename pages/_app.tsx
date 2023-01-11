@@ -9,10 +9,10 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { UserProfileProvider } from "../src/context/UserProfileContext";
 import { TurfProvider } from "../src/context/TurfContext";
-import { Inter } from "@next/font/google";
+import { Poppins } from "@next/font/google";
 import { BookingProvider } from "../src/context/BookingContext";
 
-const inter = Inter({ weight: "400", subsets: ["latin"] });
+const inter = Poppins({ weight: "400", subsets: ["latin"] });
 
 function App({
 	Component,
