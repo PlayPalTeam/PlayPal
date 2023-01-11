@@ -3,11 +3,11 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../types/database.types";
 import { useUserProfile } from "../context/UserProfileContext";
-type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
+type Turfsd = Database["public"]["Tables"]["turfs"]["Row"];
 
 export default function Avatar1({ navs }: { navs: boolean }) {
 	const supabase = useSupabaseClient<Database>();
-	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>("");
+	const [avatarUrl, setAvatarUrl] = useState<Turfsd["avatar_url"]>("");
 	const [uploading, setUploading] = useState(false);
 
 	const { userProfile } = useUserProfile();
@@ -59,7 +59,7 @@ export default function Avatar1({ navs }: { navs: boolean }) {
 					avatar_url: filePath,
 					updated_at: new Date().toISOString(),
 				})
-				.eq("id", id);
+				.eq("profile_id", id);
 		} catch (error) {
 			alert("Error uploading avatar!");
 			console.log(error);
