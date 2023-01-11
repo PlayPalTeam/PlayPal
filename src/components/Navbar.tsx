@@ -20,7 +20,7 @@ const Navbar = () => {
 
 	const { userProfile } = useUserProfile();
 
-	const { username, avatar_url } = userProfile;
+	const { username } = userProfile;
 
 	const supabase = useSupabaseClient();
 
@@ -35,13 +35,12 @@ const Navbar = () => {
 	};
 
 	const [navChange, setNavChange] = useState(false);
-	const [navCss,setNavCss] = useState("")
+	const [navCss, setNavCss] = useState("");
 
 	const respnav = () => {
 		setNavChange((prevState) => !prevState);
-		setNavCss("w-full h-screen")
+		setNavCss("w-full h-screen");
 	};
-
 
 	const NavBarList = [
 		{
@@ -124,7 +123,9 @@ const Navbar = () => {
 					</div>
 				</div>
 				{navChange && (
-					<div className={`fixed top-0 left-10 z-[10] ${navCss} bg-green-400  pt-28 transition duration-1000  ease-in`}>
+					<div
+						className={`fixed top-0 left-10 z-[10] ${navCss} bg-green-400  pt-28 transition duration-1000  ease-in`}
+					>
 						{NavBarList.map((nav, index) => (
 							<li
 								key={index}
