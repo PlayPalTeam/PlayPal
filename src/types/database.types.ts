@@ -75,8 +75,10 @@ export interface Database {
       }
       turfs: {
         Row: {
+          avatar_url: string | null
           capacity: number | null
           created_at: string | null
+          description: string | null
           location: string | null
           price_per_hour: number | null
           profile_id: string | null
@@ -85,8 +87,10 @@ export interface Database {
           updated_at: string | null
         }
         Insert: {
+          avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
+          description?: string | null
           location?: string | null
           price_per_hour?: number | null
           profile_id?: string | null
@@ -95,8 +99,10 @@ export interface Database {
           updated_at?: string | null
         }
         Update: {
+          avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
+          description?: string | null
           location?: string | null
           price_per_hour?: number | null
           profile_id?: string | null
@@ -117,4 +123,3 @@ export interface Database {
     }
   }
 }
-
