@@ -12,103 +12,103 @@ export interface Database {
       bookings: {
         Row: {
           booking_id: string
-          profile_id: string | null
-          turf_id: string | null
-          start_time: string | null
-          end_time: string | null
-          date: string | null
           created_at: string | null
+          date: string | null
+          end_time: string | null
+          profile_id: string | null
+          start_time: string | null
+          turf_id: string | null
           updated_at: string | null
         }
         Insert: {
           booking_id?: string
-          profile_id?: string | null
-          turf_id?: string | null
-          start_time?: string | null
-          end_time?: string | null
-          date?: string | null
           created_at?: string | null
+          date?: string | null
+          end_time?: string | null
+          profile_id?: string | null
+          start_time?: string | null
+          turf_id?: string | null
           updated_at?: string | null
         }
         Update: {
           booking_id?: string
-          profile_id?: string | null
-          turf_id?: string | null
-          start_time?: string | null
-          end_time?: string | null
-          date?: string | null
           created_at?: string | null
+          date?: string | null
+          end_time?: string | null
+          profile_id?: string | null
+          start_time?: string | null
+          turf_id?: string | null
           updated_at?: string | null
         }
       }
       profiles: {
         Row: {
-          id: string
-          username: string | null
-          full_name: string | null
           avatar_url: string | null
-          role: string | null
+          full_name: string | null
+          id: string
           inserted_at: string
-          updated_at: string
           phone_number: number | null
+          role: string | null
+          updated_at: string
+          username: string | null
         }
         Insert: {
-          id: string
-          username?: string | null
-          full_name?: string | null
           avatar_url?: string | null
-          role?: string | null
+          full_name?: string | null
+          id: string
           inserted_at?: string
-          updated_at?: string
           phone_number?: number | null
+          role?: string | null
+          updated_at?: string
+          username?: string | null
         }
         Update: {
-          id?: string
-          username?: string | null
-          full_name?: string | null
           avatar_url?: string | null
-          role?: string | null
+          full_name?: string | null
+          id?: string
           inserted_at?: string
-          updated_at?: string
           phone_number?: number | null
+          role?: string | null
+          updated_at?: string
+          username?: string | null
         }
       }
       turfs: {
         Row: {
-          turf_id: string
-          turf_name: string | null
-          location: string | null
-          price_per_hour: number | null
+          avatar_url: string | null
           capacity: number | null
           created_at: string | null
-          updated_at: string | null
-          profile_id: string | null
           description: string | null
-          avatar_url: string | null
+          location: string | null
+          price_per_hour: number | null
+          profile_id: string | null
+          turf_id: string
+          turf_name: string | null
+          updated_at: string | null
         }
         Insert: {
-          turf_id?: string
-          turf_name?: string | null
-          location?: string | null
-          price_per_hour?: number | null
+          avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
-          updated_at?: string | null
-          profile_id?: string | null
           description?: string | null
-          avatar_url?: string | null
+          location?: string | null
+          price_per_hour?: number | null
+          profile_id?: string | null
+          turf_id?: string
+          turf_name?: string | null
+          updated_at?: string | null
         }
         Update: {
-          turf_id?: string
-          turf_name?: string | null
-          location?: string | null
-          price_per_hour?: number | null
+          avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
-          updated_at?: string | null
-          profile_id?: string | null
           description?: string | null
-          avatar_url?: string | null
+          location?: string | null
+          price_per_hour?: number | null
+          profile_id?: string | null
+          turf_id?: string
+          turf_name?: string | null
+          updated_at?: string | null
         }
       }
     }
