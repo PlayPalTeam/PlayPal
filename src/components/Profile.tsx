@@ -88,16 +88,15 @@ const Profile = () => {
 	}, [full_name, reset, user?.email, username]);
 
 	return (
-		<div className="grow-[4]">
+		<div className="grow-[4] ">
 			<Toaster />
 			<div className="flex rounded-lg border border-green-500">
-				<Avatar uid={user?.id} size={100} url={avatar_url} />
+				<Avatar navs={true} />
 			</div>
-
 			<div className="mt-3 rounded-md border border-green-500 px-8 py-6">
 				<div className="mt-3">
 					<h3 className="text-lg">Your Information</h3>
-				</div>
+				</div> 
 				<form className="mt-10 space-y-6" onSubmit={handleSubmit(onSubmit)}>
 					<div className="grid grid-cols-2 gap-8 max-lg:grid-cols-1">
 						{FormUI.map((field) => (

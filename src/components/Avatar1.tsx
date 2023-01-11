@@ -5,7 +5,7 @@ import { Database } from "../types/database.types";
 import { useUserProfile } from "../context/UserProfileContext";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 
-export default function Avatar({ navs }: { navs: boolean }) {
+export default function Avatar1({ navs }: { navs: boolean }) {
 	const supabase = useSupabaseClient<Database>();
 	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>("");
 	const [uploading, setUploading] = useState(false);
@@ -18,7 +18,7 @@ export default function Avatar({ navs }: { navs: boolean }) {
 		const downloadImage = async (path: string) => {
 			try {
 				const { data, error } = await supabase.storage
-					.from("avatars")
+					.from("turfimage")
 					.download(path);
 				if (error) {
 					throw error;
@@ -46,7 +46,7 @@ export default function Avatar({ navs }: { navs: boolean }) {
 			const filePath = `${fileName}`;
 
 			let { error: uploadError } = await supabase.storage
-				.from("avatars")
+				.from("turfimage")
 				.upload(filePath, file, { upsert: true });
 
 			if (uploadError) {
@@ -54,7 +54,7 @@ export default function Avatar({ navs }: { navs: boolean }) {
 			}
 
 			await supabase
-				.from("profiles")
+				.from("turfs")
 				.update({
 					avatar_url: filePath,
 					updated_at: new Date().toISOString(),
