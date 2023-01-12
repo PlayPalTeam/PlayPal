@@ -1,20 +1,36 @@
 import { HTMLInputTypeAttribute } from "react";
+import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
+
+export interface InputCommonProps {
+	name:
+		| "role"
+		| "email"
+		| "date"
+		| "password"
+		| "username"
+		| "start_time"
+		| "end_time"
+		| "player_needed";
+	label: string;
+	placeholder: string;
+	register: UseFormRegister<
+		SignInData | SignUpData | BookingType | RequestData
+	>;
+	className?: string;
+	errors?: any;
+}
 
 // Validates that the input is a non-empty string with at least 3 characters
 const usernameValidation = z
-	.string({
-		required_error: "Username is required",
-	})
+	.string()
 	.min(3, "Username must be more than 3 characters");
 
 // Validates that the input is a non-empty string that is a valid email address
-const emailValidation = z
-	.string({ required_error: "Email is required" })
-	.email({ message: "Invalid email address" });
+const emailValidation = z.string().email({ message: "Invalid email address" });
 
-// Validates that the input is a non-empty string that is at least 8 characters long and contains at least one uppercase letter,
-// one lowercase letter, one number, and one special character
+// Validates that the input is a non-empty string that is at least 8 characters long
+// contains at least one uppercase letter, one lowercase letter, one number, and one special character
 const passwordValidation = z
 	.string()
 	.regex(new RegExp(".*[A-Z].*"), "One uppercase character")
@@ -31,9 +47,7 @@ export const SignUpSchema = z.object({
 	username: usernameValidation,
 	email: emailValidation,
 	password: passwordValidation,
-	role: z.enum(["user", "lister"], {
-		required_error: "Select one of the choices",
-	}),
+	role: z.enum(["user", "lister"]),
 });
 
 export interface SignUpFormProps {
@@ -45,7 +59,7 @@ export interface SignUpFormProps {
 }
 
 // Type representing the shape of an object that conforms to the SignUpFormSchema
-export type SignUpType = z.infer<typeof SignUpSchema>;
+export type SignUpData = z.infer<typeof SignUpSchema>;
 
 // Schema for validating the input for a sign in form
 export const SignInSchema = z.object({
@@ -61,26 +75,26 @@ export type SignInFormProps = {
 };
 
 // Type representing the shape of an object that conforms to the SignInFormSchema
-export type SignInType = z.infer<typeof SignInSchema>;
+export type SignInData = z.infer<typeof SignInSchema>;
 
-// Schema for validating the input for a user profile form
-export const UserProfileFormSchema = z.object({
+// Schema for validatiSignInDatang the input for a user profile form
+export const UserProfileSchema = z.object({
 	email: emailValidation,
 	username: usernameValidation,
 	full_name: z.string(),
 });
 
 // Type representing the shape of an object that conforms to the UserProfileFormSchema
-export type UserProfileFormProps = z.infer<typeof UserProfileFormSchema>;
+export type UserProfileData = z.infer<typeof UserProfileSchema>;
 
 // Schema for validating the input for a password reset form
-export const ForgotPasswordFormSchema = z.object({
+export const ForgotPasswordSchema = z.object({
 	password: passwordValidation,
-	confirmpassword: passwordValidation,
+	confirmPassword: passwordValidation,
 });
 
-// Type representing the shape of an object that
-export type ForgortType = z.infer<typeof ForgotPasswordFormSchema>;
+// Type representing the shape of an object that conforms to the ForgotPasswordSchema
+export type ForgotPasswordData = z.infer<typeof ForgotPasswordSchema>;
 
 export type ProfileFormProps = {
 	label: string;
@@ -92,7 +106,12 @@ export type ProfileFormProps = {
 
 export type TurfFormProps = {
 	label: string;
-	name: "turf_name" | "location" | "price_per_hour" | "capacity" | "description";
+	name:
+		| "turf_name"
+		| "location"
+		| "price_per_hour"
+		| "capacity"
+		| "description";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
 	val?: boolean;
@@ -122,3 +141,16 @@ export type BookingFormProps = {
 };
 
 export type BookingType = z.infer<typeof BookingSchema>;
+
+export const RequestSchema = z.object({
+	player_needed: z.number().positive(),
+});
+
+export type RequestFormProps = {
+	label: string;
+	name: "player_needed";
+	type: HTMLInputTypeAttribute;
+	valueAsNumber: boolean;
+};
+
+export type RequestData = z.infer<typeof RequestSchema>;

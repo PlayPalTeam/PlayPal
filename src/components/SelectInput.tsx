@@ -1,24 +1,11 @@
-import { UseFormRegister } from "react-hook-form";
-import { BookingType, SignUpType } from "../types/types";
+import { InputCommonProps } from "../types/types";
 
 interface Option {
 	value: string;
 	label: string;
 }
 
-interface SelectInputProps {
-	label: string;
-	name:
-		| "email"
-		| "password"
-		| "username"
-		| "role"
-		| "date"
-		| "start_time"
-		| "end_time";
-	placeholder: string;
-	register: UseFormRegister<SignUpType | BookingType>;
-	errors: any;
+interface SelectInputProps extends InputCommonProps {
 	options: Option[];
 }
 

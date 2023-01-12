@@ -1,24 +1,10 @@
 import { HTMLInputTypeAttribute, useState } from "react";
-import { UseFormRegister } from "react-hook-form";
-import { BookingType, SignInType, SignUpType } from "../types/types";
+import { InputCommonProps } from "../types/types";
 import ShowHideButton from "./ShowHideButton";
 
-interface Props {
-	label: string;
-	name:
-		| "email"
-		| "password"
-		| "username"
-		| "role"
-		| "date"
-		| "start_time"
-		| "end_time";
+interface InputProps extends InputCommonProps {
 	type: HTMLInputTypeAttribute;
-	placeholder: string;
-	register: UseFormRegister<SignInType | SignUpType | BookingType>;
-	valueAsDate?: boolean;
-	errors: any;
-	className: string;
+	valueAsNumber: boolean;
 }
 
 const Input = ({
@@ -29,7 +15,8 @@ const Input = ({
 	errors,
 	className,
 	placeholder,
-}: Props) => {
+	valueAsNumber
+}: InputProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const toggleShowPassword = () => {
@@ -47,7 +34,7 @@ const Input = ({
 					name={name}
 					placeholder={placeholder}
 					className="inputCss"
-					{...register(name)}
+					{...register(name, {valueAsNumber: valueAsNumber})}
 				/>
 				{type === "password" && (
 					<ShowHideButton
@@ -56,7 +43,9 @@ const Input = ({
 					/>
 				)}
 			</div>
-			{errors[name] && <p>{errors[name].message}</p>}
+			{errors[name] && (
+				<p className="text-xs text-red-500">{errors[name].message}</p>
+			)}
 		</div>
 	);
 };

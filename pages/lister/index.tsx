@@ -21,12 +21,11 @@ const Lister = () => {
 					<Link href={"/lister/turf"}>Add</Link>
 					{turfs.map((turf) => (
 						<div key={turf.turf_id}>
-							<TurfCard {...turf} />
+							<TurfCard turf_id={""} turf_name={""} location={""} {...turf} />
 						</div>
 					))}
 				</div>
 			</div>
-			
 		</>
 	);
 };

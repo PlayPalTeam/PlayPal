@@ -5,12 +5,12 @@ import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { ForgortType, ForgotPasswordFormSchema } from "../types/types";
+import { ForgotPasswordData, ForgotPasswordSchema } from "../types/types";
 import { Button } from "./index";
 
 interface FormField {
 	label: string;
-	name: "password" | "confirmpassword";
+	name: "password" | "confirmPassword";
 	placeholder: string;
 	type: HTMLInputTypeAttribute;
 	error: any;
@@ -18,7 +18,7 @@ interface FormField {
 
 const ChangePassword = () => {
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [confirmPasswordVisible, setConfirmPasswordVisible] =
+	const [confirmPasswordVisible, setconfirmPasswordVisible] =
 		useState<boolean>(false);
 
 	const {
@@ -26,19 +26,19 @@ const ChangePassword = () => {
 		formState: { errors, isSubmitting },
 		reset,
 		handleSubmit,
-	} = useForm<ForgortType>({
-		resolver: zodResolver(ForgotPasswordFormSchema),
+	} = useForm<ForgotPasswordData>({
+		resolver: zodResolver(ForgotPasswordSchema),
 	});
 
 	const supabase = useSupabaseClient();
 
 	const router = useRouter();
 
-	const submit: SubmitHandler<ForgortType> = async ({
+	const submit: SubmitHandler<ForgotPasswordData> = async ({
 		password,
-		confirmpassword,
+		confirmPassword,
 	}) => {
-		if (password !== confirmpassword) {
+		if (password !== confirmPassword) {
 			toast.error("Passwords doesn't match", {
 				duration: 5000,
 				style: {
@@ -80,8 +80,8 @@ const ChangePassword = () => {
 		setPasswordVisible(!passwordVisible);
 	}, [passwordVisible]);
 
-	const handleConfirmPasswordShow = useCallback(() => {
-		setConfirmPasswordVisible(!confirmPasswordVisible);
+	const handleconfirmPasswordShow = useCallback(() => {
+		setconfirmPasswordVisible(!confirmPasswordVisible);
 	}, [confirmPasswordVisible]);
 
 	const formFields: FormField[] = [
@@ -94,10 +94,10 @@ const ChangePassword = () => {
 		},
 		{
 			label: "New Password",
-			name: "confirmpassword",
+			name: "confirmPassword",
 			placeholder: "e.g. steven@12",
 			type: confirmPasswordVisible ? "text" : "password",
-			error: errors.confirmpassword,
+			error: errors.confirmPassword,
 		},
 	];
 
@@ -138,11 +138,11 @@ const ChangePassword = () => {
 								</button>
 							)}
 
-							{field.name === "confirmpassword" && (
+							{field.name === "confirmPassword" && (
 								<button
 									type="button"
 									className="absolute right-2"
-									onClick={handleConfirmPasswordShow}
+									onClick={handleconfirmPasswordShow}
 								>
 									{confirmPasswordVisible ? (
 										<AiFillEye className="h-6 w-6" />
@@ -160,7 +160,11 @@ const ChangePassword = () => {
 					</div>
 				))}
 
-				<Button type="submit" text="Reset Password" isSubmitting={isSubmitting} />
+				<Button
+					type="submit"
+					text="Reset Password"
+					isSubmitting={isSubmitting}
+				/>
 			</form>
 		</div>
 	);
