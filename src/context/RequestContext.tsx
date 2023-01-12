@@ -1,9 +1,7 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import {
 	createContext,
-	Dispatch,
 	ReactNode,
-	SetStateAction,
 	useContext,
 	useEffect,
 	useMemo,
@@ -18,7 +16,6 @@ type RequestUpdate = Database["public"]["Tables"]["requests"]["Update"];
 
 interface RequestContexType {
 	requests: Request[];
-	setRequest: Dispatch<SetStateAction<Request[]>>;
 	addRequest: (request: RequestInsert) => Promise<void>;
 	updateRequest: (id: string, request: RequestUpdate) => Promise<void>;
 	deleteRequest: (id: string) => Promise<void>;
@@ -26,7 +23,6 @@ interface RequestContexType {
 
 export const RequestContext = createContext<RequestContexType>({
 	requests: [],
-	setRequest: () => {},
 	addRequest: () => Promise.resolve(),
 	updateRequest: () => Promise.resolve(),
 	deleteRequest: () => Promise.resolve(),
@@ -41,9 +37,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
 	const getRequests = useMemo(() => {
 		return async () => {
-			const { data, error } = await supabase
-				.from("requests")
-				.select("*, turf_id(*)");
+			const { data, error } = await supabase.from("requests").select("*");
 
 			if (error) {
 				toast.error(error.message, {
@@ -67,8 +61,8 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}, [getRequests, user]);
 
-	const addRequest = async (book: RequestInsert) => {
-		await supabase.from("requests").insert({ ...book, profile_id: user.id });
+	const addRequest = async (request: RequestInsert) => {
+		await supabase.from("requests").insert({ ...request, profile_id: user.id });
 	};
 
 	const updateRequest = async () => {};
@@ -77,7 +71,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<RequestContext.Provider
-			value={{ requests, setRequest, addRequest, updateRequest, deleteRequest }}
+			value={{ requests, addRequest, updateRequest, deleteRequest }}
 		>
 			{children}
 		</RequestContext.Provider>

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useTurfContext } from "../../../src/context/TurfContext";
 import Link from "next/link";
-import { Form, FormTitle } from "../../../src/components";
+import { Form, FormTitle, Layout } from "../../../src/components";
 import { BookingForm } from "../../../src/content/contents";
 import { SubmitHandler } from "react-hook-form";
 import { BookingType } from "../../../src/types/types";
@@ -35,28 +35,30 @@ const Book = () => {
 	};
 
 	return (
-		<main className="flex h-screen items-center justify-center">
-			<Toaster />
-			<div className="flex w-full max-w-2xl items-center border">
-				<section className="px-20">
-					<h1>Booking for {turf?.turf_name}</h1>
-					<p>Location: {turf?.location}</p>
-					<p>Size: {turf?.capacity}</p>
-					<p>Price: {turf?.price_per_hour}/hour</p>
-				</section>
-				<section className="p-5">
-					<FormTitle title="Book" />
-					<Form
-						formFields={BookingForm}
-						onSubmit={onSubmit}
-						form={"Booking"}
-						buttonType={"submit"}
-						buttonText={"Book Now"}
-					/>
-					<Link href="/user/booking">Back to turf list</Link>
-				</section>
-			</div>
-		</main>
+		<Layout title={turf?.turf_name}>
+			<main className="flex h-screen items-center justify-center">
+				<Toaster />
+				<div className="flex w-full max-w-2xl items-center border">
+					<section className="px-20">
+						<h1>Booking for {turf?.turf_name}</h1>
+						<p>Location: {turf?.location}</p>
+						<p>Size: {turf?.capacity}</p>
+						<p>Price: {turf?.price_per_hour}/hour</p>
+					</section>
+					<section className="p-5">
+						<FormTitle title="Book" />
+						<Form
+							formFields={BookingForm}
+							onSubmit={onSubmit}
+							form={"Booking"}
+							buttonType={"submit"}
+							buttonText={"Book Now"}
+						/>
+						<Link href="/user/booking">Back to turf list</Link>
+					</section>
+				</div>
+			</main>
+		</Layout>
 	);
 };
 

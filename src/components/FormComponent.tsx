@@ -3,31 +3,35 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Input, SelectInput } from "./index";
 import {
 	SignInSchema,
-	SignInType,
+	SignInData,
 	SignUpSchema,
-	SignUpType,
+	SignUpData,
 	BookingSchema,
 	BookingType,
+	RequestData,
+	RequestSchema,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
 
 interface FormProps {
 	formFields: {
 		name:
+			| "role"
 			| "email"
+			| "date"
 			| "password"
 			| "username"
-			| "role"
-			| "date"
 			| "start_time"
-			| "end_time";
+			| "end_time"
+			| "player_needed";
 		label: string;
-		placeholder?: string;
 		type: HTMLInputTypeAttribute;
+		placeholder?: string;
+		valueAsNumber?: boolean;
 		options?: { value: string; label: string }[];
 	}[];
-	onSubmit: SubmitHandler<SignInType | SignUpType | BookingType>;
-	form: "SignIn" | "SignUp" | "Booking";
+	onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData>;
+	form: "SignIn" | "SignUp" | "Booking" | "Request";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;
@@ -44,13 +48,14 @@ const Form = ({
 	const schema =
 		(form === "SignIn" && SignInSchema) ||
 		(form === "SignUp" && SignUpSchema) ||
-		(form === "Booking" && BookingSchema);
+		(form === "Booking" && BookingSchema) ||
+		(form === "Request" && RequestSchema);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignInType | SignUpType | BookingType>({
+	} = useForm<SignInData | SignUpData | BookingType | RequestData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -76,6 +81,7 @@ const Form = ({
 							register={register}
 							errors={errors}
 							className={className}
+							valueAsNumber={field.valueAsNumber}
 						/>
 					)}
 				</div>

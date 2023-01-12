@@ -9,10 +9,11 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { UserProfileProvider } from "../src/context/UserProfileContext";
 import { TurfProvider } from "../src/context/TurfContext";
-import { Poppins } from "@next/font/google";
+import { Roboto } from "@next/font/google";
 import { BookingProvider } from "../src/context/BookingContext";
+import { RequestProvider } from "../src/context/RequestContext";
 
-const inter = Poppins({ weight: "400", subsets: ["latin"] });
+const inter = Roboto({ weight: "400", subsets: ["latin"] });
 
 function App({
 	Component,
@@ -28,15 +29,17 @@ function App({
 			supabaseClient={supabaseClient}
 			initialSession={pageProps.initialSession}
 		>
-			<BookingProvider>
-				<TurfProvider>
-					<UserProfileProvider>
-						<main className={inter.className}>
-							<Component {...pageProps} />
-						</main>
-					</UserProfileProvider>
-				</TurfProvider>
-			</BookingProvider>
+			<RequestProvider>
+				<BookingProvider>
+					<TurfProvider>
+						<UserProfileProvider>
+							<main className={inter.className}>
+								<Component {...pageProps} />
+							</main>
+						</UserProfileProvider>
+					</TurfProvider>
+				</BookingProvider>
+			</RequestProvider>
 		</SessionContextProvider>
 	);
 }

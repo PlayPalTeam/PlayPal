@@ -8,7 +8,7 @@ const ProfileCard = () => {
 
 	return (
 		<div className="flex items-center max-md:flex-col max-md:justify-center">
-			<Avatar navs={false} />
+			{/* <Avatar navs={false} /> */}
 			<div>
 				<h4>Username: {username}</h4>
 				<h4>Full Name: {full_name}</h4>

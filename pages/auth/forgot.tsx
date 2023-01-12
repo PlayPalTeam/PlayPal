@@ -2,14 +2,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ForgortType, ForgotPasswordFormSchema } from "../../src/types/types";
+import {
+	ForgotPasswordData,
+	ForgotPasswordSchema,
+} from "../../src/types/types";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { Button, ShowHideButton } from "../../src/components";
 
 interface FormField {
 	label: string;
-	name: "password" | "confirmpassword";
+	name: "password" | "confirmPassword";
 	placeholder: string;
 	type: HTMLInputTypeAttribute;
 	error: any;
@@ -25,19 +28,19 @@ const ForgotPassword = () => {
 		formState: { errors, isSubmitting },
 		reset,
 		handleSubmit,
-	} = useForm<ForgortType>({
-		resolver: zodResolver(ForgotPasswordFormSchema),
+	} = useForm<ForgotPasswordData>({
+		resolver: zodResolver(ForgotPasswordSchema),
 	});
 
 	const supabase = useSupabaseClient();
 
 	const router = useRouter();
 
-	const submit: SubmitHandler<ForgortType> = async ({
+	const submit: SubmitHandler<ForgotPasswordData> = async ({
 		password,
-		confirmpassword,
+		confirmPassword,
 	}) => {
-		if (password !== confirmpassword) {
+		if (password !== confirmPassword) {
 			toast.error("Passwords must match");
 			return;
 		}
@@ -87,10 +90,10 @@ const ForgotPassword = () => {
 		},
 		{
 			label: "Confirm Password",
-			name: "confirmpassword",
+			name: "confirmPassword",
 			placeholder: "e.g. steven@12",
 			type: confirmPasswordVisible ? "text" : "password",
-			error: errors.confirmpassword,
+			error: errors.confirmPassword,
 		},
 	];
 
@@ -124,7 +127,7 @@ const ForgotPassword = () => {
 								/>
 							)}
 
-							{field.name === "confirmpassword" && (
+							{field.name === "confirmPassword" && (
 								<ShowHideButton
 									handleShowPassword={handleConfirmPasswordShow}
 									showPassword={confirmPasswordVisible}

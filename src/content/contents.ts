@@ -1,5 +1,6 @@
 import {
 	BookingFormProps,
+	RequestFormProps,
 	SignInFormProps,
 	SignUpFormProps,
 } from "../types/types";
@@ -67,4 +68,13 @@ const BookingForm: BookingFormProps[] = [
 	},
 ];
 
-export { SignInForm, SignUpForm, BookingForm };
+const RequestForm: RequestFormProps[] = [
+	{
+		label: "Player Needed",
+		type: "text",
+		name: "player_needed",
+		valueAsNumber: true,
+	},
+];
+
+export { SignInForm, SignUpForm, BookingForm, RequestForm };

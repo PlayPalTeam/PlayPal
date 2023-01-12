@@ -91,7 +91,7 @@ const Profile = () => {
 		<div className="grow-[4] ">
 			<Toaster />
 			<div className="flex rounded-lg border border-green-500">
-				<Avatar navs={true} />
+				{/* <Avatar navs={true} /> */}
 			</div>
 			<div className="mt-3 rounded-md border border-green-500 px-8 py-6">
 				<div className="mt-3">

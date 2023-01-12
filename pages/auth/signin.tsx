@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler } from "react-hook-form";
-import { SignInType } from "../../src/types/types";
+import { SignInData } from "../../src/types/types";
 import { SignInForm } from "../../src/content/contents";
 import { Form, FormTitle } from "../../src/components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -15,7 +15,7 @@ const SignIn = () => {
 
 	const supabase = useSupabaseClient();
 
-	const onSubmit: SubmitHandler<SignInType> = async (data) => {
+	const onSubmit: SubmitHandler<SignInData> = async (data) => {
 		const {
 			error,
 			data: { session },
