@@ -73,6 +73,29 @@ export interface Database {
           username?: string | null
         }
       }
+      requests: {
+        Row: {
+          created_at: string | null
+          id: string
+          player_needed: number | null
+          turf_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          player_needed?: number | null
+          turf_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          player_needed?: number | null
+          turf_id?: string | null
+          updated_at?: string | null
+        }
+      }
       turfs: {
         Row: {
           avatar_url: string | null
