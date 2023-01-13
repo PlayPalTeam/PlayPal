@@ -76,22 +76,28 @@ export interface Database {
       requests: {
         Row: {
           created_at: string | null
+          game: string | null
           id: string
           player_needed: number | null
+          profile_id: string | null
           turf_id: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          game?: string | null
           id?: string
           player_needed?: number | null
+          profile_id?: string | null
           turf_id?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          game?: string | null
           id?: string
           player_needed?: number | null
+          profile_id?: string | null
           turf_id?: string | null
           updated_at?: string | null
         }
@@ -146,4 +152,3 @@ export interface Database {
     }
   }
 }
-
