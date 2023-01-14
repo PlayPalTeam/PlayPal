@@ -77,6 +77,7 @@ export interface Database {
         Row: {
           created_at: string | null
           game: string | null
+          game_date: string | null
           id: string
           player_needed: number | null
           profile_id: string | null
@@ -86,6 +87,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           game?: string | null
+          game_date?: string | null
           id?: string
           player_needed?: number | null
           profile_id?: string | null
@@ -95,6 +97,7 @@ export interface Database {
         Update: {
           created_at?: string | null
           game?: string | null
+          game_date?: string | null
           id?: string
           player_needed?: number | null
           profile_id?: string | null
@@ -145,7 +148,10 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decreases_value: {
+        Args: { re_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
