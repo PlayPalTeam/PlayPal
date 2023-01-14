@@ -23,7 +23,10 @@ interface FormProps {
 			| "username"
 			| "start_time"
 			| "end_time"
-			| "player_needed";
+			| "player_needed"
+			| "turf_id"
+			| "game"
+			| "game_date";
 		label: string;
 		type: HTMLInputTypeAttribute;
 		placeholder?: string;
@@ -45,11 +48,13 @@ const Form = ({
 	form,
 	className,
 }: FormProps) => {
-	const schema =
-		(form === "SignIn" && SignInSchema) ||
-		(form === "SignUp" && SignUpSchema) ||
-		(form === "Booking" && BookingSchema) ||
-		(form === "Request" && RequestSchema);
+	const formSchemas = {
+		SignIn: SignInSchema,
+		SignUp: SignUpSchema,
+		Booking: BookingSchema,
+		Request: RequestSchema,
+	};
+	const schema = formSchemas[form];
 
 	const {
 		register,

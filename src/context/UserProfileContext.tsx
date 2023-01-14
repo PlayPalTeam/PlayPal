@@ -3,8 +3,6 @@ import {
 	createContext,
 	useState,
 	useEffect,
-	SetStateAction,
-	Dispatch,
 	useContext,
 	ReactNode,
 	useMemo,
@@ -14,9 +12,6 @@ import { Database } from "../types/database.types";
 
 interface UserProfileContextType {
 	userProfile: Database["public"]["Tables"]["profiles"]["Row"];
-	setUserProfile: Dispatch<
-		SetStateAction<Database["public"]["Tables"]["profiles"]["Row"]>
-	>;
 	updateUserProfile: (
 		update: Database["public"]["Tables"]["profiles"]["Update"]
 	) => Promise<void>;
@@ -33,7 +28,6 @@ export const UserProfileContext = createContext<UserProfileContextType>({
 		inserted_at: "",
 		updated_at: "",
 	},
-	setUserProfile: () => {},
 	updateUserProfile: () => Promise.resolve(),
 });
 
@@ -97,9 +91,7 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	return (
-		<UserProfileContext.Provider
-			value={{ userProfile, setUserProfile, updateUserProfile }}
-		>
+		<UserProfileContext.Provider value={{ userProfile, updateUserProfile }}>
 			{children}
 		</UserProfileContext.Provider>
 	);

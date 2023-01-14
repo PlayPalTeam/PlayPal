@@ -11,7 +11,10 @@ export interface InputCommonProps {
 		| "username"
 		| "start_time"
 		| "end_time"
-		| "player_needed";
+		| "player_needed"
+		| "turf_id"
+		| "game"
+		| "game_date";
 	label: string;
 	placeholder: string;
 	register: UseFormRegister<
@@ -144,13 +147,17 @@ export type BookingType = z.infer<typeof BookingSchema>;
 
 export const RequestSchema = z.object({
 	player_needed: z.number().positive(),
+	turf_id: z.string(),
+	game: z.string(),
+	game_date: z.string(),
 });
 
-export type RequestFormProps = {
+export interface FormContent {
 	label: string;
-	name: "player_needed";
-	type: HTMLInputTypeAttribute;
-	valueAsNumber: boolean;
-};
+	name: "player_needed" | "turf_id" | "game" | "game_date";
+	type: "select" | "text";
+	options?: { value: string; label: string }[];
+	valueAsNumber?: boolean;
+}
 
 export type RequestData = z.infer<typeof RequestSchema>;

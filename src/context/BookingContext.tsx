@@ -1,9 +1,7 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import {
 	createContext,
-	Dispatch,
 	ReactNode,
-	SetStateAction,
 	useContext,
 	useEffect,
 	useMemo,
@@ -18,13 +16,11 @@ type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
 
 interface BookingContexType {
 	books: Booking[];
-	setBooks: Dispatch<SetStateAction<Booking[]>>;
 	addBooks: (id: string, booking: BookingInsert) => Promise<void>;
 }
 
 export const BookingContext = createContext<BookingContexType>({
 	books: [],
-	setBooks: () => {},
 	addBooks: () => Promise.resolve(),
 });
 
@@ -37,7 +33,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
 	const getBookings = useMemo(() => {
 		return async () => {
-			const { data, error } = await supabase.from("bookings").select("*");
+			const { data, error } = await supabase
+				.from("bookings")
+				.select("*, turfs(turf_name, location)")
+				.eq("profile_id", user.id);
 
 			if (error) {
 				toast.error(error.message, {
@@ -53,7 +52,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 				setBooks(data);
 			}
 		};
-	}, [supabase]);
+	}, [supabase, user?.id]);
 
 	useEffect(() => {
 		if (user) {
@@ -65,10 +64,12 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 		await supabase
 			.from("turfs")
 			.insert({ ...book, profile_id: user.id, turf_id: turf_id });
+
+		getBookings();
 	};
 
 	return (
-		<BookingContext.Provider value={{ books, setBooks, addBooks }}>
+		<BookingContext.Provider value={{ books, addBooks }}>
 			{children}
 		</BookingContext.Provider>
 	);

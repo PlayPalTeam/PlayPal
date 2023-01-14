@@ -12,19 +12,16 @@ import { Database } from "../types/database.types";
 
 type Request = Database["public"]["Tables"]["requests"]["Row"];
 type RequestInsert = Database["public"]["Tables"]["requests"]["Insert"];
-type RequestUpdate = Database["public"]["Tables"]["requests"]["Update"];
 
 interface RequestContexType {
 	requests: Request[];
 	addRequest: (request: RequestInsert) => Promise<void>;
-	updateRequest: (id: string, request: RequestUpdate) => Promise<void>;
 	deleteRequest: (id: string) => Promise<void>;
 }
 
 export const RequestContext = createContext<RequestContexType>({
 	requests: [],
 	addRequest: () => Promise.resolve(),
-	updateRequest: () => Promise.resolve(),
 	deleteRequest: () => Promise.resolve(),
 });
 
@@ -62,17 +59,22 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 	}, [getRequests, user]);
 
 	const addRequest = async (request: RequestInsert) => {
-		await supabase.from("requests").insert({ ...request, profile_id: user.id });
-	};
+		const { error } = await supabase
+			.from("requests")
+			.insert({ ...request, profile_id: user.id });
 
-	const updateRequest = async () => {};
+		if (error) {
+			toast.error(error.message, { duration: 5000 });
+		}
+
+		toast.success("Your request is created", { duration: 5000 });
+		getRequests();
+	};
 
 	const deleteRequest = async () => {};
 
 	return (
-		<RequestContext.Provider
-			value={{ requests, addRequest, updateRequest, deleteRequest }}
-		>
+		<RequestContext.Provider value={{ requests, addRequest, deleteRequest }}>
 			{children}
 		</RequestContext.Provider>
 	);
