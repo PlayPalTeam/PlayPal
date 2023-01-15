@@ -78,9 +78,9 @@ export interface Database {
           created_at: string | null
           game: string | null
           game_date: string | null
-          id: string
           player_needed: number | null
           profile_id: string | null
+          request_id: string
           turf_id: string | null
           updated_at: string | null
         }
@@ -88,9 +88,9 @@ export interface Database {
           created_at?: string | null
           game?: string | null
           game_date?: string | null
-          id?: string
           player_needed?: number | null
           profile_id?: string | null
+          request_id?: string
           turf_id?: string | null
           updated_at?: string | null
         }
@@ -98,49 +98,64 @@ export interface Database {
           created_at?: string | null
           game?: string | null
           game_date?: string | null
-          id?: string
           player_needed?: number | null
           profile_id?: string | null
+          request_id?: string
           turf_id?: string | null
           updated_at?: string | null
         }
       }
       turfs: {
         Row: {
+          ammenitites: string | null
+          availabelsports: string[] | null
           avatar_url: string | null
           capacity: number | null
           created_at: string | null
+          daytime: string | null
           description: string | null
           location: string | null
           price_per_hour: number | null
           profile_id: string | null
+          shortlocation: string | null
           turf_id: string
           turf_name: string | null
           updated_at: string | null
+          venuerules: string | null
         }
         Insert: {
+          ammenitites?: string | null
+          availabelsports?: string[] | null
           avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
+          daytime?: string | null
           description?: string | null
           location?: string | null
           price_per_hour?: number | null
           profile_id?: string | null
+          shortlocation?: string | null
           turf_id?: string
           turf_name?: string | null
           updated_at?: string | null
+          venuerules?: string | null
         }
         Update: {
+          ammenitites?: string | null
+          availabelsports?: string[] | null
           avatar_url?: string | null
           capacity?: number | null
           created_at?: string | null
+          daytime?: string | null
           description?: string | null
           location?: string | null
           price_per_hour?: number | null
           profile_id?: string | null
+          shortlocation?: string | null
           turf_id?: string
           turf_name?: string | null
           updated_at?: string | null
+          venuerules?: string | null
         }
       }
     }
@@ -148,10 +163,7 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      decreases_value: {
-        Args: { re_id: string }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
