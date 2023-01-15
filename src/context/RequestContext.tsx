@@ -15,12 +15,19 @@ type RequestInsert = Database["public"]["Tables"]["requests"]["Insert"];
 
 interface RequestContexType {
 	requests: Request[];
+	updatePlayerNeeded: (
+		id: number,
+		player: number,
+		name: string,
+		phone: number
+	) => Promise<void>;
 	addRequest: (request: RequestInsert) => Promise<void>;
-	deleteRequest: (id: string) => Promise<void>;
+	deleteRequest: (id: number) => Promise<void>;
 }
 
 export const RequestContext = createContext<RequestContexType>({
 	requests: [],
+	updatePlayerNeeded: () => Promise.resolve(),
 	addRequest: () => Promise.resolve(),
 	deleteRequest: () => Promise.resolve(),
 });
@@ -71,10 +78,57 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 		getRequests();
 	};
 
-	const deleteRequest = async () => {};
+	async function updatePlayerNeeded(
+		id: number,
+		player: number,
+		name: string,
+		phone: number
+	) {
+		const { data, error } = await supabase
+			.from("requests")
+			.update({
+				player_needed: player - 1,
+				people: [{ name: name, phone: phone }],
+			})
+			.eq("id", id);
+
+		if (data) {
+			toast.success("Success", { duration: 1000 });
+		}
+
+		if (error) {
+			toast.error(error.message, { duration: 1000 });
+		}
+
+		getRequests();
+	}
+
+	const deleteRequest = async (id: number) => {
+		const { status, error } = await supabase
+			.from("requests")
+			.delete()
+			.eq("id", id);
+
+		if (error) {
+			toast.error(error.message, { duration: 5000 });
+		}
+
+		if (status === 204) {
+			toast.success("Your request is deleted", { duration: 1000 });
+		}
+
+		getRequests();
+	};
 
 	return (
-		<RequestContext.Provider value={{ requests, addRequest, deleteRequest }}>
+		<RequestContext.Provider
+			value={{
+				requests,
+				updatePlayerNeeded,
+				addRequest,
+				deleteRequest,
+			}}
+		>
 			{children}
 		</RequestContext.Provider>
 	);

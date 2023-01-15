@@ -2,19 +2,22 @@ import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
+export type names =
+	| "role"
+	| "email"
+	| "date"
+	| "password"
+	| "username"
+	| "start_time"
+	| "end_time"
+	| "player_needed"
+	| "turf_id"
+	| "game"
+	| "game_date"
+	| "confirmPassword";
+
 export interface InputCommonProps {
-	name:
-		| "role"
-		| "email"
-		| "date"
-		| "password"
-		| "username"
-		| "start_time"
-		| "end_time"
-		| "player_needed"
-		| "turf_id"
-		| "game"
-		| "game_date";
+	name: names;
 	label: string;
 	placeholder: string;
 	register: UseFormRegister<
@@ -82,7 +85,6 @@ export type SignInData = z.infer<typeof SignInSchema>;
 
 // Schema for validatiSignInDatang the input for a user profile form
 export const UserProfileSchema = z.object({
-	email: emailValidation,
 	username: usernameValidation,
 	full_name: z.string(),
 });
@@ -95,6 +97,13 @@ export const ForgotPasswordSchema = z.object({
 	password: passwordValidation,
 	confirmPassword: passwordValidation,
 });
+
+export interface ForgotPasswordFormPassword {
+	label: string;
+	name: "password" | "confirmPassword";
+	placeholder: string;
+	type: HTMLInputTypeAttribute;
+}
 
 // Type representing the shape of an object that conforms to the ForgotPasswordSchema
 export type ForgotPasswordData = z.infer<typeof ForgotPasswordSchema>;
@@ -152,7 +161,7 @@ export const RequestSchema = z.object({
 	game_date: z.string(),
 });
 
-export interface FormContent {
+export interface RequestFormProps {
 	label: string;
 	name: "player_needed" | "turf_id" | "game" | "game_date";
 	type: "select" | "text";
@@ -161,3 +170,15 @@ export interface FormContent {
 }
 
 export type RequestData = z.infer<typeof RequestSchema>;
+
+export const ResetSchema = z.object({
+	email: emailValidation,
+});
+
+export interface ResetFormProps {
+	label: string;
+	name: "email";
+	type: "email";
+}
+
+export type ResetData = z.infer<typeof ResetSchema>;

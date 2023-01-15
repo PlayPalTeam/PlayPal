@@ -12,6 +12,7 @@ import { TurfProvider } from "../src/context/TurfContext";
 import { Roboto } from "@next/font/google";
 import { BookingProvider } from "../src/context/BookingContext";
 import { RequestProvider } from "../src/context/RequestContext";
+import { Toaster } from "react-hot-toast";
 
 const inter = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ function App({
 					<TurfProvider>
 						<UserProfileProvider>
 							<main className={inter.className}>
+								<Toaster />
 								<Component {...pageProps} />
 							</main>
 						</UserProfileProvider>

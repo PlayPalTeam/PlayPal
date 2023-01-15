@@ -27,6 +27,7 @@ export const UserProfileContext = createContext<UserProfileContextType>({
 		role: "",
 		inserted_at: "",
 		updated_at: "",
+		request: [],
 	},
 	updateUserProfile: () => Promise.resolve(),
 });
@@ -43,6 +44,7 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 		role: "",
 		inserted_at: "",
 		updated_at: "",
+		request: [],
 	});
 
 	const supabase = useSupabaseClient<Database>();
@@ -86,7 +88,7 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 		}
 
 		if (status === 204) {
-			toast.success(`Updated profile for ${update.full_name}`);
+			toast.success(`Updated profile for ${userProfile.username}`);
 		}
 	};
 

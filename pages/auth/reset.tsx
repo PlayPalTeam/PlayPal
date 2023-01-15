@@ -1,64 +1,27 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Database } from "../../src/types/database.types";
-import { Button } from "../../src/components";
 import Link from "next/link";
-import { toast, Toaster } from "react-hot-toast";
-
-type ResetForm = {
-	email: string;
-};
+import { ResetPasswordForm } from "../../src/content/contents";
+import useHelper from "../../src/utils/helper";
+import { Form, FormTitle } from "../../src/components";
 
 const ResetPasswordLink = () => {
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors, isSubmitting },
-	} = useForm<ResetForm>();
-
-	const supabase = useSupabaseClient<Database>();
-
-	const submit: SubmitHandler<ResetForm> = async (email) => {
-		const { error } = await supabase.auth.resetPasswordForEmail(email.email, {
-			redirectTo: "http://localhost:3000/auth/forgot",
-		});
-
-		if (error) {
-			toast.error(error.message, { duration: 5000 });
-		}
-
-		toast.success("Check your email", { duration: 5000 });
-		reset();
-	};
-
+	const { onResetSubmit } = useHelper();
 	return (
-		<div className="flex h-[25rem] flex-col items-center justify-center md:h-screen">
-			<Toaster />
-			<form
-				className="w-[90%] max-w-sm space-y-5"
-				onSubmit={handleSubmit(submit)}
-			>
-				<div>
-					<label className="mb-2 block font-bold text-gray-700" htmlFor="email">
-						Email
-					</label>
-					<input
-						className="inputCss"
-						type="email"
-						name="email"
-						id="email"
-						placeholder="e.g. stevenking@gmail.com"
-						{...register("email", { required: true })}
-					/>
-					{errors.email && <p>{errors.email.message}</p>}
-				</div>
-				<Button type="submit" isSubmitting={isSubmitting} text={"Send Password Reset Link"} />
+		<main className="flex h-[25rem] flex-col items-center justify-center md:h-screen">
+			<div className="formCss">
+				<FormTitle title="Reset Password" />
+				<Form
+					formFields={ResetPasswordForm}
+					onSubmit={onResetSubmit}
+					form={"Reset"}
+					buttonType={"submit"}
+					buttonText={"Submit"}
+					className="mb-5"
+				/>
 				<div className="text-center font-medium text-green-500 hover:underline">
 					<Link href="/auth/signin">Already have an account? Sign In</Link>
 				</div>
-			</form>
-		</div>
+			</div>
+		</main>
 	);
 };
 

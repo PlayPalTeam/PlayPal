@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Footer } from "../src/components";
-import { Toaster } from "react-hot-toast";
 import Head from "next/head";
 
 const displayData = [
@@ -44,7 +43,6 @@ const Home = () => {
 				<title>PlayPal</title>
 			</Head>
 			<div>
-				<Toaster />
 				<div className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
 					<div>PlayPal</div>
 					<div className="flex items-center gap-4">

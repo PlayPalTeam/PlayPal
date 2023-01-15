@@ -15,5 +15,6 @@ module.exports = {
 		require("@tailwindcss/forms")({
 			strategy: "class",
 		}),
+		require("@headlessui/tailwindcss")({ prefix: "ui" }),
 	],
 };

@@ -7,7 +7,7 @@ import { SubmitHandler } from "react-hook-form";
 import { BookingType } from "../../../src/types/types";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { Database } from "../../../src/types/database.types";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Book = () => {
 	const router = useRouter();
@@ -37,7 +37,6 @@ const Book = () => {
 	return (
 		<Layout title={turf?.turf_name}>
 			<main className="flex h-screen items-center justify-center">
-				<Toaster />
 				<div className="flex w-full max-w-2xl items-center border">
 					<section className="px-20">
 						<h1>Booking for {turf?.turf_name}</h1>

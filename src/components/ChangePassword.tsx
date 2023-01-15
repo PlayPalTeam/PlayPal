@@ -103,7 +103,6 @@ const ChangePassword = () => {
 
 	return (
 		<div className="flex items-center justify-center">
-			<Toaster />
 			<form
 				className="w-[90%] max-w-sm space-y-5"
 				onSubmit={handleSubmit(submit)}

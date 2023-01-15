@@ -1,17 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {  Button, Navbar } from "../../../src/components";
+import { Button, Navbar } from "../../../src/components";
 import {
 	TurfFormProps,
 	TurfProfileSchema,
 	TurfProfileType,
 } from "../../../src/types/types";
 import { useTurfContext } from "../../../src/context/TurfContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Avatar1 from "../../../src/components/Avatar1";
-
-
 
 const Turfs = () => {
 	const { addTurf } = useTurfContext();
@@ -78,7 +76,6 @@ const Turfs = () => {
 				<title>Add Turfs</title>
 			</Head>
 			<main className="flex">
-				<Toaster />
 				<Navbar />
 				<div className="p-14">
 					<div className="flex rounded-lg border border-green-500">

@@ -1,8 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormContent, RequestData, RequestSchema } from "../types/types";
-import { Toaster } from "react-hot-toast";
+import { RequestFormProps, RequestData, RequestSchema } from "../types/types";
 import { useRequestContext } from "../context/RequestContext";
 import { useBookContext } from "../context/BookingContext";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,15 +44,15 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 	}, [books, turf_id]);
 
 	const createRequestFormContent = (
-		turfs: FormContent["options"],
-		dates: FormContent["options"]
-	): FormContent[] => {
+		turfs: RequestFormProps["options"],
+		dates: RequestFormProps["options"]
+	): RequestFormProps[] => {
 		return [
 			{
 				label: "Turf",
 				name: "turf_id",
 				type: "select",
-				options: turfs,
+				options: [{ value: "", label: "Select a turf" }, ...turfs],
 			},
 			{
 				label: "Date",
@@ -89,7 +88,6 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 
 	return (
 		<>
-			<Toaster />
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={closeModal}>
 					<Transition.Child
