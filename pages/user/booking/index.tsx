@@ -2,6 +2,8 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { TurfCard, Layout } from "../../../src/components";
+import Carousel from "../../../src/components/Carousel";
+
 import { Database } from "../../../src/types/database.types";
 
 type Turf = Database["public"]["Tables"]["turfs"]["Row"];
@@ -34,6 +36,7 @@ const BookingTurf = () => {
 
 	return (
 		<Layout title="Bookings">
+		<Carousel />
 			<section className="w-full p-20">
 				<div className="flex items-center justify-center">
 					<label htmlFor="date" className="text-lg font-medium">

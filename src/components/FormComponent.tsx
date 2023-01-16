@@ -13,6 +13,8 @@ import {
 	ResetSchema,
 	names,
 	ForgotPasswordSchema,
+	TurfProfileSchema,
+	TurfProfileType,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
 
@@ -25,14 +27,15 @@ interface FormProps {
 		valueAsNumber?: boolean;
 		options?: { value: string; label: string }[];
 	}[];
-	onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData>;
+	onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData | TurfProfileType>;
 	form:
 		| "SignIn"
 		| "SignUp"
 		| "Booking"
 		| "Request"
 		| "Reset"
-		| "PasswordChange";
+		| "PasswordChange"
+		| "Listing";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;
@@ -53,6 +56,7 @@ const Form = ({
 		Request: RequestSchema,
 		Reset: ResetSchema,
 		PasswordChange: ForgotPasswordSchema,
+		Listing: TurfProfileSchema,
 	};
 	const schema = formSchemas[form];
 

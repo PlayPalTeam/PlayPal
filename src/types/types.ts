@@ -2,6 +2,7 @@ import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
+
 export type names =
 	| "role"
 	| "email"
@@ -14,7 +15,17 @@ export type names =
 	| "turf_id"
 	| "game"
 	| "game_date"
-	| "confirmPassword";
+	| "confirmPassword"
+	| "turf_name"
+	| "daytime"
+	| "location"
+	| "availabelsports"
+	| "ammenitites" 
+	| "price_per_hour"
+	| "capacity"
+	| "venuerules"
+	| "shortlocation"
+	| "description";
 
 export interface InputCommonProps {
 	name: names;
@@ -27,6 +38,7 @@ export interface InputCommonProps {
 		| RequestData
 		| ForgotPasswordData
 		| ResetData
+		| TurfProfileType
 	>;
 	className?: string;
 	errors?: any;
@@ -134,9 +146,10 @@ export type TurfFormProps = {
 	| "venuerules"
 	| "shortlocation"
 	| "description";
-	type?: HTMLInputTypeAttribute;
+	type: HTMLInputTypeAttribute;
 	placeholder?: string;
-	val?: boolean;
+	valueAsNumber?: boolean;
+	options?: { value: string; label: string }[];
 };
 
 export const TurfProfileSchema = z.object({
