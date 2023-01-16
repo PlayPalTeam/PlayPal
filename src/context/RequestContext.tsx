@@ -12,19 +12,23 @@ import { Database } from "../types/database.types";
 
 type Request = Database["public"]["Tables"]["requests"]["Row"];
 type RequestInsert = Database["public"]["Tables"]["requests"]["Insert"];
-type RequestUpdate = Database["public"]["Tables"]["requests"]["Update"];
 
 interface RequestContexType {
 	requests: Request[];
+	updatePlayerNeeded: (
+		id: number,
+		player: number,
+		name: string,
+		phone: number
+	) => Promise<void>;
 	addRequest: (request: RequestInsert) => Promise<void>;
-	updateRequest: (id: string, request: RequestUpdate) => Promise<void>;
-	deleteRequest: (id: string) => Promise<void>;
+	deleteRequest: (id: number) => Promise<void>;
 }
 
 export const RequestContext = createContext<RequestContexType>({
 	requests: [],
+	updatePlayerNeeded: () => Promise.resolve(),
 	addRequest: () => Promise.resolve(),
-	updateRequest: () => Promise.resolve(),
 	deleteRequest: () => Promise.resolve(),
 });
 
@@ -62,16 +66,68 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 	}, [getRequests, user]);
 
 	const addRequest = async (request: RequestInsert) => {
-		await supabase.from("requests").insert({ ...request, profile_id: user.id });
+		const { error } = await supabase
+			.from("requests")
+			.insert({ ...request, profile_id: user.id });
+
+		if (error) {
+			toast.error(error.message, { duration: 5000 });
+		}
+
+		toast.success("Your request is created", { duration: 5000 });
+		getRequests();
 	};
 
-	const updateRequest = async () => {};
+	async function updatePlayerNeeded(
+		id: number,
+		player: number,
+		name: string,
+		phone: number
+	) {
+		const { data, error } = await supabase
+			.from("requests")
+			.update({
+				player_needed: player - 1,
+				people: [{ name: name, phone: phone }],
+			})
+			.eq("id", id);
 
-	const deleteRequest = async () => {};
+		if (data) {
+			toast.success("Success", { duration: 1000 });
+		}
+
+		if (error) {
+			toast.error(error.message, { duration: 1000 });
+		}
+
+		getRequests();
+	}
+
+	const deleteRequest = async (id: number) => {
+		const { status, error } = await supabase
+			.from("requests")
+			.delete()
+			.eq("id", id);
+
+		if (error) {
+			toast.error(error.message, { duration: 5000 });
+		}
+
+		if (status === 204) {
+			toast.success("Your request is deleted", { duration: 1000 });
+		}
+
+		getRequests();
+	};
 
 	return (
 		<RequestContext.Provider
-			value={{ requests, addRequest, updateRequest, deleteRequest }}
+			value={{
+				requests,
+				updatePlayerNeeded,
+				addRequest,
+				deleteRequest,
+			}}
 		>
 			{children}
 		</RequestContext.Provider>

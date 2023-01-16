@@ -2,20 +2,31 @@ import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
+export type names =
+	| "role"
+	| "email"
+	| "date"
+	| "password"
+	| "username"
+	| "start_time"
+	| "end_time"
+	| "player_needed"
+	| "turf_id"
+	| "game"
+	| "game_date"
+	| "confirmPassword";
+
 export interface InputCommonProps {
-	name:
-		| "role"
-		| "email"
-		| "date"
-		| "password"
-		| "username"
-		| "start_time"
-		| "end_time"
-		| "player_needed";
+	name: names;
 	label: string;
 	placeholder: string;
 	register: UseFormRegister<
-		SignInData | SignUpData | BookingType | RequestData
+		| SignInData
+		| SignUpData
+		| BookingType
+		| RequestData
+		| ForgotPasswordData
+		| ResetData
 	>;
 	className?: string;
 	errors?: any;
@@ -79,7 +90,6 @@ export type SignInData = z.infer<typeof SignInSchema>;
 
 // Schema for validatiSignInDatang the input for a user profile form
 export const UserProfileSchema = z.object({
-	email: emailValidation,
 	username: usernameValidation,
 	full_name: z.string(),
 });
@@ -92,6 +102,13 @@ export const ForgotPasswordSchema = z.object({
 	password: passwordValidation,
 	confirmPassword: passwordValidation,
 });
+
+export interface ForgotPasswordFormPassword {
+	label: string;
+	name: "password" | "confirmPassword";
+	placeholder: string;
+	type: HTMLInputTypeAttribute;
+}
 
 // Type representing the shape of an object that conforms to the ForgotPasswordSchema
 export type ForgotPasswordData = z.infer<typeof ForgotPasswordSchema>;
@@ -144,13 +161,29 @@ export type BookingType = z.infer<typeof BookingSchema>;
 
 export const RequestSchema = z.object({
 	player_needed: z.number().positive(),
+	turf_id: z.string(),
+	game: z.string(),
+	game_date: z.string(),
 });
 
-export type RequestFormProps = {
+export interface RequestFormProps {
 	label: string;
-	name: "player_needed";
-	type: HTMLInputTypeAttribute;
-	valueAsNumber: boolean;
-};
+	name: "player_needed" | "turf_id" | "game" | "game_date";
+	type: "select" | "text";
+	options?: { value: string; label: string }[];
+	valueAsNumber?: boolean;
+}
 
 export type RequestData = z.infer<typeof RequestSchema>;
+
+export const ResetSchema = z.object({
+	email: emailValidation,
+});
+
+export interface ResetFormProps {
+	label: string;
+	name: "email";
+	type: "email";
+}
+
+export type ResetData = z.infer<typeof ResetSchema>;

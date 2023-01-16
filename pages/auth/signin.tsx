@@ -1,43 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { SubmitHandler } from "react-hook-form";
-import { SignInData } from "../../src/types/types";
 import { SignInForm } from "../../src/content/contents";
 import { Form, FormTitle } from "../../src/components";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import toast, { Toaster } from "react-hot-toast";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import useHelper from "../../src/utils/helper";
 
 const SignIn = () => {
-	const router = useRouter();
-
-	const supabase = useSupabaseClient();
-
-	const onSubmit: SubmitHandler<SignInData> = async (data) => {
-		const {
-			error,
-			data: { session },
-		} = await supabase.auth.signInWithPassword({
-			email: data.email,
-			password: data.password,
-		});
-
-		if (error) {
-			toast.error(error.message, {
-				duration: 5000,
-				style: {
-					border: "1px solid red",
-					color: "red",
-				},
-			});
-		}
-
-		if (session?.user.user_metadata) {
-			router.push(`/${session.user.user_metadata.role}`);
-		}
-	};
+	const { onSignInSubmit } = useHelper();
 
 	return (
 		<>
@@ -45,12 +15,11 @@ const SignIn = () => {
 				<title>Sign In</title>
 			</Head>
 			<div className="flex h-screen flex-col items-center justify-center bg-gray-100">
-				<Toaster />
 				<div className="formCss bg-white">
 					<FormTitle title="PlayPal | SignIn" />
 					<Form
 						formFields={SignInForm}
-						onSubmit={onSubmit}
+						onSubmit={onSignInSubmit}
 						form={"SignIn"}
 						buttonType={"submit"}
 						buttonText={"Log In"}

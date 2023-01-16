@@ -3,8 +3,6 @@ import {
 	createContext,
 	useState,
 	useEffect,
-	SetStateAction,
-	Dispatch,
 	useContext,
 	ReactNode,
 	useMemo,
@@ -14,9 +12,6 @@ import { Database } from "../types/database.types";
 
 interface UserProfileContextType {
 	userProfile: Database["public"]["Tables"]["profiles"]["Row"];
-	setUserProfile: Dispatch<
-		SetStateAction<Database["public"]["Tables"]["profiles"]["Row"]>
-	>;
 	updateUserProfile: (
 		update: Database["public"]["Tables"]["profiles"]["Update"]
 	) => Promise<void>;
@@ -32,8 +27,8 @@ export const UserProfileContext = createContext<UserProfileContextType>({
 		role: "",
 		inserted_at: "",
 		updated_at: "",
+		request: [],
 	},
-	setUserProfile: () => {},
 	updateUserProfile: () => Promise.resolve(),
 });
 
@@ -49,6 +44,7 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 		role: "",
 		inserted_at: "",
 		updated_at: "",
+		request: [],
 	});
 
 	const supabase = useSupabaseClient<Database>();
@@ -92,14 +88,12 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
 		}
 
 		if (status === 204) {
-			toast.success(`Updated profile for ${update.full_name}`);
+			toast.success(`Updated profile for ${userProfile.username}`);
 		}
 	};
 
 	return (
-		<UserProfileContext.Provider
-			value={{ userProfile, setUserProfile, updateUserProfile }}
-		>
+		<UserProfileContext.Provider value={{ userProfile, updateUserProfile }}>
 			{children}
 		</UserProfileContext.Provider>
 	);

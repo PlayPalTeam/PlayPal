@@ -10,20 +10,15 @@ import {
 	BookingType,
 	RequestData,
 	RequestSchema,
+	ResetSchema,
+	names,
+	ForgotPasswordSchema,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
 
 interface FormProps {
 	formFields: {
-		name:
-			| "role"
-			| "email"
-			| "date"
-			| "password"
-			| "username"
-			| "start_time"
-			| "end_time"
-			| "player_needed";
+		name: names;
 		label: string;
 		type: HTMLInputTypeAttribute;
 		placeholder?: string;
@@ -31,7 +26,13 @@ interface FormProps {
 		options?: { value: string; label: string }[];
 	}[];
 	onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData>;
-	form: "SignIn" | "SignUp" | "Booking" | "Request";
+	form:
+		| "SignIn"
+		| "SignUp"
+		| "Booking"
+		| "Request"
+		| "Reset"
+		| "PasswordChange";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;
@@ -45,11 +46,15 @@ const Form = ({
 	form,
 	className,
 }: FormProps) => {
-	const schema =
-		(form === "SignIn" && SignInSchema) ||
-		(form === "SignUp" && SignUpSchema) ||
-		(form === "Booking" && BookingSchema) ||
-		(form === "Request" && RequestSchema);
+	const formSchemas = {
+		SignIn: SignInSchema,
+		SignUp: SignUpSchema,
+		Booking: BookingSchema,
+		Request: RequestSchema,
+		Reset: ResetSchema,
+		PasswordChange: ForgotPasswordSchema,
+	};
+	const schema = formSchemas[form];
 
 	const {
 		register,

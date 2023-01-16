@@ -1,6 +1,7 @@
 import {
 	BookingFormProps,
-	RequestFormProps,
+	ForgotPasswordFormPassword,
+	ResetFormProps,
 	SignInFormProps,
 	SignUpFormProps,
 } from "../types/types";
@@ -68,13 +69,33 @@ const BookingForm: BookingFormProps[] = [
 	},
 ];
 
-const RequestForm: RequestFormProps[] = [
+const ResetPasswordForm: ResetFormProps[] = [
 	{
-		label: "Player Needed",
-		type: "text",
-		name: "player_needed",
-		valueAsNumber: true,
+		label: "Email",
+		type: "email",
+		name: "email",
 	},
 ];
 
-export { SignInForm, SignUpForm, BookingForm, RequestForm };
+const ForgotformFields: ForgotPasswordFormPassword[] = [
+	{
+		label: "Password",
+		name: "password",
+		placeholder: "e.g. steven@12",
+		type: "password",
+	},
+	{
+		label: "Confirm Password",
+		name: "confirmPassword",
+		placeholder: "e.g. steven@12",
+		type: "password",
+	},
+];
+
+export {
+	SignInForm,
+	SignUpForm,
+	BookingForm,
+	ResetPasswordForm,
+	ForgotformFields,
+};
