@@ -124,11 +124,16 @@ export type ProfileFormProps = {
 export type TurfFormProps = {
 	label: string;
 	name:
-		| "turf_name"
-		| "location"
-		| "price_per_hour"
-		| "capacity"
-		| "description";
+	  "turf_name"
+	| "daytime"
+	| "location"
+	| "availabelsports"
+	| "ammenitites" 
+	| "price_per_hour"
+	| "capacity"
+	| "venuerules"
+	| "shortlocation"
+	| "description";
 	type?: HTMLInputTypeAttribute;
 	placeholder?: string;
 	val?: boolean;
@@ -136,9 +141,14 @@ export type TurfFormProps = {
 
 export const TurfProfileSchema = z.object({
 	turf_name: z.string(),
+	daytime:z.string(),
 	location: z.string(),
+	availabelsports:z.string().array(),
+	ammenitites:z.string(),
 	price_per_hour: z.number(),
 	capacity: z.number(),
+	venuerules:z.string(),
+	shortlocation:z.string(),
 	description: z.string(),
 });
 
