@@ -21,7 +21,12 @@ export interface InputCommonProps {
 	label: string;
 	placeholder: string;
 	register: UseFormRegister<
-		SignInData | SignUpData | BookingType | RequestData
+		| SignInData
+		| SignUpData
+		| BookingType
+		| RequestData
+		| ForgotPasswordData
+		| ResetData
 	>;
 	className?: string;
 	errors?: any;
