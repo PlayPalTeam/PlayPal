@@ -48,6 +48,7 @@ export interface Database {
           id: string
           inserted_at: string
           phone_number: number | null
+          request: string[] | null
           role: string | null
           updated_at: string
           username: string | null
@@ -58,6 +59,7 @@ export interface Database {
           id: string
           inserted_at?: string
           phone_number?: number | null
+          request?: string[] | null
           role?: string | null
           updated_at?: string
           username?: string | null
@@ -68,6 +70,7 @@ export interface Database {
           id?: string
           inserted_at?: string
           phone_number?: number | null
+          request?: string[] | null
           role?: string | null
           updated_at?: string
           username?: string | null
@@ -78,9 +81,10 @@ export interface Database {
           created_at: string | null
           game: string | null
           game_date: string | null
+          id: number
+          people: Json[] | null
           player_needed: number | null
           profile_id: string | null
-          request_id: string
           turf_id: string | null
           updated_at: string | null
         }
@@ -88,9 +92,10 @@ export interface Database {
           created_at?: string | null
           game?: string | null
           game_date?: string | null
+          id?: number
+          people?: Json[] | null
           player_needed?: number | null
           profile_id?: string | null
-          request_id?: string
           turf_id?: string | null
           updated_at?: string | null
         }
@@ -98,9 +103,10 @@ export interface Database {
           created_at?: string | null
           game?: string | null
           game_date?: string | null
+          id?: number
+          people?: Json[] | null
           player_needed?: number | null
           profile_id?: string | null
-          request_id?: string
           turf_id?: string | null
           updated_at?: string | null
         }
