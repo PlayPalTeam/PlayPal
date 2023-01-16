@@ -36,8 +36,12 @@ const BookingTurf = () => {
 
 	return (
 		<Layout title="Bookings">
-		<Carousel />
-			<section className="w-full p-20">
+		
+			<section className="w-full ">
+				<div className="mb-32 h-[300px]">
+				<Carousel />
+				</div>
+			
 				<div className="flex items-center justify-center">
 					<label htmlFor="date" className="text-lg font-medium">
 						Date
