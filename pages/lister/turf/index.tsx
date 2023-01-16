@@ -133,7 +133,7 @@ const Turfs = () => {
 					} onSubmit={onSubmit} form={"Listing"} buttonType={"submit"} buttonText={"Enter Listing"}					
 					/>
 					{ sportSelection.map((data)=>(
-						<li>{data}</li>
+						<li key={data}>{data}</li>
 					))}
 				</div>
 
