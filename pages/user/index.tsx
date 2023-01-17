@@ -35,7 +35,10 @@ const User = () => {
 	);
 
 	const requestCardData = useMemo(
-		() => cardsData.map((req) => <RequestCard key={req.id} {...req} />),
+		() =>
+			cardsData.map((req) => (
+				<RequestCard key={req.id} {...req} isButtonVisible={false} />
+			)),
 		[cardsData]
 	);
 
@@ -44,18 +47,10 @@ const User = () => {
 			<main className="w-full p-5 md:p-20">
 				<ProfileCard />
 				<hr className="my-5 border-black" />
-				<CardDisclosure
-					title={"Bookings"}
-					text="New Booking"
-					href={"/user/booking"}
-					element={bookElements}
-				/>
+				<CardDisclosure title={"Bookings"} element={bookElements} />
 				<hr className="my-5 border-black" />
-
 				<CardDisclosure
 					title={"Request you have created"}
-					text="New Request"
-					href={"/user/request"}
 					element={requestCardData}
 				/>
 				<hr className="my-5 border-black" />

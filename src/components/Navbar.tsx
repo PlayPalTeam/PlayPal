@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 const NavItem = ({ icon, label, href }) => (
-	<li className="hover:text-white py-3 md:hover:bg-green-800">
+	<li className="py-3 hover:text-white md:hover:bg-green-800">
 		<Link className="flex items-center gap-x-4" href={href}>
 			{icon}
 			{label}
@@ -34,6 +34,11 @@ const navigations = [
 		icon: <BiGitPullRequest className="h-4 w-4" />,
 		label: "Request",
 		href: "/user/request",
+	},
+	{
+		icon: <BiGitPullRequest className="h-4 w-4" />,
+		label: "Booking",
+		href: "/user/booking",
 	},
 	{ icon: <CgCommunity className="h-4 w-4" />, label: "Community", href: "#" },
 ];
