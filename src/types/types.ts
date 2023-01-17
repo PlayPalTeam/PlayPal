@@ -2,6 +2,7 @@ import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
+
 export type names =
 	| "role"
 	| "email"
@@ -14,7 +15,17 @@ export type names =
 	| "turf_id"
 	| "game"
 	| "game_date"
-	| "confirmPassword";
+	| "confirmPassword"
+	| "turf_name"
+	| "daytime"
+	| "location"
+	| "availabelsports"
+	| "ammenitites" 
+	| "price_per_hour"
+	| "capacity"
+	| "venuerules"
+	| "shortlocation"
+	| "description";
 
 export interface InputCommonProps {
 	name: names;
@@ -27,6 +38,7 @@ export interface InputCommonProps {
 		| RequestData
 		| ForgotPasswordData
 		| ResetData
+		| TurfProfileType
 	>;
 	className?: string;
 	errors?: any;
@@ -124,21 +136,32 @@ export type ProfileFormProps = {
 export type TurfFormProps = {
 	label: string;
 	name:
-		| "turf_name"
-		| "location"
-		| "price_per_hour"
-		| "capacity"
-		| "description";
-	type?: HTMLInputTypeAttribute;
+	  "turf_name"
+	| "daytime"
+	| "location"
+	| "availabelsports"
+	| "ammenitites" 
+	| "price_per_hour"
+	| "capacity"
+	| "venuerules"
+	| "shortlocation"
+	| "description";
+	type: HTMLInputTypeAttribute;
 	placeholder?: string;
-	val?: boolean;
+	valueAsNumber?: boolean;
+	options?: { value: string; label: string }[];
 };
 
 export const TurfProfileSchema = z.object({
 	turf_name: z.string(),
+	daytime:z.string(),
 	location: z.string(),
+	availabelsports:z.string().array(),
+	ammenitites:z.string(),
 	price_per_hour: z.number(),
 	capacity: z.number(),
+	venuerules:z.string(),
+	shortlocation:z.string(),
 	description: z.string(),
 });
 
