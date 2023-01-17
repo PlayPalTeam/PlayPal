@@ -15,6 +15,9 @@ import {
 	ForgotPasswordSchema,
 	TurfProfileSchema,
 	TurfProfileType,
+	ForgotPasswordData,
+	ResetData,
+	registerType,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
 
@@ -27,7 +30,9 @@ interface FormProps {
 		valueAsNumber?: boolean;
 		options?: { value: string; label: string }[];
 	}[];
-	onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData | TurfProfileType>;
+	onSubmit: SubmitHandler<
+		SignInData | SignUpData | BookingType | RequestData | TurfProfileType
+	>;
 	form:
 		| "SignIn"
 		| "SignUp"
@@ -64,7 +69,7 @@ const Form = ({
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignInData | SignUpData | BookingType | RequestData>({
+	} = useForm<registerType>({
 		resolver: zodResolver(schema),
 	});
 

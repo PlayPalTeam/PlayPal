@@ -10,38 +10,35 @@ interface TurfCardProps {
 }
 
 const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
-
-	const [amned,setAmend]= useState({
-		first : true,
+	const [amned, setAmend] = useState({
+		first: true,
 		second: false,
-		third : false
-	})
+		third: false,
+	});
 
-	const timeChange =()=>{
-		if(amned.second === amned.third){
+	const timeChange = () => {
+		if (amned.second === amned.third) {
 			setAmend({
 				...amned,
-				first:false,
-				second:true
-			})
-		}
-		else if(amned.first === amned.third){
+				first: false,
+				second: true,
+			});
+		} else if (amned.first === amned.third) {
 			setAmend({
 				...amned,
-				second:false,
-				third:true
-			})
-		}
-		else if(amned.first === amned.second){
+				second: false,
+				third: true,
+			});
+		} else if (amned.first === amned.second) {
 			setAmend({
 				...amned,
-				third:false,
-				first:true
-			})
+				third: false,
+				first: true,
+			});
 		}
-	}
+	};
 
-	setTimeout(timeChange ,4000)
+	setTimeout(timeChange, 4000);
 
 	return (
 		<>
@@ -67,12 +64,14 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 						</div>
 					</div>
 
-					<div className="relative bg-green-600">
-						<img
+					<div className="relative rounded-md overflow-hidden bg-green-600">
+						<Image
 							src="/exampleturfimage.webp"
-							className=" object-fit h-[300px] w-[700px]"
+							className="bg-cover"
 							alt="fuck off"
-						></img>
+							width={800}
+							height={300}
+						/>
 						{/* <Image 
 				src="/exampleturfimage.webp"
 				height={300}
@@ -87,11 +86,11 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 					</div>
 					<div className="flex justify-between pt-4">
 						<div>
-							{ amned.first && 	<p className="ease-in ">Spilt Payments Availabel</p> }
-							{ amned.second && 	<p>Coupon is valid till 1 Mar 1990</p> }
-							{ amned.third && 	<p>Box Cricket Football</p> }
-							
-							
+							{amned.first && (
+								<p className="ease-in ">Spilt Payments Availabel</p>
+							)}
+							{amned.second && <p>Coupon is valid till 1 Mar 1990</p>}
+							{amned.third && <p>Box Cricket Football</p>}
 						</div>
 						<div>
 							{book && (

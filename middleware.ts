@@ -15,6 +15,11 @@ export async function middleware(req: NextRequest) {
 		data: { session },
 	} = await supabase.auth.getSession();
 
+	if (!session) {
+		redirectUrl.pathname = "/auth/signin";
+		return NextResponse.redirect(redirectUrl);
+	}
+
 	if (
 		session &&
 		session?.user.user_metadata.role === "user" &&

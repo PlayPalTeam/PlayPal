@@ -36,24 +36,10 @@ const BookingTurf = () => {
 
 	return (
 		<Layout title="Bookings">
-		
 			<section className="w-full ">
 				<div className="mb-32 h-[300px]">
-				<Carousel />
+					<Carousel />
 				</div>
-			
-				<div className="flex items-center justify-center">
-					<label htmlFor="date" className="text-lg font-medium">
-						Date
-					</label>
-					<input
-						className="form-input ml-4 rounded-lg"
-						type="date"
-						id="date"
-						name="date"
-					/>
-				</div>
-				<hr className="my-6" />
 				<div className="mx-auto w-[70%] space-y-5">
 					{turfs.map((turf) => (
 						<div key={turf.turf_id}>

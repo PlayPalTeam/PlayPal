@@ -1,153 +1,105 @@
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import Cookies from "js-cookie";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { RxHamburgerMenu, RxCross2 } from "react-icons/rx";
+import { MdSpaceDashboard } from "react-icons/md";
+import { CiLogout } from "react-icons/ci";
+import { AiOutlineProfile } from "react-icons/ai";
+import { BiGitPullRequest } from "react-icons/bi";
+import { CgCommunity } from "react-icons/cg";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { memo, useState } from "react";
-import {
-	BsGrid3X3GapFill,
-	BsCollectionFill,
-	BsPeopleFill,
-	BsMessenger,
-	BsLockFill,
-	BsList,
-} from "react-icons/bs";
 
-import { useUserProfile } from "../context/UserProfileContext";
-import Avatar from "./Avatar";
+const NavItem = ({ icon, label, href }) => (
+	<li className="py-3 hover:text-white md:hover:bg-green-800">
+		<Link className="flex items-center gap-x-4" href={href}>
+			{icon}
+			{label}
+		</Link>
+	</li>
+);
 
-const Navbar = () => {
-	const router = useRouter();
+const navigations = [
+	{
+		icon: <MdSpaceDashboard className="h-4 w-4" />,
+		label: "DashBoard",
+		href: "/user",
+	},
+	{
+		icon: <AiOutlineProfile className="h-4 w-4" />,
+		label: "Profile",
+		href: "/user/profile",
+	},
+	{
+		icon: <BiGitPullRequest className="h-4 w-4" />,
+		label: "Request",
+		href: "/user/request",
+	},
+	{
+		icon: <BiGitPullRequest className="h-4 w-4" />,
+		label: "Booking",
+		href: "/user/booking",
+	},
+	{ icon: <CgCommunity className="h-4 w-4" />, label: "Community", href: "#" },
+];
 
-	const { userProfile } = useUserProfile();
-
-	const { username } = userProfile;
+export default function NavBar() {
+	const [navbar, setNavbar] = useState(false);
 
 	const supabase = useSupabaseClient();
+	const router = useRouter();
+	const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-	const user = useUser();
+	useEffect(() => {
+		if (isLoggingOut) {
+			supabase.auth.signOut();
+			Cookies.remove("supabase-auth-token");
+			router.push("/auth/signin");
+		}
+	}, [isLoggingOut, router, supabase.auth]);
 
-	const role = user?.user_metadata.role;
-
-	const handleLogOut = async () => {
-		await supabase.auth.signOut();
-		Cookies.remove("supabase-auth-token");
-		router.push("/auth/signin");
-	};
-
-	const [navChange, setNavChange] = useState(false);
-	const [navCss, setNavCss] = useState("");
-
-	const respnav = () => {
-		setNavChange((prevState) => !prevState);
-		setNavCss("w-full h-screen");
-	};
-
-	const NavBarList = [
-		{
-			text: "Dashboard",
-			link: "",
-			icons: <BsGrid3X3GapFill />,
-		},
-		{
-			text: "Profile",
-			link: "profile",
-			icons: <BsGrid3X3GapFill />,
-		},
-		{
-			text: "Requests",
-			link: "request",
-			icons: <BsCollectionFill />,
-		},
-		{
-			text: "Add Turfs",
-			link: "turf",
-			icons: <BsPeopleFill />,
-		},
-		{
-			text: "Community",
-			link: "community",
-			icons: <BsMessenger />,
-		},
-	];
+	const toggleNavbar = () => setNavbar(!navbar);
+	const handleSignOut = () => setIsLoggingOut(true);
 
 	return (
-		<>
-			<nav
-				// max-md:hidden
-				className={`hidden w-72 bg-green-500 text-white sm:sticky sm:top-0  sm:block sm:h-screen sm:min-w-[290px] sm:max-w-[290x] `}
-			>
-				<div className=" mb-7 flex justify-center text-lg">
-					<p>{username}</p>
-				</div>
-				<ul>
-					{NavBarList.map((nav, index) => (
-						<li
-							key={index}
-							className="flex items-center py-3 px-10 hover:bg-green-700"
-						>
-							{nav.icons}
-							<Link
-								href={
-									role === "user" ? `/user/${nav.link}` : `/lister/${nav.link}`
-								}
+		<nav className="w-full bg-green-500 md:sticky md:top-0 md:h-screen md:w-72">
+			<div className="mx-auto px-4 md:flex  md:flex-col md:items-center">
+				<div>
+					<div className="flex items-center justify-between py-3 md:block md:py-5">
+						<h2 className="text-2xl font-bold">PlayPal</h2>
+						<div className="md:hidden">
+							<button
+								className="rounded-md p-2 text-gray-700 outline-none focus:border focus:border-gray-400"
+								onClick={toggleNavbar}
 							>
-								<p className="ml-3">{nav.text}</p>
-							</Link>
-						</li>
-					))}
-					<li className="flex items-center px-10 py-3 hover:bg-green-700">
-						<BsLockFill />
-						<button className="ml-3" onClick={handleLogOut}>
-							Log Out
-						</button>
-					</li>
-				</ul>
-			</nav>
-
-			<div className="sticky top-0 h-screen bg-green-400 sm:hidden">
-				<div className="mt-4 p-2">
-					<button onClick={respnav}>
-						{" "}
-						<BsList size={27} />
-					</button>
-					<div className="mt-14 flex flex-col gap-16">
-						<BsGrid3X3GapFill size={27} />
-						<BsCollectionFill size={27} />
-						<BsPeopleFill size={27} />
-						<BsMessenger size={27} />
-						<BsPeopleFill size={27} />
-						<BsLockFill size={27} />
+								{navbar ? (
+									<RxCross2 className="h-6 w-6" />
+								) : (
+									<RxHamburgerMenu className="h-6 w-6" />
+								)}
+							</button>
+						</div>
 					</div>
 				</div>
-				{navChange && (
-					<div
-						className={`fixed top-0 left-10 z-[10] ${navCss} bg-green-400  pt-28 transition duration-1000  ease-in`}
-					>
-						{NavBarList.map((nav, index) => (
-							<li
-								key={index}
-								className="items-left flex px-2 pb-[59px] hover:bg-green-700"
-							>
-								{}
-								<Link
-									href={
-										role === "user"
-											? `/user/${nav.link}`
-											: `/lister/${nav.link}`
-									}
-								>
-									<p className="text-2xl">{nav.text}</p>
-								</Link>
-							</li>
+				<div
+					className={`w-full max-md:mt-5 md:block md:pb-0 ${
+						navbar ? "block" : "hidden"
+					}`}
+				>
+					<ul className="md:flex md:flex-col">
+						{navigations.map((nav, index) => (
+							<NavItem key={index} {...nav} />
 						))}
-						<button className="ml-3 text-2xl" onClick={handleLogOut}>
-							Log Out
-						</button>
-					</div>
-				)}
+						<li
+							className="flex cursor-pointer items-center gap-x-4 py-3 hover:text-white md:hover:bg-green-800"
+							onClick={handleSignOut}
+						>
+							<CiLogout className="h-4 w-4" />
+							<span> Sign Out</span>
+						</li>
+					</ul>
+				</div>
 			</div>
-		</>
+		</nav>
 	);
-};
-
-export default memo(Navbar);
+}

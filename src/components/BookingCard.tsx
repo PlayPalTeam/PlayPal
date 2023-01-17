@@ -6,7 +6,7 @@ interface BookingCardProps {
 
 const BookingCard = ({ date, end_time, start_time }: BookingCardProps) => {
 	return (
-		<div className="flex h-20 border flex-col">
+		<div className="flex h-20 flex-col border">
 			<p>{date}</p>
 			<p>{end_time}</p>
 			<p>{start_time}</p>

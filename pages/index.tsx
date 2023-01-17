@@ -43,13 +43,13 @@ const Home = () => {
 				<title>PlayPal</title>
 			</Head>
 			<div>
-				<div className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
+				<nav className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
 					<div>PlayPal</div>
 					<div className="flex items-center gap-4">
 						<BsPersonSquare />
 						<Link href={"/auth/signin"}>Sign In</Link>
 					</div>
-				</div>
+				</nav>
 				<div className="absolute top-0 -z-10">
 					<video
 						autoPlay
