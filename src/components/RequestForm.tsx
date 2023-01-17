@@ -58,7 +58,7 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 				label: "Date",
 				name: "game_date",
 				type: "select",
-				options: dates,
+				options: [{ value: "", label: "Select a date" }, ...dates],
 			},
 			{
 				label: "Player Needed",
@@ -80,7 +80,6 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 	);
 
 	const onSubmit: SubmitHandler<RequestData> = async (formData) => {
-		console.log(JSON.stringify(formData, null, 2));
 		addRequest(formData);
 		reset();
 		closeModal();

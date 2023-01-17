@@ -13,6 +13,7 @@ import { Roboto } from "@next/font/google";
 import { BookingProvider } from "../src/context/BookingContext";
 import { RequestProvider } from "../src/context/RequestContext";
 import { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 const inter = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -26,23 +27,36 @@ function App({
 	const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
 	return (
-		<SessionContextProvider
-			supabaseClient={supabaseClient}
-			initialSession={pageProps.initialSession}
-		>
-			<RequestProvider>
-				<BookingProvider>
-					<TurfProvider>
-						<UserProfileProvider>
-							<main className={inter.className}>
-								<Toaster />
-								<Component {...pageProps} />
-							</main>
-						</UserProfileProvider>
-					</TurfProvider>
-				</BookingProvider>
-			</RequestProvider>
-		</SessionContextProvider>
+		<>
+			<Head>
+				{/* Add a meta tag for SEO */}
+				<meta
+					name="description"
+					content="My Next.js App is a modern and powerful web application built with Next.js."
+				/>
+				{/* Add a meta tag for responsive design */}
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				{/* Add a meta tag for author */}
+				<meta name="author" content="PlayPal Team" />
+			</Head>
+			<SessionContextProvider
+				supabaseClient={supabaseClient}
+				initialSession={pageProps.initialSession}
+			>
+				<RequestProvider>
+					<BookingProvider>
+						<TurfProvider>
+							<UserProfileProvider>
+								<main className={inter.className}>
+									<Toaster />
+									<Component {...pageProps} />
+								</main>
+							</UserProfileProvider>
+						</TurfProvider>
+					</BookingProvider>
+				</RequestProvider>
+			</SessionContextProvider>
+		</>
 	);
 }
 

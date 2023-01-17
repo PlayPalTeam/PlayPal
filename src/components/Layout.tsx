@@ -16,7 +16,7 @@ const Layout = ({ children, title }: LayoutProps) => {
 			<Head>
 				<title>{message}</title>
 			</Head>
-			<div className="flex">
+			<div className="md:flex">
 				<Navbar />
 				{children}
 			</div>

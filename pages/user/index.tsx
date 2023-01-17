@@ -8,9 +8,17 @@ const ProfileCard = dynamic(() => import("../../src/components/ProfileCard"));
 const BookingCard = dynamic(() => import("../../src/components/BookingCard"));
 const RequestCard = dynamic(() => import("../../src/components/RequestCard"));
 
+/**
+ * This is the main component for the user dashboard, it is responsible for rendering the user's profile card, bookings, and requests.
+ * It uses the useBookContext hook to access the state of the books, and the useHelper hook to access the requestDashboard state.
+ * It also uses the useMemo hook to memoize the book and request elements to prevent unnecessary re-renders.
+ * It renders the elements inside of CardDisclosure components which will display the element passed to it and provides a button to navigate to a specified href.
+ * It is wrapped in a Layout component which provides a basic structure for the page, and sets the title of the page.
+ * It renders the ProfileCard, BookingCard and RequestCard components with the data passed as props.
+ * */
 const User = () => {
 	const { books } = useBookContext();
-	const { requestDashboard } = useHelper();
+	const { requestDashboard, cardsData } = useHelper();
 
 	// useMemo to memoize the book elements so that it is not recreated on every render
 	const bookElements = useMemo(
@@ -26,20 +34,33 @@ const User = () => {
 		[requestDashboard]
 	);
 
+	const requestCardData = useMemo(
+		() => cardsData.map((req) => <RequestCard key={req.id} {...req} />),
+		[cardsData]
+	);
+
 	return (
 		<Layout title={"DashBoard"}>
 			<main className="w-full p-5 md:p-20">
 				<ProfileCard />
 				<hr className="my-5 border-black" />
 				<CardDisclosure
-					title={"Booking"}
+					title={"Bookings"}
+					text="New Booking"
 					href={"/user/booking"}
 					element={bookElements}
 				/>
 				<hr className="my-5 border-black" />
+
 				<CardDisclosure
-					title={"Requests"}
+					title={"Request you have created"}
+					text="New Request"
 					href={"/user/request"}
+					element={requestCardData}
+				/>
+				<hr className="my-5 border-black" />
+				<CardDisclosure
+					title={"Request you have accepted"}
 					element={requestElement}
 				/>
 			</main>

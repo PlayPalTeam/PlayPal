@@ -3,12 +3,13 @@ import Link from "next/link";
 import { AiOutlineArrowRight, AiOutlinePlus } from "react-icons/ai";
 
 interface Props {
-	href: string;
+	href?: string;
 	title: string;
+	text?: string;
 	element: JSX.Element[];
 }
 
-const CardDisclosure = ({ title, element, href }: Props) => {
+const CardDisclosure = ({ title, element, href, text }: Props) => {
 	return (
 		<Disclosure defaultOpen={element.length > 0 ? false : true}>
 			<Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
@@ -16,13 +17,15 @@ const CardDisclosure = ({ title, element, href }: Props) => {
 					<AiOutlineArrowRight className="duration-300 ui-open:rotate-90" />
 					{title}
 				</h2>
-				<Link
-					className="float-right flex w-max items-center justify-end gap-x-2 rounded-full bg-green-500 px-4 py-2 text-white duration-300 ease-in-out hover:bg-green-600"
-					href={href}
-				>
-					<p>New {title}</p>
-					<AiOutlinePlus />
-				</Link>
+				{href?.length > 0 && (
+					<Link
+						className="float-right flex w-max items-center justify-end gap-x-2 rounded-full bg-green-500 px-4 py-2 text-white duration-300 ease-in-out hover:bg-green-600"
+						href={href}
+					>
+						<p>{text}</p>
+						<AiOutlinePlus />
+					</Link>
+				)}
 			</Disclosure.Button>
 			<Transition
 				enter="transition duration-300 ease-out"

@@ -35,3 +35,9 @@ yarn-error.log*
 .vscode
 supabase
 next-env.d.ts
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/
