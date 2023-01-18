@@ -44,7 +44,7 @@ const ListerProfile = () => {
 						</button>
 					))}
 				</div>
-				<div className="opacity-100 transition-all duration-300 ease-in-out">
+				<div>
 					{toggle === "Account Settings" && <Profile />}
 					{toggle === "Password and Security" && <ChangePassword />}
 				</div>
