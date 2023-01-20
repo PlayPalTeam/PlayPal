@@ -2,7 +2,7 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { TurfCard, Layout } from "../../../src/components";
-import Carousel from "../../../src/components/Carousel";
+
 
 import { Database } from "../../../src/types/database.types";
 
@@ -37,9 +37,6 @@ const BookingTurf = () => {
 	return (
 		<Layout title="Bookings">
 			<section className="w-full ">
-				<div className="mb-32 h-[300px]">
-					<Carousel />
-				</div>
 				<div className="mx-auto w-[70%] space-y-5">
 					{turfs.map((turf) => (
 						<div key={turf.turf_id}>

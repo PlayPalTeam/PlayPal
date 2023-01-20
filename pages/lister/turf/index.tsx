@@ -85,22 +85,15 @@ const Turfs = () => {
 		},
 	];
 
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors, isSubmitting },
-	} = useForm<TurfProfileType>({
-		resolver: zodResolver(TurfProfileSchema),
-	});
+	
 
 	const onSubmit: SubmitHandler<TurfProfileType> = (info) => {
+	
 		toast.promise(addTurf(info), {
 			loading: `Adding turf ${info.turf_name}`,
 			success: `Added turf ${info.turf_name}`,
 			error: "Something went wrong",
 		});
-		reset();
 	};
 
 	
