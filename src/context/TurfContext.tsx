@@ -26,7 +26,7 @@ interface TurfContextType {
 
 export const TurfContext = createContext<TurfContextType>({
 	turfs: [],
-	setTurfs: () => {},
+	setTurfs: () => { },
 	addTurf: () => Promise.resolve(),
 	updateTurf: () => Promise.resolve(),
 	deleteTurf: () => Promise.resolve(),

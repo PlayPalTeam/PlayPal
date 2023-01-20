@@ -1,10 +1,8 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import { SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useBookContext } from "../context/BookingContext";
-import { useRequestContext } from "../context/RequestContext";
-import { useUserProfile } from "../context/UserProfileContext";
 import { Database } from "../types/database.types";
 import {
 	SignInData,
@@ -17,50 +15,47 @@ type Request = Database["public"]["Tables"]["requests"]["Row"];
 type Book = Database["public"]["Tables"]["bookings"]["Row"];
 
 const useHelper = () => {
-	const { userProfile } = useUserProfile();
-	const { requests } = useRequestContext();
-	const { books } = useBookContext();
-
 	const router = useRouter();
 
 	const supabase = useSupabaseClient();
 
-	const createMappedData = (
-		requestsArray: Request[],
-		booksArray: Book[],
+	/**
+	 * RequestMappedData is a function that returns a new array of objects containing specific properties from the original requests and bookings.
+	 * @param {Request[]} requests - An array of Request type
+	 * @param {Book[]} bookings - An array of Book type
+	 * @param {Function} filterCondition - A callback function used to filter the requests array
+	 * @returns {Object[]} - An array of objects containing specific properties from the original requests and bookings
+	 */
+	const RequestMappedData = (
+		requests: Request[],
+		bookings: Book[],
 		filterCondition: (req: Request) => boolean
 	) => {
-		return requestsArray.filter(filterCondition).map((req) => {
-			const matchingBooks = booksArray.filter(
-				(book) => book.turf_id === req.turf_id && book.date === req.game_date
-			);
-			return {
-				id: req.id,
-				game: req.game,
-				player_needed: req.player_needed,
-				profile_id: req.profile_id,
-				date: req.game_date,
-				book: matchingBooks.map((book) => ({
-					start_time: book.start_time,
-					end_time: book.end_time,
-					turfs: {
-						turf_name: book.turfs.turf_name,
-						location: book.turfs.location,
-					},
-				})),
-			};
-		});
+		const computedData = useMemo(() => {
+			return requests?.filter(filterCondition).map((req) => {
+				const matchingBookings = bookings.filter(
+					(book) => book.turf_id === req.turf_id && book.date === req.game_date
+				);
+				return {
+					id: req.id,
+					game: req.game,
+					player_needed: req.player_needed,
+					profile_id: req.profile_id,
+					date: req.game_date,
+					book: matchingBookings.map((book) => ({
+						start_time: book.start_time,
+						end_time: book.end_time,
+						turfs: {
+							turf_name: book.turfs.turf_name,
+							location: book.turfs.location,
+						},
+					})),
+				};
+			});
+		}, [requests, bookings, filterCondition]);
+
+		return computedData;
 	};
-
-	const cardsData = createMappedData(
-		requests,
-		books,
-		(req) => !userProfile.request?.some((id) => id === req.id.toString())
-	);
-
-	const requestDashboard = createMappedData(requests, books, (req) =>
-		userProfile.request?.some((id) => id === req.id.toString())
-	);
 
 	const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
 		const { error } = await supabase.auth.signUp({
@@ -161,8 +156,7 @@ const useHelper = () => {
 	};
 
 	return {
-		cardsData,
-		requestDashboard,
+		RequestMappedData,
 		onSignUpSubmit,
 		onSignInSubmit,
 		onResetSubmit,

@@ -7,6 +7,7 @@ interface Option {
 
 interface SelectInputProps extends InputCommonProps {
 	options: Option[];
+	multiple?: boolean;
 }
 
 const SelectInput = ({
@@ -16,12 +17,13 @@ const SelectInput = ({
 	errors,
 	placeholder,
 	register,
+	multiple = false
 }: SelectInputProps) => {
 	return (
 		<div className="mb-4">
 			<label
 				htmlFor={name}
-				className="block text-sm font-medium leading-5 text-gray-700"
+				className="mb-2 block font-bold text-gray-700"
 			>
 				{label}
 			</label>
@@ -31,6 +33,7 @@ const SelectInput = ({
 				{...register(name)}
 				placeholder={placeholder}
 				className="inputCss"
+				multiple={multiple}
 			>
 				{options.map((option) => (
 					<option key={option.value} value={option.value}>

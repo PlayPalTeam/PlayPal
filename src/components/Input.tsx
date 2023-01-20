@@ -4,7 +4,7 @@ import ShowHideButton from "./ShowHideButton";
 
 interface InputProps extends InputCommonProps {
 	type: HTMLInputTypeAttribute;
-	valueAsNumber: boolean;
+	valueAsNumber?: boolean;
 }
 
 const Input = ({
@@ -15,7 +15,7 @@ const Input = ({
 	errors,
 	className,
 	placeholder,
-	valueAsNumber
+	valueAsNumber = false,
 }: InputProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 
@@ -34,7 +34,7 @@ const Input = ({
 					name={name}
 					placeholder={placeholder}
 					className="inputCss"
-					{...register(name, {valueAsNumber: valueAsNumber})}
+					{...register(name, { valueAsNumber: valueAsNumber })}
 				/>
 				{type === "password" && (
 					<ShowHideButton
