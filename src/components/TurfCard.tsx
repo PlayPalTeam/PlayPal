@@ -42,7 +42,7 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 
 	return (
 		<>
-			<div className="m-14">
+			<div className="m-14 shadow rounded-lg overflow-hidden">
 				<div>
 					<div className="flex items-center justify-between p-4 ">
 						<div>
@@ -63,14 +63,15 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 							<span className="pl-2 text-sm font-bold ">3.4</span>
 						</div>
 					</div>
+					
 
-					<div className="relative rounded-md overflow-hidden bg-green-600">
+					<div className="relative  overflow-hidden p-4   ">
 						<Image
 							src="/exampleturfimage.webp"
-							className="bg-cover"
+							className="bg-contain h-[330px] rounded-md"
 							alt="fuck off"
-							width={800}
-							height={300}
+							width={1000}
+							height={1000}
 						/>
 						{/* <Image 
 				src="/exampleturfimage.webp"
@@ -78,14 +79,14 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 				width={800}
 				alt="Sagar J K Rowling "
 				/> */}
-						<div className="absolute  top-4 left-6 ">
+						<div className="absolute  top-8 left-8 ">
 							<div className="rounded-md bg-orange-600 p-1 pl-2 pr-2 text-xs font-bold tracking-wider text-white">
 								30% OFF
 							</div>
 						</div>
 					</div>
-					<div className="flex justify-between pt-4">
-						<div>
+					<div className="flex justify-between pt-6 p-6 ">
+						<div className=" ">
 							{amned.first && (
 								<p className="ease-in ">Spilt Payments Availabel</p>
 							)}
