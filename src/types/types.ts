@@ -16,14 +16,13 @@ export type names =
 	| "game_date"
 	| "confirmPassword"
 	| "turf_name"
-	| "daytime"
+	| "opening_hours" | "ending_hours"
 	| "location"
-	| "availabelsports"
-	| "ammenitites"
+	| "sports"
+	| "amenities"
 	| "price_per_hour"
 	| "capacity"
 	| "venuerules"
-	| "shortlocation"
 	| "description";
 
 export type registerType =
@@ -38,7 +37,7 @@ export type registerType =
 export interface InputCommonProps {
 	name: names;
 	label: string;
-	placeholder: string;
+	placeholder?: string;
 	register: UseFormRegister<registerType>;
 	className?: string;
 	errors?: any;
@@ -136,16 +135,15 @@ export type ProfileFormProps = {
 export type TurfFormProps = {
 	label: string;
 	name:
-		| "turf_name"
-		| "daytime"
-		| "location"
-		| "availabelsports"
-		| "ammenitites"
-		| "price_per_hour"
-		| "capacity"
-		| "venuerules"
-		| "shortlocation"
-		| "description";
+	| "turf_name"
+	| "opening_hours" | "ending_hours"
+	| "location"
+	| "sports"
+	| "amenities"
+	| "price_per_hour"
+	| "capacity"
+	| "venuerules"
+	| "description";
 	type: HTMLInputTypeAttribute;
 	placeholder?: string;
 	valueAsNumber?: boolean;
@@ -154,14 +152,14 @@ export type TurfFormProps = {
 
 export const TurfProfileSchema = z.object({
 	turf_name: z.string(),
-	daytime: z.string(),
+	opening_hours: z.string(),
+	ending_hours: z.string(),
 	location: z.string(),
-	availabelsports: z.string().array(),
-	ammenitites: z.string(),
+	sports: z.string().array(),
+	amenities: z.string().array(),
 	price_per_hour: z.number(),
 	capacity: z.number(),
 	venuerules: z.string(),
-	shortlocation: z.string(),
 	description: z.string(),
 });
 

@@ -56,7 +56,7 @@ const User = () => {
 
 	return (
 		<Layout title={"DashBoard"}>
-			<main className="w-full p-5 md:p-20">
+			<main className="w-full max-w-5xl mx-auto py-20 max-md:p-5">
 				<ProfileCard />
 				<hr className="my-5 border-black" />
 				<CardDisclosure title={"Bookings"} element={bookElements} />

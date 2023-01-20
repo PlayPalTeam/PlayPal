@@ -1,138 +1,57 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import Head from "next/head";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, Form, Navbar } from "../../../src/components";
-import {
-	TurfFormProps,
-	TurfProfileSchema,
-	TurfProfileType,
-} from "../../../src/types/types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { Button, FormTitle, Input, Layout, SelectInput } from "../../../src/components";
 import { useTurfContext } from "../../../src/context/TurfContext";
-import toast, { Toaster } from "react-hot-toast";
-import { BaseSyntheticEvent, useState } from "react";
+import { TurfProfileSchema, TurfProfileType } from "../../../src/types/types";
 
-const Turfs = () => {
-	const { addTurf } = useTurfContext();
+const Ammenoptions = [{ value: "", label: "Select Turf Amenities" }, { value: "Gym", label: "Gym" }, { value: "Free WiFi", label: "Free WiFi" }, { value: "Pool", label: "Pool" }]
 
-	const FormData: TurfFormProps[] = [
-		{
-			label: "turfName",
-			name: "turf_name",
-			type: "text",
-			placeholder: "Turf Name",
-		},
-		{
-			label: "Daytime",
-			name: "daytime",
-			type: "text",
-			placeholder: "Daily Availabel Period",
-		},
-		{
-			label: "Location",
-			name: "location",
-			type: "text",
-			placeholder: "Location",
-		},
-	
-		
-		{
-			label: "Ammenitites",
-			name: "ammenitites",
-			type: "text",
-			placeholder: "Ammenitites",
-		},
+const SportsOption = [{ value: "", label: "Select Turf Sports" }, { value: "boxcricket", label: "BoxCricket" }, { value: "badminton", label: "BadMinton" }
+	, { value: "tennis", label: "Tennis" }]
 
-		{
-			label: "pricePerHour",
-			name: "price_per_hour",
-			type: "number",
-			placeholder: "Price Per Hour",
-			valueAsNumber: true,
-		},
-		{
-			label: "Capacity",
-			name: "capacity",
-			type: "number",
-			placeholder: "Capacity",
-			valueAsNumber: true,
-		},
-		{
-			label: "Venuerules",
-			name: "venuerules",
-			type: "text",
-			placeholder: "Venue Rules",
-		},
-		{
-			label: "ShortLocation",
-			name: "shortlocation",
-			type: "text",
-			placeholder: "Short Location",
-		},
+export default function Turf() {
 
-		{
-			label: "Description",
-			name: "description",
-			type: "text",
-			placeholder: "Description",
-		},
-		{
-			label: "AvailabelSports",
-			name: "availabelsports",
-			type: "select",
-			placeholder: "Availabel Sports",
-			options: [{value:"boxcricket" ,label:"BoxCricket"},{value:"badminton" ,label:"BadMinton"}
-		 ,{value:"tennis" ,label:"Tennis"}]
-		},
-	];
+	const { addTurf } = useTurfContext()
 
-	
+	const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+		resolver: zodResolver(TurfProfileSchema)
+	})
 
-	const onSubmit: SubmitHandler<TurfProfileType> = (info) => {
-	
-		toast.promise(addTurf(info), {
-			loading: `Adding turf ${info.turf_name}`,
-			success: `Added turf ${info.turf_name}`,
-			error: "Something went wrong",
-		});
-	};
+	const Submit: SubmitHandler<TurfProfileType> = async (turf) => {
+		toast.promise(addTurf(turf), { loading: "L", success: "S", error: "E" })
+	}
 
-	
-
-
-	const [sportSelection, setSportSelection] = useState< string[] >([]);
-
-	const handleChange = (e) => {
-		console.log(e.target.value);
-		setSportSelection((prev)=>(
-			[ ...prev , e.target.value]
-		))
-				
-	};
-	
 	return (
-		<>
-			<Head>
-				<title>Add Turfs</title>
-			</Head>
-			<main className="flex">
-				<Toaster />
-				<Navbar />
-				<div className="p-14">
-					<div className="flex rounded-lg border border-green-500">
-						{/* <Avatar1 navs={true} /> */}
-					</div>
-					<Form formFields={
-						FormData
-					} onSubmit={onSubmit} form={"Listing"} buttonType={"submit"} buttonText={"Enter Listing"}					
-					/>
-					{ sportSelection.map((data)=>(
-						<li key={data}>{data}</li>
-					))}
-				</div>
-
-			</main>
-		</>
-	);
-};
-
-export default Turfs;
+		<Layout title="Add Turf">
+			<main className="max-w-4xl m-auto">
+				<div className="shadow-md shadow-green-300 p-5 rounded-2xl">
+					<form className="space-y-5" onSubmit={handleSubmit(Submit)}>
+						<FormTitle title="Add Your Turf" />
+						<Input errors={errors} label="Name" name="turf_name" register={register} type={"text"} placeholder={"Enter your place name"} />
+						<div className="flex gap-5">
+							<Input errors={errors} label="Opening Hours" name="opening_hours" register={register} type={"time"} placeholder={"Enter your place name"} className="w-44" />
+							<Input errors={errors} label="Ending Hours" name="ending_hours" register={register} type={"time"} placeholder={"Enter your place name"} className="w-44" />
+						</div>
+						<Input errors={errors} label="Address" name="location" register={register} type={"text"} placeholder={"Enter your place address"} />
+						<div className="flex gap-5">
+							<Input errors={errors} label="Price" name="price_per_hour" register={register} type={"text"} placeholder={"Enter your place price per hour"} valueAsNumber={true} />
+							<Input errors={errors} label="Capacity" name="capacity" register={register} type={"text"} placeholder={"Enter your place capacity"} valueAsNumber={true} />
+						</div>
+						<div>
+							<label htmlFor="desc">Description</label>
+							<textarea autoComplete="true" className="resize-none inputCss" {...register("description")} id="desc" name="description" />
+						</div>
+						<div>
+							<label htmlFor="rule">Rules</label>
+							<textarea autoComplete="true" className="resize-none inputCss" {...register("venuerules")} name="rule" />
+						</div>
+						<SelectInput multiple={true} label="Amenities" name="amenities" options={Ammenoptions} register={register} errors={errors} />
+						<SelectInput multiple={true} label="Sports" name="sports" options={SportsOption} register={register} errors={errors} />
+						<Button type="submit" text="Add turf" isSubmitting={isSubmitting} />
+					</form>
+				</div >
+			</main >
+		</Layout >
+	)
+}
