@@ -3,22 +3,34 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { CardDisclosure, Layout } from "../../src/components";
 import useHelper from "../../src/utils/helper";
+import { useRequestContext } from "../../src/context/RequestContext";
+import { Database } from "../../src/types/database.types";
+import { useUserProfile } from "../../src/context/UserProfileContext";
 
 const ProfileCard = dynamic(() => import("../../src/components/ProfileCard"));
 const BookingCard = dynamic(() => import("../../src/components/BookingCard"));
 const RequestCard = dynamic(() => import("../../src/components/RequestCard"));
 
-/**
- * This is the main component for the user dashboard, it is responsible for rendering the user's profile card, bookings, and requests.
- * It uses the useBookContext hook to access the state of the books, and the useHelper hook to access the requestDashboard state.
- * It also uses the useMemo hook to memoize the book and request elements to prevent unnecessary re-renders.
- * It renders the elements inside of CardDisclosure components which will display the element passed to it and provides a button to navigate to a specified href.
- * It is wrapped in a Layout component which provides a basic structure for the page, and sets the title of the page.
- * It renders the ProfileCard, BookingCard and RequestCard components with the data passed as props.
- * */
+type Request = Database["public"]["Tables"]["requests"]["Row"];
+
 const User = () => {
+	const { userProfile } = useUserProfile();
+	const { requests } = useRequestContext();
 	const { books } = useBookContext();
-	const { requestDashboard, cardsData } = useHelper();
+	const { RequestMappedData } = useHelper();
+
+	const requestCreatedByYou = RequestMappedData(
+		requests,
+		books,
+		(req: Request) => req.profile_id === userProfile.id
+	);
+
+	const requestAcceptedByYou = RequestMappedData(
+		requests,
+		books,
+		(req: Request) =>
+			userProfile.request?.some((id) => id === req.id.toString())
+	);
 
 	// useMemo to memoize the book elements so that it is not recreated on every render
 	const bookElements = useMemo(
@@ -26,20 +38,20 @@ const User = () => {
 		[books]
 	);
 
-	const requestElement = useMemo(
+	const requestCreatedElement = useMemo(
 		() =>
-			requestDashboard.map((request) => (
-				<RequestCard key={request.id} {...request} isButtonVisible={false} />
+			requestCreatedByYou.map((request) => (
+				<RequestCard key={request.id} {...request} />
 			)),
-		[requestDashboard]
+		[requestCreatedByYou]
 	);
 
-	const requestCardData = useMemo(
+	const requestAcceptedElement = useMemo(
 		() =>
-			cardsData.map((req) => (
-				<RequestCard key={req.id} {...req} isButtonVisible={false} />
+			requestAcceptedByYou.map((request) => (
+				<RequestCard key={request.id} {...request} isButtonVisible={false} />
 			)),
-		[cardsData]
+		[requestAcceptedByYou]
 	);
 
 	return (
@@ -50,13 +62,13 @@ const User = () => {
 				<CardDisclosure title={"Bookings"} element={bookElements} />
 				<hr className="my-5 border-black" />
 				<CardDisclosure
-					title={"Request you have created"}
-					element={requestCardData}
+					title={"Request created by you"}
+					element={requestCreatedElement}
 				/>
 				<hr className="my-5 border-black" />
 				<CardDisclosure
-					title={"Request you have accepted"}
-					element={requestElement}
+					title="Request you accepted"
+					element={requestAcceptedElement}
 				/>
 			</main>
 		</Layout>

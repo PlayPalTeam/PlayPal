@@ -1,10 +1,40 @@
 import { useState } from "react";
-import { Layout, RequestCard, RequestForm } from "../../src/components";
+import { Layout } from "../../src/components";
+import { useBookContext } from "../../src/context/BookingContext";
+import { useRequestContext } from "../../src/context/RequestContext";
+import { useUserProfile } from "../../src/context/UserProfileContext";
 import useHelper from "../../src/utils/helper";
+import dynamic from 'next/dynamic'
+import { Database } from "../../src/types/database.types";
+
+type Request = Database["public"]["Tables"]["requests"]["Row"]
+
+
+const Card = dynamic(() => import("../../src/components/RequestCard"), {
+	loading: () => {
+		return (
+			<p>Loading...</p>
+		)
+	},
+})
+
+const Form = dynamic(() => import("../../src/components/RequestForm"))
 
 const Request = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { cardsData } = useHelper();
+
+	const { userProfile } = useUserProfile();
+	const { requests } = useRequestContext();
+	const { books } = useBookContext();
+
+	const { RequestMappedData } = useHelper();
+
+
+	const requestCardsData = RequestMappedData(
+		requests,
+		books,
+		(req: Request) => !userProfile.request?.some((id) => id === req.id.toString())
+	);
 
 	function closeModal() {
 		setIsOpen(false);
@@ -25,19 +55,14 @@ const Request = () => {
 					>
 						Create Request
 					</button>
-					<RequestForm closeModal={closeModal} isOpen={isOpen} />
+					<Form closeModal={closeModal} isOpen={isOpen} />
 				</section>
 				<section className="mt-5">
 					<div className="space-y-5">
-						{cardsData.map((cardData) => (
-							<RequestCard
+						{requestCardsData.map((cardData) => (
+							<Card
 								key={cardData.id}
-								id={cardData.id}
-								profile_id={cardData.profile_id}
-								game={cardData.game}
-								player_needed={cardData.player_needed}
-								date={cardData.date}
-								book={cardData.book}
+								{...cardData}
 							/>
 						))}
 					</div>
@@ -48,3 +73,4 @@ const Request = () => {
 };
 
 export default Request;
+
