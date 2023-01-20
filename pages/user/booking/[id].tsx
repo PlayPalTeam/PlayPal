@@ -36,12 +36,9 @@ const Book = () => {
 
 		toast.success("Your place is booked");
 	};
-
-	const showRules = () => {
-		return(
-			<VenueRules />
-		)
-	};
+	
+	
+	const showRules = <VenueRules />
 
 	return (
 		<Layout title={turf?.turf_name}>
@@ -60,9 +57,9 @@ const Book = () => {
 						<div>
 							<div className="font-bold tracking-widest">
 								{" "}
-								GreenField Sports Turf
+								{turf?.turf_name}
 							</div>
-							<div className="pt-2 text-sm">650 onwards 7 am to 12 pm</div>
+							<div className="pt-2 text-sm">{turf?.price_per_hour}/- onwards  . {turf?.opening_hours} -  {turf?.ending_hours}</div>
 						</div>
 						<div className="flex items-center justify-between p-4 pt-0 ">
 							{" "}
@@ -73,10 +70,8 @@ const Book = () => {
 					<div className="p-6 shadow">
 						<div className="">
 							<div className="pb-4 font-bold tracking-widest">Location</div>
-							<span className="text-sm tracking-wider">
-								Muslim Education Society School MES School Belgrami Road Near{" "}
-								<br></br> Kohinoor Hospital, Kurla West, Kohinoor city road,
-								Mumbai 400070
+							<span className="text-sm tracking-wider w-[300px]">
+								{turf?.location}
 							</span>
 						</div>
 					</div>
@@ -87,6 +82,7 @@ const Book = () => {
 						<div className="flex">
 							<div>Box Cricket</div>
 							<div className="ml-6"> Football</div>
+						
 						</div>
 					</div>
 					<div className="p-6 shadow">
@@ -122,9 +118,9 @@ const Book = () => {
 						/>
 					</div>
 				</div>
-			</div>
+		
 
-			{/* <main className="flex h-screen items-center justify-center">
+			<main className="flex h-screen items-center justify-center">
 				<div className="flex w-full max-w-2xl items-center border">
 					<section className="px-20">
 						<h1>Booking for {turf?.turf_name}</h1>
@@ -144,7 +140,8 @@ const Book = () => {
 						<Link href="/user/booking">Back to turf list</Link>
 					</section>
 				</div>
-			</main> */}
+			</main>
+				</div>
 		</Layout>
 	);
 };
