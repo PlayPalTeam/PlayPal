@@ -8,7 +8,7 @@
 	}
 
 	.formCss {
-		@apply w-full max-w-sm space-y-5 rounded-lg px-8 py-4 shadow-sm shadow-green-500 max-md:w-[90%];
+		@apply w-full max-w-sm space-y-5 rounded-lg px-8 py-4 shadow shadow-green-500 max-md:w-[90%];
 	}
 
 	.text-lg-semibold {
