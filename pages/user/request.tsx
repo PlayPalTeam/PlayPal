@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Layout } from "../../src/components";
 import { useBookContext } from "../../src/context/BookingContext";
 import { useRequestContext } from "../../src/context/RequestContext";
 import { useUserProfile } from "../../src/context/UserProfileContext";
 import useHelper from "../../src/utils/helper";
 import dynamic from 'next/dynamic'
 import { Database } from "../../src/types/database.types";
+import { Layout } from "@components/index";
+
 
 type Request = Database["public"]["Tables"]["requests"]["Row"]
 

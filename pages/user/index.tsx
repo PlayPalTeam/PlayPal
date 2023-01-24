@@ -1,11 +1,11 @@
 import { useBookContext } from "../../src/context/BookingContext";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import { CardDisclosure, Layout } from "../../src/components";
 import useHelper from "../../src/utils/helper";
 import { useRequestContext } from "../../src/context/RequestContext";
 import { Database } from "../../src/types/database.types";
 import { useUserProfile } from "../../src/context/UserProfileContext";
+import { CardDisclosure, Layout } from "@components/index";
 
 const ProfileCard = dynamic(() => import("../../src/components/ProfileCard"));
 const BookingCard = dynamic(() => import("../../src/components/BookingCard"));

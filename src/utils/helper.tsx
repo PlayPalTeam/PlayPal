@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useUserProfile } from "src/context/UserProfileContext";
 import { Database } from "../types/database.types";
 import {
 	SignInData,
@@ -17,7 +18,9 @@ type Book = Database["public"]["Tables"]["bookings"]["Row"];
 const useHelper = () => {
 	const router = useRouter();
 
-	const supabase = useSupabaseClient();
+	const { updateUserProfile } = useUserProfile()
+
+	const supabase = useSupabaseClient<Database>();
 
 	/**
 	 * RequestMappedData is a function that returns a new array of objects containing specific properties from the original requests and bookings.
@@ -62,13 +65,11 @@ const useHelper = () => {
 			email: data.email,
 			password: data.password,
 			options: {
-				data: {
-					username: data.username,
-					role: data.role,
-				},
 				emailRedirectTo: "http://localhost:3000/auth/signin",
 			},
 		});
+
+		updateUserProfile(data)
 
 		if (error) {
 			toast.error(error.message, {

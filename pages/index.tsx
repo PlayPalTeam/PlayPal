@@ -4,26 +4,27 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { Footer } from "../src/components";
 import Head from "next/head";
+import { NextPage } from "next";
 
 const displayData = [
 	{
-		img: "/search.png",
+		img: "/search.webp",
 		name: "Search",
 		text: "Are you looking to play after work, organize your Sunday Five's football match? Explore the largest network of sports facilities whole over the India",
 	},
 	{
-		img: "/book.png",
+		img: "/book.webp",
 		name: "Book",
 		text: "Once you’ve found the perfect ground, court or gym, Connect with the venue through the Book Now Button to make online booking & secure easier payment",
 	},
 	{
-		img: "/play.png",
+		img: "/play.webp",
 		name: "Play",
 		text: "You’re the hero, you’ve found a stunning turf or court, booked with ease and now its time to play. The scene is set for your epic match.",
 	},
 ];
 
-const Home = () => {
+const Home: NextPage = () => {
 	useEffect(() => {
 		const changeColour = () => {
 			const header = document.querySelector(".header");
@@ -45,9 +46,8 @@ const Home = () => {
 			<div>
 				<nav className="header z-10 flex justify-between p-3 pl-5 pr-5 font-bold tracking-wider text-white transition-all ease-in-out sm:p-4 sm:pl-32 sm:pr-32 sm:duration-700">
 					<div>PlayPal</div>
-					<div className="flex items-center gap-4">
-						<BsPersonSquare />
-						<Link href={"/auth/signin"}>Sign In</Link>
+					<div>
+						<Link className="flex items-center gap-x-4" href={"/auth/signin"}><BsPersonSquare /> Sign In</Link>
 					</div>
 				</nav>
 				<div className="absolute top-0 -z-10">
@@ -58,7 +58,7 @@ const Home = () => {
 						className="h-[630px] w-screen object-cover brightness-[0.8] sm:h-screen"
 					>
 						<source
-							src="https://www.playspots.in/wp-content/themes/playspots/assets/videos/beach-soccer.mp4"
+							src="/landing.mp4"
 							type="video/mp4"
 						/>
 					</video>
@@ -83,7 +83,7 @@ const Home = () => {
 						{displayData.map((data, index) => (
 							<div key={index} className="">
 								<div className="flex justify-center">
-									<Image src={data.img} alt="img" width={40} height={40} />
+									<Image src={data.img} alt="img" className="w-auto h-auto" width={40} height={40} />
 								</div>
 								<div className="mt-3 flex justify-center text-lg font-medium tracking-wider">
 									{data.name}
@@ -109,7 +109,7 @@ const Home = () => {
 					</div>
 					<div className="sm:mr-24 sm:grow-[1]">
 						<Image
-							src="/offer.jpeg"
+							src="/offer.webp"
 							alt="offerImage"
 							width={300}
 							height={300}
@@ -131,7 +131,7 @@ const Home = () => {
 					</div>
 					<div className="sm:mr-24 sm:grow-[1] ">
 						<Image
-							src="/meetpals.png"
+							src="/meetpals.webp"
 							alt="offerImage"
 							width={300}
 							height={300}

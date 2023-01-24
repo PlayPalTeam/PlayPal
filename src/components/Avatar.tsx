@@ -1,53 +1,85 @@
 import Image from "next/image";
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useReducer } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../types/database.types";
 import { useUserProfile } from "../context/UserProfileContext";
-type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
+import { imageConvert } from "upload-images-converter";
 
-export default function Avatar({ navs }: { navs: boolean }) {
+interface State {
+	avatarUrl: string;
+	uploading: boolean;
+	error: string;
+}
+
+interface Action {
+	type: "SET_AVATAR_URL" | "SET_UPLOADING" | "SET_ERROR";
+	avatarUrl?: string;
+	uploading?: boolean;
+	error?: string;
+}
+
+
+const initialState: State = {
+	avatarUrl: "",
+	uploading: false,
+	error: ""
+};
+
+const reducer = (state: State, action: Action): State => {
+	switch (action.type) {
+		case "SET_AVATAR_URL":
+			return { ...state, avatarUrl: action.avatarUrl };
+		case "SET_UPLOADING":
+			return { ...state, uploading: action.uploading };
+		case "SET_ERROR":
+			return { ...state, error: action.error };
+		default:
+			return state;
+	}
+};
+
+export default function Avatar({ navs = false }: { navs?: boolean }) {
 	const supabase = useSupabaseClient<Database>();
-	const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>("");
-	const [uploading, setUploading] = useState(false);
-
 	const { userProfile } = useUserProfile();
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const { avatar_url, id } = userProfile;
+	const { avatarUrl, uploading } = state;
 
 	useEffect(() => {
-		const downloadImage = async (path: string) => {
-			try {
-				const { data, error } = await supabase.storage
-					.from("avatars")
-					.download(path);
-				if (error) {
-					throw error;
+		if (userProfile) {
+			const downloadImage = async (path: string) => {
+				try {
+					const { data, error } = await supabase.storage
+						.from("avatars")
+						.download(path);
+					if (error) {
+						throw error;
+					}
+					const url = URL.createObjectURL(data);
+					dispatch({ type: "SET_AVATAR_URL", avatarUrl: url });
+				} catch (error) {
+					console.log("Error downloading image: ", error);
+					dispatch({ type: "SET_ERROR", error: error.message });
 				}
-				const url = URL.createObjectURL(data);
-				setAvatarUrl(url);
-			} catch (error) {
-				console.log("Error downloading image: ", error);
 			}
-		};
-		if (avatar_url) downloadImage(avatar_url);
-	}, [avatarUrl, avatar_url, supabase.storage]);
+			if (userProfile?.avatar_url) downloadImage(userProfile?.avatar_url);
+		}
+	}, [supabase, userProfile]);
 
-	const uploadAvatar: ChangeEventHandler<HTMLInputElement> = async (event) => {
+	const uploadAvatar: ChangeEventHandler<HTMLInputElement> = async event => {
 		try {
-			setUploading(true);
-
-			if (!event.target.files || event.target.files.length === 0) {
-				throw new Error("You must select an image to upload.");
-			}
+			dispatch({ type: "SET_UPLOADING", uploading: true });
 
 			const file = event.target.files[0];
 			const fileExt = file.name.split(".").pop();
-			const fileName = `${id}.${fileExt}`;
+			const fileName = `${userProfile.id}.${fileExt}`;
 			const filePath = `${fileName}`;
 
-			let { error: uploadError } = await supabase.storage
+			const convertedFile = await imageConvert(event.target.files, 400, 400, "image/webp", true);
+
+			const { error: uploadError } = await supabase.storage
 				.from("avatars")
-				.upload(filePath, file, { upsert: true });
+				.upload(filePath, convertedFile[0], { upsert: true });
 
 			if (uploadError) {
 				alert(uploadError.message);
@@ -55,24 +87,25 @@ export default function Avatar({ navs }: { navs: boolean }) {
 
 			await supabase
 				.from("profiles")
-				.update({
+				.upsert({
+					id: userProfile?.id,
 					avatar_url: filePath,
-					updated_at: new Date().toISOString(),
 				})
-				.eq("id", id);
+				.eq("id", userProfile?.id);
 		} catch (error) {
 			alert("Error uploading avatar!");
 			console.log(error);
+			dispatch({ type: "SET_ERROR", error: error.message });
 		} finally {
-			setUploading(false);
+			dispatch({ type: "SET_UPLOADING", uploading: false });
 		}
 	};
 
 	return (
-		<div className="flex w-full items-center justify-evenly p-10">
+		<div className="">
 			{avatarUrl ? (
 				<Image
-					className="rounded-md border border-green-500"
+					className=""
 					src={avatarUrl}
 					alt="Avatar"
 					width={100}
@@ -80,29 +113,24 @@ export default function Avatar({ navs }: { navs: boolean }) {
 				/>
 			) : (
 				<div
-					className="rounded-full border"
+					className=""
 					style={{ height: 100, width: 100 }}
 				/>
 			)}
 			{navs && (
-				<div style={{ width: 100 }}>
+				<div>
 					<label
-						className="cursor-pointer rounded-md border border-green-500 p-2 duration-300 ease-in-out hover:border-transparent hover:bg-green-500 hover:text-white"
+						className=""
 						htmlFor="single"
 					>
-						{uploading ? "Uploading ..." : "Upload"}
+						{uploading ? "Uploading..." : "Change Avatar"}
+						<input
+							type="file"
+							id="single"
+							onChange={uploadAvatar}
+							style={{ display: "none" }}
+						/>
 					</label>
-					<input
-						style={{
-							visibility: "hidden",
-							position: "absolute",
-						}}
-						type="file"
-						id="single"
-						accept="image/*"
-						onChange={uploadAvatar}
-						disabled={uploading}
-					/>
 				</div>
 			)}
 		</div>

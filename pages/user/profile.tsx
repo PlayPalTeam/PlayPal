@@ -1,5 +1,5 @@
+import { ChangePassword, Layout, Profile } from "@components/index";
 import { useReducer, useMemo } from "react";
-import { ChangePassword, Profile, Layout } from "../../src/components";
 
 const ListerProfile = () => {
 	const [toggle, dispatch] = useReducer(
