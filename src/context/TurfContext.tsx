@@ -60,7 +60,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
 	}, [getData, user]);
 
 	const addTurf = async (turf: TurfInsert) => {
-		await supabase.from("turfs").insert({ ...turf, profile_id: user.id });
+		await supabase.from("turfs").insert({ ...turf, profile_id: user?.id });
 	};
 
 	const updateTurf = async (id: string, update: TurfUpdate) => {

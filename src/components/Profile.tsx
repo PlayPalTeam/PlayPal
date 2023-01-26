@@ -1,6 +1,6 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { useUserProfile } from "../context/UserProfileContext";
-import { Avatar, Button } from "./index";
+import { Avatar } from "./index";
 import { useForm } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { UserProfileData, UserProfileSchema } from "../types/types";

@@ -60,7 +60,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
 			await supabase
 				.from("profiles")
 				.update(update)
-				.eq("id", user.id);
+				.eq("id", user?.id);
 			toast.success(`Updated profile for ${userProfile?.username}`);
 		} catch (error) {
 			toast.error(error.message);

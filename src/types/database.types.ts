@@ -11,7 +11,7 @@ export interface Database {
     Tables: {
       bookings: {
         Row: {
-          turfs: { turf_name: string; location: string };	
+          turfs: { turf_name: string; location: string }
           booking_id: string
           created_at: string | null
           date: string | null
@@ -49,7 +49,7 @@ export interface Database {
           id: string
           phone_number: number | null
           request: string[] | null
-          role: Database["public"]["Enums"]["roles"] | null
+          role: string | null
           username: string | null
         }
         Insert: {
@@ -58,7 +58,7 @@ export interface Database {
           id: string
           phone_number?: number | null
           request?: string[] | null
-          role?: Database["public"]["Enums"]["roles"] | null
+          role?: string | null
           username?: string | null
         }
         Update: {
@@ -67,7 +67,7 @@ export interface Database {
           id?: string
           phone_number?: number | null
           request?: string[] | null
-          role?: Database["public"]["Enums"]["roles"] | null
+          role?: string | null
           username?: string | null
         }
       }
