@@ -1,76 +1,37 @@
-import { useState } from "react";
-import { Layout } from "../../src/components";
-import { useBookContext } from "../../src/context/BookingContext";
-import { useRequestContext } from "../../src/context/RequestContext";
-import { useUserProfile } from "../../src/context/UserProfileContext";
-import useHelper from "../../src/utils/helper";
+import Layout from '@components/Layout'
+import { useRequestContext } from '@context/RequestContext'
+import useHelper from '@utils/helper'
+import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import { Database } from "../../src/types/database.types";
+import { useState } from 'react'
 
-type Request = Database["public"]["Tables"]["requests"]["Row"]
+const RequestForm = dynamic(() => import("@components/RequestForm"))
+const RequestCard = dynamic(() => import("@components/RequestCard"))
 
-
-const Card = dynamic(() => import("../../src/components/RequestCard"), {
-	loading: () => {
-		return (
-			<p>Loading...</p>
-		)
-	},
-})
-
-const Form = dynamic(() => import("../../src/components/RequestForm"))
-
-const Request = () => {
+const Request: NextPage = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const { userProfile } = useUserProfile();
-	const { requests } = useRequestContext();
-	const { books } = useBookContext();
-
-	const { RequestMappedData } = useHelper();
-
-
-	const requestCardsData = RequestMappedData(
-		requests,
-		books,
-		(req: Request) => !userProfile.request?.some((id) => id === req.id.toString())
-	);
-
-	function closeModal() {
-		setIsOpen(false);
-	}
-
-	function openModal() {
-		setIsOpen(true);
-	}
+	const { requests } = useRequestContext()
 
 	return (
-		<Layout title={"Request"}>
-			<main className="flex w-full flex-col p-5 md:p-20">
+		<Layout title="Requests">
+			<main className='p-10 w-full'>
 				<section>
-					<button
-						type="button"
-						onClick={openModal}
-						className="rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-					>
-						Create Request
-					</button>
-					<Form closeModal={closeModal} isOpen={isOpen} />
+					<div className="text-right">
+						<button onClick={() => setIsOpen(true)}>Create Requests</button>
+					</div>
+					<RequestForm isOpen={isOpen} closeModal={() => setIsOpen(false)} />
 				</section>
-				<section className="mt-5">
-					<div className="space-y-5">
-						{requestCardsData.map((cardData) => (
-							<Card
-								key={cardData.id}
-								{...cardData}
-							/>
-						))}
+				<hr className='my-5 border-black' />
+				<section>
+					<div>
+						{requests?.map((req) => <RequestCard key={req.id} {...req} />)}
 					</div>
 				</section>
 			</main>
 		</Layout>
-	);
-};
+	)
 
-export default Request;
+}
 
+export default Request

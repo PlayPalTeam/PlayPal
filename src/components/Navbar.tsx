@@ -9,6 +9,7 @@ import { CgCommunity } from "react-icons/cg";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useUserProfile } from "src/context/UserProfileContext";
 
 const NavItem = ({ icon, label, href }) => (
 	<li className="py-3 hover:text-white md:hover:bg-green-800">
@@ -19,36 +20,17 @@ const NavItem = ({ icon, label, href }) => (
 	</li>
 );
 
-const navigations = [
-	{
-		icon: <MdSpaceDashboard className="h-4 w-4" />,
-		label: "DashBoard",
-		href: "/user",
-	},
-	{
-		icon: <AiOutlineProfile className="h-4 w-4" />,
-		label: "Profile",
-		href: "/user/profile",
-	},
-	{
-		icon: <BiGitPullRequest className="h-4 w-4" />,
-		label: "Request",
-		href: "/user/request",
-	},
-	{
-		icon: <BiGitPullRequest className="h-4 w-4" />,
-		label: "Booking",
-		href: "/user/booking",
-	},
-	{ icon: <CgCommunity className="h-4 w-4" />, label: "Community", href: "#" },
-];
+
 
 export default function NavBar() {
 	const [navbar, setNavbar] = useState(false);
+	const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+	const { userProfile } = useUserProfile()
+
 
 	const supabase = useSupabaseClient();
 	const router = useRouter();
-	const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 	useEffect(() => {
 		if (isLoggingOut) {
@@ -56,14 +38,44 @@ export default function NavBar() {
 			Cookies.remove("supabase-auth-token");
 			router.push("/auth/signin");
 		}
-	}, [isLoggingOut, router, supabase.auth]);
+	}, [isLoggingOut, router, supabase]);
+
+
+	const navigations = [
+		{
+			icon: <MdSpaceDashboard className="h-4 w-4" />,
+			label: "DashBoard",
+			href: userProfile?.role === 'lister' ? '/lister' : '/user',
+		},
+		{
+			icon: <AiOutlineProfile className="h-4 w-4" />,
+			label: "Profile",
+			href: userProfile?.role === 'lister' ? '/lister/profile' : '/user/profile',
+		},
+		{
+			icon: <BiGitPullRequest className="h-4 w-4" />,
+			label: "Request",
+			href: userProfile?.role === 'lister' ? '/lister/request' : '/user/request',
+		},
+		{
+			icon: <BiGitPullRequest className="h-4 w-4" />,
+			label: "Booking",
+			href: userProfile?.role === 'lister' ? '/lister/booking' : '/user/booking',
+		},
+		{
+			icon: <CgCommunity className="h-4 w-4" />,
+			label: "Community",
+			href: userProfile?.role === 'lister' ? '/lister/community' : '/user/community',
+		},
+	].filter((nav) => !(nav.label === 'Request' && userProfile?.role === 'lister'));;
+
 
 	const toggleNavbar = () => setNavbar(!navbar);
 	const handleSignOut = () => setIsLoggingOut(true);
 
 	return (
-		<nav className="w-full bg-green-400 shadow-sm shadow-black/50 md:sticky md:top-0 md:h-screen md:w-72">
-			<div className="mx-auto px-4 md:flex  md:flex-col md:items-center">
+		<nav className="w-96 bg-green-400 shadow-sm shadow-black/50 md:sticky md:top-0 md:h-screen md:w-72">
+			<div className="mx-auto px-4 md:flex md:flex-col md:items-center">
 				<div>
 					<div className="flex items-center justify-between py-3 md:block md:py-5">
 						<h2 className="text-2xl font-bold">PlayPal</h2>
@@ -82,9 +94,8 @@ export default function NavBar() {
 					</div>
 				</div>
 				<div
-					className={`w-full max-md:mt-5 md:block md:pb-0 ${
-						navbar ? "block" : "hidden"
-					}`}
+					className={`w-full max-md:mt-5 md:block md:pb-0 ${navbar ? "block" : "hidden"
+						}`}
 				>
 					<ul className="md:flex md:flex-col">
 						{navigations.map((nav, index) => (

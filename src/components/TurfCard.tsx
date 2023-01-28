@@ -63,7 +63,7 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 							<span className="pl-2 text-sm font-bold ">3.4</span>
 						</div>
 					</div>
-					
+
 
 					<div className="relative  overflow-hidden p-4   ">
 						<Image
@@ -73,12 +73,6 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 							width={1000}
 							height={1000}
 						/>
-						{/* <Image 
-				src="/exampleturfimage.webp"
-				height={300}
-				width={800}
-				alt="Sagar J K Rowling "
-				/> */}
 						<div className="absolute  top-8 left-8 ">
 							<div className="rounded-md bg-orange-600 p-1 pl-2 pr-2 text-xs font-bold tracking-wider text-white">
 								30% OFF

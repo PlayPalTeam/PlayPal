@@ -11,7 +11,7 @@ export interface Database {
     Tables: {
       bookings: {
         Row: {
-					turfs: { turf_name: string; location: string };	
+          turfs: { turf_name: string; location: string }
           booking_id: string
           created_at: string | null
           date: string | null
@@ -47,33 +47,27 @@ export interface Database {
           avatar_url: string | null
           full_name: string | null
           id: string
-          inserted_at: string
           phone_number: number | null
           request: string[] | null
           role: string | null
-          updated_at: string
           username: string | null
         }
         Insert: {
           avatar_url?: string | null
           full_name?: string | null
           id: string
-          inserted_at?: string
           phone_number?: number | null
           request?: string[] | null
           role?: string | null
-          updated_at?: string
           username?: string | null
         }
         Update: {
           avatar_url?: string | null
           full_name?: string | null
           id?: string
-          inserted_at?: string
           phone_number?: number | null
           request?: string[] | null
           role?: string | null
-          updated_at?: string
           username?: string | null
         }
       }
@@ -173,7 +167,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      roles: "lister" | "user"
     }
     CompositeTypes: {
       [_ in never]: never

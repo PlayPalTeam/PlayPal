@@ -1,8 +1,8 @@
+import Layout from "@components/Layout";
+import TurfCard from "@components/TurfCard";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { TurfCard, Layout } from "../../../src/components";
-
 
 import { Database } from "../../../src/types/database.types";
 

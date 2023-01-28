@@ -43,13 +43,18 @@ export interface InputCommonProps {
 	errors?: any;
 }
 
-// Validates that the input is a non-empty string with at least 3 characters
+
 const usernameValidation = z
 	.string()
-	.min(3, "Username must be more than 3 characters");
+	.min(3)
+	.max(20)
+	.trim()
+	.regex(/^[a-zA-Z0-9_]+$/)
 
-// Validates that the input is a non-empty string that is a valid email address
-const emailValidation = z.string().email({ message: "Invalid email address" });
+const emailValidation = z
+	.string()
+	.email()
+	.trim()
 
 // Validates that the input is a non-empty string that is at least 8 characters long
 // contains at least one uppercase letter, one lowercase letter, one number, and one special character
@@ -64,7 +69,6 @@ const passwordValidation = z
 	)
 	.min(8, "Must be at least 8 characters in length");
 
-// Schema for validating the input for a sign up form
 export const SignUpSchema = z.object({
 	username: usernameValidation,
 	email: emailValidation,
@@ -72,16 +76,16 @@ export const SignUpSchema = z.object({
 	role: z.enum(["user", "lister"]),
 });
 
+
+export type SignUpData = z.infer<typeof SignUpSchema>;
+
 export interface SignUpFormProps {
 	label: string;
-	type: HTMLInputTypeAttribute;
-	name: "username" | "email" | "password" | "role";
+	type: 'text' | 'email' | 'password' | 'select';
+	name: keyof SignUpData;
 	placeholder?: string;
 	options?: { value: string; label: string }[];
 }
-
-// Type representing the shape of an object that conforms to the SignUpFormSchema
-export type SignUpData = z.infer<typeof SignUpSchema>;
 
 // Schema for validating the input for a sign in form
 export const SignInSchema = z.object({
@@ -103,6 +107,7 @@ export type SignInData = z.infer<typeof SignInSchema>;
 export const UserProfileSchema = z.object({
 	username: usernameValidation,
 	full_name: z.string(),
+	phone_number: z.number().positive()
 });
 
 // Type representing the shape of an object that conforms to the UserProfileFormSchema

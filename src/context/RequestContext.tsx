@@ -1,3 +1,4 @@
+import { RequestResponse } from "@components/RequestCard";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import {
 	createContext,
@@ -10,11 +11,10 @@ import {
 import { toast } from "react-hot-toast";
 import { Database } from "../types/database.types";
 
-type Request = Database["public"]["Tables"]["requests"]["Row"];
 type RequestInsert = Database["public"]["Tables"]["requests"]["Insert"];
 
 interface RequestContexType {
-	requests: Request[];
+	requests: RequestResponse[];
 	updatePlayerNeeded: (
 		id: number,
 		player: number,
@@ -33,7 +33,7 @@ export const RequestContext = createContext<RequestContexType>({
 });
 
 export const RequestProvider = ({ children }: { children: ReactNode }) => {
-	const [requests, setRequest] = useState<Request[]>([]);
+	const [requests, setRequest] = useState<RequestResponse[]>([]);
 
 	const supabase = useSupabaseClient<Database>();
 
@@ -41,7 +41,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
 	const getRequests = useMemo(() => {
 		return async () => {
-			const { data, error } = await supabase.from("requests").select("*");
+			const { data, error } = await supabase.from("requests").select("id,profile_id, game, game_date, player_needed, profiles(full_name), turfs(turf_name, location)");
 
 			if (error) {
 				toast.error(error.message, {
@@ -84,7 +84,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 		name: string,
 		phone: number
 	) {
-		const { data, error } = await supabase
+		const { status, error } = await supabase
 			.from("requests")
 			.update({
 				player_needed: player - 1,
@@ -92,7 +92,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 			})
 			.eq("id", id);
 
-		if (data) {
+		if (status === 204) {
 			toast.success("Success", { duration: 1000 });
 		}
 

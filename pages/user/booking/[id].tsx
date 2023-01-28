@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useTurfContext } from "../../../src/context/TurfContext";
 import Link from "next/link";
-import { Form, FormTitle, Layout, Button, CardDisclosure } from "../../../src/components";
 import { BookingForm } from "../../../src/content/contents";
 import { SubmitHandler } from "react-hook-form";
 import { BookingType } from "../../../src/types/types";
@@ -11,6 +10,11 @@ import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { BsStarFill } from "react-icons/bs";
 import VenueRules from "../../../src/components/VenueRules";
+import Button from "@components/Button";
+import CardDisclosure from "@components/CardDisclosure";
+import Form from "@components/FormComponent";
+import FormTitle from "@components/FormTitle";
+import Layout from "@components/Layout";
 
 const Book = () => {
 	const router = useRouter();
@@ -36,8 +40,8 @@ const Book = () => {
 
 		toast.success("Your place is booked");
 	};
-	
-	
+
+
 	const showRules = <VenueRules />
 
 	return (
@@ -82,7 +86,7 @@ const Book = () => {
 						<div className="flex">
 							<div>Box Cricket</div>
 							<div className="ml-6"> Football</div>
-						
+
 						</div>
 					</div>
 					<div className="p-6 shadow">
@@ -102,11 +106,11 @@ const Book = () => {
 									Arrive 10 mins before booking time
 								</div>
 								<div className=" pt-4">
-								<CardDisclosure title={"More"} element={showRules} />
+									<CardDisclosure title={"More"} element={showRules} />
 								</div>
 							</div>
 							<div className="mt-3">
-								
+
 							</div>
 						</div>
 					</div>
@@ -118,30 +122,30 @@ const Book = () => {
 						/>
 					</div>
 				</div>
-		
 
-			<main className="flex h-screen items-center justify-center">
-				<div className="flex w-full max-w-2xl items-center border">
-					<section className="px-20">
-						<h1>Booking for {turf?.turf_name}</h1>
-						<p>Location: {turf?.location}</p>
-						<p>Size: {turf?.capacity}</p>
-						<p>Price: {turf?.price_per_hour}/hour</p>
-					</section>
-					<section className="p-5">
-						<FormTitle title="Book" />
-						<Form
-							formFields={BookingForm}
-							onSubmit={onSubmit}
-							form={"Booking"}
-							buttonType={"submit"}
-							buttonText={"Book Now"}
-						/>
-						<Link href="/user/booking">Back to turf list</Link>
-					</section>
-				</div>
-			</main>
-				</div>
+
+				<main className="flex h-screen items-center justify-center">
+					<div className="flex w-full max-w-2xl items-center border">
+						<section className="px-20">
+							<h1>Booking for {turf?.turf_name}</h1>
+							<p>Location: {turf?.location}</p>
+							<p>Size: {turf?.capacity}</p>
+							<p>Price: {turf?.price_per_hour}/hour</p>
+						</section>
+						<section className="p-5">
+							<FormTitle title="Book" />
+							<Form
+								formFields={BookingForm}
+								onSubmit={onSubmit}
+								form={"Booking"}
+								buttonType={"submit"}
+								buttonText={"Book Now"}
+							/>
+							<Link href="/user/booking">Back to turf list</Link>
+						</section>
+					</div>
+				</main>
+			</div>
 		</Layout>
 	);
 };

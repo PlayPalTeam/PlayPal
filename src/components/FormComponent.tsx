@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Button, Input, SelectInput } from "./index";
 import {
 	SignInSchema,
 	SignInData,
@@ -20,6 +19,9 @@ import {
 	registerType,
 } from "../types/types";
 import { HTMLInputTypeAttribute } from "react";
+import Button from "./Button";
+import Input from "./Input";
+import SelectInput from "./SelectInput";
 
 interface FormProps {
 	formFields: {
@@ -34,13 +36,13 @@ interface FormProps {
 		SignInData | SignUpData | BookingType | RequestData | TurfProfileType
 	>;
 	form:
-		| "SignIn"
-		| "SignUp"
-		| "Booking"
-		| "Request"
-		| "Reset"
-		| "PasswordChange"
-		| "Listing";
+	| "SignIn"
+	| "SignUp"
+	| "Booking"
+	| "Request"
+	| "Reset"
+	| "PasswordChange"
+	| "Listing";
 	buttonType: "submit" | "reset" | "button";
 	buttonText: string;
 	className?: string;

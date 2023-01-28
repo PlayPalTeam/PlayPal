@@ -1,10 +1,11 @@
+import Form from "@components/FormComponent";
+import FormTitle from "@components/FormTitle";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import useHelper from "@utils/helper";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { SignInForm } from "../../src/content/contents";
-import { Form, FormTitle } from "../../src/components";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import useHelper from "../../src/utils/helper";
+import { SignInForm } from "src/content/contents";
 
 const SignIn = () => {
 	const { onSignInSubmit } = useHelper();
