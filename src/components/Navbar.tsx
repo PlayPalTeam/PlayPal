@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useUserProfile } from "src/context/UserProfileContext";
 
 const NavItem = ({ icon, label, href }) => (
-	<li className="py-3 hover:text-white md:hover:bg-green-800">
+	<li className="p-3 hover:text-white rounded-md md:hover:bg-green-800">
 		<Link className="flex items-center gap-x-4" href={href}>
 			{icon}
 			{label}
@@ -20,14 +20,11 @@ const NavItem = ({ icon, label, href }) => (
 	</li>
 );
 
-
-
 export default function NavBar() {
 	const [navbar, setNavbar] = useState(false);
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 	const { userProfile } = useUserProfile()
-
 
 	const supabase = useSupabaseClient();
 	const router = useRouter();
@@ -75,7 +72,7 @@ export default function NavBar() {
 
 	return (
 		<nav className="w-full bg-green-400 shadow-sm shadow-black/50 md:sticky md:top-0 md:h-screen md:w-72">
-			<div className="mx-auto px-4 md:flex md:flex-col md:items-center">
+			<div className="mx-auto md:flex md:flex-col md:items-center">
 				<div>
 					<div className="flex items-center justify-between py-3 md:block md:py-5">
 						<h2 className="text-2xl font-bold">PlayPal</h2>
@@ -102,7 +99,7 @@ export default function NavBar() {
 							<NavItem key={index} {...nav} />
 						))}
 						<li
-							className="flex cursor-pointer items-center gap-x-4 py-3 hover:text-white md:hover:bg-green-800"
+							className="flex cursor-pointer items-center gap-x-4 p-3 rounded-md hover:text-white md:hover:bg-green-800"
 							onClick={handleSignOut}
 						>
 							<CiLogout className="h-4 w-4" />

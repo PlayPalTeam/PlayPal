@@ -1,10 +1,7 @@
-import React from 'react'
-
 const VenueRules = () => {
     return (
         <>
             <div className='w-[500px]'>
-
                 <div className='font-bold text-lg tracking-widest  '>
                     Rules
                 </div>
