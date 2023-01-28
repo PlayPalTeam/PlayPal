@@ -1,6 +1,5 @@
 import Layout from '@components/Layout'
 import { useRequestContext } from '@context/RequestContext'
-import useHelper from '@utils/helper'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
@@ -18,15 +17,13 @@ const Request: NextPage = () => {
 			<main className='p-10 w-full'>
 				<section>
 					<div className="text-right">
-						<button onClick={() => setIsOpen(true)}>Create Requests</button>
+						<button className='bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-600' onClick={() => setIsOpen(true)}>Create Requests</button>
 					</div>
 					<RequestForm isOpen={isOpen} closeModal={() => setIsOpen(false)} />
 				</section>
 				<hr className='my-5 border-black' />
-				<section>
-					<div>
-						{requests?.map((req) => <RequestCard key={req.id} {...req} />)}
-					</div>
+				<section className='space-y-5'>
+					{requests?.map((req) => <RequestCard key={req.id} {...req} />)}
 				</section>
 			</main>
 		</Layout>

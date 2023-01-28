@@ -1,38 +1,9 @@
 import Layout from "@components/Layout";
 import TurfCard from "@components/TurfCard";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
-
-import { Database } from "../../../src/types/database.types";
-
-type Turf = Database["public"]["Tables"]["turfs"]["Row"];
+import { useTurfContext } from "@context/TurfContext";
 
 const BookingTurf = () => {
-	const supabase = useSupabaseClient();
-	const user = useUser();
-
-	const [turfs, setTurfs] = useState<Turf[]>([]);
-
-	const getData = useMemo(() => {
-		return async () => {
-			const { data, error } = await supabase.from("turfs").select("*");
-
-			if (error) {
-				toast.error(error.message);
-			}
-
-			if (data) {
-				setTurfs(data);
-			}
-		};
-	}, [supabase]);
-
-	useEffect(() => {
-		if (user) {
-			getData();
-		}
-	}, [getData, user]);
+	const { turfs } = useTurfContext()
 
 	return (
 		<Layout title="Bookings">

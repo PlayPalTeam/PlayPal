@@ -30,11 +30,19 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 
 	const names_of_turf = useMemo(() => {
 		const uniqueIds = Array.from(new Set(books.map((book) => book.turf_id)));
-		return uniqueIds.map((id) => {
+		return uniqueIds.reduce((acc, id) => {
 			const turf = books.find((book) => book.turf_id === id);
-			return { value: id, label: turf.turfs.turf_name };
-		});
+			if (Array.isArray(turf.turfs)) {
+				return [...acc, ...turf.turfs.map((t) => {
+					return { value: id, label: t.turf_name };
+				})]
+			} else {
+				return [...acc, { value: id, label: turf.turfs.turf_name }]
+			}
+		}, []);
 	}, [books]);
+
+
 
 	const dates = useMemo(() => {
 		const filteredBooks = books.filter((book) => book.turf_id === turf_id);

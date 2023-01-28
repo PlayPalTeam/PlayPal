@@ -15,8 +15,6 @@ const useHelper = () => {
 
 	const supabase = useSupabaseClient()
 
-
-
 	const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
 		const { error } = await supabase.auth.signUp({
 			email: data.email,

@@ -11,7 +11,6 @@ export interface Database {
     Tables: {
       bookings: {
         Row: {
-          turfs: { turf_name: string; location: string }
           booking_id: string
           created_at: string | null
           date: string | null

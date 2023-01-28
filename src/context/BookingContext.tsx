@@ -10,7 +10,14 @@ import {
 import { toast } from "react-hot-toast";
 import { Database } from "../types/database.types";
 
-type Booking = Database["public"]["Tables"]["bookings"]["Row"];
+export type Booking = {
+	booking_id: string;
+	turf_id: string;
+	date: string;
+	start_time: string;
+	end_time: string;
+	turfs: { turf_name: string; location: string; } | { turf_name: string; location: string; }[];
+};
 
 type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
 
@@ -35,7 +42,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 		return async () => {
 			const { data, error } = await supabase
 				.from("bookings")
-				.select("*, turfs(turf_name, location)")
+				.select("booking_id, turf_id, date, end_time, start_time, turfs(turf_name, location)")
 				.eq("profile_id", user.id);
 
 			if (error) {

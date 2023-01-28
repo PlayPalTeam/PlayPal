@@ -23,8 +23,6 @@ export interface RequestResponse {
 	}[];
 }
 
-
-
 const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
 	const { deleteRequest } = useRequestContext();
 	const { userProfile, updateUserProfile } = useUserProfile()
@@ -35,7 +33,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
 	const handleAccept = useCallback(() => {
 		updatePlayerNeeded(id, player_needed, userProfile?.full_name, userProfile?.phone_number)
 		updateUserProfile({ request: [id.toString()] })
-	}, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile])
+	}, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile?.full_name, userProfile?.phone_number])
 
 	const handleDelete = useCallback(() => {
 		deleteRequest(id);
@@ -72,12 +70,16 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
 					</div>
 				)}
 			</div>
+			<hr className="mb-5 border-black" />
 			<div>
 				{profile_id === user?.id ? (
 					<button onClick={handleDelete} className="bg-red-500 text-white rounded-lg p-2">Delete</button>
 				) : (
-					<button onClick={handleAccept} className={`text-white rounded-lg p-2 ${player_needed === 0 ? "bg-gray-500" : "bg-green-500"
-						}`}>Accept</button>
+					<button
+						disabled={userProfile.request.some(id => id === id) || player_needed === 0 ? true : false}
+						onClick={handleAccept}
+						className={`text-white rounded-lg p-2 ${userProfile.request.some(id => id === id) || player_needed === 0 ? "bg-gray-500" : "bg-green-500"}`}>
+						Accept</button>
 				)}
 			</div>
 		</div>

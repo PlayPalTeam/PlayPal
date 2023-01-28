@@ -74,7 +74,7 @@ export default function NavBar() {
 	const handleSignOut = () => setIsLoggingOut(true);
 
 	return (
-		<nav className="w-96 bg-green-400 shadow-sm shadow-black/50 md:sticky md:top-0 md:h-screen md:w-72">
+		<nav className="w-full bg-green-400 shadow-sm shadow-black/50 md:sticky md:top-0 md:h-screen md:w-72">
 			<div className="mx-auto px-4 md:flex md:flex-col md:items-center">
 				<div>
 					<div className="flex items-center justify-between py-3 md:block md:py-5">

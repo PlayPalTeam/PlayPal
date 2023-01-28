@@ -1,8 +1,8 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 import { ReactNode } from "react";
+import Navbar from "./Navbar";
 
-const Navbar = dynamic(() => import("./Navbar"));
+
 
 type LayoutProps = {
 	children: ReactNode;
