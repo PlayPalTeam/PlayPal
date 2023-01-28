@@ -41,7 +41,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
 	const getRequests = useMemo(() => {
 		return async () => {
-			const { data, error } = await supabase.from("requests").select("id,profile_id, game, game_date, player_needed, profiles(full_name), turfs(turf_name, location)");
+			const { data, error } = await supabase.from("requests").select("id,profile_id,turf_id, game, game_date, player_needed, profiles(full_name), turfs(turf_name, location)");
 
 			if (error) {
 				toast.error(error.message, {

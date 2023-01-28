@@ -97,12 +97,12 @@ export default function Avatar({ showUploadButton }: Props) {
 				<Image
 					src={state.avatarUrl}
 					alt="Avatar"
-					className="overflow-hidden rounded-full max-w-full object-cover"
-					width={200}
-					height={200}
+					className="w-16 h-16 overflow-hidden rounded-full"
+					width={300}
+					height={300}
 				/>
 			) : (
-				<div className="overflow-hidden rounded-full max-w-full bg-[#333] border border-solid " style={{ height: 200, width: 200 }} />
+				<div className="overflow-hidden rounded-full bg-[#333] border border-solid" />
 			)}
 			{showUploadButton && (
 				<div className='w-96'>

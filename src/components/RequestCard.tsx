@@ -6,6 +6,7 @@ import { memo, useCallback } from "react";
 export interface RequestResponse {
 	id: number;
 	profile_id: string;
+	turf_id: string;
 	game: string;
 	game_date: string;
 	player_needed: number;

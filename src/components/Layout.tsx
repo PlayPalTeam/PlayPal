@@ -1,8 +1,7 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import Header from "./Header";
 import Navbar from "./Navbar";
-
-
 
 type LayoutProps = {
 	children: ReactNode;
@@ -18,7 +17,10 @@ const Layout = ({ children, title }: LayoutProps) => {
 			</Head>
 			<div className="md:flex">
 				<Navbar />
-				{children}
+				<div className="w-full">
+					<Header />
+					{children}
+				</div>
 			</div>
 		</>
 	);

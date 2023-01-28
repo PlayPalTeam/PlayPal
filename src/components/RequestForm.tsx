@@ -6,6 +6,7 @@ import { useRequestContext } from "../context/RequestContext";
 import { useBookContext } from "../context/BookingContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "./Button";
+import { toast } from "react-hot-toast";
 
 interface Props {
 	isOpen: boolean;
@@ -15,6 +16,7 @@ interface Props {
 const RequestForm = ({ closeModal, isOpen }: Props) => {
 	const { addRequest } = useRequestContext();
 	const { books } = useBookContext();
+	const { requests } = useRequestContext()
 
 	const {
 		reset,
@@ -88,9 +90,14 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
 	);
 
 	const onSubmit: SubmitHandler<RequestData> = async (formData) => {
-		addRequest(formData);
-		reset();
-		closeModal();
+		const checkIfExist = requests.find((req) => req.game_date === formData.game_date && req.turf_id === formData.turf_id)
+		if (checkIfExist) {
+			toast.error("Request aleady exsist")
+			reset()
+		} else {
+			addRequest(formData);
+			reset();
+		}
 	};
 
 	return (
