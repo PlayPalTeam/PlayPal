@@ -1,122 +1,88 @@
+import { useRequestContext } from "@context/RequestContext";
+import { useUserProfile } from "@context/UserProfileContext";
 import { useUser } from "@supabase/auth-helpers-react";
-import { memo, useCallback, useMemo } from "react";
-import { useRequestContext } from "../context/RequestContext";
-import { useUserProfile } from "../context/UserProfileContext";
+import { memo, useCallback } from "react";
 
-interface RequestCardProps {
+export interface RequestResponse {
 	id: number;
-	game: string;
-	player_needed: number;
-	date: string;
 	profile_id: string;
-	book: {
-		start_time: string;
-		end_time: string;
-		turfs: {
-			turf_name: string;
-			location: string;
-		};
+	game: string;
+	game_date: string;
+	player_needed: number;
+	profiles: {
+		full_name: string;
+	} | {
+		full_name: string;
 	}[];
-	isButtonVisible?: boolean;
+	turfs: {
+		turf_name: string;
+		location: string;
+	} | {
+		turf_name: string;
+		location: string;
+	}[];
 }
 
-/**
- * RequestCard component that renders a card displaying information about a request for a game
- * such as the game's name, the number of players needed, and the date and location of the game.
- * It also includes buttons to accept or delete the request, which are dependent on whether
- * the user is the creator of the request or not
- *
- * @param {RequestCardProps} props - Props for the component
- */
-const RequestCard = ({
-	id,
-	game,
-	player_needed,
-	date,
-	book,
-	profile_id,
-	isButtonVisible = true,
-}: RequestCardProps) => {
-	const { userProfile, updateUserProfile } = useUserProfile();
-	const { updatePlayerNeeded, deleteRequest } = useRequestContext();
-	const user = useUser();
 
-	/**
-	 * Handle the event when accept button is clicked
-	 */
+
+const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
+	const { deleteRequest } = useRequestContext();
+	const { userProfile, updateUserProfile } = useUserProfile()
+	const { updatePlayerNeeded } = useRequestContext()
+
+	const user = useUser()
+
 	const handleAccept = useCallback(() => {
-		updatePlayerNeeded(
-			id,
-			player_needed,
-			userProfile.full_name,
-			userProfile.phone_number
-		);
-		updateUserProfile({ request: [id.toString()] });
-	}, [id, player_needed, userProfile, updatePlayerNeeded, updateUserProfile]);
+		updatePlayerNeeded(id, player_needed, userProfile?.full_name, userProfile?.phone_number)
+		updateUserProfile({ request: [id.toString()] })
+	}, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile])
 
-	/**
-	 * Handle the event when delete button is clicked
-	 */
 	const handleDelete = useCallback(() => {
 		deleteRequest(id);
 	}, [id, deleteRequest]);
 
-	/**
-	 * Memoize the mapped array so that it only gets recreated if the 'book' prop changes
-	 */
-	const mappedBook = useMemo(() => {
-		return book.map((book, index) => (
-			<li key={index} className="text-gray-700">
-				<p>
-					Timing: {book.start_time} to {book.end_time}
-				</p>
-				<p>
-					{book.turfs.turf_name} ({book.turfs.location})
-				</p>
-			</li>
-		));
-	}, [book]);
-
 	return (
-		<div className="overflow-hidden rounded-lg shadow-card">
-			<div className="bg-green-400 py-2 px-2 md:px-6 md:py-4">
-				<div className="mb-2 text-lg font-medium">{game}</div>
-				<p className="text-base text-gray-700">
-					Players needed: {player_needed}
-				</p>
-			</div>
-			<section className="flex justify-between px-3 py-2 max-md:flex-col md:px-6 md:py-4">
-				<div>
-					<p className="text-base text-gray-700">Date: {date}</p>
-					<ul>{mappedBook}</ul>
-				</div>
-				{isButtonVisible && (
-					<>
-						{profile_id === user?.id ? (
-							<button
-								onClick={handleDelete}
-								className={`rounded-md bg-red-500 px-4 py-2 max-md:mt-4`}
-								type="button"
-							>
-								Delete
-							</button>
-						) : (
-							<button
-								onClick={handleAccept}
-								className={`rounded-md ${
-									player_needed === 0 ? "bg-gray-500" : "bg-blue-500"
-								} px-4 py-2 max-md:mt-4`}
-								type="button"
-								disabled={player_needed === 0}
-							>
-								Accept
-							</button>
-						)}
-					</>
+		<div className="bg-white rounded-lg p-6 shadow-md">
+			<div className="text-lg font-medium">Game: {game}</div>
+			<div className="text-sm text-gray-600">Game Date: {game_date}</div>
+			<div className="text-sm text-gray-600">Player Needed: {player_needed}</div>
+			<div className="my-4">
+				{Array.isArray(profiles) ? (
+					profiles.map((profile, i) => (
+						<div key={i} className="text-sm text-gray-600">
+							{profile.full_name}
+						</div>
+					))
+				) : (
+					<div className="text-sm text-gray-600">{profiles.full_name}</div>
 				)}
-			</section>
+			</div>
+			<div className="my-4">
+				{Array.isArray(turfs) ? (
+					turfs.map((turf, i) => (
+						<div key={i} className="text-sm text-gray-600">
+							<div>Turf Name: {turf.turf_name}</div>
+							<div>Location: {turf.location}</div>
+						</div>
+					))
+				) : (
+					<div className="text-sm text-gray-600">
+						<div>Turf Name: {turfs.turf_name}</div>
+						<div>Location: {turfs.location}</div>
+					</div>
+				)}
+			</div>
+			<div>
+				{profile_id === user?.id ? (
+					<button onClick={handleDelete} className="bg-red-500 text-white rounded-lg p-2">Delete</button>
+				) : (
+					<button onClick={handleAccept} className={`text-white rounded-lg p-2 ${player_needed === 0 ? "bg-gray-500" : "bg-green-500"
+						}`}>Accept</button>
+				)}
+			</div>
 		</div>
 	);
 };
 
 export default memo(RequestCard);
+

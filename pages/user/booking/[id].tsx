@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useTurfContext } from "../../../src/context/TurfContext";
 import Link from "next/link";
-import { Form, FormTitle, Layout, Button, CardDisclosure } from "../../../src/components";
 import { BookingForm } from "../../../src/content/contents";
 import { SubmitHandler } from "react-hook-form";
 import { BookingType } from "../../../src/types/types";
@@ -11,6 +10,11 @@ import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { BsStarFill } from "react-icons/bs";
 import VenueRules from "../../../src/components/VenueRules";
+import Button from "@components/Button";
+import CardDisclosure from "@components/CardDisclosure";
+import Form from "@components/FormComponent";
+import FormTitle from "@components/FormTitle";
+import Layout from "@components/Layout";
 
 const Book = () => {
 	const router = useRouter();

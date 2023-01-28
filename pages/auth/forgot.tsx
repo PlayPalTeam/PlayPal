@@ -1,6 +1,7 @@
-import { Form, FormTitle } from "../../src/components";
-import { ForgotformFields } from "../../src/content/contents";
-import useHelper from "../../src/utils/helper";
+import Form from "@components/FormComponent";
+import FormTitle from "@components/FormTitle";
+import { ForgotformFields } from "@content/contents";
+import useHelper from "@utils/helper";
 
 const ForgotPassword = () => {
 	const { onPasswordSubmit } = useHelper();

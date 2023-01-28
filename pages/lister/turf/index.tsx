@@ -1,9 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { Button, FormTitle, Input, Layout, SelectInput } from "../../../src/components";
-import { useTurfContext } from "../../../src/context/TurfContext";
-import { TurfProfileSchema, TurfProfileType } from "../../../src/types/types";
+import Button from "@components/Button"
+import FormTitle from "@components/FormTitle"
+import Input from "@components/Input"
+import Layout from "@components/Layout"
+import SelectInput from "@components/SelectInput"
+import { useTurfContext } from "@context/TurfContext"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm, SubmitHandler } from "react-hook-form"
+import toast from "react-hot-toast"
+import { TurfProfileSchema, TurfProfileType } from "src/types/types"
 
 const Ammenoptions = [{ value: "", label: "Select Turf Amenities" }, { value: "Gym", label: "Gym" }, { value: "Free WiFi", label: "Free WiFi" }, { value: "Pool", label: "Pool" }]
 

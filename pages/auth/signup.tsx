@@ -1,8 +1,9 @@
+import Form from "@components/FormComponent";
+import FormTitle from "@components/FormTitle";
+import { SignUpForm } from "@content/contents";
+import useHelper from "@utils/helper";
 import Head from "next/head";
 import Link from "next/link";
-import { Form, FormTitle } from "../../src/components";
-import { SignUpForm } from "../../src/content/contents";
-import useHelper from "../../src/utils/helper";
 
 const SignUp = () => {
 	const { onSignUpSubmit } = useHelper();

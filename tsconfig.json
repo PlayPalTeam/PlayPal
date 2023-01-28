@@ -22,6 +22,15 @@
 		"paths": {
 			"@components/*": [
 				"src/components/*"
+			],
+			"@context/*": [
+				"src/context/*"
+			],
+			"@utils/*": [
+				"src/utils/*"
+			],
+			"@content/*": [
+				"src/content/*"
 			]
 		}
 	},

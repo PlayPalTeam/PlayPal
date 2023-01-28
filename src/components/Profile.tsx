@@ -1,6 +1,6 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { useUserProfile } from "../context/UserProfileContext";
-import { Avatar } from "./index";
+import  Avatar  from "./Avatar";
 import { useForm } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { UserProfileData, UserProfileSchema } from "../types/types";
@@ -61,7 +61,7 @@ const Profile = () => {
 	return (
 		<div>
 			<div className="flex rounded-lg border border-green-500">
-				<Avatar navs={true} />
+				<Avatar showUploadButton={true} />
 			</div>
 			<div className="mt-3 rounded-md border border-green-500 px-8 py-6">
 				<div className="mt-3">

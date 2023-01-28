@@ -9,7 +9,7 @@ interface Props {
 
 const CardDisclosure = ({ title, element }: Props) => {
 	return (
-		<Disclosure >
+		<Disclosure defaultOpen={true}>
 			<Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
 				<h2 className="flex items-center gap-x-4 max-md:gap-x-2">
 					<AiOutlineArrowRight className="duration-300 ui-open:rotate-90" />

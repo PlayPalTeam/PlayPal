@@ -1,5 +1,7 @@
+import ChangePassword from "@components/ChangePassword";
+import Layout from "@components/Layout";
+import Profile from "@components/Profile";
 import { useReducer, useMemo } from "react";
-import { ChangePassword, Layout, Profile } from "../../src/components";
 
 const ListerProfile = () => {
 	const [toggle, dispatch] = useReducer(
@@ -21,13 +23,13 @@ const ListerProfile = () => {
 		[]
 	);
 
-	const handleToggle = (name: string) => {
+	const handleToggle = (name) => {
 		dispatch(name);
 	};
 
 	return (
-		<Layout title={"Profile"}>
-			<section className="flex flex-wrap gap-10 p-12">
+		<Layout title={"User Profile"}>
+			<div className="flex flex-wrap gap-10 p-12">
 				<div className="grow p-2">
 					{profilesettings.map((data, index) => (
 						<button
@@ -38,17 +40,17 @@ const ListerProfile = () => {
 							<p className="transition-colors ease-in group-hover:text-white">
 								{data.name}
 							</p>
-							<p className="text-xs transition-colors ease-in  group-hover:text-white">
+							<p className="text-xs transition-colors ease-in group-hover:text-white">
 								{data.info}{" "}
 							</p>
 						</button>
 					))}
 				</div>
-				<div className="opacity-100 transition-all duration-300 ease-in-out">
+				<div>
 					{toggle === "Account Settings" && <Profile />}
 					{toggle === "Password and Security" && <ChangePassword />}
 				</div>
-			</section>
+			</div>
 		</Layout>
 	);
 };

@@ -3,10 +3,10 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { HTMLInputTypeAttribute, useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { ForgotPasswordData, ForgotPasswordSchema } from "../types/types";
-import { Button } from "./index";
+import Button  from "./Button";
 
 interface FormField {
 	label: string;

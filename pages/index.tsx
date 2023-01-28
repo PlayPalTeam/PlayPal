@@ -2,7 +2,7 @@ import { BsPersonSquare } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
-import { Footer } from "../src/components";
+import Footer from "@components/Footer";
 import Head from "next/head";
 import { NextPage } from "next";
 

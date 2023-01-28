@@ -1,8 +1,8 @@
+import Navbar from "@components/Navbar";
+import TurfCard from "@components/TurfCard";
+import { useTurfContext } from "@context/TurfContext";
 import Head from "next/head";
 import Link from "next/link";
-import Navbar from "../../src/components/Navbar";
-import TurfCard from "../../src/components/TurfCard";
-import { useTurfContext } from "../../src/context/TurfContext";
 
 const Lister = () => {
 	const { turfs } = useTurfContext();

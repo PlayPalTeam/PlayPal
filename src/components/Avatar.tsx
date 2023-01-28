@@ -33,7 +33,7 @@ function avatarReducer(state: State, action: Action): State {
 }
 
 type Props = {
-	showUploadButton: boolean
+	showUploadButton?: boolean
 }
 
 export default function Avatar({ showUploadButton }: Props) {
@@ -97,12 +97,12 @@ export default function Avatar({ showUploadButton }: Props) {
 				<Image
 					src={state.avatarUrl}
 					alt="Avatar"
-					className="overflow-hidden max-w-full object-cover"
+					className="overflow-hidden rounded-full max-w-full object-cover"
 					width={200}
 					height={200}
 				/>
 			) : (
-				<div className="overflow-hidden max-w-full bg-[#333] border border-solid " style={{ height: 200, width: 200 }} />
+				<div className="overflow-hidden rounded-full max-w-full bg-[#333] border border-solid " style={{ height: 200, width: 200 }} />
 			)}
 			{showUploadButton && (
 				<div className='w-96'>
