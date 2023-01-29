@@ -14,7 +14,7 @@ const Request: NextPage = () => {
 
 	return (
 		<Layout title="Requests">
-			<main className='p-10 w-full'>
+			<main className='px-10 w-full'>
 				<section>
 					<div className="text-right">
 						<button className='bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-600' onClick={() => setIsOpen(true)}>Create Requests</button>
