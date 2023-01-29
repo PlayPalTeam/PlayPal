@@ -4,7 +4,7 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 
 interface Props {
   title: string;
-  element: JSX.Element[];
+  element: JSX.Element[] | JSX.Element;
 }
 
 const CardDisclosure = ({ title, element }: Props) => {
@@ -16,7 +16,7 @@ const CardDisclosure = ({ title, element }: Props) => {
       <Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
         <h2 className="mt-4 flex items-center gap-x-4 max-md:gap-x-2">
           <AiOutlineArrowRight className="duration-300 ui-open:rotate-90" />
-          {title}({element.length})
+          {title}({Array.isArray(element) ? `${element.length}` : "1"})
         </h2>
       </Disclosure.Button>
       <Transition
