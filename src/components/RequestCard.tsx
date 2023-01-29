@@ -1,7 +1,16 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import { useUser } from '@supabase/auth-helpers-react';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
+
+interface RequestProfile {
+  full_name: string;
+}
+
+interface RequestTurf {
+  turf_name: string;
+  location: string;
+}
 
 export interface RequestResponse {
   id: number;
@@ -10,22 +19,8 @@ export interface RequestResponse {
   game: string;
   game_date: string;
   player_needed: number;
-  profiles:
-    | {
-        full_name: string;
-      }
-    | {
-        full_name: string;
-      }[];
-  turfs:
-    | {
-        turf_name: string;
-        location: string;
-      }
-    | {
-        turf_name: string;
-        location: string;
-      }[];
+  profiles: RequestProfile | RequestProfile[];
+  turfs: RequestTurf | RequestTurf[];
 }
 
 const RequestCard = ({
@@ -51,51 +46,42 @@ const RequestCard = ({
       userProfile?.phone_number
     );
     updateUserProfile({ request: [id.toString()] });
-  }, [
-    id,
-    player_needed,
-    updatePlayerNeeded,
-    updateUserProfile,
-    userProfile?.full_name,
-    userProfile?.phone_number
-  ]);
+  }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
   const handleDelete = useCallback(() => {
     deleteRequest(id);
   }, [id, deleteRequest]);
 
+  const profileList = useMemo(
+    () => (Array.isArray(profiles) ? profiles : [profiles]),
+    [profiles]
+  );
+  const turfList = useMemo(
+    () => (Array.isArray(turfs) ? turfs : [turfs]),
+    [turfs]
+  );
+
   return (
-    <div className="rounded-lg border bg-white p-6 shadow">
+    <div className="rounded-lg border max-w-fit bg-white p-6 shadow">
       <div className="text-lg font-medium">Game: {game}</div>
       <div className="text-sm text-gray-600">Game Date: {game_date}</div>
       <div className="text-sm text-gray-600">
         Player Needed: {player_needed}
       </div>
       <div className="my-4">
-        {Array.isArray(profiles) ? (
-          profiles.map((profile, i) => (
-            <div key={i} className="text-sm text-gray-600">
-              {profile.full_name}
-            </div>
-          ))
-        ) : (
-          <div className="text-sm text-gray-600">{profiles.full_name}</div>
-        )}
+        {profileList.map((profile, i) => (
+          <div key={i} className="text-sm text-gray-600">
+            {profile.full_name}
+          </div>
+        ))}
       </div>
       <div className="my-4">
-        {Array.isArray(turfs) ? (
-          turfs.map((turf, i) => (
-            <div key={i} className="text-sm text-gray-600">
-              <div>Turf Name: {turf.turf_name}</div>
-              <div>Location: {turf.location}</div>
-            </div>
-          ))
-        ) : (
-          <div className="text-sm text-gray-600">
-            <div>Turf Name: {turfs.turf_name}</div>
-            <div>Location: {turfs.location}</div>
+        {turfList.map((turf, i) => (
+          <div key={i} className="text-sm text-gray-600">
+            <div>Turf Name: {turf.turf_name}</div>
+            <div>Location: {turf.location}</div>
           </div>
-        )}
+        ))}
       </div>
       <hr className="mb-5 border-black" />
       <div>

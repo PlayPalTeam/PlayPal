@@ -16,7 +16,7 @@ const BookingCard = ({ date, end_time, start_time, turfs }: Booking) => {
       </div>
       <div className="mt-4">
         {Array.isArray(turfs) ? (
-          turfs.map((turf) => (
+        turfs.map((turf) => (
             <div key={turf.turf_name} className="text-gray-800">
               {turf.turf_name} - <ImLocation /> {turf.location}
             </div>

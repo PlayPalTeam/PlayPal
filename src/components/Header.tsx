@@ -22,7 +22,12 @@ const Header = () => {
   return (
     <div className="flex items-center justify-between px-10 py-5 max-md:p-5">
       <section>
-        <input type="search" name="" className='form-input rounded-full focus:ring-1 focus:ring-emerald-400' id="" />
+        <input
+          type="search"
+          name=""
+          className="form-input rounded-full focus:ring-1 focus:ring-emerald-400"
+          id=""
+        />
       </section>
       <section>
         <Popover className={'relative'}>
