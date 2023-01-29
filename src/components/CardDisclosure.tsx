@@ -4,16 +4,19 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 
 interface Props {
   title: string;
-  element: JSX.Element[] | JSX.Element;
+  element: JSX.Element[];
 }
 
 const CardDisclosure = ({ title, element }: Props) => {
   return (
-    <Disclosure as={'div'} className="px-10" defaultOpen={true}>
+    <Disclosure
+      as={'div'}
+      className="px-10"
+    >
       <Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
         <h2 className="mt-4 flex items-center gap-x-4 max-md:gap-x-2">
           <AiOutlineArrowRight className="duration-300 ui-open:rotate-90" />
-          {title}
+          {title}({element.length})
         </h2>
       </Disclosure.Button>
       <Transition
