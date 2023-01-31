@@ -2,9 +2,10 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useUserProfile } from '../context/UserProfileContext';
 import Avatar from './Avatar';
 import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { UserProfileData, UserProfileSchema } from '../types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDeepCompareEffect } from 'react-use';
 
 interface FormField {
   label: string;
@@ -50,7 +51,7 @@ const Profile = () => {
     [updateUserProfile]
   );
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     reset({
       username: userProfile?.username || '',
       full_name: userProfile?.full_name || '',

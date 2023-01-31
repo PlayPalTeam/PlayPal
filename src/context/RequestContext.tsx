@@ -1,14 +1,8 @@
 import { RequestResponse } from '@components/RequestCard';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useDeepCompareEffect } from 'react-use';
 import { Database } from '../types/database.types';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
@@ -61,7 +55,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [supabase]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (user) {
       getRequests();
     }

@@ -1,10 +1,10 @@
 import { BsPersonSquare } from 'react-icons/bs';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import Footer from '@components/Footer';
 import Head from 'next/head';
 import { NextPage } from 'next';
+import { useDeepCompareEffect } from 'react-use';
 
 const displayData = [
   {
@@ -25,7 +25,7 @@ const displayData = [
 ];
 
 const Home: NextPage = () => {
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const changeColour = () => {
       const header = document.querySelector('.header');
       if (window.scrollY >= 20) {

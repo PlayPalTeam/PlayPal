@@ -2,7 +2,6 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import {
   createContext,
   useState,
-  useEffect,
   SetStateAction,
   Dispatch,
   useContext,
@@ -11,6 +10,8 @@ import {
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
+import { useDeepCompareEffect } from 'react-use';
+
 
 type Turf = Database['public']['Tables']['turfs']['Row'];
 type TurfInsert = Database['public']['Tables']['turfs']['Insert'];
@@ -53,7 +54,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [supabase]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (user) {
       getData();
     }

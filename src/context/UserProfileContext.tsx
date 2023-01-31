@@ -2,7 +2,6 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import {
   createContext,
   useState,
-  useEffect,
   useContext,
   ReactNode
 } from 'react';
