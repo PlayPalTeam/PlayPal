@@ -1,7 +1,12 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
+import { Dialog, Transition } from '@headlessui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { memo, useCallback, useMemo } from 'react';
+import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
+import { Database } from 'src/types/database.types';
+
+type RequestDataProps = Database['public']['Tables']['requests']['Row'];
 
 interface RequestProfile {
   full_name: string;
@@ -12,13 +17,7 @@ interface RequestTurf {
   location: string;
 }
 
-export interface RequestResponse {
-  id: number;
-  profile_id: string;
-  turf_id: string;
-  game: string;
-  game_date: string;
-  player_needed: number;
+export interface RequestResponse extends RequestDataProps {
   profiles: RequestProfile | RequestProfile[];
   turfs: RequestTurf | RequestTurf[];
 }
@@ -32,9 +31,12 @@ const RequestCard = ({
   turfs,
   profile_id
 }: RequestResponse) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { deleteRequest } = useRequestContext();
   const { userProfile, updateUserProfile } = useUserProfile();
-  const { updatePlayerNeeded } = useRequestContext();
+  const { updatePlayerNeeded, requests } = useRequestContext();
+
+  console.log(...requests);
 
   const user = useUser();
 
@@ -56,13 +58,14 @@ const RequestCard = ({
     () => (Array.isArray(profiles) ? profiles : [profiles]),
     [profiles]
   );
+
   const turfList = useMemo(
     () => (Array.isArray(turfs) ? turfs : [turfs]),
     [turfs]
   );
 
   return (
-    <div className="rounded-lg border max-w-fit bg-white p-6 shadow">
+    <div className="rounded-lg border bg-white p-6 shadow">
       <div className="text-lg font-medium">Game: {game}</div>
       <div className="text-sm text-gray-600">Game Date: {game_date}</div>
       <div className="text-sm text-gray-600">
@@ -84,7 +87,7 @@ const RequestCard = ({
         ))}
       </div>
       <hr className="mb-5 border-black" />
-      <div>
+      <div className="flex items-center justify-between">
         {profile_id === user?.id ? (
           <button
             onClick={handleDelete}
@@ -103,12 +106,70 @@ const RequestCard = ({
             className={`rounded-lg p-2 text-white ${
               userProfile.request.some((id) => id === id) || player_needed === 0
                 ? 'bg-gray-500'
-                : 'bg-green-500'
+                : 'bg-emerald-500'
             }`}
           >
             Accept
           </button>
         )}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="group flex items-center gap-x-1 rounded-md bg-emerald-200 px-4 py-2 hover:bg-emerald-300 active:bg-emerald-400"
+        >
+          Show Details{' '}
+          <BsArrowRight className="duration-300 group-hover:translate-x-1" />
+        </button>
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-10"
+            onClose={() => setIsOpen(false)}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel
+                    className={
+                      'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
+                    }
+                  >
+                    <Dialog.Title>Hello</Dialog.Title>
+                    <Dialog.Description>Say</Dialog.Description>
+                    {requests.map((req) => (
+                      <>
+                        <ul>
+                          {req.people.map((r, index) => (
+                            <li key={index}>{}</li>
+                          ))}
+                        </ul>
+                      </>
+                    ))}
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
       </div>
     </div>
   );
