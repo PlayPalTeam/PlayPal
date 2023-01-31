@@ -1,126 +1,123 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
-import { SubmitHandler } from "react-hook-form";
-import toast from "react-hot-toast";
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/router';
+import { SubmitHandler } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import {
-	SignInData,
-	SignUpData,
-	ResetData,
-	ForgotPasswordData,
-} from "../types/types";
-
+  SignInData,
+  SignUpData,
+  ResetData,
+  ForgotPasswordData
+} from '../types/types';
 
 const useHelper = () => {
-	const router = useRouter();
+  const router = useRouter();
 
-	const supabase = useSupabaseClient()
+  const supabase = useSupabaseClient();
 
+  const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          username: data.username,
+          role: data.role
+        },
+        emailRedirectTo: 'http://localhost:3000/auth/signin'
+      }
+    });
 
+    if (error) {
+      toast.error(error.message, {
+        duration: 5000,
+        style: {
+          border: '1px solid red'
+        }
+      });
+    } else {
+      toast.success('Check your email', { duration: 5000 });
+    }
+  };
 
-	const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
-		const { error } = await supabase.auth.signUp({
-			email: data.email,
-			password: data.password,
-			options: {
-				data: {
-					username: data.username,
-					role: data.role,
-				},
-				emailRedirectTo: "http://localhost:3000/auth/signin",
-			},
-		});
+  const onSignInSubmit: SubmitHandler<SignInData> = async (data) => {
+    const {
+      error,
+      data: { session }
+    } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password
+    });
 
-		if (error) {
-			toast.error(error.message, {
-				duration: 5000,
-				style: {
-					border: "1px solid red",
-				},
-			});
-		} else {
-			toast.success("Check your email", { duration: 5000 });
-		}
-	};
+    if (error) {
+      toast.error(error.message, {
+        duration: 5000,
+        style: {
+          border: '1px solid red',
+          color: 'red'
+        }
+      });
+    }
 
-	const onSignInSubmit: SubmitHandler<SignInData> = async (data) => {
-		const {
-			error,
-			data: { session },
-		} = await supabase.auth.signInWithPassword({
-			email: data.email,
-			password: data.password,
-		});
+    if (session?.user.user_metadata) {
+      router.push(`/${session.user.user_metadata.role}`);
+    }
+  };
 
-		if (error) {
-			toast.error(error.message, {
-				duration: 5000,
-				style: {
-					border: "1px solid red",
-					color: "red",
-				},
-			});
-		}
+  const onResetSubmit: SubmitHandler<ResetData> = async (email) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.email, {
+      redirectTo: 'http://localhost:3000/auth/forgot'
+    });
 
-		if (session?.user.user_metadata) {
-			router.push(`/${session.user.user_metadata.role}`);
-		}
-	};
+    if (error) {
+      toast.error(error.message, { duration: 5000 });
+    }
 
-	const onResetSubmit: SubmitHandler<ResetData> = async (email) => {
-		const { error } = await supabase.auth.resetPasswordForEmail(email.email, {
-			redirectTo: "http://localhost:3000/auth/forgot",
-		});
+    toast.success('Check your email', { duration: 5000 });
+  };
 
-		if (error) {
-			toast.error(error.message, { duration: 5000 });
-		}
+  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({
+    password,
+    confirmPassword
+  }) => {
+    console.log(password);
+    console.log(confirmPassword);
 
-		toast.success("Check your email", { duration: 5000 });
-	};
+    if (password !== confirmPassword) {
+      toast.error('Passwords must match');
+      return;
+    }
 
-	const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({
-		password,
-		confirmPassword,
-	}) => {
-		console.log(password);
-		console.log(confirmPassword);
+    const { error } = await supabase.auth.updateUser({
+      password: password
+    });
 
-		if (password !== confirmPassword) {
-			toast.error("Passwords must match");
-			return;
-		}
+    if (error) {
+      toast.error(error.message, {
+        duration: 5000,
+        style: {
+          border: '1px solid red',
+          color: 'red'
+        }
+      });
+    }
 
-		const { error } = await supabase.auth.updateUser({
-			password: password,
-		});
+    toast.success('Password reset successful!', {
+      duration: 5000,
+      style: {
+        border: '1px solid green',
+        color: 'green'
+      }
+    });
 
-		if (error) {
-			toast.error(error.message, {
-				duration: 5000,
-				style: {
-					border: "1px solid red",
-					color: "red",
-				},
-			});
-		}
+    router.push('/auth/signin');
+  };
 
-		toast.success("Password reset successful!", {
-			duration: 5000,
-			style: {
-				border: "1px solid green",
-				color: "green",
-			},
-		});
-
-		router.push("/auth/signin");
-	};
-
-	return {
-		onSignUpSubmit,
-		onSignInSubmit,
-		onResetSubmit,
-		onPasswordSubmit,
-	};
+  return {
+    onSignUpSubmit,
+    onSignInSubmit,
+    onResetSubmit,
+    onPasswordSubmit
+  };
 };
 
 export default useHelper;
