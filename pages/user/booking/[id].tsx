@@ -55,29 +55,54 @@ const Book = () => {
   const consoleit =()=>{
     console.log(value)
   }  
+
   const handleScheduled = dateTime => {
     console.log('scheduled: ', dateTime);
-    
+    setchangeValue(dateTime)
+    console.log(value.getHours())
+
 
   };
 
   function timeSlotValidator(slotTime) {
+
+    const arr=[
+      new Date()
+    ]
+
     const eveningTime = new Date(
-      slotTime.getFullYear(),
-      slotTime.getMonth(),
-      slotTime.getDate(),
-      17,
+      // slotTime.getFullYear(),
+      value.getFullYear(),
+      // slotTime.getMonth(),
+      value.getMonth(),
+      // slotTime.getDate(),
+      value.getDate(),
+      value.getHours(),
       0,
       0
     );
 
+
     const selectedTimes = new Date(
 
     );
+
     
-    const isValid = slotTime.getTime() > eveningTime.getTime();
+    const isValid = slotTime.getTime() == eveningTime.getTime() ? false : true;
     return isValid;
     }  
+  
+    const  timeSlots = (allTimeslots, lastSelectedTimeslot) => {
+      /**
+       * All timeslot objects include `startDate` and `endDate`.
+    
+       * It is important to note that if timelots provided contain a single
+       * value (e.g: timeslots = [['8'], ['9', '10']) then only `startDate` is filled up with
+       * the desired information.
+       */
+      console.log(lastSelectedTimeslot.startDate); // MomentJS object.
+    
+    }
 
   return (
     <Layout title={turf?.turf_name}>
@@ -184,19 +209,42 @@ const Book = () => {
       </div>
       <div className=" mt-5  mb-12">
         {/* <Calendar value={value} onChange={setchangeValue}/>  */}
-        {/* <ReactTimeslotCalendar
+        <ReactTimeslotCalendar
         // initialDate={moment([2017, 3, 24]).format()}
-        let
-        timeslots={[
-          ["1", "2"], // 1:00 AM - 2:00 AM
-          ["2", "3"], // 2:00 AM - 3:00 AM
-          ["4", "6"], // 4:00 AM - 6:00 AM
-          "5", // 5:00 AM
-          ["4", "6", "7", "8"] // 4:00 AM - 6:00 AM - 7:00AM - 8:00AM
+
+          timeslots={[
+            ["8", "9"], // 1:00 AM - 2:00 AM
+            ["9", "10"], 
+            ["10", "11"], 
+            ["11", "12"],
+            ["12", "13"],
+            ["13", "14"],
+            ["14", "15"],
+            ["15", "16"],
+            ["16", "17"],
+            ["17", "18"],
+            ["18", "19"]
+          ]}
+
+          maxTimeslots={2}
+        
+          disabledTimeslots = {[
+          {
+              startDate: 'Feb 2th 2023, 1 PM',
+              format: 'MMMM Do YYYY, h A',
+          },
+          {
+              startDate: 'May 1st 2017, 3:00:00 PM',
+              format: 'MMMM Do YYYY, h:mm:ss A',
+          },
+          {
+              startDate: 'May 5th 2017, 6:00:00 PM',
+              format: 'MMMM Do YYYY, h:mm:ss A',
+          },
         ]}
-     
-      /> */}
-      <DayTimePicker timeSlotSizeMinutes={60}  onConfirm={handleScheduled} timeSlotValidator={timeSlotValidator}/>;
+
+      />
+      {/* <DayTimePicker timeSlotSizeMinutes={60}  onConfirm={handleScheduled} timeSlotValidator={timeSlotValidator}/>; */}
         <button onClick={consoleit}>Get Date</button>
         </div>
     </Layout>
