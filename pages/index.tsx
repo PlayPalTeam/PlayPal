@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Footer from '@components/Footer';
 import Head from 'next/head';
 import { NextPage } from 'next';
-import { useDeepCompareEffect } from 'react-use';
+import { useEffect } from 'react';
 
 const displayData = [
   {
@@ -25,7 +25,7 @@ const displayData = [
 ];
 
 const Home: NextPage = () => {
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     const changeColour = () => {
       const header = document.querySelector('.header');
       if (window.scrollY >= 20) {
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
     };
 
     window.addEventListener('scroll', changeColour);
-  }, []);
+  },[]);
 
   return (
     <>

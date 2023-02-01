@@ -1,10 +1,5 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import {
-  createContext,
-  useState,
-  useContext,
-  ReactNode
-} from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 import { useDeepCompareEffect } from 'react-use';
@@ -33,7 +28,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (!user) {
       setUserProfile(null);
       return;
