@@ -15,6 +15,14 @@ import CardDisclosure from '@components/CardDisclosure';
 import Form from '@components/FormComponent';
 import FormTitle from '@components/FormTitle';
 import Layout from '@components/Layout';
+import Calendar from 'react-calendar'
+import { useState } from 'react';
+import 'react-calendar/dist/Calendar.css';
+import ReactTimeslotCalendar from "react-timeslot-calendar";
+import moment from "moment";
+import DayTimePicker from '@mooncake-dev/react-day-time-picker';
+
+
 
 const Book = () => {
   const router = useRouter();
@@ -42,6 +50,34 @@ const Book = () => {
   };
 
   const showRules = <VenueRules />;
+  const  [value ,setchangeValue ] = useState(new Date())
+
+  const consoleit =()=>{
+    console.log(value)
+  }  
+  const handleScheduled = dateTime => {
+    console.log('scheduled: ', dateTime);
+    
+
+  };
+
+  function timeSlotValidator(slotTime) {
+    const eveningTime = new Date(
+      slotTime.getFullYear(),
+      slotTime.getMonth(),
+      slotTime.getDate(),
+      17,
+      0,
+      0
+    );
+
+    const selectedTimes = new Date(
+
+    );
+    
+    const isValid = slotTime.getTime() > eveningTime.getTime();
+    return isValid;
+    }  
 
   return (
     <Layout title={turf?.turf_name}>
@@ -141,9 +177,28 @@ const Book = () => {
               />
               <Link href="/user/booking">Back to turf list</Link>
             </section>
+            
           </div>
         </main>
+        
       </div>
+      <div className=" mt-5  mb-12">
+        {/* <Calendar value={value} onChange={setchangeValue}/>  */}
+        {/* <ReactTimeslotCalendar
+        // initialDate={moment([2017, 3, 24]).format()}
+        let
+        timeslots={[
+          ["1", "2"], // 1:00 AM - 2:00 AM
+          ["2", "3"], // 2:00 AM - 3:00 AM
+          ["4", "6"], // 4:00 AM - 6:00 AM
+          "5", // 5:00 AM
+          ["4", "6", "7", "8"] // 4:00 AM - 6:00 AM - 7:00AM - 8:00AM
+        ]}
+     
+      /> */}
+      <DayTimePicker timeSlotSizeMinutes={60}  onConfirm={handleScheduled} timeSlotValidator={timeSlotValidator}/>;
+        <button onClick={consoleit}>Get Date</button>
+        </div>
     </Layout>
   );
 };
