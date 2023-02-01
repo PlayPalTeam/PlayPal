@@ -3,6 +3,7 @@ import { useUserProfile } from '@context/UserProfileContext';
 import { Dialog, Transition } from '@headlessui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
 import { Database } from 'src/types/database.types';
 
@@ -36,23 +37,34 @@ const RequestCard = ({
   const { userProfile, updateUserProfile } = useUserProfile();
   const { updatePlayerNeeded, requests } = useRequestContext();
 
-  console.log(...requests);
-
   const user = useUser();
 
   const handleAccept = useCallback(() => {
-    updatePlayerNeeded(
-      id,
-      player_needed,
-      userProfile?.full_name,
-      userProfile?.phone_number
-    );
+    updatePlayerNeeded({
+      id: id,
+      player_needed: player_needed - 1,
+      people: [userProfile?.id]
+    });
     updateUserProfile({ request: [id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
-  const handleDelete = useCallback(() => {
+  const handleDeleteCreatedRequest = useCallback(() => {
     deleteRequest(id);
   }, [id, deleteRequest]);
+
+  const handleDeleteAcceptedRequest = () => {
+    toast.success('Clicked');
+    updateUserProfile({
+      request: userProfile.request?.filter(
+        (request) => request !== id.toString()
+      )
+    });
+    updatePlayerNeeded({
+      id: id,
+      player_needed: player_needed + 1,
+      people: []
+    });
+  };
 
   const profileList = useMemo(
     () => (Array.isArray(profiles) ? profiles : [profiles]),
@@ -90,26 +102,26 @@ const RequestCard = ({
       <div className="flex items-center justify-between">
         {profile_id === user?.id ? (
           <button
-            onClick={handleDelete}
+            onClick={handleDeleteCreatedRequest}
             className="rounded-lg bg-red-500 p-2 text-white"
           >
             Delete
           </button>
         ) : (
           <button
-            disabled={
-              userProfile.request.some((id) => id === id) || player_needed === 0
-                ? true
-                : false
+            disabled={player_needed === 0}
+            onClick={
+              userProfile.request?.includes(id.toString())
+                ? handleDeleteAcceptedRequest
+                : handleAccept
             }
-            onClick={handleAccept}
             className={`rounded-lg p-2 text-white ${
-              userProfile.request.some((id) => id === id) || player_needed === 0
-                ? 'bg-gray-500'
+              userProfile.request?.includes(id.toString())
+                ? 'bg-red-500'
                 : 'bg-emerald-500'
             }`}
           >
-            Accept
+            {userProfile.request?.includes(id.toString()) ? 'Delete' : 'Accept'}
           </button>
         )}
         <button
@@ -158,7 +170,7 @@ const RequestCard = ({
                     {requests.map((req) => (
                       <>
                         <ul>
-                          {req.people.map((r, index) => (
+                          {req.people?.map((r, index) => (
                             <li key={index}>{}</li>
                           ))}
                         </ul>
