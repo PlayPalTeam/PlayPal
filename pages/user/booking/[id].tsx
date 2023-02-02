@@ -1,35 +1,84 @@
-import { useRouter } from 'next/router';
-import { useTurfContext } from '../../../src/context/TurfContext';
-import Link from 'next/link';
-import { BookingForm } from '../../../src/content/contents';
-import { SubmitHandler } from 'react-hook-form';
-import { BookingType } from '../../../src/types/types';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { Database } from '../../../src/types/database.types';
-import { toast } from 'react-hot-toast';
-import Image from 'next/image';
-import { BsStarFill } from 'react-icons/bs';
-import VenueRules from '../../../src/components/VenueRules';
-import Button from '@components/Button';
-import CardDisclosure from '@components/CardDisclosure';
-import Form from '@components/FormComponent';
-import FormTitle from '@components/FormTitle';
 import Layout from '@components/Layout';
-import Calendar from 'react-calendar'
-import { useState } from 'react';
-import 'react-calendar/dist/Calendar.css';
-import ReactTimeslotCalendar from "react-timeslot-calendar";
-import moment from "moment";
-import DayTimePicker from '@mooncake-dev/react-day-time-picker';
+import { useTurfContext } from '@context/TurfContext';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useReducer } from 'react';
 
+interface DateProps {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
 
+interface TimeProps {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+}
 
-const Book = () => {
+interface StateProps {
+  date: string;
+  startTime: string | undefined;
+  endTime: string | undefined;
+}
+
+interface ActionProps {
+  type: 'updateDate' | 'updateStartTime' | 'updateEndTime';
+  value: string;
+}
+
+const initialState = {
+  date: new Date().toISOString().split('T')[0],
+  startTime: undefined,
+  endTime: undefined
+};
+
+const reducer = (state: StateProps, action: ActionProps) => {
+  switch (action.type) {
+    case 'updateDate':
+      return { ...state, date: action.value };
+    case 'updateStartTime':
+      return { ...state, startTime: action.value };
+    case 'updateEndTime':
+      return { ...state, endTime: action.value };
+    default:
+      return state;
+  }
+};
+
+const DateInput = ({ value, onChange }: DateProps) => {
+  return (
+    <input type="date" value={value} className="inputCss" onChange={onChange} />
+  );
+};
+
+const TimeSelect = ({ value, onChange }: TimeProps) => {
+  const times = [
+    'Select Time',
+    '9:00 AM',
+    '10:00 AM',
+    '11:00 AM',
+    '12:00 PM',
+    '1:00 PM',
+    '2:00 PM',
+    '3:00 PM',
+    '4:00 PM',
+    '5:00 PM'
+  ];
+
+  return (
+    <select className="inputCss form-select" value={value} onChange={onChange}>
+      {times.map((time) => (
+        <option key={time} value={time}>
+          {time}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+const Booking = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state);
+
   const router = useRouter();
-
-  const supabase = useSupabaseClient<Database>();
-
-  const user = useUser();
 
   const { turfs } = useTurfContext();
 
@@ -37,170 +86,41 @@ const Book = () => {
 
   const turf = turfs.find((t) => t.turf_id === id);
 
-  const onSubmit: SubmitHandler<BookingType> = async (data) => {
-    const { error } = await supabase
-      .from('bookings')
-      .insert({ ...data, profile_id: user.id, turf_id: id as string });
-
-    if (error) {
-      toast.error(error.message, { duration: 5000 });
-    }
-
-    toast.success('Your place is booked');
+  const handleDateChnage = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'updateDate', value: event.target.value });
   };
 
-  const showRules = <VenueRules />;
-  const  [value ,setchangeValue ] = useState(new Date())
-
-  const consoleit =()=>{
-    console.log(value)
-  }  
-  const handleScheduled = dateTime => {
-    console.log('scheduled: ', dateTime);
-    
-
+  const handleStartTimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch({ type: 'updateStartTime', value: event.target.value });
   };
 
-  function timeSlotValidator(slotTime) {
-    const eveningTime = new Date(
-      slotTime.getFullYear(),
-      slotTime.getMonth(),
-      slotTime.getDate(),
-      17,
-      0,
-      0
-    );
-
-    const selectedTimes = new Date(
-
-    );
-    
-    const isValid = slotTime.getTime() > eveningTime.getTime();
-    return isValid;
-    }  
+  const handleEndTimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch({ type: 'updateEndTime', value: event.target.value });
+  };
 
   return (
     <Layout title={turf?.turf_name}>
-      <div className="mt-24 flex w-full justify-center ">
-        <div className="">
-          <div className="">
-            <Image
-              src="/exampleturfimage.webp"
-              className="h-[330px] rounded-md bg-contain"
-              alt="fuck off"
-              width={600}
-              height={600}
+      <main className="w-full px-10">
+        <form className="formCss">
+          <div>
+            <label htmlFor="date">Date</label>
+            <DateInput value={state.date} onChange={handleDateChnage} />
+          </div>
+          <div>
+            <label htmlFor="start_date">Start Time</label>
+            <TimeSelect
+              value={state.startTime}
+              onChange={handleStartTimeChange}
             />
           </div>
-          <div className="flex justify-between p-6  shadow ">
-            <div>
-              <div className="font-bold tracking-widest">
-                {' '}
-                {turf?.turf_name}
-              </div>
-              <div className="pt-2 text-sm">
-                {turf?.price_per_hour}/- onwards . {turf?.opening_hours} -{' '}
-                {turf?.ending_hours}
-              </div>
-            </div>
-            <div className="flex items-center justify-between p-4 pt-0 ">
-              {' '}
-              <BsStarFill color="green" className="mr-3" />
-              3.4
-            </div>
+          <div>
+            <label htmlFor="end_time">End Time</label>
+            <TimeSelect value={state.endTime} onChange={handleEndTimeChange} />
           </div>
-          <div className="p-6 shadow">
-            <div className="">
-              <div className="pb-4 font-bold tracking-widest">Location</div>
-              <span className="w-[300px] text-sm tracking-wider">
-                {turf?.location}
-              </span>
-            </div>
-          </div>
-          <div className="p-6 shadow">
-            <div className="pb-4 font-bold tracking-widest">
-              Availabel Sports
-            </div>
-            <div className="flex">
-              <div>Box Cricket</div>
-              <div className="ml-6"> Football</div>
-            </div>
-          </div>
-          <div className="p-6 shadow">
-            <div className="pb-4 font-bold tracking-widest">Ameninties</div>
-            <div className="flex justify-between p-4">
-              <div>Artificial Turf</div>
-              <div>Logo</div>
-            </div>
-          </div>
-          <div className="p-6 shadow">
-            <div className="flex justify-between">
-              <div>
-                <div className="pb-4 font-bold tracking-widest">
-                  Venue Rules
-                </div>
-                <div className="text-sm">
-                  Arrive 10 mins before booking time
-                </div>
-                <div className=" pt-4">
-                  <CardDisclosure title={'More'} element={showRules} />
-                </div>
-              </div>
-              <div className="mt-3"></div>
-            </div>
-          </div>
-          <div className="p-6">
-            <Button
-              isSubmitting={false}
-              text={'Select a Sport to Proceed'}
-              type={'button'}
-            />
-          </div>
-        </div>
-
-        <main className="flex h-screen items-center justify-center">
-          <div className="flex w-full max-w-2xl items-center border">
-            <section className="px-20">
-              <h1>Booking for {turf?.turf_name}</h1>
-              <p>Location: {turf?.location}</p>
-              <p>Size: {turf?.capacity}</p>
-              <p>Price: {turf?.price_per_hour}/hour</p>
-            </section>
-            <section className="p-5">
-              <FormTitle title="Book" />
-              <Form
-                formFields={BookingForm}
-                onSubmit={onSubmit}
-                form={'Booking'}
-                buttonType={'submit'}
-                buttonText={'Book Now'}
-              />
-              <Link href="/user/booking">Back to turf list</Link>
-            </section>
-            
-          </div>
-        </main>
-        
-      </div>
-      <div className=" mt-5  mb-12">
-        {/* <Calendar value={value} onChange={setchangeValue}/>  */}
-        {/* <ReactTimeslotCalendar
-        // initialDate={moment([2017, 3, 24]).format()}
-        let
-        timeslots={[
-          ["1", "2"], // 1:00 AM - 2:00 AM
-          ["2", "3"], // 2:00 AM - 3:00 AM
-          ["4", "6"], // 4:00 AM - 6:00 AM
-          "5", // 5:00 AM
-          ["4", "6", "7", "8"] // 4:00 AM - 6:00 AM - 7:00AM - 8:00AM
-        ]}
-     
-      /> */}
-      <DayTimePicker timeSlotSizeMinutes={60}  onConfirm={handleScheduled} timeSlotValidator={timeSlotValidator}/>;
-        <button onClick={consoleit}>Get Date</button>
-        </div>
+        </form>
+      </main>
     </Layout>
   );
 };
 
-export default Book;
+export default Booking;

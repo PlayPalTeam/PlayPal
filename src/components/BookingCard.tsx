@@ -16,7 +16,7 @@ const BookingCard = ({ date, end_time, start_time, turfs }: Booking) => {
       </div>
       <div className="mt-4">
         {Array.isArray(turfs) ? (
-        turfs.map((turf) => (
+          turfs.map((turf) => (
             <div key={turf.turf_name} className="text-gray-800">
               {turf.turf_name} - <ImLocation /> {turf.location}
             </div>
@@ -26,6 +26,10 @@ const BookingCard = ({ date, end_time, start_time, turfs }: Booking) => {
             {turfs.turf_name} - <ImLocation /> {turfs.location}
           </div>
         )}
+        <hr className="my-5 border-emerald-500" />
+        <button type="button" className="rounded-lg bg-red-500 p-2 text-white">
+          Delete
+        </button>
       </div>
     </div>
   );
