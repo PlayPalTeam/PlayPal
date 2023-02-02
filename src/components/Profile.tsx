@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { UserProfileData, UserProfileSchema } from '../types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Button from './Button';
 
 interface FormField {
   label: string;
@@ -60,8 +61,8 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="flex rounded-lg border border-green-500">
-        <Avatar showUploadButton={true} />
+      <div className="mx-auto max-w-[15rem]">
+        <Avatar size='200' className="h-min w-min rounded-full" showUploadButton={true} />
       </div>
       <div className="mt-3 rounded-md border border-green-500 px-8 py-6">
         <div className="mt-3">
@@ -94,13 +95,11 @@ const Profile = () => {
             ))}
           </div>
           <div className="text-center">
-            <button
-              className="mt-6 bg-green-500 text-white"
+            <Button
               type="submit"
-              disabled={formState.isSubmitting}
-            >
-              Update Profile
-            </button>
+              text="Update Profile"
+              isSubmitting={formState.isSubmitting}
+            />
           </div>
         </form>
       </div>

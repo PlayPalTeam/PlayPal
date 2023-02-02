@@ -1,5 +1,12 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
@@ -19,11 +26,13 @@ type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 interface BookingContexType {
   books: Booking[];
   addBooks: (id: string, booking: BookingInsert) => Promise<void>;
+  deleteBooking: (id: string) => Promise<void>;
 }
 
 export const BookingContext = createContext<BookingContexType>({
   books: [],
-  addBooks: () => Promise.resolve()
+  addBooks: () => Promise.resolve(),
+  deleteBooking: () => Promise.resolve()
 });
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
@@ -66,14 +75,19 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
   const addBooks = async (turf_id: string, book: BookingInsert) => {
     await supabase
-      .from('turfs')
+      .from('bookings')
       .insert({ ...book, profile_id: user.id, turf_id: turf_id });
 
     getBookings();
   };
 
+  const deleteBooking = async (id: string) => {
+    await supabase.from('bookings').delete().eq('booking_id', id);
+    getBookings();
+  };
+
   return (
-    <BookingContext.Provider value={{ books, addBooks }}>
+    <BookingContext.Provider value={{ books, addBooks, deleteBooking }}>
       {children}
     </BookingContext.Provider>
   );

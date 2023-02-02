@@ -36,7 +36,7 @@ const Home: NextPage = () => {
     };
 
     window.addEventListener('scroll', changeColour);
-  },[]);
+  }, []);
 
   return (
     <>

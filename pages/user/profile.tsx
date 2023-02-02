@@ -18,13 +18,13 @@ const ListerProfile = () => {
 
   return (
     <Layout title="User Profile">
-      <div className="flex flex-wrap gap-10 p-12">
-        <div className="grow p-2">
+      <main className="flex justify-between px-10 max-md:mb-5 max-md:flex-col">
+        <div className="justify-between max-md:mb-10 max-md:flex">
           {profilesettings.map((data, index) => (
             <button
               key={index}
               onClick={() => setToggle(data.name)}
-              className="group m-5 flex flex-col rounded-md border border-green-500 p-3 pt-2 transition-colors duration-300 ease-in hover:bg-green-500"
+              className="group flex flex-col rounded-md border border-green-500 p-3 pt-2 transition-colors duration-300 ease-in hover:bg-green-500"
             >
               <p className="transition-colors ease-in group-hover:text-white">
                 {data.name}
@@ -39,7 +39,7 @@ const ListerProfile = () => {
           {toggle === 'Account Settings' && <Profile />}
           {toggle === 'Password and Security' && <ChangePassword />}
         </div>
-      </div>
+      </main>
     </Layout>
   );
 };

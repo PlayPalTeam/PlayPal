@@ -1,19 +1,19 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useMemo } from 'react';
+import {  SetStateAction, useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RequestFormProps, RequestData, RequestSchema } from '../types/types';
 import { useRequestContext } from '../context/RequestContext';
 import { useBookContext } from '../context/BookingContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from './Button';
 import { toast } from 'react-hot-toast';
+import DialogBox from './Dialog';
+import Button from './Button';
 
 interface Props {
   isOpen: boolean;
-  closeModal: () => void;
+  setIsOpen: (value: SetStateAction<boolean>) => void;
 }
 
-const RequestForm = ({ closeModal, isOpen }: Props) => {
+const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   const { addRequest } = useRequestContext();
   const { books } = useBookContext();
   const { requests } = useRequestContext();
@@ -105,94 +105,49 @@ const RequestForm = ({ closeModal, isOpen }: Props) => {
   };
 
   return (
-    <>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-center text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Request For Player
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <form
-                      className="space-y-5"
-                      onSubmit={handleSubmit(onSubmit)}
-                    >
-                      {RequestFormContent.map((field, index) => (
-                        <div key={index} className="form-group">
-                          <label htmlFor={field.name}>{field.label}</label>
-                          {field.type === 'select' ? (
-                            <select
-                              className="inputCss"
-                              id={field.name}
-                              name={field.name}
-                              {...register(field.name)}
-                            >
-                              {field.options?.map((option, index) => (
-                                <option key={index} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <>
-                              <input
-                                type={field.type}
-                                className="inputCss"
-                                id={field.name}
-                                name={field.name}
-                                {...register(field.name, {
-                                  valueAsNumber: field.valueAsNumber
-                                })}
-                              />
-                              {errors[field.name] && (
-                                <p className="text-xs text-red-500">
-                                  {errors[field.name].message}
-                                </p>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      ))}
-                      <Button
-                        type="submit"
-                        text="Submit"
-                        isSubmitting={isSubmitting}
-                      />
-                    </form>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+    <DialogBox title={"Request For Players"} isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="mt-2">
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          {RequestFormContent.map((field, index) => (
+            <div key={index} className="form-group">
+              <label htmlFor={field.name}>{field.label}</label>
+              {field.type === 'select' ? (
+                <select
+                  className="inputCss"
+                  id={field.name}
+                  name={field.name}
+                  {...register(field.name)}
+                >
+                  {field.options?.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <>
+                  <input
+                    type={field.type}
+                    className="inputCss"
+                    id={field.name}
+                    name={field.name}
+                    {...register(field.name, {
+                      valueAsNumber: field.valueAsNumber
+                    })}
+                  />
+                  {errors[field.name] && (
+                    <p className="text-xs text-red-500">
+                      {errors[field.name].message}
+                    </p>
+                  )}
+                </>
+              )}
             </div>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+          ))}
+          <Button type="submit" text="Submit" isSubmitting={isSubmitting} />
+        </form>
+      </div>
+    </DialogBox>
   );
 };
 

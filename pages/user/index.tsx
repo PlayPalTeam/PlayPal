@@ -1,4 +1,3 @@
-import CardDisclosure from '@components/CardDisclosure';
 import Layout from '@components/Layout';
 import { useBookContext } from '@context/BookingContext';
 import { useRequestContext } from '@context/RequestContext';
@@ -8,6 +7,7 @@ import dynamic from 'next/dynamic';
 
 const RequestCard = dynamic(() => import('@components/RequestCard'));
 const BookingCard = dynamic(() => import('@components/BookingCard'));
+const CardDisclosure = dynamic(() => import('@components/CardDisclosure'));
 
 const HomeUser: NextPage = () => {
   const { books } = useBookContext();

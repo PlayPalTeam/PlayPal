@@ -1,10 +1,10 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
-import { Dialog, Transition } from '@headlessui/react';
-import { useUser } from '@supabase/auth-helpers-react';
-import { Fragment, memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
 import { Database } from 'src/types/database.types';
+import DialogBox from './Dialog';
 
 type RequestDataProps = Database['public']['Tables']['requests']['Row'];
 
@@ -36,23 +36,34 @@ const RequestCard = ({
   const { userProfile, updateUserProfile } = useUserProfile();
   const { updatePlayerNeeded, requests } = useRequestContext();
 
-  console.log(...requests);
-
-  const user = useUser();
-
   const handleAccept = useCallback(() => {
-    updatePlayerNeeded(
-      id,
-      player_needed,
-      userProfile?.full_name,
-      userProfile?.phone_number
-    );
+    updatePlayerNeeded({
+      id: id,
+      player_needed: player_needed - 1,
+      people: [userProfile?.full_name]
+    });
     updateUserProfile({ request: [id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
-  const handleDelete = useCallback(() => {
+  const handleDeleteCreatedRequest = useCallback(() => {
     deleteRequest(id);
   }, [id, deleteRequest]);
+
+  const request = requests.find((req) => req.id === id);
+
+  const handleDeleteAcceptedRequest = () => {
+    toast.success('Clicked');
+    updateUserProfile({
+      request: userProfile.request?.filter(
+        (request) => request !== id.toString()
+      )
+    });
+    updatePlayerNeeded({
+      id: id,
+      player_needed: player_needed + 1,
+      people: request.people.filter((e) => e !== userProfile?.id)
+    });
+  };
 
   const profileList = useMemo(
     () => (Array.isArray(profiles) ? profiles : [profiles]),
@@ -88,88 +99,40 @@ const RequestCard = ({
       </div>
       <hr className="mb-5 border-black" />
       <div className="flex items-center justify-between">
-        {profile_id === user?.id ? (
+        {profile_id === userProfile?.id ? (
           <button
-            onClick={handleDelete}
+            onClick={handleDeleteCreatedRequest}
             className="rounded-lg bg-red-500 p-2 text-white"
           >
             Delete
           </button>
         ) : (
           <button
-            disabled={
-              userProfile.request.some((id) => id === id) || player_needed === 0
-                ? true
-                : false
+            disabled={player_needed === 0}
+            onClick={
+              userProfile?.request.includes(id.toString())
+                ? handleDeleteAcceptedRequest
+                : handleAccept
             }
-            onClick={handleAccept}
             className={`rounded-lg p-2 text-white ${
-              userProfile.request.some((id) => id === id) || player_needed === 0
-                ? 'bg-gray-500'
+              userProfile?.request.includes(id.toString())
+                ? 'bg-red-500'
                 : 'bg-emerald-500'
             }`}
           >
-            Accept
+            {userProfile?.request.includes(id.toString()) ? 'Delete' : 'Accept'}
           </button>
         )}
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-x-1 rounded-md bg-emerald-200 px-4 py-2 hover:bg-emerald-300 active:bg-emerald-400"
+          className="group flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
         >
           Show Details{' '}
           <BsArrowRight className="duration-300 group-hover:translate-x-1" />
         </button>
-        <Transition appear show={isOpen} as={Fragment}>
-          <Dialog
-            as="div"
-            className="relative z-10"
-            onClose={() => setIsOpen(false)}
-          >
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <Dialog.Panel
-                    className={
-                      'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
-                    }
-                  >
-                    <Dialog.Title>Hello</Dialog.Title>
-                    <Dialog.Description>Say</Dialog.Description>
-                    {requests.map((req) => (
-                      <>
-                        <ul>
-                          {req.people.map((r, index) => (
-                            <li key={index}>{}</li>
-                          ))}
-                        </ul>
-                      </>
-                    ))}
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition>
+        <DialogBox title={'Players'} isOpen={isOpen} setIsOpen={setIsOpen}>
+          <div>{request?.people}</div>
+        </DialogBox>
       </div>
     </div>
   );
