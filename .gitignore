@@ -42,3 +42,5 @@ next-env.d.ts
 /playwright-report/
 /playwright/.cache/
 /docs
+
+test.tsx
