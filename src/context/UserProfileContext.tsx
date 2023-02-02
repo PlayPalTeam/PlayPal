@@ -9,7 +9,6 @@ import {
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
-import { useDeepCompareEffect } from 'react-use';
 
 type Profile = Database['public']['Tables']['profiles']['Row'] | null;
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
