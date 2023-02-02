@@ -22,19 +22,22 @@ const Header = () => {
   return (
     <div className="flex items-center justify-between px-10 py-5 max-md:p-5">
       <section>
-        <input
-          type="search"
-          name=""
-          className="form-input rounded-full focus:ring-1 focus:ring-emerald-400"
-          id=""
-        />
+        {(router.pathname === '/user/booking' ||
+          router.pathname === '/user/request') && (
+          <input
+            type="search"
+            name=""
+            className="form-input rounded-full focus:ring-1 focus:ring-emerald-400"
+            id=""
+          />
+        )}
       </section>
       <section>
         <Popover className={'relative'}>
           <Popover.Button
             className={`ring-emerald-300 focus-visible:outline-none ui-open:rounded-full ui-open:ring-2`}
           >
-            <Avatar />
+            <Avatar size="56" className="h-14 w-14 rounded-full" />
           </Popover.Button>
           <Popover.Panel
             className={

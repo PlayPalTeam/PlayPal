@@ -34,9 +34,11 @@ function avatarReducer(state: State, action: Action): State {
 
 type Props = {
   showUploadButton?: boolean;
+  className: string;
+  size: string;
 };
 
-export default function Avatar({ showUploadButton }: Props) {
+export default function Avatar({ showUploadButton, className, size }: Props) {
   const [state, dispatch] = useReducer(avatarReducer, initialState);
   const { userProfile, updateUserProfile } = useUserProfile();
 
@@ -76,8 +78,8 @@ export default function Avatar({ showUploadButton }: Props) {
 
       const convertedFile = await imageConvert(
         event.target.files,
-        200,
-        200,
+        400,
+        400,
         'image/webp',
         true
       );
@@ -87,7 +89,7 @@ export default function Avatar({ showUploadButton }: Props) {
         .upload(filePath, convertedFile[0], { upsert: true });
 
       if (uploadError) {
-        throw uploadError;
+        throw uploadError.message;
       }
 
       updateUserProfile({ avatar_url: filePath });
@@ -105,23 +107,29 @@ export default function Avatar({ showUploadButton }: Props) {
         <Image
           src={state.avatarUrl}
           alt="Avatar"
-          className="h-16 w-16 overflow-hidden rounded-full"
-          width={300}
-          height={300}
+          className={className}
+          width={400}
+          height={400}
         />
       ) : (
-        <div className="overflow-hidden rounded-full border border-solid bg-[#333]" />
+        <div
+          className="animate-pulse overflow-hidden rounded-full bg-gray-500"
+          style={{
+            width: `${size}px`,
+            height: `${size}px`
+          }}
+        />
       )}
       {showUploadButton && (
-        <div className="w-96">
-          <label className="button primary block" htmlFor="single">
+        <div className="relative mt-5 -translate-x-4 text-center">
+          <label
+            className="cursor-pointer rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
+            htmlFor="single"
+          >
             {state.uploading ? 'Uploading ...' : 'Upload'}
           </label>
           <input
-            style={{
-              visibility: 'hidden',
-              position: 'absolute'
-            }}
+            className="absolute hidden"
             type="file"
             id="single"
             accept="image/*"
