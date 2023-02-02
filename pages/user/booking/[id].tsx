@@ -15,14 +15,15 @@ import CardDisclosure from '@components/CardDisclosure';
 import Form from '@components/FormComponent';
 import FormTitle from '@components/FormTitle';
 import Layout from '@components/Layout';
-import Calendar from 'react-calendar'
+import Calendar from 'react-calendar';
 import { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import ReactTimeslotCalendar from "react-timeslot-calendar";
-import moment from "moment";
+import ReactTimeslotCalendar from 'react-timeslot-calendar';
+import moment from 'moment';
 import DayTimePicker from '@mooncake-dev/react-day-time-picker';
-
-
+import TimeRangePicker from '@wojtekmaj/react-timerange-picker/dist/entry.nostyle';
+import Timeit from 'react-timeit';
+import { useEffect } from 'react';
 
 const Book = () => {
   const router = useRouter();
@@ -50,26 +51,67 @@ const Book = () => {
   };
 
   const showRules = <VenueRules />;
-  const  [value ,setchangeValue ] = useState(new Date())
+  const [value, setchangeValue] = useState(new Date());
 
-  const consoleit =()=>{
-    console.log(value)
-  }  
-
-  const handleScheduled = dateTime => {
-    console.log('scheduled: ', dateTime);
-    setchangeValue(dateTime)
-    console.log(value.getHours())
-
-
+  const consoleit = () => {
+    console.log(value);
   };
 
+  const handleScheduled = async (dateTime) => {
+    console.log('scheduled: ', dateTime);
+    setchangeValue(dateTime);
+    console.log(value.getHours());
+    let date = dateTime;
+    let starttime = dateTime.getHours();
+
+    const { error } = await supabase
+      .from('bookings_duplicate')
+      .insert({
+        starttimes: starttime,
+        date: date,
+        profile_id: user.id,
+        turf_id: id as string
+      });
+
+    if (error) {
+      toast.error(error.message, { duration: 5000 });
+    } else {
+      toast.success('Your place is booked');
+    }
+  };
+  const [timedata, settimedata] = useState([]);
+
+  const gettimedata = async () => {
+    const { data } = await supabase
+      .from('bookings_duplicate')
+      .select();
+
+    if (data) {
+      settimedata(data);
+    }
+  };
+
+  useEffect(() => {
+  gettimedata()
+  console.log(timedata)
+  }, [])
+  
+  // for(let i=0;i<timedata.length;i++){
+  //   const toDeleteTime = new Date(
+  //     // slotTime.getFullYear(),
+  //     timedata[i].date.getFullYear(),
+  //     // slotTime.getMonth(),
+  //     timedata[1].date.getMonth(),
+  //     // slotTime.getDate(),
+  //     timedata[i].date.getDate(),
+  //     timedata[i].starttimes,
+  //     0,
+  //     0
+  //   );
+    
+  // }
+  
   function timeSlotValidator(slotTime) {
-
-    const arr=[
-      new Date()
-    ]
-
     const eveningTime = new Date(
       // slotTime.getFullYear(),
       value.getFullYear(),
@@ -82,27 +124,10 @@ const Book = () => {
       0
     );
 
-
-    const selectedTimes = new Date(
-
-    );
-
-    
     const isValid = slotTime.getTime() == eveningTime.getTime() ? false : true;
     return isValid;
-    }  
-  
-    const  timeSlots = (allTimeslots, lastSelectedTimeslot) => {
-      /**
-       * All timeslot objects include `startDate` and `endDate`.
-    
-       * It is important to note that if timelots provided contain a single
-       * value (e.g: timeslots = [['8'], ['9', '10']) then only `startDate` is filled up with
-       * the desired information.
-       */
-      console.log(lastSelectedTimeslot.startDate); // MomentJS object.
-    
-    }
+  }
+  const [valueTime, onTimeChange] = useState(['10:00', '11:00']);
 
   return (
     <Layout title={turf?.turf_name}>
@@ -202,14 +227,13 @@ const Book = () => {
               />
               <Link href="/user/booking">Back to turf list</Link>
             </section>
-            
           </div>
         </main>
-        
       </div>
       <div className=" mt-5  mb-12">
         {/* <Calendar value={value} onChange={setchangeValue}/>  */}
-        <ReactTimeslotCalendar
+        {/* <TimeRangePicker onChange={onTimeChange} value={valueTime} /> */}
+        {/* <ReactTimeslotCalendar
         // initialDate={moment([2017, 3, 24]).format()}
 
           timeslots={[
@@ -243,10 +267,18 @@ const Book = () => {
           },
         ]}
 
-      />
-      {/* <DayTimePicker timeSlotSizeMinutes={60}  onConfirm={handleScheduled} timeSlotValidator={timeSlotValidator}/>; */}
-        <button onClick={consoleit}>Get Date</button>
-        </div>
+    
+
+      
+
+      /> */}
+        <DayTimePicker
+          timeSlotSizeMinutes={60}
+          onConfirm={handleScheduled}
+          timeSlotValidator={timeSlotValidator}
+        />
+        ;<button onClick={consoleit}>Get Date</button>
+      </div>
     </Layout>
   );
 };
