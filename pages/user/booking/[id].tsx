@@ -1,7 +1,12 @@
 import Layout from '@components/Layout';
+import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useReducer } from 'react';
+import { userAgent } from 'next/server';
+import { ChangeEvent, useReducer, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { supabase } from 'src/lib/supabase';
 
 interface DateProps {
   value: string;
@@ -50,6 +55,15 @@ const DateInput = ({ value, onChange }: DateProps) => {
 };
 
 const TimeSelect = ({ value, onChange }: TimeProps) => {
+  // const times1=[
+  //   {
+  //     time:"9-10"
+  //     isused:false
+  //   }
+  //   {
+
+  //   }
+  // ]
   const times = [
     'Select Time',
     '9:00 AM',
@@ -74,11 +88,14 @@ const TimeSelect = ({ value, onChange }: TimeProps) => {
   );
 };
 
+
+
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state);
+
 
   const router = useRouter();
+  const user = useUser();
 
   const { turfs } = useTurfContext();
 
@@ -98,10 +115,55 @@ const Booking = () => {
     dispatch({ type: 'updateEndTime', value: event.target.value });
   };
 
+  const { addBooks ,books } = useBookContext()
+
+  const slots = books.map((book) => {
+    return{
+      date:book.date,
+      start_time:book.start_time,
+      end_time:book.end_time
+    }
+  });
+  console.log(slots)
+
+  
+
+const onSlotSubmit = ()=>{
+
+  
+  // const enterData = async () => {
+  //   await supabase 
+  //   .from("bookings")
+  //   .insert({start_time:state.startTime,end_time:state.endTime,date:state.date,profile_id:user.id, turf_id:turf.turf_id})
+  // }
+  const bookslotss = slots.find(
+    (slot)=>{
+      slot.start_time === state.startTime && slot.end_time === state.endTime && slot.date === state.date
+    }
+  )
+  console.log(bookslotss)
+
+  if(bookslotss){
+    toast("These Time Slot already Booked ")
+  }
+  else{
+  addBooks(turf?.turf_id,{
+    start_time:state.startTime,
+    end_time:state.endTime,
+    date:state.date,
+    profile_id:user.id
+  })
+  }
+
+
+  // enterData()
+
+}
+
   return (
     <Layout title={turf?.turf_name}>
       <main className="w-full px-10">
-        <form className="formCss">
+        <form className="formCss" onSubmit={onSlotSubmit}>
           <div>
             <label htmlFor="date">Date</label>
             <DateInput value={state.date} onChange={handleDateChnage} />
@@ -117,6 +179,7 @@ const Booking = () => {
             <label htmlFor="end_time">End Time</label>
             <TimeSelect value={state.endTime} onChange={handleEndTimeChange} />
           </div>
+            <button >Submit</button>  
         </form>
       </main>
     </Layout>
