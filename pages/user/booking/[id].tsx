@@ -64,35 +64,79 @@ const TimeSelect = ({ value, onChange }: TimeProps) => {
 
   //   }
   // ]
+  // const times = [
+  //   'Select Time',
+  //   '9:00:00',
+  //   '10:00:00',
+  //   '11:00:00',
+  //   '12:00:00',
+  //   '13:00:00',
+  //   '14:00:00',
+  //   '15:00:00',
+  //   '16:00:00',
+  //   '17:00:00'
+  // ];
   const times = [
-    'Select Time',
-    '9:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '1:00 PM',
-    '2:00 PM',
-    '3:00 PM',
-    '4:00 PM',
-    '5:00 PM'
+    {
+      label: 'Select Time',
+      value: ''
+    },
+    {
+      label: '9:00 AM - 10:00',
+      value: '9:00:00'
+    },
+    {
+      label: '10:00 AM',
+      value: '10:00:00'
+    },
+    {
+      label: '11:00 AM',
+      value: '11:00:00'
+    },
+    {
+      label: '12:00 PM',
+      value: '12:00:00'
+    },
+    {
+      label: '1:00 PM',
+      value: '13:00:00'
+    },
+    {
+      label: '2:00 PM',
+      value: '14:00:00'
+    },
+    {
+      label: '3:00 PM',
+      value: '15:00:00'
+    },
+    {
+      label: '4:00 AM',
+      value: '16:00:00'
+    },
+    {
+      label: '5:00 AM',
+      value: '17:00:00'
+    },
+    {
+      label: '6:00 AM',
+      value: '18:00:00'
+    }
   ];
 
   return (
     <select className="inputCss form-select" value={value} onChange={onChange}>
       {times.map((time) => (
-        <option key={time} value={time}>
-          {time}
+        <option key={time.value} value={time.value} disabled>
+          {time.label}
+
         </option>
       ))}
     </select>
   );
 };
 
-
-
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
 
   const router = useRouter();
   const user = useUser();
@@ -115,50 +159,50 @@ const Booking = () => {
     dispatch({ type: 'updateEndTime', value: event.target.value });
   };
 
-  const { addBooks ,books } = useBookContext()
+  const { addBooks, books } = useBookContext();
 
   const slots = books.map((book) => {
-    return{
-      date:book.date,
-      start_time:book.start_time,
-      end_time:book.end_time
-    }
+    return {
+      date: book.date,
+      start_time: book.start_time,
+      end_time: book.end_time
+    };
   });
-  console.log(slots)
 
-  
+  console.log(state.startTime);
 
-const onSlotSubmit = ()=>{
+  const onSlotSubmit = (e) => {
+    e.preventDefault();
+    const bookslotss = slots.find(
+      (slot) =>
+        slot.start_time === state.startTime &&
+        slot.end_time === state.endTime &&
+        slot.date === state.date
+    );
 
-  
-  // const enterData = async () => {
-  //   await supabase 
-  //   .from("bookings")
-  //   .insert({start_time:state.startTime,end_time:state.endTime,date:state.date,profile_id:user.id, turf_id:turf.turf_id})
-  // }
-  const bookslotss = slots.find(
-    (slot)=>{
-      slot.start_time === state.startTime && slot.end_time === state.endTime && slot.date === state.date
+   
+      const sameValue = state.startTime === state.endTime 
+      const differnceValue = state.startTime < state.endTime
+    
+
+    if (bookslotss ) {
+      toast('These Time Slot already Booked ');
+    } 
+    if (sameValue){
+      toast.error("Same Start And  End Time Selected ")
     }
-  )
-  console.log(bookslotss)
+    if(differnceValue){
+      toast.error("End Time Should Be Higher Than Start Time")
+    }
 
-  if(bookslotss){
-    toast("These Time Slot already Booked ")
-  }
-  else{
-  addBooks(turf?.turf_id,{
-    start_time:state.startTime,
-    end_time:state.endTime,
-    date:state.date,
-    profile_id:user.id
-  })
-  }
-
-
-  // enterData()
-
-}
+      addBooks(turf?.turf_id, {
+        start_time: state.startTime,
+        end_time: state.endTime,
+        date: state.date,
+        profile_id: user.id
+      });
+    
+  };
 
   return (
     <Layout title={turf?.turf_name}>
@@ -179,7 +223,7 @@ const onSlotSubmit = ()=>{
             <label htmlFor="end_time">End Time</label>
             <TimeSelect value={state.endTime} onChange={handleEndTimeChange} />
           </div>
-            <button >Submit</button>  
+          <button>Submit</button>
         </form>
       </main>
     </Layout>
