@@ -276,17 +276,6 @@ const Booking = () => {
                 </div>
             </div>
           </div>
-          <div>
-            <div>
-              Booked Slots
-            </div>
-            <div>
-              {
-                
-              }
-
-            </div>
-          </div>
           <button
             onClick={() => setIsOpen(true)}
             className="group  mt-8 flex  items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
