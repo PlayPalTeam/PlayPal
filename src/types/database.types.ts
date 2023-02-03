@@ -16,6 +16,7 @@ export interface Database {
           date: string | null
           end_time: string | null
           profile_id: string | null
+          selectedsport: string | null
           start_time: string | null
           times: string[] | null
           turf_id: string | null
@@ -27,6 +28,7 @@ export interface Database {
           date?: string | null
           end_time?: string | null
           profile_id?: string | null
+          selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
           turf_id?: string | null
@@ -38,6 +40,7 @@ export interface Database {
           date?: string | null
           end_time?: string | null
           profile_id?: string | null
+          selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
           turf_id?: string | null

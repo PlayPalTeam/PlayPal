@@ -90,32 +90,32 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
       disble: false
     },
     {
-      label: '2:00 PM',
-      value: '14:00:00',
+      label: '2:00 PM - 3:00 PM',
+      value: '14:00 - 15:00',
       disble: false
     },
     {
-      label: '3:00 PM',
-      value: '15:00:00',
+      label: '3:00 PM - 4:00 PM' ,
+      value: '15:00 -16:00',
       disble: false
     },
     {
-      label: '4:00 AM',
-      value: '16:00:00',
+      label: '4:00 PM - 5:00 PM',
+      value: '16:00 - 17:00',
       disble: false
     },
     {
-      label: '5:00 AM',
-      value: '17:00:00'
+      label: '5:00 PM - 6:00 PM',
+      value: '17:00 - 18:00'
     },
     {
-      label: '6:00 AM',
-      value: '18:00:00'
+      label: '6:00 PM - 7:00 PM',
+      value: '18:00 - 19:00'
     }
   ];
 
   times.map((time) => {
-    return slots.map((slot) => {
+    return slots?.map((slot) => {
       return;
       [];
     });
@@ -137,6 +137,7 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectSports,setSelectSports] = useState("")
 
   const router = useRouter();
 
@@ -159,12 +160,9 @@ const Booking = () => {
   };
 
   const avail = turfs.map((turf) => {
-    return turf.sports.map((t) => {
-      return t;
-    });
+    return turf.sports.map((t) => t);
   });
 
-  console.log(avail);
 
   const { addBooking, books } = useBookContext();
 
@@ -174,7 +172,10 @@ const Booking = () => {
     };
   });
 
-  // const filterByDate = slots.filter((slot) => slot.date === state.date);
+
+
+  const filterByDate = slots.filter((slot) => slot.date === state.date);
+  console.log(filterByDate)
 
   // const checkExists = filterByDate.map((times) => {
   //   return {
@@ -185,53 +186,19 @@ const Booking = () => {
 
   // console.log(checkExists);
 
+  console.log(selectSports)
   const onSlotSubmit = (e) => {
     e.preventDefault();
 
     addBooking(turf?.turf_id, {
       times: [state.startTime],
       date: state.date,
-      profile_id: user.id
+      profile_id: user.id,
+      selectedsport:selectSports
     });
 
     setIsOpen(false);
   };
-
-  // const { addBooking, books } = useBookContext();
-
-  // const slots = books.map((book) => {
-  //   return {
-  //     date: book.date,
-  //     start_time: book.start_time,
-  //     end_time: book.end_time
-  //   };
-  // });
-  // console.log(slots);
-
-  // const onSlotSubmit = () => {
-  //   // const enterData = async () => {
-  //   //   await supabase
-  //   //   .from("bookings")
-  //   //   .insert({start_time:state.startTime,end_time:state.endTime,date:state.date,profile_id:user.id, turf_id:turf.turf_id})
-  //   // }
-  //   const bookslotss = slots.find((slot) => {
-  //     slot.start_time === state.startTime &&
-  //       slot.end_time === state.endTime &&
-  //       slot.date === state.date;
-  //   });
-  //   console.log(bookslotss);
-
-  //   if (bookslotss) {
-  //     toast('These Time Slot already Booked ');
-  //   } else {
-  //     addBooks(turf?.turf_id, {
-  //       date: state.date,
-  //       profile_id: user.id
-  //     });
-  //   }
-
-  //   // enterData()
-  // };
 
   return (
     <Layout title={turf?.turf_name}>
@@ -272,15 +239,6 @@ const Booking = () => {
             </div>
           </div>
           <div className="p-6 shadow">
-            <div className="pb-4 font-bold tracking-widest">
-              Availabel Sports
-            </div>
-            <div className="flex">
-              <div>Box Cricket</div>
-              <div className="ml-6"> Football</div>
-            </div>
-          </div>
-          <div className="p-6 shadow">
             <div className="pb-4 font-bold tracking-widest">Ameninties</div>
             <div className="flex justify-between p-4">
               <div>Artificial Turf</div>
@@ -303,20 +261,35 @@ const Booking = () => {
               <div className="mt-3"></div>
             </div>
           </div>
-          <div className="p-6">
-            <div className="p-8">
-              <div>Choose the Sport</div>
-              <div>{}</div>
+          <div className="p-6 shadow">
+            <div className="">
+              <div className="pb-4 font-bold tracking-widest" >Availabel Sports (Choose) </div>
+              <div>
+                <div className="">
+              {turf?.sports.map((s) => (
+                <p key={s} className="flex items-center ">
+                    <input type="radio" name={"select"} value={s} onChange={()=>setSelectSports(s)}/>
+                    <span className='pl-3'>{s}</span>
+                  </p>
+                ))}
+              </div>
+                </div>
             </div>
-            <Button
-              isSubmitting={false}
-              text={'Select a Sport to Proceed'}
-              type={'button'}
-            />
+          </div>
+          <div>
+            <div>
+              Booked Slots
+            </div>
+            <div>
+              {
+                
+              }
+
+            </div>
           </div>
           <button
             onClick={() => setIsOpen(true)}
-            className="group ml-6 flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
+            className="group  mt-8 flex  items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
           >
             Book Slot{' '}
             <BsArrowRight className="duration-300 group-hover:translate-x-1" />
@@ -345,6 +318,7 @@ const Booking = () => {
             </main>
           </DialogBox>
         </div>
+
       </div>
     </Layout>
   );
