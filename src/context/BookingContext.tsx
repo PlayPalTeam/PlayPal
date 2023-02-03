@@ -25,13 +25,13 @@ type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
 interface BookingContexType {
   books: Booking[];
-  addBooks: (id: string, booking: BookingInsert) => Promise<void>;
+  addBooking: (turf_id: string, booking: BookingInsert) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
 }
 
 export const BookingContext = createContext<BookingContexType>({
   books: [],
-  addBooks: () => Promise.resolve(),
+  addBooking: () => Promise.resolve(),
   deleteBooking: () => Promise.resolve()
 });
 
@@ -73,7 +73,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [getBookings, user]);
 
-  const addBooks = async (turf_id: string, book: BookingInsert) => {
+  const addBooking = async (turf_id: string, book: BookingInsert) => {
     await supabase
       .from('bookings')
       .insert({ ...book, profile_id: user.id, turf_id: turf_id });
@@ -87,7 +87,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <BookingContext.Provider value={{ books, addBooks, deleteBooking }}>
+    <BookingContext.Provider value={{ books, addBooking, deleteBooking }}>
       {children}
     </BookingContext.Provider>
   );

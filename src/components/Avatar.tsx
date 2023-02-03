@@ -42,22 +42,22 @@ export default function Avatar({ showUploadButton, className, size }: Props) {
   const [state, dispatch] = useReducer(avatarReducer, initialState);
   const { userProfile, updateUserProfile } = useUserProfile();
 
-  useMemo(() => {
-    async function downloadImage(path: string) {
-      try {
-        const { data, error } = await supabase.storage
-          .from('avatars')
-          .download(path);
-        if (error) {
-          throw error;
-        }
-        const url = URL.createObjectURL(data);
-        dispatch({ type: 'SET_AVATAR_URL', avatarUrl: url });
-      } catch (error) {
-        console.log('Error downloading image: ', error);
+  const downloadImage = async (path: string) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .download(path);
+      if (error) {
+        throw error;
       }
+      const url = URL.createObjectURL(data);
+      dispatch({ type: 'SET_AVATAR_URL', avatarUrl: url });
+    } catch (error) {
+      console.log('Error downloading image: ', error);
     }
+  };
 
+  useMemo(() => {
     if (userProfile?.avatar_url) downloadImage(userProfile?.avatar_url);
   }, [userProfile?.avatar_url]);
 
@@ -93,6 +93,8 @@ export default function Avatar({ showUploadButton, className, size }: Props) {
       }
 
       updateUserProfile({ avatar_url: filePath });
+
+      downloadImage(userProfile?.avatar_url);
     } catch (error) {
       alert('Error uploading avatar!');
       console.log(error);
