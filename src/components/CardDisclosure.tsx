@@ -12,6 +12,7 @@ const CardDisclosure = ({ title, element }: Props) => {
     <Disclosure
       as={'div'}
       className="px-10"
+      defaultOpen={true}
     >
       <Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
         <h2 className="mt-4 flex items-center gap-x-4 max-md:gap-x-2">

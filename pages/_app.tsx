@@ -1,6 +1,4 @@
 import '../styles/globals.css';
-import '@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css' ; 
-import 'react-clock/dist/Clock.css';
 import type { AppProps } from 'next/app';
 
 import { useState } from 'react';

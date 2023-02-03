@@ -25,7 +25,7 @@ type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
 interface BookingContexType {
   books: Booking[];
-  addBooking: (id: string, booking: BookingInsert) => Promise<void>;
+  addBooking: (turf_id: string, booking: BookingInsert) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
 }
 

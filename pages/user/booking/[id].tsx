@@ -1,7 +1,16 @@
 import Layout from '@components/Layout';
+import VenueRules from '@components/VenueRules';
+import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useReducer } from 'react';
+import { ChangeEvent, useReducer, useState } from 'react';
+import { Database } from 'src/types/database.types';
+import { BsArrowRight, BsStarFill } from 'react-icons/bs';
+import CardDisclosure from '@components/CardDisclosure';
+import Button from '@components/Button';
+import DialogBox from '@components/Dialog';
 
 interface DateProps {
   value: string;
@@ -11,23 +20,22 @@ interface DateProps {
 interface TimeProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  slots?: { boll: any; time: any }[];
 }
 
 interface StateProps {
   date: string;
   startTime: string | undefined;
-  endTime: string | undefined;
 }
 
 interface ActionProps {
-  type: 'updateDate' | 'updateStartTime' | 'updateEndTime';
+  type: 'updateDate' | 'updateStartTime';
   value: string;
 }
 
 const initialState = {
   date: new Date().toISOString().split('T')[0],
-  startTime: undefined,
-  endTime: undefined
+  startTime: undefined
 };
 
 const reducer = (state: StateProps, action: ActionProps) => {
@@ -36,8 +44,6 @@ const reducer = (state: StateProps, action: ActionProps) => {
       return { ...state, date: action.value };
     case 'updateStartTime':
       return { ...state, startTime: action.value };
-    case 'updateEndTime':
-      return { ...state, endTime: action.value };
     default:
       return state;
   }
@@ -49,42 +55,100 @@ const DateInput = ({ value, onChange }: DateProps) => {
   );
 };
 
-const TimeSelect = ({ value, onChange }: TimeProps) => {
+const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
   const times = [
-    'Select Time',
-    '9:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '1:00 PM',
-    '2:00 PM',
-    '3:00 PM',
-    '4:00 PM',
-    '5:00 PM'
+    {
+      label: 'Select Time',
+      value: '',
+      disble: false
+    },
+    {
+      label: '9:00 AM - 10:00 AM',
+      value: '9:00 - 10:00',
+      disble: false
+    },
+    {
+      label: '10:00 AM -11:00 AM',
+      value: '10:00 - 11:00',
+      disble: false
+    },
+    {
+      label: '11:00 AM - 12:00 PM',
+      value: '11:00 - 12:00',
+      disble: false
+    },
+    {
+      label: '12:00 PM - 1:00 PM',
+      value: '12:00 - 13:00',
+      disble: false
+    },
+    {
+      label: '1:00 PM - 2:00 PM',
+      value: '13:00 - 14:00',
+      disble: false
+    },
+    {
+      label: '2:00 PM',
+      value: '14:00:00',
+      disble: false
+    },
+    {
+      label: '3:00 PM',
+      value: '15:00:00',
+      disble: false
+    },
+    {
+      label: '4:00 AM',
+      value: '16:00:00',
+      disble: false
+    },
+    {
+      label: '5:00 AM',
+      value: '17:00:00'
+    },
+    {
+      label: '6:00 AM',
+      value: '18:00:00'
+    }
   ];
+
+  times.map((time) => {
+    return slots.map((slot) => {
+      return;
+      [];
+    });
+  });
 
   return (
     <select className="inputCss form-select" value={value} onChange={onChange}>
-      {times.map((time) => (
-        <option key={time} value={time}>
-          {time}
-        </option>
-      ))}
+      {times.map((time) => {
+        return (
+          <option key={time.value} value={time.value}>
+            {time.label}
+          </option>
+        );
+      })}
     </select>
   );
 };
 
 const Booking = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state);
-
   const router = useRouter();
+
+  const supabase = useSupabaseClient<Database>();
+
+  const user = useUser();
 
   const { turfs } = useTurfContext();
 
   const { id } = router.query;
 
   const turf = turfs.find((t) => t.turf_id === id);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const showRules = <VenueRules />;
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleDateChnage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'updateDate', value: event.target.value });
@@ -94,31 +158,155 @@ const Booking = () => {
     dispatch({ type: 'updateStartTime', value: event.target.value });
   };
 
-  const handleEndTimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch({ type: 'updateEndTime', value: event.target.value });
+  const avail = turfs.map((turf) => {
+    return turf.sports.map((t) => {
+      return t;
+    });
+  });
+
+  console.log(avail);
+
+  const { addBooking, books } = useBookContext();
+
+  const slots = books.map((book) => {
+    return {
+      date: book.date
+    };
+  });
+
+  const filterByDate = slots.filter((slot) => slot.date === state.date);
+
+  // const checkExists = filterByDate.map((times) => {
+  //   return {
+  //     boll: times.time.includes(state.startTime),
+  //     time: times.time
+  //   };
+  // });
+
+  // console.log(checkExists);
+
+  const onSlotSubmit = (e) => {
+    e.preventDefault();
+
+    addBooking(turf?.turf_id, {
+      times: [state.startTime],
+      date: state.date,
+      profile_id: user.id
+    });
+
+    setIsOpen(false);
   };
 
   return (
     <Layout title={turf?.turf_name}>
-      <main className="w-full px-10">
-        <form className="formCss">
-          <div>
-            <label htmlFor="date">Date</label>
-            <DateInput value={state.date} onChange={handleDateChnage} />
-          </div>
-          <div>
-            <label htmlFor="start_date">Start Time</label>
-            <TimeSelect
-              value={state.startTime}
-              onChange={handleStartTimeChange}
+      <div className="mt-6 flex w-full justify-center sm:mt-14 ">
+        <div className="m-4 sm:w-[58%]">
+          <div className="mb-4 p-4  shadow sm:p-6">
+            <Image
+              src="/exampleturfimage.webp"
+              className="h-[330px] rounded-md bg-contain"
+              alt="fuck off"
+              width={750}
+              height={750}
             />
           </div>
-          <div>
-            <label htmlFor="end_time">End Time</label>
-            <TimeSelect value={state.endTime} onChange={handleEndTimeChange} />
+          <div className="flex justify-between p-6  shadow ">
+            <div>
+              <div className="font-bold tracking-widest">
+                {' '}
+                {turf?.turf_name}
+              </div>
+              <div className="pt-2 text-sm">
+                {turf?.price_per_hour}/- onwards . {turf?.opening_hours} -{' '}
+                {turf?.ending_hours}
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-4 pt-0 ">
+              {' '}
+              <BsStarFill color="green" className="mr-3" />
+              3.4
+            </div>
           </div>
-        </form>
-      </main>
+          <div className="p-6 shadow">
+            <div className="">
+              <div className="pb-4 font-bold tracking-widest">Location</div>
+              <span className="w-[300px] text-sm tracking-wider">
+                {turf?.location}
+              </span>
+            </div>
+          </div>
+          <div className="p-6 shadow">
+            <div className="pb-4 font-bold tracking-widest">
+              Availabel Sports
+            </div>
+            <div className="flex">
+              <div>Box Cricket</div>
+              <div className="ml-6"> Football</div>
+            </div>
+          </div>
+          <div className="p-6 shadow">
+            <div className="pb-4 font-bold tracking-widest">Ameninties</div>
+            <div className="flex justify-between p-4">
+              <div>Artificial Turf</div>
+              <div>Logo</div>
+            </div>
+          </div>
+          <div className="p-6 shadow">
+            <div className="flex justify-between">
+              <div>
+                <div className="pb-4 font-bold tracking-widest">
+                  Venue Rules
+                </div>
+                <div className="text-sm">
+                  Arrive 10 mins before booking time
+                </div>
+                <div className=" pt-4">
+                  <CardDisclosure title={'More'} element={showRules} />
+                </div>
+              </div>
+              <div className="mt-3"></div>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="p-8">
+              <div>Choose the Sport</div>
+              <div>{}</div>
+            </div>
+            <Button
+              isSubmitting={false}
+              text={'Select a Sport to Proceed'}
+              type={'button'}
+            />
+          </div>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="group ml-6 flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
+          >
+            Book Slot{' '}
+            <BsArrowRight className="duration-300 group-hover:translate-x-1" />
+          </button>
+          <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
+            {/* this is the popu up section */}
+            <main className="w-full px-10">
+              <form className="formCss" onSubmit={onSlotSubmit}>
+                <div>
+                  <label htmlFor="date">Date</label>
+                  <DateInput value={state.date} onChange={handleDateChnage} />
+                </div>
+                <div>
+                  <label htmlFor="start_date">Start Time</label>
+                  <TimeSelect
+                    value={state.startTime}
+                    onChange={handleStartTimeChange}
+                    // slots={checkExists}
+                  />
+                </div>
+                <button>Submit</button>
+              </form>
+            </main>
+          </DialogBox>
+        </div>
+      </div>
     </Layout>
   );
 };
