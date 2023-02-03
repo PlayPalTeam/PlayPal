@@ -12,7 +12,6 @@ const CardDisclosure = ({ title, element }: Props) => {
     <Disclosure
       as={'div'}
       className="px-10"
-      defaultOpen={true}
     >
       <Disclosure.Button className="mb-5 flex w-full items-center justify-between max-md:flex-col max-md:space-y-5">
         <h2 className="mt-4 flex items-center gap-x-4 max-md:gap-x-2">
@@ -28,7 +27,7 @@ const CardDisclosure = ({ title, element }: Props) => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Disclosure.Panel className="flex flex-col space-y-5">
+        <Disclosure.Panel className="sm:flex sm:flex-col  space-y-5  overflow-hidden">
           {element}
         </Disclosure.Panel>
       </Transition>
