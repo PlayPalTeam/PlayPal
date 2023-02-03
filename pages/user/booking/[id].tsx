@@ -1,16 +1,18 @@
+import Button from '@components/Button';
+import CardDisclosure from '@components/CardDisclosure';
+import DialogBox from '@components/Dialog';
 import Layout from '@components/Layout';
 import VenueRules from '@components/VenueRules';
 import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { userAgent } from 'next/server';
 import { ChangeEvent, useReducer, useState } from 'react';
-import { Database } from 'src/types/database.types';
+import { toast } from 'react-hot-toast';
 import { BsArrowRight, BsStarFill } from 'react-icons/bs';
-import CardDisclosure from '@components/CardDisclosure';
-import Button from '@components/Button';
-import DialogBox from '@components/Dialog';
+import { supabase } from 'src/lib/supabase';
+import { Database } from 'src/types/database.types';
 
 interface DateProps {
   value: string;
@@ -133,9 +135,10 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
 };
 
 const Booking = () => {
-  const router = useRouter();
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const supabase = useSupabaseClient<Database>();
+  const router = useRouter();
 
   const user = useUser();
 
@@ -145,10 +148,7 @@ const Booking = () => {
 
   const turf = turfs.find((t) => t.turf_id === id);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const showRules = <VenueRules />;
-  const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleDateChnage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'updateDate', value: event.target.value });
@@ -174,7 +174,7 @@ const Booking = () => {
     };
   });
 
-  const filterByDate = slots.filter((slot) => slot.date === state.date);
+  // const filterByDate = slots.filter((slot) => slot.date === state.date);
 
   // const checkExists = filterByDate.map((times) => {
   //   return {
@@ -197,18 +197,54 @@ const Booking = () => {
     setIsOpen(false);
   };
 
+  // const { addBooking, books } = useBookContext();
+
+  // const slots = books.map((book) => {
+  //   return {
+  //     date: book.date,
+  //     start_time: book.start_time,
+  //     end_time: book.end_time
+  //   };
+  // });
+  // console.log(slots);
+
+  // const onSlotSubmit = () => {
+  //   // const enterData = async () => {
+  //   //   await supabase
+  //   //   .from("bookings")
+  //   //   .insert({start_time:state.startTime,end_time:state.endTime,date:state.date,profile_id:user.id, turf_id:turf.turf_id})
+  //   // }
+  //   const bookslotss = slots.find((slot) => {
+  //     slot.start_time === state.startTime &&
+  //       slot.end_time === state.endTime &&
+  //       slot.date === state.date;
+  //   });
+  //   console.log(bookslotss);
+
+  //   if (bookslotss) {
+  //     toast('These Time Slot already Booked ');
+  //   } else {
+  //     addBooks(turf?.turf_id, {
+  //       date: state.date,
+  //       profile_id: user.id
+  //     });
+  //   }
+
+  //   // enterData()
+  // };
+
   return (
     <Layout title={turf?.turf_name}>
       <div className="mt-6 flex w-full justify-center sm:mt-14 ">
         <div className="m-4 sm:w-[58%]">
           <div className="mb-4 p-4  shadow sm:p-6">
-            <Image
+            {/* <Image
               src="/exampleturfimage.webp"
               className="h-[330px] rounded-md bg-contain"
               alt="fuck off"
               width={750}
-              height={750}
-            />
+              height={750} */}
+            {/* /> */}
           </div>
           <div className="flex justify-between p-6  shadow ">
             <div>
@@ -288,7 +324,10 @@ const Booking = () => {
           <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
             {/* this is the popu up section */}
             <main className="w-full px-10">
-              <form className="formCss" onSubmit={onSlotSubmit}>
+              <form
+                className="formCss"
+                onSubmit={onSlotSubmit}
+              >
                 <div>
                   <label htmlFor="date">Date</label>
                   <DateInput value={state.date} onChange={handleDateChnage} />
