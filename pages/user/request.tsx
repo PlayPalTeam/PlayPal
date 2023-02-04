@@ -32,7 +32,7 @@ const Request: NextPage = () => {
         <section className="space-y-5">
           {requests
             ?.filter(
-              (req) => !userProfile?.request.includes(req?.id.toString())
+              (req) => !userProfile.request?.includes(req?.id.toString())
             )
             .map((req) => (
               <RequestCard key={req.id} {...req} />
