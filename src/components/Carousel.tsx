@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useDeepCompareEffect } from 'react-use';
 
 const Carousel = () => {
   // const data = [
@@ -26,7 +25,7 @@ const Carousel = () => {
 
   const [changeImg, setChangeImg] = useState(0);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     const changeFun = () => {
       if (changeImg === data.length - 1) {
         console.log('reached');

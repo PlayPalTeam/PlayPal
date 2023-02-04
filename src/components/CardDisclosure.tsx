@@ -27,7 +27,7 @@ const CardDisclosure = ({ title, element }: Props) => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Disclosure.Panel className="flex flex-col space-y-5">
+        <Disclosure.Panel className="sm:flex sm:flex-col  space-y-5  overflow-hidden">
           {element}
         </Disclosure.Panel>
       </Transition>

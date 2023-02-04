@@ -42,29 +42,29 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 
   return (
     <>
-      <div className="m-14 overflow-hidden rounded-lg shadow">
+      <div className="sm:m-10 m-2 overflow-hidden rounded-lg shadow">
         <div>
-          <div className="flex items-center justify-between p-4 ">
+          <div className="flex items-center justify-between sm:p-4 p-2">
             <div>
-              <div className="font-bold  tracking-wider">
+              <div className="font-bold  sm:tracking-wider">
                 {/* Greenfield Sports Turf 2.0 */}
                 {turf_name}
               </div>
-              <span className="text-sm">
+              <span className="sm:text-sm text-xs">
                 {/* Kohinoor city road , Kurla West */}
                 {location}
               </span>
             </div>
 
             <div className="flex ">
-              <div className="items-center">
+              <div className="sm:items-center f">
                 <BsStarFill color="yellow" size={12} />
               </div>
               <span className="pl-2 text-sm font-bold ">3.4</span>
             </div>
           </div>
 
-          <div className="relative  overflow-hidden p-4   ">
+          <div className="relative  overflow-hidden sm:p-4 p-2  ">
             <Image
               src="/exampleturfimage.webp"
               className="h-[330px] rounded-md bg-contain"
@@ -78,12 +78,12 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between p-6 pt-6 ">
-            <div className=" ">
+          <div className="flex justify-between sm:p-6 sm:pt-6 p-3 pt-3 ">
+            <div className=" pt-1">
               {amned.first && (
                 <p className="ease-in ">Spilt Payments Availabel</p>
               )}
-              {amned.second && <p>Coupon is valid till 1 Mar 1990</p>}
+              {amned.second && <p>Coupon is valid</p>}
               {amned.third && <p>Box Cricket Football</p>}
             </div>
             <div>

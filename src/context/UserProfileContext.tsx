@@ -3,11 +3,12 @@ import {
   createContext,
   useState,
   useContext,
-  ReactNode
+  ReactNode,
+  useEffect,
+  useCallback
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
-import { useDeepCompareEffect } from 'react-use';
 
 type Profile = Database['public']['Tables']['profiles']['Row'] | null;
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
@@ -33,25 +34,24 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
 
-  useDeepCompareEffect(() => {
-    if (!user) {
-      setUserProfile(null);
-      return;
+  const fetchData = useCallback(async () => {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      setUserProfile(data);
+    } catch (error) {
+      toast.error(error.message);
     }
-    const fetchData = async () => {
-      try {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-        setUserProfile(data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    fetchData();
-  }, [supabase, user]);
+  }, [supabase, user?.id]);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [fetchData, user]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
@@ -60,6 +60,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       toast.error(error.message);
     }
+    fetchData();
   };
 
   return (

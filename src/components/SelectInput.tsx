@@ -29,7 +29,7 @@ const SelectInput = ({
         id={name}
         {...register(name)}
         placeholder={placeholder}
-        className="inputCss"
+        className="inputCss form-select"
         multiple={multiple}
       >
         {options.map((option) => (

@@ -1,20 +1,23 @@
 import { RequestResponse } from '@components/RequestCard';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import { toast } from 'react-hot-toast';
-import { useDeepCompareEffect } from 'react-use';
 import { Database } from '../types/database.types';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
 
+type RequestUpdate = Database['public']['Tables']['requests']['Update'];
+
 interface RequestContexType {
   requests: RequestResponse[];
-  updatePlayerNeeded: (
-    id: number,
-    player: number,
-    name: string,
-    phone: number
-  ) => Promise<void>;
+  updatePlayerNeeded: (requestUpdate: RequestUpdate) => Promise<void>;
   addRequest: (request: RequestInsert) => Promise<void>;
   deleteRequest: (id: number) => Promise<void>;
 }
@@ -55,7 +58,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [supabase]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (user) {
       getRequests();
     }
@@ -74,19 +77,11 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
     getRequests();
   };
 
-  async function updatePlayerNeeded(
-    id: number,
-    player: number,
-    name: string,
-    phone: number
-  ) {
+  async function updatePlayerNeeded(requestUpdate: RequestUpdate) {
     const { status, error } = await supabase
       .from('requests')
-      .update({
-        player_needed: player - 1,
-        people: [{ name: name, phone: phone }]
-      })
-      .eq('id', id);
+      .update(requestUpdate)
+      .eq('id', requestUpdate?.id);
 
     if (status === 204) {
       toast.success('Success', { duration: 1000 });

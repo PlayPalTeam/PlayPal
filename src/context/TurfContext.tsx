@@ -6,12 +6,11 @@ import {
   Dispatch,
   useContext,
   ReactNode,
-  useMemo
+  useMemo,
+  useEffect
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
-import { useDeepCompareEffect } from 'react-use';
-
 
 type Turf = Database['public']['Tables']['turfs']['Row'];
 type TurfInsert = Database['public']['Tables']['turfs']['Insert'];
@@ -54,7 +53,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [supabase]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (user) {
       getData();
     }
