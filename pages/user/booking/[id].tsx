@@ -7,7 +7,6 @@ import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
-import { userAgent } from 'next/server';
 import { ChangeEvent, useReducer, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BsArrowRight, BsStarFill } from 'react-icons/bs';
@@ -115,7 +114,7 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
   ];
 
   times.map((time) => {
-    return slots.map((slot) => {
+    return slots?.map((slot) => {
       return;
       [];
     });
@@ -138,6 +137,8 @@ const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const { addBooking, books } = useBookContext();
+
   const router = useRouter();
 
   const user = useUser();
@@ -158,33 +159,6 @@ const Booking = () => {
     dispatch({ type: 'updateStartTime', value: event.target.value });
   };
 
-  const avail = turfs.map((turf) => {
-    return turf.sports.map((t) => {
-      return t;
-    });
-  });
-
-  console.log(avail);
-
-  const { addBooking, books } = useBookContext();
-
-  const slots = books.map((book) => {
-    return {
-      date: book.date
-    };
-  });
-
-  // const filterByDate = slots.filter((slot) => slot.date === state.date);
-
-  // const checkExists = filterByDate.map((times) => {
-  //   return {
-  //     boll: times.time.includes(state.startTime),
-  //     time: times.time
-  //   };
-  // });
-
-  // console.log(checkExists);
-
   const onSlotSubmit = (e) => {
     e.preventDefault();
 
@@ -197,47 +171,11 @@ const Booking = () => {
     setIsOpen(false);
   };
 
-  // const { addBooking, books } = useBookContext();
-
-  // const slots = books.map((book) => {
-  //   return {
-  //     date: book.date,
-  //     start_time: book.start_time,
-  //     end_time: book.end_time
-  //   };
-  // });
-  // console.log(slots);
-
-  // const onSlotSubmit = () => {
-  //   // const enterData = async () => {
-  //   //   await supabase
-  //   //   .from("bookings")
-  //   //   .insert({start_time:state.startTime,end_time:state.endTime,date:state.date,profile_id:user.id, turf_id:turf.turf_id})
-  //   // }
-  //   const bookslotss = slots.find((slot) => {
-  //     slot.start_time === state.startTime &&
-  //       slot.end_time === state.endTime &&
-  //       slot.date === state.date;
-  //   });
-  //   console.log(bookslotss);
-
-  //   if (bookslotss) {
-  //     toast('These Time Slot already Booked ');
-  //   } else {
-  //     addBooks(turf?.turf_id, {
-  //       date: state.date,
-  //       profile_id: user.id
-  //     });
-  //   }
-
-  //   // enterData()
-  // };
-
   return (
     <Layout title={turf?.turf_name}>
       <div className="mt-6 flex w-full justify-center sm:mt-14 ">
         <div className="m-4 sm:w-[58%]">
-          <div className="mb-4 p-4  shadow sm:p-6">
+          <div className="mb-4 p-4 sm:p-6">
             {/* <Image
               src="/exampleturfimage.webp"
               className="h-[330px] rounded-md bg-contain"
@@ -246,7 +184,7 @@ const Booking = () => {
               height={750} */}
             {/* /> */}
           </div>
-          <div className="flex justify-between p-6  shadow ">
+          <div className="flex justify-between p-6">
             <div>
               <div className="font-bold tracking-widest">
                 {' '}
@@ -263,50 +201,33 @@ const Booking = () => {
               3.4
             </div>
           </div>
-          <div className="p-6 shadow">
-            <div className="">
-              <div className="pb-4 font-bold tracking-widest">Location</div>
-              <span className="w-[300px] text-sm tracking-wider">
-                {turf?.location}
-              </span>
-            </div>
+          <div className="p-6">
+            <h3 className="pb-4 font-bold tracking-widest">Location</h3>
+          <span className="w-[300px] text-sm tracking-wider">
+              {turf?.location}
+            </span>
           </div>
-          <div className="p-6 shadow">
-            <div className="pb-4 font-bold tracking-widest">
-              Availabel Sports
-            </div>
-            <div className="flex">
-              <div>Box Cricket</div>
-              <div className="ml-6"> Football</div>
-            </div>
-          </div>
-          <div className="p-6 shadow">
+          <div className="p-6">
             <div className="pb-4 font-bold tracking-widest">Ameninties</div>
             <div className="flex justify-between p-4">
               <div>Artificial Turf</div>
               <div>Logo</div>
             </div>
           </div>
-          <div className="p-6 shadow">
-            <div className="flex justify-between">
-              <div>
-                <div className="pb-4 font-bold tracking-widest">
-                  Venue Rules
-                </div>
-                <div className="text-sm">
-                  Arrive 10 mins before booking time
-                </div>
-                <div className=" pt-4">
-                  <CardDisclosure title={'More'} element={showRules} />
-                </div>
-              </div>
-              <div className="mt-3"></div>
-            </div>
+          <div className="flex justify-between">
+            <CardDisclosure title={'Venue Rules'} element={showRules} />
           </div>
           <div className="p-6">
             <div className="p-8">
               <div>Choose the Sport</div>
-              <div>{}</div>
+              <div>
+                {turf?.sports.map((s) => (
+                  <p key={s} className="flex items-center gap-x-2">
+                    <input type="radio" value={s} />
+                    <span>{s}</span>
+                  </p>
+                ))}
+              </div>
             </div>
             <Button
               isSubmitting={false}
@@ -324,10 +245,7 @@ const Booking = () => {
           <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
             {/* this is the popu up section */}
             <main className="w-full px-10">
-              <form
-                className="formCss"
-                onSubmit={onSlotSubmit}
-              >
+              <form onSubmit={onSlotSubmit}>
                 <div>
                   <label htmlFor="date">Date</label>
                   <DateInput value={state.date} onChange={handleDateChnage} />
