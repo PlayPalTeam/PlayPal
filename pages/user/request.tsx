@@ -1,3 +1,4 @@
+import ErrorBoundary from '@components/ErrorBoundary';
 import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
@@ -32,11 +33,13 @@ const Request: NextPage = () => {
           <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
         </section>
         <hr className="my-5 border-black" />
-        <section className="space-y-5">
-          {filteredRequests?.map((req) => (
-            <RequestCard key={req.id} {...req} />
-          ))}
-        </section>
+        <ErrorBoundary>
+          <section className="space-y-5">
+            {filteredRequests?.map((req) => (
+              <RequestCard key={req.id} {...req} />
+            ))}
+          </section>
+        </ErrorBoundary>
       </main>
     </Layout>
   );
