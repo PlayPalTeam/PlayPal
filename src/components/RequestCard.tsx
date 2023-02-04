@@ -110,17 +110,17 @@ const RequestCard = ({
           <button
             disabled={player_needed === 0}
             onClick={
-              userProfile?.request.includes(id.toString())
+              userProfile.request?.includes(id.toString())
                 ? handleDeleteAcceptedRequest
                 : handleAccept
             }
             className={`rounded-lg p-2 text-white ${
-              userProfile?.request.includes(id.toString())
+              userProfile.request?.includes(id.toString())
                 ? 'bg-red-500'
                 : 'bg-emerald-500'
             }`}
           >
-            {userProfile?.request.includes(id.toString()) ? 'Delete' : 'Accept'}
+            {userProfile?.request?.includes(id.toString()) ? 'Delete' : 'Accept'}
           </button>
         )}
         <button

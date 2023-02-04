@@ -42,29 +42,29 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
 
   return (
     <>
-      <div className="sm:m-10 m-2 overflow-hidden rounded-lg shadow">
+      <div className="m-2 overflow-hidden rounded-lg shadow sm:m-10">
         <div>
-          <div className="flex items-center justify-between sm:p-4 p-2">
+          <div className="flex items-center justify-between p-2 sm:p-4">
             <div>
               <div className="font-bold  sm:tracking-wider">
                 {/* Greenfield Sports Turf 2.0 */}
                 {turf_name}
               </div>
-              <span className="sm:text-sm text-xs">
+              <span className="text-xs sm:text-sm">
                 {/* Kohinoor city road , Kurla West */}
                 {location}
               </span>
             </div>
 
             <div className="flex ">
-              <div className="sm:items-center f">
+              <div className="f sm:items-center">
                 <BsStarFill color="yellow" size={12} />
               </div>
               <span className="pl-2 text-sm font-bold ">3.4</span>
             </div>
           </div>
 
-          <div className="relative  overflow-hidden sm:p-4 p-2  ">
+          <div className="relative  overflow-hidden p-2 sm:p-4  ">
             <Image
               src="/exampleturfimage.webp"
               className="h-[330px] rounded-md bg-contain"
@@ -78,7 +78,7 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between sm:p-6 sm:pt-6 p-3 pt-3 ">
+          <div className="flex justify-between p-3 pt-3 sm:p-6 sm:pt-6 ">
             <div className=" pt-1">
               {amned.first && (
                 <p className="ease-in ">Spilt Payments Availabel</p>

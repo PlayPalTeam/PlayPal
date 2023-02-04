@@ -1,19 +1,18 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-
-import { useState } from 'react';
+import ErrorBoundary from '@components/ErrorBoundary';
+import { BookingProvider } from '@context/BookingContext';
+import { RequestProvider } from '@context/RequestContext';
+import { TurfProvider } from '@context/TurfContext';
+import { UserProfileProvider } from '@context/UserProfileContext';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import {
-  createBrowserSupabaseClient,
-  Session
-} from '@supabase/auth-helpers-nextjs';
-import { UserProfileProvider } from '../src/context/UserProfileContext';
-import { TurfProvider } from '../src/context/TurfContext';
-import { Roboto } from '@next/font/google';
-import { BookingProvider } from '../src/context/BookingContext';
-import { RequestProvider } from '../src/context/RequestContext';
-import { Toaster } from 'react-hot-toast';
+import { Session } from '@supabase/supabase-js';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { Roboto } from '@next/font/google';
+
+import '../styles/globals.css';
 
 const inter = Roboto({ weight: '400', subsets: ['latin'] });
 
@@ -49,7 +48,9 @@ function App({
               <UserProfileProvider>
                 <main className={inter.className}>
                   <Toaster />
-                  <Component {...pageProps} />
+                  <ErrorBoundary>
+                    <Component {...pageProps} />
+                  </ErrorBoundary>
                 </main>
               </UserProfileProvider>
             </TurfProvider>
