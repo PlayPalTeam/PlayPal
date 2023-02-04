@@ -1,17 +1,13 @@
-import Button from '@components/Button';
 import CardDisclosure from '@components/CardDisclosure';
 import DialogBox from '@components/Dialog';
 import Layout from '@components/Layout';
 import VenueRules from '@components/VenueRules';
 import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useReducer, useState } from 'react';
-import { toast } from 'react-hot-toast';
 import { BsArrowRight, BsStarFill } from 'react-icons/bs';
-import { supabase } from 'src/lib/supabase';
-import { Database } from 'src/types/database.types';
 
 interface DateProps {
   value: string;
@@ -89,31 +85,31 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
       disble: false
     },
     {
-      label: '2:00 PM',
-      value: '14:00:00',
+      label: '2:00 PM - 3:00 PM',
+      value: '14:00 - 15:00',
       disble: false
     },
     {
-      label: '3:00 PM',
-      value: '15:00:00',
+      label: '3:00 PM - 4:00 PM',
+      value: '15:00 -16:00',
       disble: false
     },
     {
-      label: '4:00 AM',
-      value: '16:00:00',
+      label: '4:00 PM - 5:00 PM',
+      value: '16:00 - 17:00',
       disble: false
     },
     {
-      label: '5:00 AM',
-      value: '17:00:00'
+      label: '5:00 PM - 6:00 PM',
+      value: '17:00 - 18:00'
     },
     {
-      label: '6:00 AM',
-      value: '18:00:00'
+      label: '6:00 PM - 7:00 PM',
+      value: '18:00 - 19:00'
     }
   ];
 
-  times.map((time) => {
+  times?.map((time) => {
     return slots?.map((slot) => {
       return;
       [];
@@ -136,8 +132,7 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const { addBooking, books } = useBookContext();
+  const [selectSports, setSelectSports] = useState('');
 
   const router = useRouter();
 
@@ -159,13 +154,29 @@ const Booking = () => {
     dispatch({ type: 'updateStartTime', value: event.target.value });
   };
 
+  const avail = turfs.map((turf) => {
+    return turf.sports.map((t) => t);
+  });
+
+  const { addBooking, books } = useBookContext();
+
+  const slots = books.map((book) => {
+    return {
+      date: book.date
+    };
+  });
+
+  const filterByDate = slots.filter((slot) => slot.date === state.date);
+  console.log(filterByDate);
+
   const onSlotSubmit = (e) => {
     e.preventDefault();
 
     addBooking(turf?.turf_id, {
       times: [state.startTime],
       date: state.date,
-      profile_id: user.id
+      profile_id: user.id,
+      selectedsport: selectSports
     });
 
     setIsOpen(false);
@@ -203,7 +214,7 @@ const Booking = () => {
           </div>
           <div className="p-6">
             <h3 className="pb-4 font-bold tracking-widest">Location</h3>
-          <span className="w-[300px] text-sm tracking-wider">
+            <span className="w-[300px] text-sm tracking-wider">
               {turf?.location}
             </span>
           </div>
@@ -217,27 +228,31 @@ const Booking = () => {
           <div className="flex justify-between">
             <CardDisclosure title={'Venue Rules'} element={showRules} />
           </div>
-          <div className="p-6">
-            <div className="p-8">
-              <div>Choose the Sport</div>
+          <div className="p-6 shadow">
+            <div className="">
+              <div className="pb-4 font-bold tracking-widest">
+                Availabel Sports (Choose){' '}
+              </div>
               <div>
-                {turf?.sports.map((s) => (
-                  <p key={s} className="flex items-center gap-x-2">
-                    <input type="radio" value={s} />
-                    <span>{s}</span>
-                  </p>
-                ))}
+                <div className="">
+                  {turf?.sports.map((s) => (
+                    <p key={s} className="flex items-center ">
+                      <input
+                        type="radio"
+                        name={'select'}
+                        value={s}
+                        onChange={() => setSelectSports(s)}
+                      />
+                      <span className="pl-3">{s}</span>
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
-            <Button
-              isSubmitting={false}
-              text={'Select a Sport to Proceed'}
-              type={'button'}
-            />
           </div>
           <button
             onClick={() => setIsOpen(true)}
-            className="group ml-6 flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
+            className="group  mt-8 flex  items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
           >
             Book Slot{' '}
             <BsArrowRight className="duration-300 group-hover:translate-x-1" />

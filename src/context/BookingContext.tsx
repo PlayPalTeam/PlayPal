@@ -17,6 +17,7 @@ export type Booking = {
   start_time: string;
   end_time: string;
   times?:string[];
+  selectedsport?:string;
   turfs:
     | { turf_name: string; location: string }
     | { turf_name: string; location: string }[];
