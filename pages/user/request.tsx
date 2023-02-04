@@ -10,9 +10,12 @@ const RequestCard = dynamic(() => import('@components/RequestCard'));
 
 const Request: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { requests } = useRequestContext();
   const { userProfile } = useUserProfile();
+
+  const filteredRequests = requests?.filter(
+    (req) => !userProfile.request?.includes(req.id.toString())
+  );
 
   return (
     <Layout title="Requests">
@@ -30,13 +33,9 @@ const Request: NextPage = () => {
         </section>
         <hr className="my-5 border-black" />
         <section className="space-y-5">
-          {requests
-            ?.filter(
-              (req) => !userProfile.request?.includes(req.id.toString())
-            )
-            .map((req) => (
-              <RequestCard key={req.id} {...req} />
-            ))}
+          {filteredRequests?.map((req) => (
+            <RequestCard key={req.id} {...req} />
+          ))}
         </section>
       </main>
     </Layout>
