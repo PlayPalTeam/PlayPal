@@ -15,6 +15,14 @@ const useHelper = () => {
   const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
 
+  const ErrorMessage = ({ message }: { message: string }) => {
+    return toast.error(message);
+  };
+
+  const SuccessMessage = ({ message }: { message: string }) => {
+    return toast.success(message);
+  };
+
   const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
     const { error } = await supabase.auth.signUp({
       email: data.email,
@@ -29,14 +37,9 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red'
-        }
-      });
+      ErrorMessage({ message: error.message });
     } else {
-      toast.success('Check your email', { duration: 5000 });
+      SuccessMessage({ message: 'Check your email' });
     }
   };
 
@@ -50,13 +53,7 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      ErrorMessage({ message: error.message });
     }
 
     if (session?.user.user_metadata) {
@@ -70,21 +67,18 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, { duration: 5000 });
+      ErrorMessage({ message: error.message });
     }
 
-    toast.success('Check your email', { duration: 5000 });
+    SuccessMessage({ message: 'Check your email' });
   };
 
   const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({
     password,
     confirmPassword
   }) => {
-    console.log(password);
-    console.log(confirmPassword);
-
     if (password !== confirmPassword) {
-      toast.error('Passwords must match');
+      ErrorMessage({ message: 'Passwords must match' });
       return;
     }
 
@@ -93,23 +87,10 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      ErrorMessage({ message: error.message });
     }
 
-    toast.success('Password reset successful!', {
-      duration: 5000,
-      style: {
-        border: '1px solid green',
-        color: 'green'
-      }
-    });
-
+    SuccessMessage({ message: 'Password reset successful!' });
     router.push('/auth/signin');
   };
 
@@ -121,7 +102,9 @@ const useHelper = () => {
     onSignInSubmit,
     onResetSubmit,
     onPasswordSubmit,
-    getRoleHref
+    getRoleHref,
+    ErrorMessage,
+    SuccessMessage
   };
 };
 

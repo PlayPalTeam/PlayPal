@@ -12,16 +12,16 @@ const CardDisclosure = dynamic(() => import('@components/CardDisclosure'));
 const HomeUser: NextPage = () => {
   const { books } = useBookContext();
   const { requests } = useRequestContext();
-  const { userProfile } = useUserProfile();
+  const { userProfile, getUserData } = useUserProfile();
+
+  getUserData();
 
   const requestCreateElement = requests
     ?.filter((req) => req.profile_id === userProfile?.id)
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const requestAcceptElement = requests
-    ?.filter((req) =>
-      userProfile?.request?.some((id) => id === req.id.toString())
-    )
+    ?.filter((req) => userProfile?.request?.includes(req.id.toString()))
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const bookingElement = books.map((book) => (

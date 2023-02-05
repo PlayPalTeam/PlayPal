@@ -1,5 +1,4 @@
-import { Suspense, useState } from 'react';
-import ErrorBoundary from '@components/ErrorBoundary';
+import {  useState } from 'react';
 import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
@@ -20,7 +19,7 @@ const Request: NextPage = () => {
 
   return (
     <Layout title="Requests">
-      <main className="w-full px-10">
+      <main className="w-full flex justify-center">
         <section>
           <div className="text-right">
             <button
@@ -32,14 +31,12 @@ const Request: NextPage = () => {
           </div>
           <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
         </section>
-        <hr className="my-5 border-black" />
-          <ErrorBoundary>
-            <section className="space-y-5">
-              {filteredRequests?.map((req) => (
-                <RequestCard key={req.id} {...req} />
-              ))}
-            </section>
-          </ErrorBoundary>
+
+        <section className="space-y-5">
+          {filteredRequests?.map((req) => (
+            <RequestCard key={req.id} {...req} />
+          ))}
+        </section>
       </main>
     </Layout>
   );

@@ -48,7 +48,7 @@ const DialogBox = ({
             >
               <Dialog.Panel
                 className={
-                  'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
+                  'w-full max-w-md transform overflow-hidden rounded-2xl bg-base-100 p-6 text-left align-middle shadow-xl transition-all'
                 }
               >
                 <Dialog.Title

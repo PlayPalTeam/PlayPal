@@ -76,63 +76,14 @@ const RequestCard = ({
   );
 
   return (
-    <div className="rounded-lg border bg-white p-6 shadow">
-      <div className="text-lg font-medium">Game: {game}</div>
-      <div className="text-sm text-gray-600">Game Date: {game_date}</div>
-      <div className="text-sm text-gray-600">
-        Player Needed: {player_needed}
-      </div>
-      <div className="my-4">
-        {profileList.map((profile, i) => (
-          <div key={i} className="text-sm text-gray-600">
-            {profile.full_name}
-          </div>
-        ))}
-      </div>
-      <div className="my-4">
-        {turfList.map((turf, i) => (
-          <div key={i} className="text-sm text-gray-600">
-            <div>Turf Name: {turf.turf_name}</div>
-            <div>Location: {turf.location}</div>
-          </div>
-        ))}
-      </div>
-      <hr className="mb-5 border-black" />
-      <div className="flex items-center justify-between">
-        {profile_id === userProfile?.id ? (
-          <button
-            onClick={handleDeleteCreatedRequest}
-            className="rounded-lg bg-red-500 p-2 text-white"
-          >
-            Delete
-          </button>
-        ) : (
-          <button
-            disabled={player_needed === 0}
-            onClick={
-              userProfile.request?.includes(id.toString())
-                ? handleDeleteAcceptedRequest
-                : handleAccept
-            }
-            className={`rounded-lg p-2 text-white ${
-              userProfile.request?.includes(id.toString())
-                ? 'bg-red-500'
-                : 'bg-emerald-500'
-            }`}
-          >
-            {userProfile?.request?.includes(id.toString()) ? 'Delete' : 'Accept'}
-          </button>
-        )}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
-        >
-          Show Details{' '}
-          <BsArrowRight className="duration-300 group-hover:translate-x-1" />
-        </button>
-        <DialogBox title={'Players'} isOpen={isOpen} setIsOpen={setIsOpen}>
-          <div>{request?.people}</div>
-        </DialogBox>
+    <div className="card w-96 bg-neutral text-neutral-content">
+      <div className="card-body items-center text-center">
+        <h2 className="card-title">Cookies!</h2>
+        <p>We are using cookies for no reason.</p>
+        <div className="card-actions justify-end">
+          <button className="btn-primary btn">Accept</button>
+          <button className="btn-ghost btn">Deny</button>
+        </div>
       </div>
     </div>
   );

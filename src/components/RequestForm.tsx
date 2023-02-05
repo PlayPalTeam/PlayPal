@@ -1,4 +1,4 @@
-import {  SetStateAction, useMemo } from 'react';
+import { SetStateAction, useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RequestFormProps, RequestData, RequestSchema } from '../types/types';
 import { useRequestContext } from '../context/RequestContext';
@@ -105,7 +105,11 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   };
 
   return (
-    <DialogBox title={"Request For Players"} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <DialogBox
+      title={'Request For Players'}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+    >
       <div className="mt-2">
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           {RequestFormContent.map((field, index) => (

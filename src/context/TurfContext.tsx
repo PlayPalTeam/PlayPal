@@ -1,15 +1,12 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import useHelper from '@utils/helper';
 import {
   createContext,
   useState,
-  SetStateAction,
-  Dispatch,
   useContext,
   ReactNode,
-  useMemo,
-  useEffect
+  useCallback
 } from 'react';
-import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
 type Turf = Database['public']['Tables']['turfs']['Row'];
@@ -18,63 +15,61 @@ type TurfUpdate = Database['public']['Tables']['turfs']['Update'];
 
 interface TurfContextType {
   turfs: Turf[];
-  setTurfs: Dispatch<SetStateAction<Turf[]>>;
   addTurf: (turf: TurfInsert) => Promise<void>;
   updateTurf: (id: string, update: TurfUpdate) => Promise<void>;
   deleteTurf: (id: string) => Promise<void>;
+  getData: () => Promise<void>;
 }
 
-export const TurfContext = createContext<TurfContextType>({
+const TurfContext = createContext<TurfContextType>({
   turfs: [],
-  setTurfs: () => {},
   addTurf: () => Promise.resolve(),
   updateTurf: () => Promise.resolve(),
-  deleteTurf: () => Promise.resolve()
+  deleteTurf: () => Promise.resolve(),
+  getData: () => Promise.resolve()
 });
 
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
-
+  const { ErrorMessage, SuccessMessage } = useHelper();
   const supabase = useSupabaseClient<Database>();
-
   const user = useUser();
 
-  const getData = useMemo(() => {
-    return async () => {
-      const { data, error } = await supabase.from('turfs').select('*');
-
-      if (error) {
-        toast.error(error.message);
-      }
-
-      if (data) {
-        setTurfs(data);
-      }
-    };
-  }, [supabase]);
-
-  useEffect(() => {
-    if (user) {
-      getData();
+  const getData = useCallback(async () => {
+    if (!navigator.onLine) {
+      ErrorMessage({ message: "No internet connection, can't fetch data." });
+      return;
     }
-  }, [getData, user]);
+    const { data, error } = await supabase.from('turfs').select('*');
+    if (error) {
+      ErrorMessage({ message: error.message });
+    }
+    if (data) {
+      setTurfs(data);
+    }
+  }, [ErrorMessage, supabase]);
 
-  const addTurf = async (turf: TurfInsert) => {
-    await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
-  };
+  const addTurf = useCallback(
+    async (turf: TurfInsert) => {
+      await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
+    },
+    [supabase, user]
+  );
 
   const updateTurf = async (id: string, update: TurfUpdate) => {
-    const { status, error } = await supabase
+    const { error, status } = await supabase
       .from('turfs')
       .update(update)
       .eq('id', id);
 
     if (error) {
-      toast.error(error.message);
+      ErrorMessage({ message: error.message });
+      return;
     }
 
     if (status === 204) {
-      toast.success(`Update done for ${update.turf_name}`);
+      getData();
+      SuccessMessage({ message: `Turf Updated Successfully` });
     }
   };
 
@@ -85,17 +80,17 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
       .eq('turf_id', id);
 
     if (error) {
-      toast.error(error.message);
+      ErrorMessage({ message: error.message });
     }
 
     if (status === 204) {
-      toast.success(`Deleted ${id}`);
+      SuccessMessage({ message: `Deketed ${id}` });
     }
   };
 
   return (
     <TurfContext.Provider
-      value={{ turfs, setTurfs, addTurf, updateTurf, deleteTurf }}
+      value={{ turfs, addTurf, updateTurf, deleteTurf, getData }}
     >
       {children}
     </TurfContext.Provider>

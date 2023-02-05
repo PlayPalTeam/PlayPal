@@ -1,10 +1,10 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import useHelper from '@utils/helper';
 import {
   createContext,
   useState,
   useContext,
   ReactNode,
-  useEffect,
   useCallback
 } from 'react';
 import { toast } from 'react-hot-toast';
@@ -16,25 +16,25 @@ type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 interface UserProfileContextType {
   userProfile: Profile;
   updateUserProfile: (update: ProfileUpdate) => Promise<void>;
+  getUserData: () => Promise<void>;
 }
 
 const defaultValue: UserProfileContextType = {
   userProfile: null,
-  updateUserProfile: () => Promise.resolve()
+  updateUserProfile: () => Promise.resolve(),
+  getUserData: () => Promise.resolve()
 };
 
-export const UserProfileContext =
-  createContext<UserProfileContextType>(defaultValue);
+const UserProfileContext = createContext<UserProfileContextType>(defaultValue);
 
-export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<Profile>(null);
+  const { ErrorMessage, SuccessMessage } = useHelper();
 
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
 
-  const fetchData = useCallback(async () => {
+  const getUserData = useCallback(async () => {
     try {
       const { data } = await supabase
         .from('profiles')
@@ -43,28 +43,26 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
         .single();
       setUserProfile(data);
     } catch (error) {
-      toast.error(error.message);
+      ErrorMessage({ message: error.message });
     }
-  }, [supabase, user?.id]);
-
-  useEffect(() => {
-    if (user) {
-      fetchData();
-    }
-  }, [fetchData, user]);
+  }, [ErrorMessage, supabase, user?.id]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
       await supabase.from('profiles').update(update).eq('id', user?.id);
-      toast.success(`Updated profile for ${userProfile?.username}`);
+      SuccessMessage({
+        message: `Updated profile for ${userProfile?.username}`
+      });
     } catch (error) {
-      toast.error(error.message);
+      ErrorMessage({ message: error.message });
     }
-    fetchData();
+    getUserData();
   };
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, updateUserProfile }}>
+    <UserProfileContext.Provider
+      value={{ userProfile, updateUserProfile, getUserData }}
+    >
       {children}
     </UserProfileContext.Provider>
   );
