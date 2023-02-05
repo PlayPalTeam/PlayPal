@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
@@ -10,8 +10,10 @@ const RequestCard = dynamic(() => import('@components/RequestCard'));
 
 const Request: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { requests } = useRequestContext();
+  const { requests, getRequestsData } = useRequestContext();
   const { userProfile } = useUserProfile();
+
+  getRequestsData();
 
   const filteredRequests = requests?.filter(
     (req) => !userProfile.request?.includes(req.id.toString())
@@ -19,7 +21,7 @@ const Request: NextPage = () => {
 
   return (
     <Layout title="Requests">
-      <main className="w-full flex justify-center">
+      <main className="flex w-full justify-center">
         <section>
           <div className="text-right">
             <button

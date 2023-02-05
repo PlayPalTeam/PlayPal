@@ -38,10 +38,11 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getRequestsData = useCallback(async () => {
-    if (!navigator.onLine) {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
       ErrorMessage({ message: "No internet connection, can't fetch data." });
       return;
     }
+    
     const { data, error } = await supabase
       .from('requests')
       .select('*, profiles(full_name), turfs(turf_name, location)');

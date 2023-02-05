@@ -35,6 +35,11 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getUserData = useCallback(async () => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      ErrorMessage({ message: "No internet connection, can't fetch data." });
+      return;
+    }
+
     try {
       const { data } = await supabase
         .from('profiles')

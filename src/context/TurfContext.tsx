@@ -36,10 +36,11 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getData = useCallback(async () => {
-    if (!navigator.onLine) {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
       ErrorMessage({ message: "No internet connection, can't fetch data." });
       return;
     }
+    
     const { data, error } = await supabase.from('turfs').select('*');
     if (error) {
       ErrorMessage({ message: error.message });
