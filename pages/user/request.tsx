@@ -1,10 +1,10 @@
+import { Suspense, useState } from 'react';
 import ErrorBoundary from '@components/ErrorBoundary';
 import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
 
 const RequestForm = dynamic(() => import('@components/RequestForm'));
 const RequestCard = dynamic(() => import('@components/RequestCard'));
@@ -33,13 +33,13 @@ const Request: NextPage = () => {
           <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
         </section>
         <hr className="my-5 border-black" />
-        <ErrorBoundary>
-          <section className="space-y-5">
-            {filteredRequests?.map((req) => (
-              <RequestCard key={req.id} {...req} />
-            ))}
-          </section>
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <section className="space-y-5">
+              {filteredRequests?.map((req) => (
+                <RequestCard key={req.id} {...req} />
+              ))}
+            </section>
+          </ErrorBoundary>
       </main>
     </Layout>
   );

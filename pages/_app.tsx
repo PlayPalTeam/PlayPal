@@ -46,7 +46,7 @@ function App({
           <BookingProvider>
             <TurfProvider>
               <UserProfileProvider>
-                <main className={inter.className}>
+                <main data-theme="night" className={inter.className}>
                   <Toaster />
                   <ErrorBoundary>
                     <Component {...pageProps} />

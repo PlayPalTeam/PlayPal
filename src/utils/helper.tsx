@@ -1,3 +1,4 @@
+import { useUserProfile } from '@context/UserProfileContext';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
@@ -11,7 +12,7 @@ import {
 
 const useHelper = () => {
   const router = useRouter();
-
+  const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
 
   const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
@@ -112,11 +113,15 @@ const useHelper = () => {
     router.push('/auth/signin');
   };
 
+  const getRoleHref = (route: string) =>
+    userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
+
   return {
     onSignUpSubmit,
     onSignInSubmit,
     onResetSubmit,
-    onPasswordSubmit
+    onPasswordSubmit,
+    getRoleHref
   };
 };
 
