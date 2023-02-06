@@ -3,9 +3,7 @@ import TurfCard from '@components/TurfCard';
 import { useTurfContext } from '@context/TurfContext';
 
 const BookingTurf = () => {
-  const { turfs, getData } = useTurfContext();
-
-  getData();
+  const { turfs } = useTurfContext();
 
   return (
     <Layout title="Bookings">

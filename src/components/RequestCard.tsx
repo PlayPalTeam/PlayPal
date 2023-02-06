@@ -1,6 +1,6 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
 import { Database } from 'src/types/database.types';
@@ -65,12 +65,12 @@ const RequestCard = ({
     });
   };
 
-  const profileList = useMemo(
+  const profileList = useCallback(
     () => (Array.isArray(profiles) ? profiles : [profiles]),
     [profiles]
   );
 
-  const turfList = useMemo(
+  const turfList = useCallback(
     () => (Array.isArray(turfs) ? turfs : [turfs]),
     [turfs]
   );

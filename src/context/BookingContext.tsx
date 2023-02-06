@@ -1,12 +1,13 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import useHelper from '@utils/helper';
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useState
 } from 'react';
+import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
 export type Booking = {
@@ -28,63 +29,67 @@ interface BookingContexType {
   books: Booking[];
   addBooking: (id: string, booking: BookingInsert) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
-  getBookingData: () => Promise<void>;
 }
 
-export const BookingContext = createContext<BookingContexType>({
+const BookingContext = createContext<BookingContexType>({
   books: [],
   addBooking: () => Promise.resolve(),
-  deleteBooking: () => Promise.resolve(),
-  getBookingData: () => Promise.resolve()
+  deleteBooking: () => Promise.resolve()
 });
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Booking[]>([]);
-  const { ErrorMessage } = useHelper();
 
   const supabase = useSupabaseClient<Database>();
 
   const user = useUser();
 
-  const getBookingData = useCallback(async () => {
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      ErrorMessage({ message: "No internet connection, can't fetch data." });
-      return;
-    }
+  const getBookings = useMemo(() => {
+    return async () => {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(
+          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, location)'
+        )
+        .eq('profile_id', user.id);
 
-    const { data, error } = await supabase
-      .from('bookings')
-      .select(
-        'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, location)'
-      )
-      .eq('profile_id', user.id);
+      if (error) {
+        toast.error(error.message, {
+          duration: 5000,
+          style: {
+            border: '1px solid red',
+            color: 'red'
+          }
+        });
+      }
 
-    if (error) {
-      ErrorMessage({ message: error.message });
-    }
+      if (data) {
+        setBooks(data);
+      }
+    };
+  }, [supabase, user?.id]);
 
-    if (data) {
-      setBooks(data);
+  useEffect(() => {
+    if (user) {
+      getBookings();
     }
-  }, [ErrorMessage, supabase, user?.id]);
+  }, [getBookings, user]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
     await supabase
       .from('bookings')
       .insert({ ...book, profile_id: user.id, turf_id: turf_id });
 
-    getBookingData();
+    getBookings();
   };
 
   const deleteBooking = async (id: string) => {
     await supabase.from('bookings').delete().eq('booking_id', id);
-    getBookingData();
+    getBookings();
   };
 
   return (
-    <BookingContext.Provider
-      value={{ books, addBooking, deleteBooking, getBookingData }}
-    >
+    <BookingContext.Provider value={{ books, addBooking, deleteBooking }}>
       {children}
     </BookingContext.Provider>
   );

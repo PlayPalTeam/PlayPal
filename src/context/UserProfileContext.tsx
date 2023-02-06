@@ -1,10 +1,10 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import useHelper from '@utils/helper';
 import {
   createContext,
   useState,
   useContext,
   ReactNode,
+  useEffect,
   useCallback
 } from 'react';
 import { toast } from 'react-hot-toast';
@@ -16,30 +16,25 @@ type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 interface UserProfileContextType {
   userProfile: Profile;
   updateUserProfile: (update: ProfileUpdate) => Promise<void>;
-  getUserData: () => Promise<void>;
 }
 
 const defaultValue: UserProfileContextType = {
   userProfile: null,
-  updateUserProfile: () => Promise.resolve(),
-  getUserData: () => Promise.resolve()
+  updateUserProfile: () => Promise.resolve()
 };
 
-const UserProfileContext = createContext<UserProfileContextType>(defaultValue);
+export const UserProfileContext =
+  createContext<UserProfileContextType>(defaultValue);
 
-export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
+export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
+  children
+}) => {
   const [userProfile, setUserProfile] = useState<Profile>(null);
-  const { ErrorMessage, SuccessMessage } = useHelper();
 
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
 
-  const getUserData = useCallback(async () => {
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      ErrorMessage({ message: "No internet connection, can't fetch data." });
-      return;
-    }
-
+  const fetchData = useCallback(async () => {
     try {
       const { data } = await supabase
         .from('profiles')
@@ -48,26 +43,28 @@ export const UserProfileProvider = ({ children }: { children: ReactNode }) => {
         .single();
       setUserProfile(data);
     } catch (error) {
-      ErrorMessage({ message: error.message });
+      toast.error(error.message);
     }
-  }, [ErrorMessage, supabase, user?.id]);
+  }, [supabase, user?.id]);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [fetchData, user]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
       await supabase.from('profiles').update(update).eq('id', user?.id);
-      SuccessMessage({
-        message: `Updated profile for ${userProfile?.username}`
-      });
+      toast.success(`Updated profile for ${userProfile?.username}`);
     } catch (error) {
-      ErrorMessage({ message: error.message });
+      toast.error(error.message);
     }
-    getUserData();
+    fetchData();
   };
 
   return (
-    <UserProfileContext.Provider
-      value={{ userProfile, updateUserProfile, getUserData }}
-    >
+    <UserProfileContext.Provider value={{ userProfile, updateUserProfile }}>
       {children}
     </UserProfileContext.Provider>
   );

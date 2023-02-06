@@ -1,13 +1,14 @@
 import { RequestResponse } from '@components/RequestCard';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import useHelper from '@utils/helper';
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useState
 } from 'react';
+import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
@@ -19,42 +20,49 @@ interface RequestContexType {
   updatePlayerNeeded: (requestUpdate: RequestUpdate) => Promise<void>;
   addRequest: (request: RequestInsert) => Promise<void>;
   deleteRequest: (id: number) => Promise<void>;
-  getRequestsData: () => Promise<void>;
 }
 
 export const RequestContext = createContext<RequestContexType>({
   requests: [],
   updatePlayerNeeded: () => Promise.resolve(),
   addRequest: () => Promise.resolve(),
-  deleteRequest: () => Promise.resolve(),
-  getRequestsData: () => Promise.resolve()
+  deleteRequest: () => Promise.resolve()
 });
 
 export const RequestProvider = ({ children }: { children: ReactNode }) => {
   const [requests, setRequest] = useState<RequestResponse[]>([]);
-  const { ErrorMessage, SuccessMessage } = useHelper();
+
   const supabase = useSupabaseClient<Database>();
 
   const user = useUser();
 
-  const getRequestsData = useCallback(async () => {
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      ErrorMessage({ message: "No internet connection, can't fetch data." });
-      return;
-    }
-    
-    const { data, error } = await supabase
-      .from('requests')
-      .select('*, profiles(full_name), turfs(turf_name, location)');
+  const getRequests = useMemo(() => {
+    return async () => {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*, profiles(full_name), turfs(turf_name, location)');
 
-    if (error) {
-      ErrorMessage({ message: error.message });
-    }
+      if (error) {
+        toast.error(error.message, {
+          duration: 5000,
+          style: {
+            border: '1px solid red',
+            color: 'red'
+          }
+        });
+      }
 
-    if (data) {
-      setRequest(data);
+      if (data) {
+        setRequest(data);
+      }
+    };
+  }, [supabase]);
+
+  useEffect(() => {
+    if (user) {
+      getRequests();
     }
-  }, [ErrorMessage, supabase]);
+  }, [getRequests, user]);
 
   const addRequest = async (request: RequestInsert) => {
     const { error } = await supabase
@@ -62,11 +70,11 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
       .insert({ ...request, profile_id: user.id });
 
     if (error) {
-      ErrorMessage({ message: error.message });
+      toast.error(error.message, { duration: 5000 });
     }
 
-    SuccessMessage({ message: 'Your request is created' });
-    getRequestsData();
+    toast.success('Your request is created', { duration: 5000 });
+    getRequests();
   };
 
   async function updatePlayerNeeded(requestUpdate: RequestUpdate) {
@@ -76,14 +84,14 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
       .eq('id', requestUpdate?.id);
 
     if (status === 204) {
-      SuccessMessage({ message: 'Success' });
+      toast.success('Success', { duration: 1000 });
     }
 
     if (error) {
-      ErrorMessage({ message: error.message });
+      toast.error(error.message, { duration: 1000 });
     }
 
-    getRequestsData();
+    getRequests();
   }
 
   const deleteRequest = async (id: number) => {
@@ -93,14 +101,14 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
       .eq('id', id);
 
     if (error) {
-      ErrorMessage({ message: error.message });
+      toast.error(error.message, { duration: 5000 });
     }
 
     if (status === 204) {
-      SuccessMessage({ message: 'Your request is deleted' });
+      toast.success('Your request is deleted', { duration: 1000 });
     }
 
-    getRequestsData();
+    getRequests();
   };
 
   return (
@@ -109,8 +117,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
         requests,
         updatePlayerNeeded,
         addRequest,
-        deleteRequest,
-        getRequestsData
+        deleteRequest
       }}
     >
       {children}

@@ -10,10 +10,8 @@ const RequestCard = dynamic(() => import('@components/RequestCard'));
 
 const Request: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { requests, getRequestsData } = useRequestContext();
+  const { requests } = useRequestContext();
   const { userProfile } = useUserProfile();
-
-  getRequestsData();
 
   const filteredRequests = requests?.filter(
     (req) => !userProfile.request?.includes(req.id.toString())

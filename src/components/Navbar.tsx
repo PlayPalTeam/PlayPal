@@ -24,17 +24,24 @@ interface MenuItemProps {
   icon?: JSX.Element;
 }
 
-const MenuItem = ({ href, text, icon }: MenuItemProps) => (
-  <li>
-    <Link
-      className="link-hover link-primary rounded-md hover:no-underline"
-      href={href}
-    >
-      {icon}
-      {text}
-    </Link>
-  </li>
-);
+const MenuItem = ({ href, text, icon }: MenuItemProps) => {
+  const router = useRouter();
+  const isActive = router.pathname === href;
+
+  return (
+    <li>
+      <Link
+        className={`${
+          isActive ? 'text-primary' : ''
+        } link-hover link-primary rounded-md hover:no-underline`}
+        href={href}
+      >
+        {icon}
+        {text}
+      </Link>
+    </li>
+  );
+};
 
 const Menu = ({ children, button, dropEnd }: MenuProps) => {
   return (
@@ -83,7 +90,7 @@ const Navbar = () => {
     {
       icon: <CgCommunity className="h-4 w-4" />,
       text: 'Community',
-      href: getRoleHref('community')
+      href: '/community'
     }
   ].filter(
     (nav) => !(nav.text === 'Request' && userProfile?.role === 'lister')
@@ -116,7 +123,7 @@ const Navbar = () => {
       <div className="navbar-end">
         <Menu
           dropEnd={true}
-          button={<Avatar className="w-10 rounded-full" size="47" />}
+          button={<Avatar className="w-10 rounded-full" size="40" />}
         >
           <MenuItem
             href={getRoleHref('profile')}

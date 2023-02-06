@@ -14,10 +14,20 @@ interface DateProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
+interface Slot {
+  time: string[];
+}
+
 interface TimeProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  slots?: { boll: any; time: any }[];
+  slots: Slot[];
+}
+
+interface Time {
+  label: string;
+  value: string;
+  disble?: boolean;
 }
 
 interface StateProps {
@@ -53,51 +63,42 @@ const DateInput = ({ value, onChange }: DateProps) => {
 };
 
 const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
-  const times = [
+  const times: Time[] = [
     {
       label: 'Select Time',
-      value: '',
-      disble: false
+      value: ''
     },
     {
       label: '9:00 AM - 10:00 AM',
-      value: '9:00 - 10:00',
-      disble: false
+      value: '9:00 - 10:00'
     },
     {
       label: '10:00 AM -11:00 AM',
-      value: '10:00 - 11:00',
-      disble: false
+      value: '10:00 - 11:00'
     },
     {
       label: '11:00 AM - 12:00 PM',
-      value: '11:00 - 12:00',
-      disble: false
+      value: '11:00 - 12:00'
     },
     {
       label: '12:00 PM - 1:00 PM',
-      value: '12:00 - 13:00',
-      disble: false
+      value: '12:00 - 13:00'
     },
     {
       label: '1:00 PM - 2:00 PM',
-      value: '13:00 - 14:00',
-      disble: false
+      value: '13:00 - 14:00'
     },
     {
       label: '2:00 PM - 3:00 PM',
-      value: '14:00 - 15:00',
-      disble: false
+      value: '14:00 - 15:00'
     },
     {
       label: '3:00 PM - 4:00 PM',
-      value: '15:00 -16:00',
-      disble: false
+      value: '15:00 -16:00'
     },
     {
       label: '4:00 PM - 5:00 PM',
-      value: '16:00 - 17:00',
-      disble: false
+      value: '16:00 - 17:00'
     },
     {
       label: '5:00 PM - 6:00 PM',
@@ -109,30 +110,36 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
     }
   ];
 
-  times?.map((time) => {
-    return slots?.map((slot) => {
-      return;
-      [];
+  times.forEach((time) => {
+    slots.forEach((slot) => {
+      if (slot.time.includes(time.value)) {
+        time.disble = true;
+      }
     });
   });
 
   return (
-    <select className="inputCss form-select" value={value} onChange={onChange}>
-      {times.map((time) => {
-        return (
-          <option key={time.value} value={time.value}>
-            {time.label}
-          </option>
-        );
-      })}
-    </select>
+    <div className="form-control">
+      <label htmlFor="slotTime">Select Your Slot</label>
+      <select className="select" id="" value={value} onChange={onChange}>
+        {times.map((time) => {
+          return (
+            <option key={time.value} value={time.value} disabled={time.disble}>
+              {time.label}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 };
 
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectSports, setSelectSports] = useState('');
+  const [selectSports, setSelectSports] = useState<string>('');
+
+  const { addBooking, books } = useBookContext();
 
   const router = useRouter();
 
@@ -154,32 +161,23 @@ const Booking = () => {
     dispatch({ type: 'updateStartTime', value: event.target.value });
   };
 
-  const avail = turfs.map((turf) => {
-    return turf.sports.map((t) => t);
-  });
+  const filteredSlots = books
+    .filter((book) => book.date === state.date)
+    .map((book) => ({ time: book.times }));
 
-  const { addBooking, books } = useBookContext();
-
-  const slots = books.map((book) => {
-    return {
-      date: book.date
-    };
-  });
-
-  const filterByDate = slots.filter((slot) => slot.date === state.date);
-  console.log(filterByDate);
-
-  const onSlotSubmit = (e) => {
+  const onSlotSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    addBooking(turf?.turf_id, {
-      times: [state.startTime],
-      date: state.date,
-      profile_id: user.id,
-      selectedsport: selectSports
-    });
+    if (turf && user) {
+      addBooking(turf.turf_id, {
+        times: [state.startTime],
+        date: state.date,
+        profile_id: user.id,
+        selectedsport: selectSports
+      });
 
-    setIsOpen(false);
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -260,19 +258,17 @@ const Booking = () => {
           <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
             {/* this is the popu up section */}
             <main className="w-full px-10">
-              <form onSubmit={onSlotSubmit}>
+              <form className="form-control" onSubmit={onSlotSubmit}>
                 <div>
                   <label htmlFor="date">Date</label>
                   <DateInput value={state.date} onChange={handleDateChnage} />
                 </div>
-                <div>
-                  <label htmlFor="start_date">Start Time</label>
-                  <TimeSelect
-                    value={state.startTime}
-                    onChange={handleStartTimeChange}
-                    // slots={checkExists}
-                  />
-                </div>
+
+                <TimeSelect
+                  value={state.startTime}
+                  onChange={handleStartTimeChange}
+                  slots={filteredSlots}
+                />
                 <button>Submit</button>
               </form>
             </main>

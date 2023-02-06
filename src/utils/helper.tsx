@@ -94,8 +94,14 @@ const useHelper = () => {
     router.push('/auth/signin');
   };
 
-  const getRoleHref = (route: string) =>
-    userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
+  const getRoleHref = (route: string) => {
+    if (!route) {
+      return userProfile?.role === 'lister' ? '/lister' : '/user';
+    }
+    return userProfile?.role === 'lister'
+      ? `/lister/${route}`
+      : `/user/${route}`;
+  };
 
   return {
     onSignUpSubmit,
