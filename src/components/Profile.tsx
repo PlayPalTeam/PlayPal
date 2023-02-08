@@ -40,7 +40,12 @@ const FormUI: FormField[] = [
 const Profile = () => {
   const { userProfile, updateUserProfile } = useUserProfile();
   const user = useUser();
-  const { register, reset, handleSubmit, formState } = useForm({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isSubmitting, errors }
+  } = useForm({
     resolver: zodResolver(UserProfileSchema)
   });
 
@@ -87,7 +92,7 @@ const Profile = () => {
                   <span className="font-bold text-red-900">*</span>
                 </label>
                 <input
-                  className="inputCss"
+                  className="input-bordered input-primary input w-full"
                   type={field.type}
                   placeholder={field.placeholder}
                   name={field.name}
@@ -102,7 +107,7 @@ const Profile = () => {
             <Button
               type="submit"
               text="Update Profile"
-              isSubmitting={formState.isSubmitting}
+              isSubmitting={isSubmitting}
             />
           </div>
         </form>

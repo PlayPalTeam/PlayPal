@@ -1,10 +1,8 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
-import { memo, useMemo, useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { BsArrowRight } from 'react-icons/bs';
 import { Database } from 'src/types/database.types';
-import DialogBox from './Dialog';
 
 type RequestDataProps = Database['public']['Tables']['requests']['Row'];
 
@@ -76,13 +74,35 @@ const RequestCard = ({
   );
 
   return (
-    <div className="card w-96 bg-neutral text-neutral-content">
-      <div className="card-body items-center text-center">
-        <h2 className="card-title">Cookies!</h2>
-        <p>We are using cookies for no reason.</p>
-        <div className="card-actions justify-end">
-          <button className="btn-primary btn">Accept</button>
-          <button className="btn-ghost btn">Deny</button>
+    <div className="card mx-auto w-[90%] bg-neutral text-neutral-content">
+      <div className="card-body">
+        <h2 className="card-title">{game}</h2>
+        <p>Date: {game_date}</p>
+        <p>Player needed: {player_needed}</p>
+        <ul>
+          {profileList().map((profile) => (
+            <li key={profile.full_name}>
+              <span>Created By: </span>
+              {profile.full_name}
+            </li>
+          ))}
+        </ul>
+        <ul>
+          {turfList().map((turf) => (
+            <li key={turf.turf_name}>
+              {turf.turf_name}, {turf.location}
+            </li>
+          ))}
+        </ul>
+        <div className="card-actions md:justify-end ">
+          <button
+            type="button"
+            onClick={handleAccept}
+            className="btn-primary btn max-md:w-full"
+          >
+            Accept
+          </button>
+          <button className="btn-secondary btn">Show Players</button>
         </div>
       </div>
     </div>

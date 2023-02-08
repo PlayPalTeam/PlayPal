@@ -10,9 +10,9 @@ const BookingCard = dynamic(() => import('@components/BookingCard'));
 const CardDisclosure = dynamic(() => import('@components/CardDisclosure'));
 
 const HomeUser: NextPage = () => {
-  const { books,  } = useBookContext();
+  const { books } = useBookContext();
   const { requests } = useRequestContext();
-  const { userProfile} = useUserProfile();
+  const { userProfile } = useUserProfile();
 
   const requestCreateElement = requests
     ?.filter((req) => req.profile_id === userProfile?.id)
@@ -28,7 +28,7 @@ const HomeUser: NextPage = () => {
 
   return (
     <Layout title="Dashboard">
-      <main className="space-y-5 divide-y divide-emerald-200">
+      <main className="space-y-5">
         <CardDisclosure title="Bookings" element={bookingElement} />
         <CardDisclosure
           title="Requests you created"

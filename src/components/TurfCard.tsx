@@ -9,7 +9,7 @@ interface TurfCardProps {
 
 const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
   return (
-    <div className="card  mt-10 bg-base-100 shadow-xl lg:card-side">
+    <div className="card mt-10 w-[90%] mx-auto bg-base-100 shadow-xl lg:card-side">
       <figure>
         <Image
           src="/exampleturfimage.webp"
@@ -28,7 +28,7 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
               as={`/user/booking/${turf_id}`}
               className="btn-primary btn"
             >
-              Listen
+              Book
             </Link>
           )}
         </div>

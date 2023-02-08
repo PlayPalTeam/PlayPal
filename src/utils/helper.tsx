@@ -11,7 +11,7 @@ import {
 } from '../types/types';
 
 const useHelper = () => {
-  const router = useRouter();
+  const {push} = useRouter();
   const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
 
@@ -57,7 +57,7 @@ const useHelper = () => {
     }
 
     if (session?.user.user_metadata) {
-      router.push(`/${session.user.user_metadata.role}`);
+      push(`/${session.user.user_metadata.role}`);
     }
   };
 
@@ -91,7 +91,7 @@ const useHelper = () => {
     }
 
     SuccessMessage({ message: 'Password reset successful!' });
-    router.push('/auth/signin');
+    push('/auth/signin');
   };
 
   const getRoleHref = (route: string) => {

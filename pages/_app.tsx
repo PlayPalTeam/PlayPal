@@ -1,8 +1,3 @@
-import ErrorBoundary from '@components/ErrorBoundary';
-import { BookingProvider } from '@context/BookingContext';
-import { RequestProvider } from '@context/RequestContext';
-import { TurfProvider } from '@context/TurfContext';
-import { UserProfileProvider } from '@context/UserProfileContext';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Session } from '@supabase/supabase-js';
@@ -11,6 +6,11 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Roboto } from '@next/font/google';
+import { BookingProvider } from '@context/BookingContext';
+import { RequestProvider } from '@context/RequestContext';
+import { TurfProvider } from '@context/TurfContext';
+import { UserProfileProvider } from '@context/UserProfileContext';
+import Transition from '@components/Transition';
 
 import '../styles/globals.css';
 
@@ -42,20 +42,20 @@ function App({
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
       >
-        <RequestProvider>
-          <BookingProvider>
-            <TurfProvider>
-              <UserProfileProvider>
-                <main data-theme="night" className={inter.className}>
-                  <Toaster />
-                  <ErrorBoundary>
+        <Transition>
+          <RequestProvider>
+            <BookingProvider>
+              <TurfProvider>
+                <UserProfileProvider>
+                  <main className={inter.className}>
+                    <Toaster position="top-right" />
                     <Component {...pageProps} />
-                  </ErrorBoundary>
-                </main>
-              </UserProfileProvider>
-            </TurfProvider>
-          </BookingProvider>
-        </RequestProvider>
+                  </main>
+                </UserProfileProvider>
+              </TurfProvider>
+            </BookingProvider>
+          </RequestProvider>
+        </Transition>
       </SessionContextProvider>
     </>
   );

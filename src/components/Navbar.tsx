@@ -25,8 +25,8 @@ interface MenuItemProps {
 }
 
 const MenuItem = ({ href, text, icon }: MenuItemProps) => {
-  const router = useRouter();
-  const isActive = router.pathname === href;
+  const {pathname} = useRouter();
+  const isActive = pathname === href;
 
   return (
     <li>

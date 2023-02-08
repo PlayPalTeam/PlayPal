@@ -47,41 +47,6 @@ export interface Database {
           updated_at?: string | null
         }
       }
-      bookings_duplicate: {
-        Row: {
-          booking_id: string
-          created_at: string | null
-          date: string | null
-          end_time: string | null
-          profile_id: string | null
-          start_time: string | null
-          starttimes: number | null
-          turf_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          booking_id?: string
-          created_at?: string | null
-          date?: string | null
-          end_time?: string | null
-          profile_id?: string | null
-          start_time?: string | null
-          starttimes?: number | null
-          turf_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          booking_id?: string
-          created_at?: string | null
-          date?: string | null
-          end_time?: string | null
-          profile_id?: string | null
-          start_time?: string | null
-          starttimes?: number | null
-          turf_id?: string | null
-          updated_at?: string | null
-        }
-      }
       profiles: {
         Row: {
           avatar_url: string | null

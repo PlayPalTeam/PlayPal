@@ -15,8 +15,8 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
-      <div className="flex h-screen flex-col items-center justify-center bg-gray-100">
-        <div className="formCss bg-white">
+      <div className="form-control min-h-screen items-center justify-center py-10 sm:py-20">
+        <div className="w-full max-w-sm sm:w-3/4">
           <FormTitle title="PlayPal | SignIn" />
           <Form
             formFields={SignInForm}
@@ -26,11 +26,11 @@ const SignIn = () => {
             buttonText={'Log In'}
             className="my-5"
           />
-          <div className="flex flex-col text-center font-medium text-green-500">
-            <Link className="hover:underline" href="/auth/signup">
+          <div className="mt-5 flex flex-col  items-center space-y-4">
+            <Link className="link-hover hover:text-secondary" href="/auth/signup">
               Don&apos;t have an account? Sign Up
             </Link>
-            <Link className="hover:underline" href={'/auth/reset'}>
+            <Link className="link-hover hover:text-secondary" href={'/auth/reset'}>
               Forgot Password
             </Link>
           </div>

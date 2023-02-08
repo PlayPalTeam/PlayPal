@@ -103,7 +103,7 @@ export type SignInData = z.infer<typeof SignInSchema>;
 export const UserProfileSchema = z.object({
   username: usernameValidation,
   full_name: z.string(),
-  phone_number: z.number().positive()
+  phone_number: z.optional(z.number().positive())
 });
 
 // Type representing the shape of an object that conforms to the UserProfileFormSchema

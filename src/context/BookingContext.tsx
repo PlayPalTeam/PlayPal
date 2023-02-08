@@ -54,13 +54,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
         .eq('profile_id', user.id);
 
       if (error) {
-        toast.error(error.message, {
-          duration: 5000,
-          style: {
-            border: '1px solid red',
-            color: 'red'
-          }
-        });
+        toast.error(error.message);
       }
 
       if (data) {
