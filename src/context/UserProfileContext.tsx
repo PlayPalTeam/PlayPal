@@ -5,7 +5,8 @@ import {
   useContext,
   ReactNode,
   useEffect,
-  useCallback
+  useCallback,
+  useMemo
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
@@ -15,11 +16,13 @@ type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 
 interface UserProfileContextType {
   userProfile: Profile;
+  allData:Profile[];
   updateUserProfile: (update: ProfileUpdate) => Promise<void>;
 }
 
 const defaultValue: UserProfileContextType = {
   userProfile: null,
+  allData:null,
   updateUserProfile: () => Promise.resolve()
 };
 
@@ -30,6 +33,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const [userProfile, setUserProfile] = useState<Profile>(null);
+  const [allData , setAllData ] = useState<Profile[]>(null)
 
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
@@ -50,8 +54,23 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (user) {
       fetchData();
+      getData();
     }
   }, [fetchData, user]);
+
+  const getData = useMemo(() => {
+    return async () => {
+      const { data, error } = await supabase.from('profiles').select('*');
+
+      if (error) {
+        toast.error(error.message);
+      }
+
+      if (data) {
+        setAllData(data);
+      }
+    };
+  }, [supabase]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
@@ -64,7 +83,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, updateUserProfile }}>
+    <UserProfileContext.Provider value={{ userProfile,allData, updateUserProfile }}>
       {children}
     </UserProfileContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useTurfContext } from '@context/TurfContext';
 
 const BookingTurf = () => {
   const { turfs } = useTurfContext();
-
+console.log(turfs)
   return (
     <Layout title="Bookings">
       <section className="flex w-full justify-center">
