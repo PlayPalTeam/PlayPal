@@ -51,12 +51,6 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [supabase, user?.id]);
 
-  useEffect(() => {
-    if (user) {
-      fetchData();
-      getData();
-    }
-  }, [fetchData, user]);
 
   const getData = useMemo(() => {
     return async () => {
@@ -71,6 +65,14 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
       }
     };
   }, [supabase]);
+
+  
+  useEffect(() => {
+    if (user) {
+      fetchData();
+      getData();
+    }
+  }, [fetchData,getData, user]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
