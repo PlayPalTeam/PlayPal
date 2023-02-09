@@ -3,7 +3,7 @@ import { useState } from "react";
 
 
 
-const index = () => {
+const Index = () => {
     const { allData }=  useUserProfile();
     const [isBlock ,setIsBlock] = useState(false);
 
@@ -56,4 +56,4 @@ const index = () => {
   </div>;
 };
 
-export default index;
+export default Index;
