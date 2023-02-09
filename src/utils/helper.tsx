@@ -11,7 +11,7 @@ import {
 } from '../types/types';
 
 const useHelper = () => {
-  const {push} = useRouter();
+  const { push } = useRouter();
   const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
 
@@ -54,6 +54,9 @@ const useHelper = () => {
 
     if (error) {
       ErrorMessage({ message: error.message });
+    }
+
+    if (userProfile) {
     }
 
     if (session?.user.user_metadata) {

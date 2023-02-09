@@ -29,7 +29,7 @@
     "react-icons": "^4.7.1",
     "sharp": "^0.31.3",
     "upload-images-converter": "^1.3.2",
-    "zod": "^3.20.3"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@headlessui/react": "^1.7.10",
