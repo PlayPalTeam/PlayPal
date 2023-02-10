@@ -19,8 +19,8 @@ export type Booking = {
   times?: string[];
   selectedsport?: string;
   turfs:
-    | { turf_name: string; location: string }
-    | { turf_name: string; location: string }[];
+    | { turf_name: string; address: string }
+    | { turf_name: string; address: string }[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -49,7 +49,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = await supabase
         .from('bookings')
         .select(
-          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, location)'
+          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, address)'
         )
         .eq('profile_id', user.id);
 

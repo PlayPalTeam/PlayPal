@@ -18,14 +18,7 @@ const SignIn = () => {
       <div className="form-control min-h-screen items-center justify-center py-10 sm:py-20">
         <div className="w-full max-w-sm sm:w-3/4">
           <FormTitle title="PlayPal | SignIn" />
-          <Form
-            formFields={SignInForm}
-            onSubmit={onSignInSubmit}
-            form={'SignIn'}
-            buttonType={'submit'}
-            buttonText={'Log In'}
-            className="my-5"
-          />
+          <Form formFields={SignInForm} onSubmit={onSignInSubmit} form={'SignIn'} buttonType={'submit'} buttonText={'Log In'} className="my-5" />
           <div className="mt-5 flex flex-col  items-center space-y-4">
             <Link className="link-hover hover:text-secondary" href="/auth/signup">
               Don&apos;t have an account? Sign Up
@@ -42,9 +35,7 @@ const SignIn = () => {
 
 export default SignIn;
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(context);
 
   const {

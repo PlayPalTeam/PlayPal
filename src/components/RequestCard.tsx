@@ -12,7 +12,7 @@ interface RequestProfile {
 
 interface RequestTurf {
   turf_name: string;
-  location: string;
+  address: string;
 }
 
 export interface RequestResponse extends RequestDataProps {
@@ -20,15 +20,7 @@ export interface RequestResponse extends RequestDataProps {
   turfs: RequestTurf | RequestTurf[];
 }
 
-const RequestCard = ({
-  id,
-  game,
-  game_date,
-  player_needed,
-  profiles,
-  turfs,
-  profile_id
-}: RequestResponse) => {
+const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { deleteRequest } = useRequestContext();
   const { userProfile, updateUserProfile } = useUserProfile();
@@ -52,9 +44,7 @@ const RequestCard = ({
   const handleDeleteAcceptedRequest = () => {
     toast.success('Clicked');
     updateUserProfile({
-      request: userProfile.request?.filter(
-        (request) => request !== id.toString()
-      )
+      request: userProfile.request?.filter((request) => request !== id.toString())
     });
     updatePlayerNeeded({
       id: id,
@@ -63,15 +53,9 @@ const RequestCard = ({
     });
   };
 
-  const profileList = useCallback(
-    () => (Array.isArray(profiles) ? profiles : [profiles]),
-    [profiles]
-  );
+  const profileList = useCallback(() => (Array.isArray(profiles) ? profiles : [profiles]), [profiles]);
 
-  const turfList = useCallback(
-    () => (Array.isArray(turfs) ? turfs : [turfs]),
-    [turfs]
-  );
+  const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
   return (
     <div className="card mx-auto w-[90%] bg-neutral text-neutral-content">
@@ -90,16 +74,12 @@ const RequestCard = ({
         <ul>
           {turfList().map((turf) => (
             <li key={turf.turf_name}>
-              {turf.turf_name}, {turf.location}
+              {turf.turf_name}, {turf.address}
             </li>
           ))}
         </ul>
         <div className="card-actions md:justify-end ">
-          <button
-            type="button"
-            onClick={handleAccept}
-            className="btn-primary btn max-md:w-full"
-          >
+          <button type="button" onClick={handleAccept} className="btn-primary btn max-md:w-full">
             Accept
           </button>
           <button className="btn-secondary btn">Show Players</button>

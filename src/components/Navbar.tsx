@@ -7,71 +7,29 @@ import { BiGitPullRequest } from 'react-icons/bi';
 import { CgCommunity } from 'react-icons/cg';
 import { AiOutlineProfile } from 'react-icons/ai';
 import { IoSettingsOutline } from 'react-icons/io5';
+import { GiTurtleShell } from 'react-icons/gi';
 import { supabase } from 'src/lib/supabase';
 import Avatar from './Avatar';
 import { useUserProfile } from '@context/UserProfileContext';
 import useHelper from '@utils/helper';
+import { Menu, MenuItem, MenuItemProps } from './Menu';
 
-interface MenuProps {
-  children: any;
-  button: JSX.Element;
-  dropEnd?: boolean;
+interface UserProfile {
+  role: string;
 }
-
-interface MenuItemProps {
-  href: string;
-  text: string;
-  icon?: JSX.Element;
-}
-
-const MenuItem = ({ href, text, icon }: MenuItemProps) => {
-  const {pathname} = useRouter();
-  const isActive = pathname === href;
-
-  return (
-    <li>
-      <Link
-        className={`${
-          isActive ? 'text-primary' : ''
-        } link-hover link-primary rounded-md hover:no-underline`}
-        href={href}
-      >
-        {icon}
-        {text}
-      </Link>
-    </li>
-  );
-};
-
-const Menu = ({ children, button, dropEnd }: MenuProps) => {
-  return (
-    <div className={`dropdown ${dropEnd ? 'dropdown-end' : ''}`}>
-      <label tabIndex={0} className="btn-ghost btn">
-        {button}
-      </label>
-      <ul
-        tabIndex={0}
-        className="dropdown-content menu rounded-box mt-3 w-52 bg-base-100 p-2 shadow"
-      >
-        {children}
-      </ul>
-    </div>
-  );
-};
 
 const Navbar = () => {
-  const router = useRouter();
-
+  const { push } = useRouter();
   const { userProfile } = useUserProfile();
   const { getRoleHref } = useHelper();
 
   const handleSignOut = () => {
     supabase.auth.signOut();
     Cookies.remove('supabase-auth-token');
-    router.push('/auth/signin');
+    push('/auth/signin');
   };
 
-  const navigations = [
+  const navigations: MenuItemProps[] = [
     {
       icon: <MdSpaceDashboard className="h-4 w-4" />,
       text: 'DashBoard',
@@ -88,13 +46,25 @@ const Navbar = () => {
       href: getRoleHref('booking')
     },
     {
+      icon: <GiTurtleShell />,
+      text: 'Add Turf',
+      href: getRoleHref('turf')
+    },
+    {
       icon: <CgCommunity className="h-4 w-4" />,
       text: 'Community',
       href: '/community'
     }
-  ].filter(
-    (nav) => !(nav.text === 'Request' && userProfile?.role === 'lister')
-  );
+  ].filter((nav) => {
+    switch (userProfile?.role) {
+      case 'lister':
+        return !(nav.text === 'Request' || nav.text === 'Booking');
+      case 'user':
+        return !(nav.text === 'Add Turf');
+      default:
+        return true;
+    }
+  });
 
   return (
     <nav className="navbar bg-base-100">
@@ -106,10 +76,7 @@ const Navbar = () => {
             ))}
           </Menu>
         </div>
-        <Link
-          className="btn-ghost btn text-xl normal-case"
-          href={userProfile?.role === 'lister' ? '/lister' : '/user'}
-        >
+        <Link className="btn-ghost btn text-xl normal-case" href={userProfile?.role === 'lister' ? '/lister' : '/user'}>
           PlayPal
         </Link>
       </div>
@@ -121,25 +88,10 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu
-          dropEnd={true}
-          button={<Avatar className="w-10 rounded-full" size="40" />}
-        >
-          <MenuItem
-            href={getRoleHref('profile')}
-            text="Profile"
-            icon={<AiOutlineProfile />}
-          />
-          <MenuItem
-            href={getRoleHref('settings')}
-            text="Settings"
-            icon={<IoSettingsOutline />}
-          />
-          <button
-            className="btn-ghost btn-sm btn"
-            onClick={handleSignOut}
-            type="submit"
-          >
+        <Menu dropEnd={true} button={<Avatar className="w-10 rounded-full" size="40" />}>
+          <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
+          <MenuItem href={getRoleHref('settings')} text="Settings" icon={<IoSettingsOutline />} />
+          <button className="btn-ghost btn-md btn" onClick={handleSignOut} type="submit">
             Sign Out
           </button>
         </Menu>

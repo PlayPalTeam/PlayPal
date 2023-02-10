@@ -1,12 +1,6 @@
 import { RequestResponse } from '@components/RequestCard';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
@@ -35,9 +29,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const getRequests = async () => {
-      const { data, error } = await supabase
-        .from('requests')
-        .select('*, profiles(full_name), turfs(turf_name, location)');
+      const { data, error } = await supabase.from('requests').select('*, profiles(full_name), turfs(turf_name, address)');
 
       if (error) {
         toast.error(error.message);
@@ -54,9 +46,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   }, [supabase, user]);
 
   const addRequest = async (request: RequestInsert) => {
-    const { error } = await supabase
-      .from('requests')
-      .insert({ ...request, profile_id: user.id });
+    const { error } = await supabase.from('requests').insert({ ...request, profile_id: user.id });
 
     if (error) {
       toast.error(error.message);
@@ -66,10 +56,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   };
 
   async function updatePlayerNeeded(requestUpdate: RequestUpdate) {
-    const { status, error } = await supabase
-      .from('requests')
-      .update(requestUpdate)
-      .eq('id', requestUpdate?.id);
+    const { status, error } = await supabase.from('requests').update(requestUpdate).eq('id', requestUpdate?.id);
 
     if (status === 204) {
       toast.success('Success');
@@ -81,10 +68,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const deleteRequest = async (id: number) => {
-    const { status, error } = await supabase
-      .from('requests')
-      .delete()
-      .eq('id', id);
+    const { status, error } = await supabase.from('requests').delete().eq('id', id);
 
     if (error) {
       toast.error(error.message);

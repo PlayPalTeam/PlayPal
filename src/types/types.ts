@@ -23,17 +23,9 @@ export type names =
   | 'amenities'
   | 'price_per_hour'
   | 'capacity'
-  | 'venuerules'
   | 'description';
 
-export type registerType =
-  | SignInData
-  | SignUpData
-  | BookingType
-  | RequestData
-  | ForgotPasswordData
-  | ResetData
-  | TurfProfileType;
+export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData | TurfProfileType;
 
 export interface InputCommonProps {
   name: names;
@@ -60,10 +52,7 @@ const passwordValidation = z
   .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
   .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
   .regex(new RegExp('.*\\d.*'), 'One number')
-  .regex(
-    new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-    'One special character'
-  )
+  .regex(new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'), 'One special character')
   .min(8, 'Must be at least 8 characters in length');
 
 export const SignUpSchema = z.object({
@@ -135,17 +124,7 @@ export type ProfileFormProps = {
 
 export type TurfFormProps = {
   label: string;
-  name:
-    | 'turf_name'
-    | 'opening_hours'
-    | 'ending_hours'
-    | 'location'
-    | 'sports'
-    | 'amenities'
-    | 'price_per_hour'
-    | 'capacity'
-    | 'venuerules'
-    | 'description';
+  name: 'turf_name' | 'opening_hours' | 'ending_hours' | 'location' | 'sports' | 'amenities' | 'price_per_hour' | 'capacity' | 'description';
   type: HTMLInputTypeAttribute;
   placeholder?: string;
   valueAsNumber?: boolean;
@@ -161,7 +140,6 @@ export const TurfProfileSchema = z.object({
   amenities: z.string().array(),
   price_per_hour: z.number(),
   capacity: z.number(),
-  venuerules: z.string(),
   description: z.string()
 });
 
