@@ -1,11 +1,5 @@
 import Image from 'next/image';
-import {
-  BsInstagram,
-  BsTwitter,
-  BsTwitch,
-  BsFacebook,
-  BsYoutube
-} from 'react-icons/bs';
+import { BsInstagram, BsTwitter, BsTwitch, BsFacebook, BsYoutube } from 'react-icons/bs';
 
 const socialLinks = [
   {
