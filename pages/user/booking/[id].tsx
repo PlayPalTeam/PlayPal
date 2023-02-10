@@ -63,12 +63,7 @@ const DateInput = ({ value, onChange }: DateProps) => {
       <label className="label" htmlFor="date">
         <span className="label-text">Date</span>
       </label>
-      <input
-        type="date"
-        value={value}
-        className={`input-bordered input-primary input w-full`}
-        onChange={onChange}
-      />
+      <input type="date" value={value} className={`input-bordered input-primary input w-full`} onChange={onChange} />
     </div>
   );
 };
@@ -101,12 +96,7 @@ const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
       <label className="label" htmlFor="slotTime">
         <span className="label-text">Select Your Slot</span>
       </label>
-      <select
-        className={`select-bordered select-primary select`}
-        id="slotTime"
-        value={value}
-        onChange={onChange}
-      >
+      <select className={`select-bordered select-primary select`} id="slotTime" value={value} onChange={onChange}>
         {times.map((time) => {
           return (
             <option key={time.value} value={time.value} disabled={time.disble}>
@@ -156,9 +146,7 @@ const Booking = () => {
     }
   }
 
-  const filteredSlots = books
-    .filter((book) => book.date === state.date)
-    .map((book) => ({ time: book.times }));
+  const filteredSlots = books.filter((book) => book.date === state.date).map((book) => ({ time: book.times }));
 
   const onSlotSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -192,21 +180,15 @@ const Booking = () => {
           </div>
           <div className="flex justify-between p-6">
             <div>
-              <div className="font-bold tracking-widest">
-                {' '}
-                {turf?.turf_name}
-              </div>
+              <div className="font-bold tracking-widest"> {turf?.turf_name}</div>
               <div className="pt-2 text-sm">
-                {turf?.price_per_hour}/- onwards . {turf?.opening_hours} -{' '}
-                {turf?.ending_hours}
+                {turf?.price}/- onwards . {turf?.open_hour} - {turf?.close_hour}
               </div>
             </div>
           </div>
           <div className="p-6">
             <h3 className="pb-4 font-bold tracking-widest">Location</h3>
-            <span className="w-[300px] text-sm tracking-wider">
-              {turf?.location}
-            </span>
+            <span className="w-[300px] text-sm tracking-wider">{turf?.address}</span>
           </div>
           <div className="p-6">
             <div className="pb-4 font-bold tracking-widest">Ameninties</div>
@@ -215,43 +197,24 @@ const Booking = () => {
               <div>Logo</div>
             </div>
           </div>
-          <div className="flex justify-between">
-            <CardDisclosure title={'Venue Rules'} element={showRules} />
-          </div>
           <div className="form-control p-6">
-            <p className="pb-4 font-bold tracking-widest">
-              Availabel Sports (Choose){' '}
-            </p>
+            <p className="pb-4 font-bold tracking-widest">Availabel Sports (Choose) </p>
             {turf?.sports.map((s) => (
               <div key={s} className="">
                 <label className="label cursor-pointer">
-                  <input
-                    type="radio"
-                    name={'select'}
-                    value={s}
-                    className={`radio-primary radio`}
-                    onChange={() => setSelectSports(s)}
-                  />
+                  <input type="radio" name={'select'} value={s} className={`radio-primary radio`} onChange={() => setSelectSports(s)} />
                   <span className="label-text">{s.toUpperCase()}</span>
                 </label>
               </div>
             ))}
-            <button
-              onClick={handleBookSlot}
-              className="group btn-primary btn mt-5 gap-2"
-            >
-              Book Slot{' '}
-              <BsArrowRight className="duration-300 group-hover:translate-x-1" />
+            <button onClick={handleBookSlot} className="group btn-primary btn mt-5 gap-2">
+              Book Slot <BsArrowRight className="duration-300 group-hover:translate-x-1" />
             </button>
           </div>
           <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
             <form className="w-full space-y-5 px-10" onSubmit={onSlotSubmit}>
               <DateInput value={state.date} onChange={handleDateChnage} />
-              <TimeSelect
-                value={state.slotTime}
-                onChange={handleSlotTimeChange}
-                slots={filteredSlots}
-              />
+              <TimeSelect value={state.slotTime} onChange={handleSlotTimeChange} slots={filteredSlots} />
               <button className="btn-primary btn-block btn" type="submit">
                 Submit
               </button>
