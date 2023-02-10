@@ -47,6 +47,23 @@ export interface Database {
           updated_at?: string | null
         }
       }
+      moderator: {
+        Row: {
+          id: string
+          role: string | null
+          username: string | null
+        }
+        Insert: {
+          id: string
+          role?: string | null
+          username?: string | null
+        }
+        Update: {
+          id?: string
+          role?: string | null
+          username?: string | null
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null
