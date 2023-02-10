@@ -25,7 +25,7 @@ export type names =
   | 'capacity'
   | 'description';
 
-export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData | TurfProfileType;
+export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData;
 
 export interface InputCommonProps {
   name: names;
