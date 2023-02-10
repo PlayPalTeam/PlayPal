@@ -14,16 +14,7 @@ export type names =
   | 'turf_id'
   | 'game'
   | 'game_date'
-  | 'confirmPassword'
-  | 'turf_name'
-  | 'opening_hours'
-  | 'ending_hours'
-  | 'address'
-  | 'sports'
-  | 'amenities'
-  | 'price_per_hour'
-  | 'capacity'
-  | 'description';
+  | 'confirmPassword';
 
 export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData;
 

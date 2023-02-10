@@ -1,8 +1,9 @@
 import { useUserProfile } from '@context/UserProfileContext';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { truncate } from 'fs';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { supabase } from 'src/lib/supabase';
+
 import { Database } from 'src/types/database.types';
 
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
@@ -12,11 +13,15 @@ const Index = () => {
   const [isBlock, setIsBlock] = useState(true);
   const supabase = useSupabaseClient<Database>();
 
+
   const blockUser = (id) => {
     console.log(id);
     setIsBlock(true);
     const updateProfileBlock = async () => {
-      const { status, error } = await supabase.from('profiles').update({ phone_number: 45 }).eq('id', id);
+      const { status, error } = await supabase
+        .from('profiles')
+        .update({ block: isBlock })
+        .eq('id', id);
 
       if (error) {
         toast.error(error.message);
@@ -30,14 +35,14 @@ const Index = () => {
     updateProfileBlock();
   };
 
-  // await supabase
-  //       .from('profiles')
-  //       .update('block',isBlock)
-  //       .eq('username',username)
+
+
 
   return (
     <div>
       <div>Moderator</div>
+
+   
       <div>
         <div>
           Users
@@ -45,7 +50,10 @@ const Index = () => {
             {allData?.map(
               (data, index) =>
                 data.role === 'user' && (
-                  <div key={index} className="m-4 flex justify-around bg-green-300 text-lg text-black">
+                  <div
+                    key={index}
+                    className="m-4 flex justify-around bg-green-300 text-lg text-black"
+                  >
                     <p> {data.username} </p>
 
                     <button onClick={() => blockUser(data.id)}>Block</button>
@@ -61,7 +69,10 @@ const Index = () => {
             {allData?.map(
               (data, index) =>
                 data.role === 'lister' && (
-                  <div key={index} className="m-4 flex justify-around bg-green-300 text-lg text-black">
+                  <div
+                    key={index}
+                    className="m-4 flex justify-around bg-green-300 text-lg text-black"
+                  >
                     <p> {data.username}</p>
                     <button onClick={() => blockUser(data.id)}>Block</button>
                   </div>

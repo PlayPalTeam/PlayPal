@@ -1,3 +1,4 @@
+import { useUserProfile } from "@context/UserProfileContext";
 import {createMiddlewareSupabaseClient} from "@supabase/auth-helpers-nextjs";
 import {NextRequest, NextResponse} from "next/server";
 
@@ -7,6 +8,8 @@ export async function middleware(req: NextRequest) {
     const res = NextResponse.next();
 
     const redirectUrl = req.nextUrl.clone();
+
+    const { userProfile } = useUserProfile()
 
     // Create authenticated Supabase Client.
     const supabase = createMiddlewareSupabaseClient({req, res});
@@ -36,11 +39,19 @@ export async function middleware(req: NextRequest) {
         return res;
     }
 
+    if (
+        session &&
+        userProfile?.role=== "moderator" &&
+        req.nextUrl.pathname.startsWith("/moderator")
+    ) {
+        return res;
+    }
+
     // Auth condition not met, redirect to home page.
     redirectUrl.pathname = "/auth/signin";
     return NextResponse.redirect(redirectUrl);
 }
 
 export const config = {
-    matcher: ["/user/:path*", "/lister/:path*"],
+    matcher: ["/user/:path*", "/lister/:path*", "/moderator/:path*" ]
 };

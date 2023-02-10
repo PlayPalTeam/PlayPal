@@ -1,5 +1,6 @@
 import { useUserProfile } from '@context/UserProfileContext';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -14,6 +15,9 @@ const useHelper = () => {
   const { push } = useRouter();
   const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
+
+
+
 
   const ErrorMessage = ({ message }: { message: string }) => {
     return toast.error(message);
@@ -44,6 +48,11 @@ const useHelper = () => {
   };
 
   const onSignInSubmit: SubmitHandler<SignInData> = async (data) => {
+
+
+    
+    
+    
     const {
       error,
       data: { session }
@@ -56,7 +65,11 @@ const useHelper = () => {
       ErrorMessage({ message: error.message });
     }
 
-    if (userProfile) {
+    if (userProfile?.block) {
+   
+      Cookies.remove('supabase-auth-token');
+      push('');
+      
     }
 
     if (session?.user.user_metadata) {
