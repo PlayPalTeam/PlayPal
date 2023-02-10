@@ -13,8 +13,8 @@ const SignUp = () => {
       <Head>
         <title>Sign Up</title>
       </Head>
-      <main className="flex h-screen items-center justify-center">
-        <div className="formCss">
+      <main className="form-control mx-auto h-screen max-w-[22rem] justify-center">
+        <div>
           <FormTitle title="PlayPal | SignUp" />
           <Form
             formFields={SignUpForm}
@@ -24,7 +24,7 @@ const SignUp = () => {
             buttonText={'SignUp'}
             className="mb-5"
           />
-          <div className="text-center font-medium text-green-500 hover:underline">
+          <div className="link-hover mt-5 text-center font-medium">
             <Link href="/auth/signin">Already have an account? Sign In</Link>
           </div>
         </div>

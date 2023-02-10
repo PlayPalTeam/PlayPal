@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
-import Header from './Header';
 import Navbar from './Navbar';
 
 type LayoutProps = {
@@ -15,12 +14,9 @@ const Layout = ({ children, title }: LayoutProps) => {
       <Head>
         <title>{message}</title>
       </Head>
-      <div className="md:flex">
+      <div className="h-screen">
         <Navbar />
-        <div className="w-full bg-slate-600">
-          <Header />
-          {children}
-        </div>
+        {children}
       </div>
     </>
   );

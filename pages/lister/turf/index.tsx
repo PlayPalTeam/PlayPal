@@ -1,144 +1,201 @@
-import Button from '@components/Button';
-import FormTitle from '@components/FormTitle';
-import Input from '@components/Input';
+import { object, string, number, date, InferType, array } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import Layout from '@components/Layout';
-import SelectInput from '@components/SelectInput';
+import FormTitle from '@components/FormTitle';
+import Button from '@components/Button';
+import { ChangeEvent } from 'react';
 import { useTurfContext } from '@context/TurfContext';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { TurfProfileSchema, TurfProfileType } from 'src/types/types';
 
-const Ammenoptions = [
-  { value: '', label: 'Select Turf Amenities' },
-  { value: 'Gym', label: 'Gym' },
+const AddTurfSchema = object().shape({
+  turf_name: string().required().trim(),
+  open_hour: string()
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
+    .required(),
+  close_hour: string()
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
+    .required(),
+  price: number().required().positive().integer(),
+  capacity: number().required().positive().integer(),
+  address: string().trim().required(),
+  description: string().trim().required(),
+  amenities: array().of(string()).required(),
+  sports: array().of(string()).required()
+});
+
+type AddTurfType = InferType<typeof AddTurfSchema>;
+
+const Amentitiesoptions = [
   { value: 'Free WiFi', label: 'Free WiFi' },
   { value: 'Pool', label: 'Pool' }
 ];
 
 const SportsOption = [
-  { value: '', label: 'Select Turf Sports' },
   { value: 'boxcricket', label: 'BoxCricket' },
   { value: 'badminton', label: 'BadMinton' },
   { value: 'tennis', label: 'Tennis' }
 ];
 
-export default function Turf() {
-  const { addTurf } = useTurfContext();
-
+const Turf = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm({
-    resolver: zodResolver(TurfProfileSchema)
-  });
+    formState: { errors, isSubmitting },
+    setValue,
+    getValues,
+    reset
+  } = useForm<AddTurfType>({ resolver: yupResolver(AddTurfSchema) });
 
-  const Submit: SubmitHandler<TurfProfileType> = async (turf) => {
-    toast.promise(addTurf(turf), { loading: 'L', success: 'S', error: 'E' });
+  const { addTurf, turfs } = useTurfContext();
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const values = getValues().amenities;
+    const currentValue = event.target.value;
+
+    if (values.includes(currentValue)) {
+      setValue(
+        'amenities',
+        values.filter((value) => value !== currentValue)
+      );
+    } else {
+      setValue('amenities', [...values, currentValue]);
+    }
+  };
+
+  const onSubmit = async (data: AddTurfType) => {
+    addTurf(data);
+    reset();
   };
 
   return (
     <Layout title="Add Turf">
-      <main className="m-auto max-w-4xl">
-        <div className="rounded-2xl p-5 shadow-md shadow-green-300">
-          <form className="space-y-5" onSubmit={handleSubmit(Submit)}>
-            <FormTitle title="Add Your Turf" />
-            <Input
-              errors={errors}
-              label="Name"
-              name="turf_name"
-              register={register}
-              type={'text'}
-              placeholder={'Enter your place name'}
+      <main className="mx-auto mt-10 w-[90%] max-w-2xl">
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <FormTitle title="Add Your Tuf Details" />
+          <div>
+            <label className="label" htmlFor="name">
+              <span>Name</span>
+            </label>
+            <input
+              className={`input w-full ${errors.turf_name ? 'input-error' : 'input-primary'}`}
+              type="text"
+              id="name"
+              {...register('turf_name')}
             />
-            <div className="flex gap-5">
-              <Input
-                errors={errors}
-                label="Opening Hours"
-                name="opening_hours"
-                register={register}
-                type={'time'}
-                placeholder={'Enter your place name'}
-                className="w-44"
+            {errors.turf_name && <span>{errors.turf_name.message}</span>}
+          </div>
+          <div className="flex items-center gap-x-5">
+            <div className="w-full">
+              <label className="label" htmlFor="time">
+                <span>Open Time</span>
+              </label>
+              <input
+                className={`input w-full ${errors.turf_name ? 'input-error' : 'input-primary'}`}
+                type="time"
+                id="open_hour"
+                {...register('open_hour')}
               />
-              <Input
-                errors={errors}
-                label="Ending Hours"
-                name="ending_hours"
-                register={register}
-                type={'time'}
-                placeholder={'Enter your place name'}
-                className="w-44"
-              />
+              {errors.open_hour && <span>{errors.open_hour.message}</span>}
             </div>
-            <Input
-              errors={errors}
-              label="Address"
-              name="location"
-              register={register}
-              type={'text'}
-              placeholder={'Enter your place address'}
+            <div className="w-full">
+              <label className="label" htmlFor="time">
+                <span>Close Time</span>
+              </label>
+              <input
+                className={`input w-full ${errors.turf_name ? 'input-error' : 'input-primary'}`}
+                type="time"
+                id="close_hour"
+                {...register('close_hour')}
+              />
+              {errors.close_hour && <span>{errors.close_hour.message}</span>}
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-x-5">
+            <div className="w-full">
+              <label htmlFor="price">
+                <span>Pricing(per hour)</span>
+              </label>
+              <input
+                className={`input w-full ${errors.turf_name ? 'input-error' : 'input-primary'}`}
+                type="string"
+                id="price"
+                {...register('price')}
+              />
+              {errors.price && <span>{errors.price.message}</span>}
+            </div>
+            <div className="w-full">
+              <label htmlFor="capacity">
+                <span>Capacity</span>
+              </label>
+              <input
+                className={`input w-full ${errors.turf_name ? 'input-error' : 'input-primary'}`}
+                type="string"
+                id="capacity"
+                {...register('capacity')}
+              />
+              {errors.capacity && <span>{errors.capacity.message}</span>}
+            </div>
+          </div>
+          <div>
+            <label htmlFor="address" className="label">
+              <span className="label-text">Address</span>
+            </label>
+            <textarea
+              id="address"
+              className={`textarea-bordered textarea w-full resize-none ${errors.address ? 'textarea-error' : 'textarea-primary'}`}
+              {...register('address')}
             />
-            <div className="flex gap-5">
-              <Input
-                errors={errors}
-                label="Price"
-                name="price_per_hour"
-                register={register}
-                type={'text'}
-                placeholder={'Enter your place price per hour'}
-                valueAsNumber={true}
-              />
-              <Input
-                errors={errors}
-                label="Capacity"
-                name="capacity"
-                register={register}
-                type={'text'}
-                placeholder={'Enter your place capacity'}
-                valueAsNumber={true}
-              />
-            </div>
+            {errors.address && <span>{errors.address.message}</span>}
+          </div>
+          <div>
+            <label htmlFor="description" className="label">
+              <span className="label-text">description</span>
+            </label>
+            <textarea
+              id="description"
+              className={`textarea-bordered textarea w-full resize-y ${errors.description ? 'textarea-error' : 'textarea-primary'}`}
+              {...register('description')}
+            />
+            {errors.description && <span>{errors.description.message}</span>}
+          </div>
+          <div>
+            <label htmlFor="amenities" className="label">
+              <span className="label-text">Amenities</span>
+            </label>
             <div>
-              <label htmlFor="desc">Description</label>
-              <textarea
-                autoComplete="true"
-                className="inputCss resize-none"
-                {...register('description')}
-                id="desc"
-                name="description"
-              />
+              {Amentitiesoptions.map((option) => (
+                <label key={option.value} className="label cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={option.value}
+                    name="amenities"
+                    onChange={handleChange}
+                    className="checkbox"
+                    {...register('amenities')}
+                  />
+                  <span className="label-text">{option.label}</span>
+                </label>
+              ))}
             </div>
+          </div>
+          <div>
+            <label htmlFor="sports" className="label">
+              <span className="label-text">Sports</span>
+            </label>
             <div>
-              <label htmlFor="rule">Rules</label>
-              <textarea
-                autoComplete="true"
-                className="inputCss resize-none"
-                {...register('venuerules')}
-                name="rule"
-              />
+              {SportsOption.map((option) => (
+                <label key={option.value} className="label cursor-pointer">
+                  <input type="checkbox" value={option.value} name="sports" onChange={handleChange} className="checkbox" {...register('sports')} />
+                  <span className="label-text">{option.label}</span>
+                </label>
+              ))}
             </div>
-            <SelectInput
-              multiple={true}
-              label="Amenities"
-              name="amenities"
-              options={Ammenoptions}
-              register={register}
-              errors={errors}
-            />
-            <SelectInput
-              multiple={true}
-              label="Sports"
-              name="sports"
-              options={SportsOption}
-              register={register}
-              errors={errors}
-            />
-            <Button type="submit" text="Add turf" isSubmitting={isSubmitting} />
-          </form>
-        </div>
+          </div>
+          <Button type="submit" isSubmitting={isSubmitting} text="Add" />
+        </form>
       </main>
     </Layout>
   );
-}
+};
+
+export default Turf;

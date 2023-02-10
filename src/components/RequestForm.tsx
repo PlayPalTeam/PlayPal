@@ -1,4 +1,4 @@
-import {  SetStateAction, useMemo } from 'react';
+import { SetStateAction, useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RequestFormProps, RequestData, RequestSchema } from '../types/types';
 import { useRequestContext } from '../context/RequestContext';
@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-hot-toast';
 import DialogBox from './Dialog';
 import Button from './Button';
+import useHelper from '@utils/helper';
 
 interface Props {
   isOpen: boolean;
@@ -17,6 +18,8 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   const { addRequest } = useRequestContext();
   const { books } = useBookContext();
   const { requests } = useRequestContext();
+
+  const { ErrorMessage } = useHelper();
 
   const {
     reset,
@@ -95,9 +98,11 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
       (req) =>
         req.game_date === formData.game_date && req.turf_id === formData.turf_id
     );
+
     if (checkIfExist) {
-      toast.error('Request aleady exsist');
-      reset();
+      ErrorMessage({
+        message: `Request aleady exsist for ${formData.game_date} `
+      });
     } else {
       addRequest(formData);
       reset();
@@ -105,15 +110,21 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   };
 
   return (
-    <DialogBox title={"Request For Players"} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <DialogBox
+      title={'Request For Players'}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+    >
       <div className="mt-2">
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           {RequestFormContent.map((field, index) => (
             <div key={index} className="form-group">
-              <label htmlFor={field.name}>{field.label}</label>
+              <label className="label" htmlFor={field.name}>
+                <span className="label-text">{field.label}</span>
+              </label>
               {field.type === 'select' ? (
                 <select
-                  className="inputCss"
+                  className="select-bordered select-primary select w-full"
                   id={field.name}
                   name={field.name}
                   {...register(field.name)}
@@ -128,7 +139,9 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
                 <>
                   <input
                     type={field.type}
-                    className="inputCss"
+                    className={`${
+                      errors[field.name] ? 'input-error' : ''
+                    } input-bordered input-primary input w-full`}
                     id={field.name}
                     name={field.name}
                     {...register(field.name, {

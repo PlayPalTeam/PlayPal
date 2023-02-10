@@ -16,5 +16,9 @@ module.exports = {
 			strategy: "class",
 		}),
 		require("@headlessui/tailwindcss")({ prefix: "ui" }),
+		require("daisyui")
 	],
+	daisyui: {
+		themes: ["forest"]
+	}
 };

@@ -19,9 +19,7 @@ const HomeUser: NextPage = () => {
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const requestAcceptElement = requests
-    ?.filter((req) =>
-      userProfile?.request?.some((id) => id === req.id.toString())
-    )
+    ?.filter((req) => userProfile?.request?.includes(req.id.toString()))
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const bookingElement = books.map((book) => (
@@ -30,7 +28,7 @@ const HomeUser: NextPage = () => {
 
   return (
     <Layout title="Dashboard">
-      <main className="space-y-5 divide-y divide-emerald-200">
+      <main className="space-y-5">
         <CardDisclosure title="Bookings" element={bookingElement} />
         <CardDisclosure
           title="Requests you created"

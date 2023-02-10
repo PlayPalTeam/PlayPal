@@ -1,32 +1,19 @@
-import Navbar from '@components/Navbar';
+import Layout from '@components/Layout';
 import TurfCard from '@components/TurfCard';
 import { useTurfContext } from '@context/TurfContext';
-import Head from 'next/head';
-import Link from 'next/link';
 
 const Lister = () => {
   const { turfs } = useTurfContext();
   return (
-    <>
-      <Head>
-        <title>PlayPal | Dashboard</title>
-      </Head>
-      <div className="flex">
-        <Navbar />
-        <div className="w-full p-10">
-          <h2>Profile Card</h2>
-          {/* Profile Card */}
-          <hr />
-          <h2>Turfs</h2>
-          <Link href={'/lister/turf'}>Add</Link>
-          {turfs.map((turf) => (
-            <div key={turf.turf_id}>
-              <TurfCard turf_id={''} turf_name={''} location={''} {...turf} />
-            </div>
-          ))}
-        </div>
+    <Layout title="Lister">
+      <div className="w-full p-10">
+        {turfs.map((turf) => (
+          <div key={turf.turf_id}>
+            <TurfCard {...turf} />
+          </div>
+        ))}
       </div>
-    </>
+    </Layout>
   );
 };
 

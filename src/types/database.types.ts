@@ -47,44 +47,27 @@ export interface Database {
           updated_at?: string | null
         }
       }
-      bookings_duplicate: {
+      moderator: {
         Row: {
-          booking_id: string
-          created_at: string | null
-          date: string | null
-          end_time: string | null
-          profile_id: string | null
-          start_time: string | null
-          starttimes: number | null
-          turf_id: string | null
-          updated_at: string | null
+          id: string
+          role: string | null
+          username: string | null
         }
         Insert: {
-          booking_id?: string
-          created_at?: string | null
-          date?: string | null
-          end_time?: string | null
-          profile_id?: string | null
-          start_time?: string | null
-          starttimes?: number | null
-          turf_id?: string | null
-          updated_at?: string | null
+          id: string
+          role?: string | null
+          username?: string | null
         }
         Update: {
-          booking_id?: string
-          created_at?: string | null
-          date?: string | null
-          end_time?: string | null
-          profile_id?: string | null
-          start_time?: string | null
-          starttimes?: number | null
-          turf_id?: string | null
-          updated_at?: string | null
+          id?: string
+          role?: string | null
+          username?: string | null
         }
       }
       profiles: {
         Row: {
           avatar_url: string | null
+          block: boolean | null
           full_name: string | null
           id: string
           phone_number: number | null
@@ -94,6 +77,7 @@ export interface Database {
         }
         Insert: {
           avatar_url?: string | null
+          block?: boolean | null
           full_name?: string | null
           id: string
           phone_number?: number | null
@@ -103,6 +87,7 @@ export interface Database {
         }
         Update: {
           avatar_url?: string | null
+          block?: boolean | null
           full_name?: string | null
           id?: string
           phone_number?: number | null
@@ -148,55 +133,49 @@ export interface Database {
       }
       turfs: {
         Row: {
+          address: string | null
           amenities: string[] | null
-          avatar_url: string | null
           capacity: number | null
+          close_hour: string | null
           created_at: string | null
           description: string | null
-          ending_hours: string | null
-          location: string | null
-          opening_hours: string | null
-          price_per_hour: number | null
+          open_hour: string | null
+          price: number | null
           profile_id: string | null
           sports: string[] | null
           turf_id: string
           turf_name: string | null
           updated_at: string | null
-          venuerules: string | null
         }
         Insert: {
+          address?: string | null
           amenities?: string[] | null
-          avatar_url?: string | null
           capacity?: number | null
+          close_hour?: string | null
           created_at?: string | null
           description?: string | null
-          ending_hours?: string | null
-          location?: string | null
-          opening_hours?: string | null
-          price_per_hour?: number | null
+          open_hour?: string | null
+          price?: number | null
           profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_name?: string | null
           updated_at?: string | null
-          venuerules?: string | null
         }
         Update: {
+          address?: string | null
           amenities?: string[] | null
-          avatar_url?: string | null
           capacity?: number | null
+          close_hour?: string | null
           created_at?: string | null
           description?: string | null
-          ending_hours?: string | null
-          location?: string | null
-          opening_hours?: string | null
-          price_per_hour?: number | null
+          open_hour?: string | null
+          price?: number | null
           profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_name?: string | null
           updated_at?: string | null
-          venuerules?: string | null
         }
       }
     }

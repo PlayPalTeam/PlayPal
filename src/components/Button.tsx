@@ -11,7 +11,7 @@ const Button = ({ isSubmitting, text, type }: ButtonType) => {
     <button
       type={type}
       disabled={isSubmitting}
-      className="bg-emerald-300 w-full py-2 rounded-md font-semibold hover:bg-emerald-400 active:bg-emerald-500"
+      className="btn btn-primary w-full"
     >
       {isSubmitting ? (
         <AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" />

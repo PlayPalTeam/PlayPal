@@ -16,11 +16,11 @@ export type Booking = {
   date: string;
   start_time: string;
   end_time: string;
-  times?:string[];
-  selectedsport?:string;
+  times?: string[];
+  selectedsport?: string;
   turfs:
-    | { turf_name: string; location: string }
-    | { turf_name: string; location: string }[];
+    | { turf_name: string; address: string }
+    | { turf_name: string; address: string }[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -31,7 +31,7 @@ interface BookingContexType {
   deleteBooking: (id: string) => Promise<void>;
 }
 
-export const BookingContext = createContext<BookingContexType>({
+const BookingContext = createContext<BookingContexType>({
   books: [],
   addBooking: () => Promise.resolve(),
   deleteBooking: () => Promise.resolve()
@@ -49,18 +49,12 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = await supabase
         .from('bookings')
         .select(
-          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, location)'
+          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, address)'
         )
         .eq('profile_id', user.id);
 
       if (error) {
-        toast.error(error.message, {
-          duration: 5000,
-          style: {
-            border: '1px solid red',
-            color: 'red'
-          }
-        });
+        toast.error(error.message);
       }
 
       if (data) {

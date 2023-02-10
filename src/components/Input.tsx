@@ -25,15 +25,17 @@ const Input = ({
 
   return (
     <div className={`${className}`}>
-      <label className="mb-2 block font-bold text-gray-700" htmlFor={name}>
-        {label}
+      <label className="label" htmlFor={name}>
+        <span className="label-text">{label}</span>
       </label>
       <div className="relative">
         <input
           type={type === 'password' && showPassword ? 'text' : type}
           name={name}
           placeholder={placeholder}
-          className="inputCss"
+          className={`input-bordered input-primary input w-full  ${
+            errors[name] ? 'input-error' : ''
+          }`}
           {...register(name, { valueAsNumber: valueAsNumber })}
         />
         {type === 'password' && (

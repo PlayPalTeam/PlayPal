@@ -2,7 +2,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useUserProfile } from '../context/UserProfileContext';
 import Avatar from './Avatar';
 import { useForm } from 'react-hook-form';
-import { useCallback, useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { UserProfileData, UserProfileSchema } from '../types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from './Button';
@@ -40,7 +40,12 @@ const FormUI: FormField[] = [
 const Profile = () => {
   const { userProfile, updateUserProfile } = useUserProfile();
   const user = useUser();
-  const { register, reset, handleSubmit, formState } = useForm({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isSubmitting, errors }
+  } = useForm({
     resolver: zodResolver(UserProfileSchema)
   });
 
@@ -62,7 +67,11 @@ const Profile = () => {
   return (
     <div>
       <div className="mx-auto max-w-[15rem]">
-        <Avatar size='200' className="h-min w-min rounded-full" showUploadButton={true} />
+        <Avatar
+          size="200"
+          className="h-min w-min rounded-full"
+          showUploadButton={true}
+        />
       </div>
       <div className="mt-3 rounded-md border border-green-500 px-8 py-6">
         <div className="mt-3">
@@ -83,7 +92,7 @@ const Profile = () => {
                   <span className="font-bold text-red-900">*</span>
                 </label>
                 <input
-                  className="inputCss"
+                  className="input-bordered input-primary input w-full"
                   type={field.type}
                   placeholder={field.placeholder}
                   name={field.name}
@@ -98,7 +107,7 @@ const Profile = () => {
             <Button
               type="submit"
               text="Update Profile"
-              isSubmitting={formState.isSubmitting}
+              isSubmitting={isSubmitting}
             />
           </div>
         </form>

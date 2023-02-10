@@ -22,14 +22,14 @@ const SelectInput = ({
   return (
     <div className="mb-4">
       <label htmlFor={name} className="mb-2 block font-bold text-gray-700">
-        {label}
+        <span className="label-text">{label}</span>
       </label>
       <select
         name={name}
         id={name}
         {...register(name)}
         placeholder={placeholder}
-        className="inputCss form-select"
+        className="select-bordered select-primary select w-full"
         multiple={multiple}
       >
         {options.map((option) => (

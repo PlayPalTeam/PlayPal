@@ -1,14 +1,5 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import {
-  createContext,
-  useState,
-  SetStateAction,
-  Dispatch,
-  useContext,
-  ReactNode,
-  useMemo,
-  useEffect
-} from 'react';
+import { createContext, useState, SetStateAction, Dispatch, useContext, ReactNode, useMemo, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
@@ -60,14 +51,19 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   }, [getData, user]);
 
   const addTurf = async (turf: TurfInsert) => {
-    await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
+    const { status, error } = await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+    if (status === 201) {
+      toast.success(`Insert for ${turf.turf_name}`);
+    }
   };
 
   const updateTurf = async (id: string, update: TurfUpdate) => {
-    const { status, error } = await supabase
-      .from('turfs')
-      .update(update)
-      .eq('id', id);
+    const { status, error } = await supabase.from('turfs').update(update).eq('id', id);
 
     if (error) {
       toast.error(error.message);
@@ -79,10 +75,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteTurf = async (id: string) => {
-    const { error, status } = await supabase
-      .from('turfs')
-      .delete()
-      .eq('turf_id', id);
+    const { error, status } = await supabase.from('turfs').delete().eq('turf_id', id);
 
     if (error) {
       toast.error(error.message);
@@ -93,13 +86,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return (
-    <TurfContext.Provider
-      value={{ turfs, setTurfs, addTurf, updateTurf, deleteTurf }}
-    >
-      {children}
-    </TurfContext.Provider>
-  );
+  return <TurfContext.Provider value={{ turfs, setTurfs, addTurf, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
 };
 
 export const useTurfContext = () => {

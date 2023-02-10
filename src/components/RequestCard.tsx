@@ -1,10 +1,8 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { BsArrowRight } from 'react-icons/bs';
 import { Database } from 'src/types/database.types';
-import DialogBox from './Dialog';
 
 type RequestDataProps = Database['public']['Tables']['requests']['Row'];
 
@@ -14,7 +12,7 @@ interface RequestProfile {
 
 interface RequestTurf {
   turf_name: string;
-  location: string;
+  address: string;
 }
 
 export interface RequestResponse extends RequestDataProps {
@@ -22,15 +20,7 @@ export interface RequestResponse extends RequestDataProps {
   turfs: RequestTurf | RequestTurf[];
 }
 
-const RequestCard = ({
-  id,
-  game,
-  game_date,
-  player_needed,
-  profiles,
-  turfs,
-  profile_id
-}: RequestResponse) => {
+const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { deleteRequest } = useRequestContext();
   const { userProfile, updateUserProfile } = useUserProfile();
@@ -54,9 +44,7 @@ const RequestCard = ({
   const handleDeleteAcceptedRequest = () => {
     toast.success('Clicked');
     updateUserProfile({
-      request: userProfile.request?.filter(
-        (request) => request !== id.toString()
-      )
+      request: userProfile.request?.filter((request) => request !== id.toString())
     });
     updatePlayerNeeded({
       id: id,
@@ -65,74 +53,37 @@ const RequestCard = ({
     });
   };
 
-  const profileList = useMemo(
-    () => (Array.isArray(profiles) ? profiles : [profiles]),
-    [profiles]
-  );
+  const profileList = useCallback(() => (Array.isArray(profiles) ? profiles : [profiles]), [profiles]);
 
-  const turfList = useMemo(
-    () => (Array.isArray(turfs) ? turfs : [turfs]),
-    [turfs]
-  );
+  const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
   return (
-    <div className="rounded-lg border bg-white p-6 shadow">
-      <div className="text-lg font-medium">Game: {game}</div>
-      <div className="text-sm text-gray-600">Game Date: {game_date}</div>
-      <div className="text-sm text-gray-600">
-        Player Needed: {player_needed}
-      </div>
-      <div className="my-4">
-        {profileList.map((profile, i) => (
-          <div key={i} className="text-sm text-gray-600">
-            {profile.full_name}
-          </div>
-        ))}
-      </div>
-      <div className="my-4">
-        {turfList.map((turf, i) => (
-          <div key={i} className="text-sm text-gray-600">
-            <div>Turf Name: {turf.turf_name}</div>
-            <div>Location: {turf.location}</div>
-          </div>
-        ))}
-      </div>
-      <hr className="mb-5 border-black" />
-      <div className="flex items-center justify-between">
-        {profile_id === userProfile?.id ? (
-          <button
-            onClick={handleDeleteCreatedRequest}
-            className="rounded-lg bg-red-500 p-2 text-white"
-          >
-            Delete
+    <div className="card mx-auto w-[90%] bg-neutral text-neutral-content">
+      <div className="card-body">
+        <h2 className="card-title">{game}</h2>
+        <p>Date: {game_date}</p>
+        <p>Player needed: {player_needed}</p>
+        <ul>
+          {profileList().map((profile) => (
+            <li key={profile.full_name}>
+              <span>Created By: </span>
+              {profile.full_name}
+            </li>
+          ))}
+        </ul>
+        <ul>
+          {turfList().map((turf) => (
+            <li key={turf.turf_name}>
+              {turf.turf_name}, {turf.address}
+            </li>
+          ))}
+        </ul>
+        <div className="card-actions md:justify-end ">
+          <button type="button" onClick={handleAccept} className="btn-primary btn max-md:w-full">
+            Accept
           </button>
-        ) : (
-          <button
-            disabled={player_needed === 0}
-            onClick={
-              userProfile.request?.includes(id.toString())
-                ? handleDeleteAcceptedRequest
-                : handleAccept
-            }
-            className={`rounded-lg p-2 text-white ${
-              userProfile.request?.includes(id.toString())
-                ? 'bg-red-500'
-                : 'bg-emerald-500'
-            }`}
-          >
-            {userProfile?.request?.includes(id.toString()) ? 'Delete' : 'Accept'}
-          </button>
-        )}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-x-1 rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
-        >
-          Show Details{' '}
-          <BsArrowRight className="duration-300 group-hover:translate-x-1" />
-        </button>
-        <DialogBox title={'Players'} isOpen={isOpen} setIsOpen={setIsOpen}>
-          <div>{request?.people}</div>
-        </DialogBox>
+          <button className="btn-secondary btn">Show Players</button>
+        </div>
       </div>
     </div>
   );

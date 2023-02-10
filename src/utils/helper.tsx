@@ -1,18 +1,23 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useUserProfile } from '@context/UserProfileContext';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import {
-  SignInData,
-  SignUpData,
-  ResetData,
-  ForgotPasswordData
-} from '../types/types';
+import { SignInData, SignUpData, ResetData, ForgotPasswordData } from '../types/types';
 
 const useHelper = () => {
-  const router = useRouter();
-
+  const { push } = useRouter();
+  const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
+
+  const ErrorMessage = ({ message }: { message: string }) => {
+    return toast.error(message);
+  };
+
+  const SuccessMessage = ({ message }: { message: string }) => {
+    return toast.success(message);
+  };
 
   const onSignUpSubmit: SubmitHandler<SignUpData> = async (data) => {
     const { error } = await supabase.auth.signUp({
@@ -28,14 +33,9 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red'
-        }
-      });
+      ErrorMessage({ message: error.message });
     } else {
-      toast.success('Check your email', { duration: 5000 });
+      SuccessMessage({ message: 'Check your email' });
     }
   };
 
@@ -49,17 +49,16 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      ErrorMessage({ message: error.message });
+    }
+
+    if (userProfile?.block) {
+      Cookies.remove('supabase-auth-token');
+      push('');
     }
 
     if (session?.user.user_metadata) {
-      router.push(`/${session.user.user_metadata.role}`);
+      push(`/${session.user.user_metadata.role}`);
     }
   };
 
@@ -69,21 +68,15 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, { duration: 5000 });
+      ErrorMessage({ message: error.message });
     }
 
-    toast.success('Check your email', { duration: 5000 });
+    SuccessMessage({ message: 'Check your email' });
   };
 
-  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({
-    password,
-    confirmPassword
-  }) => {
-    console.log(password);
-    console.log(confirmPassword);
-
+  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({ password, confirmPassword }) => {
     if (password !== confirmPassword) {
-      toast.error('Passwords must match');
+      ErrorMessage({ message: 'Passwords must match' });
       return;
     }
 
@@ -92,31 +85,28 @@ const useHelper = () => {
     });
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      ErrorMessage({ message: error.message });
     }
 
-    toast.success('Password reset successful!', {
-      duration: 5000,
-      style: {
-        border: '1px solid green',
-        color: 'green'
-      }
-    });
+    SuccessMessage({ message: 'Password reset successful!' });
+    push('/auth/signin');
+  };
 
-    router.push('/auth/signin');
+  const getRoleHref = (route: string) => {
+    if (!route) {
+      return userProfile?.role === 'lister' ? '/lister' : '/user';
+    }
+    return userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
   };
 
   return {
     onSignUpSubmit,
     onSignInSubmit,
     onResetSubmit,
-    onPasswordSubmit
+    onPasswordSubmit,
+    getRoleHref,
+    ErrorMessage,
+    SuccessMessage
   };
 };
 

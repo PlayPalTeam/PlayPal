@@ -14,26 +14,9 @@ export type names =
   | 'turf_id'
   | 'game'
   | 'game_date'
-  | 'confirmPassword'
-  | 'turf_name'
-  | 'opening_hours'
-  | 'ending_hours'
-  | 'location'
-  | 'sports'
-  | 'amenities'
-  | 'price_per_hour'
-  | 'capacity'
-  | 'venuerules'
-  | 'description';
+  | 'confirmPassword';
 
-export type registerType =
-  | SignInData
-  | SignUpData
-  | BookingType
-  | RequestData
-  | ForgotPasswordData
-  | ResetData
-  | TurfProfileType;
+export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData;
 
 export interface InputCommonProps {
   name: names;
@@ -60,10 +43,7 @@ const passwordValidation = z
   .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
   .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
   .regex(new RegExp('.*\\d.*'), 'One number')
-  .regex(
-    new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-    'One special character'
-  )
+  .regex(new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'), 'One special character')
   .min(8, 'Must be at least 8 characters in length');
 
 export const SignUpSchema = z.object({
@@ -103,7 +83,7 @@ export type SignInData = z.infer<typeof SignInSchema>;
 export const UserProfileSchema = z.object({
   username: usernameValidation,
   full_name: z.string(),
-  phone_number: z.number().positive()
+  phone_number: z.optional(z.number().positive())
 });
 
 // Type representing the shape of an object that conforms to the UserProfileFormSchema
@@ -133,41 +113,6 @@ export type ProfileFormProps = {
   disabled?: boolean;
 };
 
-export type TurfFormProps = {
-  label: string;
-  name:
-    | 'turf_name'
-    | 'opening_hours'
-    | 'ending_hours'
-    | 'location'
-    | 'sports'
-    | 'amenities'
-    | 'price_per_hour'
-    | 'capacity'
-    | 'venuerules'
-    | 'description';
-  type: HTMLInputTypeAttribute;
-  placeholder?: string;
-  valueAsNumber?: boolean;
-  options?: { value: string; label: string }[];
-};
-
-export const TurfProfileSchema = z.object({
-  turf_name: z.string(),
-  opening_hours: z.string(),
-  ending_hours: z.string(),
-  location: z.string(),
-  sports: z.string().array(),
-  amenities: z.string().array(),
-  price_per_hour: z.number(),
-  capacity: z.number(),
-  venuerules: z.string(),
-  description: z.string()
-});
-
-export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
-
-//
 export const BookingSchema = z.object({
   date: z.string(),
   start_time: z.string(),

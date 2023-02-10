@@ -1,13 +1,13 @@
-import ErrorBoundary from '@components/ErrorBoundary';
+import { useState } from 'react';
+import { memo } from 'react';
 import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
 
 const RequestForm = dynamic(() => import('@components/RequestForm'));
-const RequestCard = dynamic(() => import('@components/RequestCard'));
+const RequestCard = memo(dynamic(() => import('@components/RequestCard')));
 
 const Request: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,31 +15,28 @@ const Request: NextPage = () => {
   const { userProfile } = useUserProfile();
 
   const filteredRequests = requests?.filter(
-    (req) => !userProfile.request?.includes(req.id.toString())
+    (req) =>
+      req.profile_id !== userProfile?.id &&
+      !userProfile?.request?.includes(req.id.toString()) &&
+      req?.player_needed > 0
   );
 
   return (
     <Layout title="Requests">
-      <main className="w-full px-10">
-        <section>
-          <div className="text-right">
-            <button
-              className="rounded-lg bg-green-400 px-4 py-2 text-white hover:bg-green-500 active:bg-green-600"
-              onClick={() => setIsOpen(true)}
-            >
-              Create Requests
-            </button>
-          </div>
-          <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
+      <main className="flex flex-col items-center space-y-5">
+        <section className="text-right">
+          <button className="btn-primary btn" onClick={() => setIsOpen(true)}>
+            Create Requests
+          </button>
         </section>
-        <hr className="my-5 border-black" />
-        <ErrorBoundary>
+        <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
+        {filteredRequests && (
           <section className="space-y-5">
-            {filteredRequests?.map((req) => (
+            {filteredRequests.map((req) => (
               <RequestCard key={req.id} {...req} />
             ))}
           </section>
-        </ErrorBoundary>
+        )}
       </main>
     </Layout>
   );
