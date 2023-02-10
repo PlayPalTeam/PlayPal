@@ -14,10 +14,6 @@ import { useUserProfile } from '@context/UserProfileContext';
 import useHelper from '@utils/helper';
 import { Menu, MenuItem, MenuItemProps } from './Menu';
 
-interface UserProfile {
-  role: string;
-}
-
 const Navbar = () => {
   const { push } = useRouter();
   const { userProfile } = useUserProfile();
@@ -56,13 +52,14 @@ const Navbar = () => {
       href: '/community'
     }
   ].filter((nav) => {
+    if (!userProfile?.role) return false;
     switch (userProfile?.role) {
       case 'lister':
         return !(nav.text === 'Request' || nav.text === 'Booking');
       case 'user':
         return !(nav.text === 'Add Turf');
       default:
-        return true;
+        return false;
     }
   });
 
@@ -89,8 +86,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <Menu dropEnd={true} button={<Avatar className="w-10 rounded-full" size="40" />}>
-          <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
-          <MenuItem href={getRoleHref('settings')} text="Settings" icon={<IoSettingsOutline />} />
+          {userProfile?.role && (
+            <>
+              <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
+              <MenuItem href={getRoleHref('settings')} text="Settings" icon={<IoSettingsOutline />} />
+            </>
+          )}
           <button className="btn-ghost btn-md btn" onClick={handleSignOut} type="submit">
             Sign Out
           </button>

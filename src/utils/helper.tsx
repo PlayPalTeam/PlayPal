@@ -4,20 +4,12 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import {
-  SignInData,
-  SignUpData,
-  ResetData,
-  ForgotPasswordData
-} from '../types/types';
+import { SignInData, SignUpData, ResetData, ForgotPasswordData } from '../types/types';
 
 const useHelper = () => {
   const { push } = useRouter();
   const { userProfile } = useUserProfile();
   const supabase = useSupabaseClient();
-
-
-
 
   const ErrorMessage = ({ message }: { message: string }) => {
     return toast.error(message);
@@ -48,11 +40,6 @@ const useHelper = () => {
   };
 
   const onSignInSubmit: SubmitHandler<SignInData> = async (data) => {
-
-
-    
-    
-    
     const {
       error,
       data: { session }
@@ -66,10 +53,8 @@ const useHelper = () => {
     }
 
     if (userProfile?.block) {
-   
       Cookies.remove('supabase-auth-token');
       push('');
-      
     }
 
     if (session?.user.user_metadata) {
@@ -89,10 +74,7 @@ const useHelper = () => {
     SuccessMessage({ message: 'Check your email' });
   };
 
-  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({
-    password,
-    confirmPassword
-  }) => {
+  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({ password, confirmPassword }) => {
     if (password !== confirmPassword) {
       ErrorMessage({ message: 'Passwords must match' });
       return;
@@ -114,9 +96,7 @@ const useHelper = () => {
     if (!route) {
       return userProfile?.role === 'lister' ? '/lister' : '/user';
     }
-    return userProfile?.role === 'lister'
-      ? `/lister/${route}`
-      : `/user/${route}`;
+    return userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
   };
 
   return {

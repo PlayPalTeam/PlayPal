@@ -26,6 +26,9 @@ const SignIn = () => {
             <Link className="link-hover hover:text-secondary" href={'/auth/reset'}>
               Forgot Password
             </Link>
+            <Link className="link-hover hover:text-secondary" href={'/moderator/signin'}>
+              SignIn As Moderator
+            </Link>
           </div>
         </div>
       </div>
@@ -42,10 +45,12 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     data: { session }
   } = await supabase.auth.getSession();
 
+  const check = session?.user.user_metadata.role === undefined ? '/moderator' : `/${session?.user.user_metadata.role}`;
+
   if (session) {
     return {
       redirect: {
-        destination: `/${session?.user.user_metadata.role}`,
+        destination: check,
         permanent: false
       }
     };

@@ -28,11 +28,11 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  if (session && session?.user.user_metadata.role === 'moderator' && req.nextUrl.pathname.startsWith('/moderator')) {
+  if (session && req.nextUrl.pathname.startsWith('/moderator')) {
     return res;
   }
 
-  // Auth condition not met, redirect to home page. 
+  // Auth condition not met, redirect to home page.
   redirectUrl.pathname = '/auth/signin';
   return NextResponse.redirect(redirectUrl);
 }

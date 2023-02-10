@@ -53,12 +53,7 @@ const Home: NextPage = () => {
           </div>
         </nav>
         <div className="absolute top-0 -z-10">
-          <video
-            autoPlay
-            muted
-            loop
-            className="h-[630px] w-screen object-cover brightness-[0.8] sm:h-screen"
-          >
+          <video autoPlay muted loop className="h-[630px] w-screen object-cover brightness-[0.8] sm:h-screen">
             <source src="/landing.mp4" type="video/mp4" />
           </video>
         </div>
@@ -67,9 +62,7 @@ const Home: NextPage = () => {
             YOUR <br></br>NEAREST <br></br>TURF <br></br>
           </div>
 
-          <div className="text-md mt-4 font-semibold tracking-widest text-green-500 sm:text-2xl">
-            IS JUST A TAP AWAY
-          </div>
+          <div className="text-md mt-4 font-semibold tracking-widest text-green-500 sm:text-2xl">IS JUST A TAP AWAY</div>
           <Link href={'/auth/signin'}>
             <div className="mt-4 flex w-[170px] justify-center rounded-full bg-green-500 p-2 pl-4 pr-4 font-semibold text-black hover:bg-green-600">
               Start Your Search
@@ -82,20 +75,10 @@ const Home: NextPage = () => {
             {displayData.map((data, index) => (
               <div key={index} className="">
                 <div className="flex justify-center">
-                  <Image
-                    src={data.img}
-                    alt="img"
-                    className="h-auto w-auto"
-                    width={40}
-                    height={40}
-                  />
+                  <Image src={data.img} alt="img" className="h-auto w-auto" width={40} height={40} />
                 </div>
-                <div className="mt-3 flex justify-center text-lg font-medium tracking-wider">
-                  {data.name}
-                </div>
-                <div className="mt-3 flex justify-center text-center">
-                  {data.text}
-                </div>
+                <div className="mt-3 flex justify-center text-lg font-medium tracking-wider">{data.name}</div>
+                <div className="mt-3 flex justify-center text-center">{data.text}</div>
               </div>
             ))}
           </div>
@@ -107,18 +90,12 @@ const Home: NextPage = () => {
               MUCH SPORTS <br></br> ADD IN YOUR <br /> DAILY LIFE
             </div>
             <p className="mt-5 tracking-wider">
-              PlayPal is an online platform to connect sports facilities to its
-              users, We&apos;re breaking down <br></br> barriers to getting more
+              PlayPal is an online platform to connect sports facilities to its users, We&apos;re breaking down <br></br> barriers to getting more
               people active
             </p>
           </div>
           <div className="sm:mr-24 sm:grow-[1]">
-            <Image
-              src="/offer.webp"
-              alt="offerImage"
-              width={300}
-              height={300}
-            />
+            <Image src="/offer.webp" alt="offerImage" width={300} height={300} />
           </div>
         </div>
 
@@ -130,17 +107,11 @@ const Home: NextPage = () => {
             <p className="mt-5 tracking-wider">
               Want to play games ? <br></br>
               But don&apos;t get an opponent team?<br></br>
-              You can Invite a team or Join a pre scheduled match Through
-              Playspots
+              You can Invite a team or Join a pre scheduled match Through Playspots
             </p>
           </div>
           <div className="sm:mr-24 sm:grow-[1] ">
-            <Image
-              src="/meetpals.webp"
-              alt="offerImage"
-              width={300}
-              height={300}
-            />
+            <Image src="/meetpals.webp" alt="offerImage" width={300} height={300} />
           </div>
         </div>
         <Footer />
