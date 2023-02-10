@@ -1,7 +1,5 @@
-import CardDisclosure from '@components/CardDisclosure';
 import DialogBox from '@components/Dialog';
 import Layout from '@components/Layout';
-import VenueRules from '@components/VenueRules';
 import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -127,8 +125,6 @@ const Booking = () => {
   const { id } = router.query;
 
   const turf = turfs.find((t) => t.turf_id === id);
-
-  const showRules = <VenueRules />;
 
   const handleDateChnage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'updateDate', value: event.target.value });
