@@ -4,7 +4,6 @@ import {
   ResetFormProps,
   SignInFormProps,
   SignUpFormProps,
-  TurfFormProps
 } from '../types/types';
 
 const SignUpForm: SignUpFormProps[] = [
