@@ -3,11 +3,11 @@ import Image from 'next/image';
 interface TurfCardProps {
   turf_id: string;
   turf_name: string;
-  location: string;
+  address: string;
   book?: boolean;
 }
 
-const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
+const TurfCard = ({ turf_id, turf_name, address, book }: TurfCardProps) => {
   return (
     <div className="card mt-10 w-[90%] mx-auto bg-base-100 shadow-xl lg:card-side">
       <figure>
@@ -20,7 +20,7 @@ const TurfCard = ({ turf_id, turf_name, location, book }: TurfCardProps) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{turf_name}</h2>
-        <p>{location}</p>
+        <p>{address}</p>
         <div className="card-actions justify-end">
           {book && (
             <Link
