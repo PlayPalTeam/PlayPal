@@ -18,7 +18,7 @@ export type names =
   | 'turf_name'
   | 'opening_hours'
   | 'ending_hours'
-  | 'location'
+  | 'address'
   | 'sports'
   | 'amenities'
   | 'price_per_hour'
@@ -122,30 +122,6 @@ export type ProfileFormProps = {
   disabled?: boolean;
 };
 
-export type TurfFormProps = {
-  label: string;
-  name: 'turf_name' | 'opening_hours' | 'ending_hours' | 'location' | 'sports' | 'amenities' | 'price_per_hour' | 'capacity' | 'description';
-  type: HTMLInputTypeAttribute;
-  placeholder?: string;
-  valueAsNumber?: boolean;
-  options?: { value: string; label: string }[];
-};
-
-export const TurfProfileSchema = z.object({
-  turf_name: z.string(),
-  opening_hours: z.string(),
-  ending_hours: z.string(),
-  location: z.string(),
-  sports: z.string().array(),
-  amenities: z.string().array(),
-  price_per_hour: z.number(),
-  capacity: z.number(),
-  description: z.string()
-});
-
-export type TurfProfileType = z.infer<typeof TurfProfileSchema>;
-
-//
 export const BookingSchema = z.object({
   date: z.string(),
   start_time: z.string(),

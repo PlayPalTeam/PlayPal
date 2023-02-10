@@ -187,7 +187,7 @@ const Booking = () => {
             </div>
           </div>
           <div className="p-6">
-            <h3 className="pb-4 font-bold tracking-widest">Location</h3>
+            <h3 className="pb-4 font-bold tracking-widest">address</h3>
             <span className="w-[300px] text-sm tracking-wider">{turf?.address}</span>
           </div>
           <div className="p-6">

@@ -4,13 +4,7 @@ import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
 import { toast } from 'react-hot-toast';
 
-const BookingCard = ({
-  date,
-  end_time,
-  start_time,
-  turfs,
-  booking_id
-}: Booking) => {
+const BookingCard = ({ date, end_time, start_time, turfs, booking_id }: Booking) => {
   const { deleteBooking } = useBookContext();
 
   const handleDelete = () => {
@@ -36,20 +30,16 @@ const BookingCard = ({
           {Array.isArray(turfs) ? (
             turfs.map((turf) => (
               <div key={turf.turf_name} className="">
-                {turf.turf_name} - <ImLocation /> {turf.location}
+                {turf.turf_name} - <ImLocation /> {turf.address}
               </div>
             ))
           ) : (
             <div className="flex items-center gap-x-4">
-              {turfs.turf_name} - <ImLocation /> {turfs.location}
+              {turfs.turf_name} - <ImLocation /> {turfs.address}
             </div>
           )}
           <hr className="my-5" />
-          <button
-            onClick={handleDelete}
-            type="button"
-            className="btn-outline btn-primary btn"
-          >
+          <button onClick={handleDelete} type="button" className="btn-outline btn-primary btn">
             Delete
           </button>
         </div>
