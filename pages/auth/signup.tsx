@@ -1,7 +1,7 @@
 import Form from '@components/FormComponent';
 import FormTitle from '@components/FormTitle';
 import { SignUpForm } from '@content/contents';
-import useHelper from '@utils/helper';
+import useHelper from '@hooks/useHelper';
 import Head from 'next/head';
 import Link from 'next/link';
 

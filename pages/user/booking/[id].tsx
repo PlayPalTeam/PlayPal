@@ -1,33 +1,12 @@
-import DialogBox from '@components/Dialog';
-import Layout from '@components/Layout';
-import { useBookContext } from '@context/BookingContext';
-import { useTurfContext } from '@context/TurfContext';
-import { useUser } from '@supabase/auth-helpers-react';
-import useHelper from '@utils/helper';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useReducer, useState } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
-
-interface DateProps {
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
-
-interface Slot {
-  time: string[];
-}
-
-interface TimeProps {
-  value: string;
-  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  slots: Slot[];
-}
-
-interface Time {
-  label: string;
-  value: string;
-  disble?: boolean;
-}
+import { useBookContext } from '@context/BookingContext';
+import { useTurfContext } from '@context/TurfContext';
+import Layout from '@components/Layout';
+import useHelper from '@hooks/useHelper';
+import dynamic from 'next/dynamic';
+import { useUser } from '@supabase/auth-helpers-react';
 
 interface StateProps {
   date: string;
@@ -55,74 +34,21 @@ const reducer = (state: StateProps, action: ActionProps) => {
   }
 };
 
-const DateInput = ({ value, onChange }: DateProps) => {
-  return (
-    <div>
-      <label className="label" htmlFor="date">
-        <span className="label-text">Date</span>
-      </label>
-      <input type="date" value={value} className={`input-bordered input-primary input w-full`} onChange={onChange} />
-    </div>
-  );
-};
-
-const TimeSelect = ({ value, onChange, slots }: TimeProps) => {
-  const times: Time[] = [
-    { label: 'Select Time', value: '' },
-    { label: '9:00 AM - 10:00 AM', value: '9:00 - 10:00' },
-    { label: '10:00 AM -11:00 AM', value: '10:00 - 11:00' },
-    { label: '11:00 AM - 12:00 PM', value: '11:00 - 12:00' },
-    { label: '12:00 PM - 1:00 PM', value: '12:00 - 13:00' },
-    { label: '1:00 PM - 2:00 PM', value: '13:00 - 14:00' },
-    { label: '2:00 PM - 3:00 PM', value: '14:00 - 15:00' },
-    { label: '3:00 PM - 4:00 PM', value: '15:00 -16:00' },
-    { label: '4:00 PM - 5:00 PM', value: '16:00 - 17:00' },
-    { label: '5:00 PM - 6:00 PM', value: '17:00 - 18:00' },
-    { label: '6:00 PM - 7:00 PM', value: '18:00 - 19:00' }
-  ];
-
-  times.forEach((time) => {
-    slots.forEach((slot) => {
-      if (slot.time.includes(time.value)) {
-        time.disble = true;
-      }
-    });
-  });
-
-  return (
-    <div className="form-control">
-      <label className="label" htmlFor="slotTime">
-        <span className="label-text">Select Your Slot</span>
-      </label>
-      <select className={`select-bordered select-primary select`} id="slotTime" value={value} onChange={onChange}>
-        {times.map((time) => {
-          return (
-            <option key={time.value} value={time.value} disabled={time.disble}>
-              {time.label}
-            </option>
-          );
-        })}
-      </select>
-    </div>
-  );
-};
+const TimeSelect = dynamic(() => import('@components/TimeSelect'));
+const DialogBox = dynamic(() => import('@components/Dialog'));
+const DateInput = dynamic(() => import('@components/DateInput'));
 
 const Booking = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectSports, setSelectSports] = useState<string>('');
-
-  const { ErrorMessage } = useHelper();
-
   const { addBooking, books } = useBookContext();
-
-  const router = useRouter();
-
+  const { ErrorMessage } = useHelper();
+  const { turfs } = useTurfContext();
+  const { query } = useRouter();
   const user = useUser();
 
-  const { turfs } = useTurfContext();
-
-  const { id } = router.query;
+  const { id } = query;
 
   const turf = turfs.find((t) => t.turf_id === id);
 
@@ -147,11 +73,11 @@ const Booking = () => {
   const onSlotSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (state.slotTime?.length > 0 && user) {
+    if (state.slotTime?.length > 0) {
       addBooking(turf.turf_id, {
         times: [state.slotTime],
         date: state.date,
-        profile_id: user.id,
+        profile_id: user?.id,
         selectedsport: selectSports
       });
 

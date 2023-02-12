@@ -1,14 +1,9 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import { supabase } from '@lib/supabase';
+import { useUser } from '@supabase/auth-helpers-react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
+import { useUserProfile } from './UserProfileContext';
 
 export type Booking = {
   booking_id: string;
@@ -18,9 +13,7 @@ export type Booking = {
   end_time: string;
   times?: string[];
   selectedsport?: string;
-  turfs:
-    | { turf_name: string; address: string }
-    | { turf_name: string; address: string }[];
+  turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -39,40 +32,32 @@ const BookingContext = createContext<BookingContexType>({
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Booking[]>([]);
-
-  const supabase = useSupabaseClient<Database>();
-
+  const { userProfile } = useUserProfile();
   const user = useUser();
 
-  const getBookings = useMemo(() => {
-    return async () => {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(
-          'booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, address)'
-        )
-        .eq('profile_id', user.id);
+  const getBookings = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, address)')
+      .eq('profile_id', user?.id);
 
-      if (error) {
-        toast.error(error.message);
-      }
+    if (error) {
+      toast.error(error.message);
+    }
 
-      if (data) {
-        setBooks(data);
-      }
-    };
-  }, [supabase, user?.id]);
+    if (data) {
+      setBooks(data);
+    }
+  }, [user?.id]);
 
   useEffect(() => {
-    if (user) {
+    if (user && userProfile?.role === 'user') {
       getBookings();
     }
-  }, [getBookings, user]);
+  }, [getBookings, user, userProfile?.role]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
-    await supabase
-      .from('bookings')
-      .insert({ ...book, profile_id: user.id, turf_id: turf_id });
+    await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
 
     getBookings();
   };
@@ -82,11 +67,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     getBookings();
   };
 
-  return (
-    <BookingContext.Provider value={{ books, addBooking, deleteBooking }}>
-      {children}
-    </BookingContext.Provider>
-  );
+  return <BookingContext.Provider value={{ books, addBooking, deleteBooking }}>{children}</BookingContext.Provider>;
 };
 
 export const useBookContext = () => {

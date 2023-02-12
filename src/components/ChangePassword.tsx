@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { supabase } from '@lib/supabase';
 import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -18,8 +18,7 @@ interface FormField {
 
 const ChangePassword = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const [confirmPasswordVisible, setconfirmPasswordVisible] =
-    useState<boolean>(false);
+  const [confirmPasswordVisible, setconfirmPasswordVisible] = useState<boolean>(false);
 
   const {
     register,
@@ -30,22 +29,11 @@ const ChangePassword = () => {
     resolver: zodResolver(ForgotPasswordSchema)
   });
 
-  const supabase = useSupabaseClient();
+  const { push } = useRouter();
 
-  const router = useRouter();
-
-  const submit: SubmitHandler<ForgotPasswordData> = async ({
-    password,
-    confirmPassword
-  }) => {
+  const submit: SubmitHandler<ForgotPasswordData> = async ({ password, confirmPassword }) => {
     if (password !== confirmPassword) {
-      toast.error("Passwords doesn't match", {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      toast.error("Passwords doesn't match");
       return;
     }
 
@@ -56,24 +44,12 @@ const ChangePassword = () => {
     reset();
 
     if (error) {
-      toast.error(error.message, {
-        duration: 5000,
-        style: {
-          border: '1px solid red',
-          color: 'red'
-        }
-      });
+      toast.error(error.message);
     }
 
-    toast.success('Password reset successful!', {
-      duration: 5000,
-      style: {
-        border: '1px solid green',
-        color: 'green'
-      }
-    });
+    toast.success('Password reset successful!');
 
-    router.push('/auth/signin');
+    push('/auth/signin');
   };
 
   const handlePasswordShow = useCallback(() => {
@@ -103,16 +79,10 @@ const ChangePassword = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <form
-        className="w-[90%] max-w-sm space-y-5"
-        onSubmit={handleSubmit(submit)}
-      >
+      <form className="w-[90%] max-w-sm space-y-5" onSubmit={handleSubmit(submit)}>
         {formFields.map((field) => (
           <div key={field.name}>
-            <label
-              className="mb-2 block font-bold text-gray-700"
-              htmlFor={field.name}
-            >
+            <label className="mb-2 block font-bold text-gray-700" htmlFor={field.name}>
               {field.label}
             </label>
             <div className="relative flex items-center">
@@ -124,46 +94,22 @@ const ChangePassword = () => {
                 {...register(field.name)}
               />
               {field.name === 'password' && (
-                <button
-                  type="button"
-                  className="absolute right-2"
-                  onClick={handlePasswordShow}
-                >
-                  {passwordVisible ? (
-                    <AiFillEye className="h-6 w-6" />
-                  ) : (
-                    <AiFillEyeInvisible className="h-6 w-6" />
-                  )}
+                <button type="button" className="absolute right-2" onClick={handlePasswordShow}>
+                  {passwordVisible ? <AiFillEye className="h-6 w-6" /> : <AiFillEyeInvisible className="h-6 w-6" />}
                 </button>
               )}
 
               {field.name === 'confirmPassword' && (
-                <button
-                  type="button"
-                  className="absolute right-2"
-                  onClick={handleconfirmPasswordShow}
-                >
-                  {confirmPasswordVisible ? (
-                    <AiFillEye className="h-6 w-6" />
-                  ) : (
-                    <AiFillEyeInvisible className="h-6 w-6" />
-                  )}
+                <button type="button" className="absolute right-2" onClick={handleconfirmPasswordShow}>
+                  {confirmPasswordVisible ? <AiFillEye className="h-6 w-6" /> : <AiFillEyeInvisible className="h-6 w-6" />}
                 </button>
               )}
             </div>
-            {field.error && (
-              <p className="mt-1 text-xs italic text-red-500">
-                {field.error.message}
-              </p>
-            )}
+            {field.error && <p className="mt-1 text-xs italic text-red-500">{field.error.message}</p>}
           </div>
         ))}
 
-        <Button
-          type="submit"
-          text="Reset Password"
-          isSubmitting={isSubmitting}
-        />
+        <Button type="submit" text="Reset Password" isSubmitting={isSubmitting} />
       </form>
     </div>
   );

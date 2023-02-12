@@ -11,7 +11,7 @@ import { GiTurtleShell } from 'react-icons/gi';
 import { supabase } from 'src/lib/supabase';
 import Avatar from './Avatar';
 import { useUserProfile } from '@context/UserProfileContext';
-import useHelper from '@utils/helper';
+import useHelper from '@hooks/useHelper';
 import { Menu, MenuItem, MenuItemProps } from './Menu';
 
 const Navbar = () => {

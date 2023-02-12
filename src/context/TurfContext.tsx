@@ -1,5 +1,6 @@
+import { supabase } from '@lib/supabase';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { createContext, useState, SetStateAction, Dispatch, useContext, ReactNode, useMemo, useEffect } from 'react';
+import { createContext, useState, SetStateAction, Dispatch, useContext, ReactNode, useMemo, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 
@@ -26,23 +27,19 @@ export const TurfContext = createContext<TurfContextType>({
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
 
-  const supabase = useSupabaseClient<Database>();
-
   const user = useUser();
 
-  const getData = useMemo(() => {
-    return async () => {
-      const { data, error } = await supabase.from('turfs').select('*');
+  const getData = useCallback(async () => {
+    const { data, error } = await supabase.from('turfs').select('*');
 
-      if (error) {
-        toast.error(error.message);
-      }
+    if (error) {
+      toast.error(error.message);
+    }
 
-      if (data) {
-        setTurfs(data);
-      }
-    };
-  }, [supabase]);
+    if (data) {
+      setTurfs(data);
+    }
+  }, []);
 
   useEffect(() => {
     if (user) {

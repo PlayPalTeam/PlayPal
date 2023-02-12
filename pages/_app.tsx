@@ -1,9 +1,8 @@
+import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { Session } from '@supabase/supabase-js';
+import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Roboto } from '@next/font/google';
 import { BookingProvider } from '@context/BookingContext';
@@ -22,27 +21,20 @@ function App({
 }: AppProps<{
   initialSession: Session;
 }>) {
-  // Create a new supabase browser client on every first render.
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+  const [supabase] = useState(() => createBrowserSupabaseClient());
 
   return (
     <>
       <Head>
         {/* Add a meta tag for SEO */}
-        <meta
-          name="description"
-          content="My Next.js App is a modern and powerful web application built with Next.js."
-        />
+        <meta name="description" content="My Next.js App is a modern and powerful web application built with Next.js." />
         {/* Add a meta tag for responsive design */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Add a meta tag for author */}
         <meta name="author" content="PlayPal Team" />
       </Head>
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <Transition>
+      <Transition>
+        <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
           <RequestProvider>
             <BookingProvider>
               <TurfProvider>
@@ -55,8 +47,8 @@ function App({
               </TurfProvider>
             </BookingProvider>
           </RequestProvider>
-        </Transition>
-      </SessionContextProvider>
+        </SessionContextProvider>
+      </Transition>
     </>
   );
 }

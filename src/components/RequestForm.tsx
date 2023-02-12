@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-hot-toast';
 import DialogBox from './Dialog';
 import Button from './Button';
-import useHelper from '@utils/helper';
+import useHelper from '@hooks/useHelper';
 
 interface Props {
   isOpen: boolean;

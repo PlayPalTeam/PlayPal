@@ -1,7 +1,7 @@
 import Form from '@components/FormComponent';
 import FormTitle from '@components/FormTitle';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import useHelper from '@utils/helper';
+import useHelper from '@hooks/useHelper';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
-      <div className="form-control min-h-screen items-center justify-center py-10 sm:py-20">
+      <div className="form-control min-h-screen items-center justify-center w-[80%] mx-auto py-10 sm:py-20">
         <div className="w-full max-w-sm sm:w-3/4">
           <FormTitle title="PlayPal | SignIn" />
           <Form formFields={SignInForm} onSubmit={onSignInSubmit} form={'SignIn'} buttonType={'submit'} buttonText={'Log In'} className="my-5" />

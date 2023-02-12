@@ -44,7 +44,7 @@ const Profile = () => {
     register,
     reset,
     handleSubmit,
-    formState: { isSubmitting, errors }
+    formState: { isSubmitting }
   } = useForm({
     resolver: zodResolver(UserProfileSchema)
   });
@@ -67,11 +67,7 @@ const Profile = () => {
   return (
     <div>
       <div className="mx-auto max-w-[15rem]">
-        <Avatar
-          size="200"
-          className="h-min w-min rounded-full"
-          showUploadButton={true}
-        />
+        <Avatar size="200" className="h-min w-min rounded-full" showUploadButton={true} />
       </div>
       <div className="mt-3 rounded-md border border-green-500 px-8 py-6">
         <div className="mt-3">
@@ -83,13 +79,12 @@ const Profile = () => {
               <label className="pb-2 text-sm" htmlFor={'email'}>
                 {'Email'} <span className="font-bold text-red-900">*</span>
               </label>
-              <p className="inputCss">{user?.email}</p>
+              <input className="input-primary input w-full" value={user?.email} />
             </div>
             {FormUI.map((field) => (
               <div key={field.name}>
                 <label className="pb-2 text-sm" htmlFor={field.name}>
-                  {field.label}{' '}
-                  <span className="font-bold text-red-900">*</span>
+                  {field.label} <span className="font-bold text-red-900">*</span>
                 </label>
                 <input
                   className="input-bordered input-primary input w-full"
@@ -104,11 +99,7 @@ const Profile = () => {
             ))}
           </div>
           <div className="text-center">
-            <Button
-              type="submit"
-              text="Update Profile"
-              isSubmitting={isSubmitting}
-            />
+            <Button type="submit" text="Update Profile" isSubmitting={isSubmitting} />
           </div>
         </form>
       </div>

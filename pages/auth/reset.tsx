@@ -1,7 +1,7 @@
 import Form from '@components/FormComponent';
 import FormTitle from '@components/FormTitle';
 import { ResetPasswordForm } from '@content/contents';
-import useHelper from '@utils/helper';
+import useHelper from '@hooks/useHelper';
 import Link from 'next/link';
 
 const ResetPasswordLink = () => {

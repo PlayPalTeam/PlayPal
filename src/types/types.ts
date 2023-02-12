@@ -1,6 +1,7 @@
 import { HTMLInputTypeAttribute } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
+import { object, string, number, InferType, array } from 'yup';
 
 export type names =
   | 'role'
@@ -155,3 +156,19 @@ export interface ResetFormProps {
 }
 
 export type ResetData = z.infer<typeof ResetSchema>;
+
+export const AddTurfSchema = object().shape({
+  turf_name: string().required('Turf name is required').trim(),
+  open_hour: string()
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
+    .required('Open hour is required'),
+  close_hour: string()
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
+    .required('Close hour is required'),
+  price: number().required('Price is required').positive().integer(),
+  capacity: number().required('Capacity is required').positive().integer(),
+  address: string().trim().required('Address is required'),
+  description: string().trim().required('Description is required')
+});
+
+export type TurfFormValues = InferType<typeof AddTurfSchema>;
