@@ -1,34 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Introduction to the Sports Connect Web App
 
-## Getting Started
+Do you love playing sports and are always looking for a group to play with? Or, are you the owner of a turf and looking for a platform to manage and list it? Look no further, the Sports Connect Web App is here to help!
 
-First, run the development server:
+Our web app provides a platform for sports enthusiasts to connect with each other and book turfs for their games. Whether you’re looking for a pickup game of basketball or a place to play a friendly match of soccer, Sports Connect makes it easy to find and book turfs. With our platform, you can easily search for turfs near you, view available dates and times, and book the turf that fits your schedule.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+In addition to booking turfs, the Sports Connect Web App also allows turf owners to list and manage their turfs. Whether you own a community park or a private sports facility, our platform makes it easy to list your turf and start accepting bookings from sports enthusiasts. You can manage your calendar, pricing, and availability all in one place.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+If you’re having trouble finding a group to play with, the Sports Connect Web App also allows you to create a request for a pickup game. You can specify the sport you want to play, the number of players needed, and the location you’d like to play at. Our platform will then match you with other sports enthusiasts who are looking for a pickup game, so you can get playing in no time!
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+So whether you’re a sports enthusiast or a turf owner, the Sports Connect Web App is the platform for you. Join now and start connecting with others who share your love for sports!
