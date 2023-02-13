@@ -3,7 +3,6 @@ import { ChangeEvent, useReducer, useState } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import { useBookContext } from '@context/BookingContext';
 import { useTurfContext } from '@context/TurfContext';
-import Layout from '@components/Layout';
 import useHelper from '@hooks/useHelper';
 import dynamic from 'next/dynamic';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -88,63 +87,61 @@ const Booking = () => {
   };
 
   return (
-    <Layout title={turf?.turf_name}>
-      <div className="mt-6 flex w-full justify-center sm:mt-14 ">
-        <div className="m-4 sm:w-[58%]">
-          <div className="mb-4 p-4 sm:p-6">
-            {/* <Image
+    <div className="mt-6 flex w-full justify-center sm:mt-14 ">
+      <div className="m-4 sm:w-[58%]">
+        <div className="mb-4 p-4 sm:p-6">
+          {/* <Image
               src="/exampleturfimage.webp"
               className="h-[330px] rounded-md bg-contain"
               alt="fuck off"
               width={750}
               height={750} */}
-            {/* /> */}
-          </div>
-          <div className="flex justify-between p-6">
-            <div>
-              <div className="font-bold tracking-widest"> {turf?.turf_name}</div>
-              <div className="pt-2 text-sm">
-                {turf?.price}/- onwards . {turf?.open_hour} - {turf?.close_hour}
-              </div>
-            </div>
-          </div>
-          <div className="p-6">
-            <h3 className="pb-4 font-bold tracking-widest">address</h3>
-            <span className="w-[300px] text-sm tracking-wider">{turf?.address}</span>
-          </div>
-          <div className="p-6">
-            <div className="pb-4 font-bold tracking-widest">Ameninties</div>
-            <div className="flex justify-between p-4">
-              <div>Artificial Turf</div>
-              <div>Logo</div>
-            </div>
-          </div>
-          <div className="form-control p-6">
-            <p className="pb-4 font-bold tracking-widest">Availabel Sports (Choose) </p>
-            {turf?.sports.map((s) => (
-              <div key={s} className="">
-                <label className="label cursor-pointer">
-                  <input type="radio" name={'select'} value={s} className={`radio-primary radio`} onChange={() => setSelectSports(s)} />
-                  <span className="label-text">{s.toUpperCase()}</span>
-                </label>
-              </div>
-            ))}
-            <button onClick={handleBookSlot} className="group btn-primary btn mt-5 gap-2">
-              Book Slot <BsArrowRight className="duration-300 group-hover:translate-x-1" />
-            </button>
-          </div>
-          <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
-            <form className="w-full space-y-5 px-10" onSubmit={onSlotSubmit}>
-              <DateInput value={state.date} onChange={handleDateChnage} />
-              <TimeSelect value={state.slotTime} onChange={handleSlotTimeChange} slots={filteredSlots} />
-              <button className="btn-primary btn-block btn" type="submit">
-                Submit
-              </button>
-            </form>
-          </DialogBox>
+          {/* /> */}
         </div>
+        <div className="flex justify-between p-6">
+          <div>
+            <div className="font-bold tracking-widest"> {turf?.turf_name}</div>
+            <div className="pt-2 text-sm">
+              {turf?.price}/- onwards . {turf?.open_hour} - {turf?.close_hour}
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
+          <h3 className="pb-4 font-bold tracking-widest">address</h3>
+          <span className="w-[300px] text-sm tracking-wider">{turf?.address}</span>
+        </div>
+        <div className="p-6">
+          <div className="pb-4 font-bold tracking-widest">Ameninties</div>
+          <div className="flex justify-between p-4">
+            <div>Artificial Turf</div>
+            <div>Logo</div>
+          </div>
+        </div>
+        <div className="form-control p-6">
+          <p className="pb-4 font-bold tracking-widest">Availabel Sports (Choose) </p>
+          {turf?.sports.map((s) => (
+            <div key={s} className="">
+              <label className="label cursor-pointer">
+                <input type="radio" name={'select'} value={s} className={`radio-primary radio`} onChange={() => setSelectSports(s)} />
+                <span className="label-text">{s.toUpperCase()}</span>
+              </label>
+            </div>
+          ))}
+          <button onClick={handleBookSlot} className="group btn-primary btn mt-5 gap-2">
+            Book Slot <BsArrowRight className="duration-300 group-hover:translate-x-1" />
+          </button>
+        </div>
+        <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
+          <form className="w-full space-y-5 px-10" onSubmit={onSlotSubmit}>
+            <DateInput value={state.date} onChange={handleDateChnage} />
+            <TimeSelect value={state.slotTime} onChange={handleSlotTimeChange} slots={filteredSlots} />
+            <button className="btn-primary btn-block btn" type="submit">
+              Submit
+            </button>
+          </form>
+        </DialogBox>
       </div>
-    </Layout>
+    </div>
   );
 };
 

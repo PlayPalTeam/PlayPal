@@ -15,7 +15,7 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
-      <div className="form-control min-h-screen items-center justify-center w-[80%] mx-auto py-10 sm:py-20">
+      <div className="form-control mx-auto min-h-screen w-[80%] items-center justify-center py-10 sm:py-20">
         <div className="w-full max-w-sm sm:w-3/4">
           <FormTitle title="PlayPal | SignIn" />
           <Form formFields={SignInForm} onSubmit={onSignInSubmit} form={'SignIn'} buttonType={'submit'} buttonText={'Log In'} className="my-5" />

@@ -77,7 +77,7 @@ export default function Avatar({ showUploadButton, className, size, turf_image }
 
       const path = turf_image ? `turf/${filePath}` : `profile/${filePath}`;
 
-      const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { cacheControl: '3600', upsert: true });
 
       if (uploadError) {
         toast.error(uploadError.message);

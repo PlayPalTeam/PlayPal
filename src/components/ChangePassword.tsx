@@ -90,7 +90,7 @@ const ChangePassword = () => {
                 type={field.type}
                 name={field.name}
                 placeholder={field.placeholder}
-                className={`inputCss text-lg caret-green-600`}
+                className={`input input-primary w-full`}
                 {...register(field.name)}
               />
               {field.name === 'password' && (

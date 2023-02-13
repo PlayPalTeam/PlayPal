@@ -1,11 +1,13 @@
-import { useUser } from '@supabase/auth-helpers-react';
-import { useUserProfile } from '../context/UserProfileContext';
-import Avatar from './Avatar';
-import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
-import { UserProfileData, UserProfileSchema } from '../types/types';
+import { useUserProfile } from '@context/UserProfileContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from './Button';
+import { useUser } from '@supabase/auth-helpers-react';
+import dynamic from 'next/dynamic';
+import { useCallback, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { UserProfileData, UserProfileSchema } from 'src/types/types';
+
+const Avatar = dynamic(() => import('@components/Avatar'));
+const Button = dynamic(() => import('@components/Button'));
 
 interface FormField {
   label: string;
@@ -65,7 +67,7 @@ const Profile = () => {
   }, [reset, userProfile]);
 
   return (
-    <div>
+    <div className="flex max-md:flex-col">
       <div className="mx-auto max-w-[15rem]">
         <Avatar size="200" className="h-min w-min rounded-full" showUploadButton={true} />
       </div>
