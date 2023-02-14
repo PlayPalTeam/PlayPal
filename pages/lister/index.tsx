@@ -1,5 +1,7 @@
-import TurfCard from '@components/TurfCard';
+import dynamic from 'next/dynamic';
 import { useTurfContext } from '@context/TurfContext';
+
+const TurfCard = dynamic(() => import('@components/TurfCard'));
 
 const ListerDashBoard = () => {
   const { turfs } = useTurfContext();
@@ -7,7 +9,7 @@ const ListerDashBoard = () => {
   return (
     <main>
       {turfs.map((turf) => (
-        <TurfCard key={turf.turf_id} {...turf} />
+        <TurfCard key={turf.turf_id} showBookings {...turf} />
       ))}
     </main>
   );

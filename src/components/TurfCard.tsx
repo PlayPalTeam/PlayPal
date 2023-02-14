@@ -6,13 +6,14 @@ interface TurfCardProps {
   turf_name: string;
   address: string;
   book?: boolean;
+  showBookings?: boolean;
 }
 
-const TurfCard = ({ turf_id, turf_name, address, book }: TurfCardProps) => {
+const TurfCard = ({ turf_id, turf_name, address, book, showBookings }: TurfCardProps) => {
   return (
     <div className="card mx-auto mt-10 w-[90%] bg-base-100 lg:card-side">
       <figure>
-        <Image src="/exampleturfimage.webp" width={1000} height={1000} alt="Album" />
+        <Image src="/exampleturfimage.webp" width={500} height={500} alt="Album" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{turf_name}</h2>
@@ -21,6 +22,11 @@ const TurfCard = ({ turf_id, turf_name, address, book }: TurfCardProps) => {
           {book && (
             <Link href="/user/booking/[id]" as={`/user/booking/${turf_id}`} className="btn-primary btn">
               Book
+            </Link>
+          )}
+          {showBookings && (
+            <Link href="/lister/turf/[id]" as={`/lister/turf/${turf_id}`} className="btn-primary btn">
+              Show Booking
             </Link>
           )}
         </div>

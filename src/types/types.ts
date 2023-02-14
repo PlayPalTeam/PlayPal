@@ -165,7 +165,7 @@ export const AddTurfSchema = object().shape({
   close_hour: string()
     .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
     .required('Close hour is required'),
-  price: number().required('Price is required').positive().integer(),
+  price: number().required('Price is required').positive().integer("Enter number"),
   capacity: number().required('Capacity is required').positive().integer(),
   address: string().trim().required('Address is required'),
   description: string().trim().required('Description is required')

@@ -1,6 +1,4 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import ReactSelect from 'react-select';
-import makeAnimated from 'react-select/animated';
+import { useFormContext } from 'react-hook-form';
 
 interface FormLabelProps {
   name: string;
@@ -13,13 +11,6 @@ interface FormInputProps extends FormLabelProps {
   type?: React.HTMLInputTypeAttribute;
   onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 }
-
-interface FormSelectProps extends FormLabelProps {
-  options: Array<{ value: string; label: string }>;
-  isMulti?: boolean;
-}
-
-const animatedComponents = makeAnimated();
 
 const FormLabel = ({ name, label, children }: FormLabelProps) => {
   const {
@@ -69,17 +60,4 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
   );
 };
 
-const FormSelect = ({ label, name, options, isMulti }: FormSelectProps) => {
-  const { control } = useFormContext();
-  return (
-    <FormLabel label={label} name={name}>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => <ReactSelect id={label} isMulti={isMulti} components={animatedComponents} {...field} options={options} />}
-      />
-    </FormLabel>
-  );
-};
-
-export { FormInput, FormTextarea, FormSelect };
+export { FormInput, FormTextarea };

@@ -36,10 +36,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getBookings = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('bookings')
-      .select('booking_id, turf_id, date, end_time, start_time ,times, turfs(turf_name, address)')
-      .eq('profile_id', user?.id);
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)').eq('profile_id', user?.id);
 
     if (error) {
       toast.error(error.message);
