@@ -11,8 +11,12 @@ import { GiTurtleShell } from 'react-icons/gi';
 import { supabase } from 'src/lib/supabase';
 import Avatar from './Avatar';
 import { useUserProfile } from '@context/UserProfileContext';
-import useHelper from '@utils/helper';
-import { Menu, MenuItem, MenuItemProps } from './Menu';
+import useHelper from '@hooks/useHelper';
+import { MenuItemProps } from './Menu';
+import dynamic from 'next/dynamic';
+
+const Menu = dynamic(() => import('@components/Menu').then((mod) => mod.Menu));
+const MenuItem = dynamic(() => import('@components/Menu').then((mod) => mod.MenuItem));
 
 const Navbar = () => {
   const { push } = useRouter();
@@ -73,7 +77,7 @@ const Navbar = () => {
             ))}
           </Menu>
         </div>
-        <Link className="btn-ghost btn text-xl normal-case" href={userProfile?.role === 'lister' ? '/lister' : '/user'}>
+        <Link className="btn-ghost btn text-xl normal-case" href={getRoleHref('')}>
           PlayPal
         </Link>
       </div>

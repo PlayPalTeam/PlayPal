@@ -1,11 +1,11 @@
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { Session } from '@supabase/supabase-js';
-import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useState } from 'react';
+import { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 import { Roboto } from '@next/font/google';
+import { useRouter } from 'next/router';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import { BookingProvider } from '@context/BookingContext';
 import { RequestProvider } from '@context/RequestContext';
 import { TurfProvider } from '@context/TurfContext';
@@ -13,6 +13,7 @@ import { UserProfileProvider } from '@context/UserProfileContext';
 import Transition from '@components/Transition';
 
 import '../styles/globals.css';
+import Layout from '@components/Layout';
 
 const inter = Roboto({ weight: '400', subsets: ['latin'] });
 
@@ -22,41 +23,47 @@ function App({
 }: AppProps<{
   initialSession: Session;
 }>) {
-  // Create a new supabase browser client on every first render.
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+  const router = useRouter();
+  const [supabase] = useState(() => createBrowserSupabaseClient());
 
   return (
     <>
       <Head>
-        {/* Add a meta tag for SEO */}
         <meta
           name="description"
-          content="My Next.js App is a modern and powerful web application built with Next.js."
+          content="Your one-stop solution for listing, booking, and requesting sports turfs. Whether you're a turf owner or an athlete looking for a space to play, TurfConnect is here to make your life easier. List your turf and make it available for booking to sports enthusiasts in your area. Need a turf? Create a booking request and find the perfect space to play. Get started with TurfConnect today and simplify your turf experience."
         />
-        {/* Add a meta tag for responsive design */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Add a meta tag for author */}
         <meta name="author" content="PlayPal Team" />
       </Head>
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <Transition>
+      <Transition>
+        <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
           <RequestProvider>
             <BookingProvider>
               <TurfProvider>
                 <UserProfileProvider>
-                  <main className={inter.className}>
-                    <Toaster position="top-right" />
-                    <Component {...pageProps} />
-                  </main>
+                  {router.pathname.includes('user') ||
+                  router.pathname === '/community' ||
+                  router.pathname.includes('lister') ||
+                  router.pathname.includes('moderator') ? (
+                    <Layout title="">
+                      <main className={inter.className}>
+                        <Toaster position="top-right" />
+                        <Component {...pageProps} />
+                      </main>
+                    </Layout>
+                  ) : (
+                    <main className={inter.className}>
+                      <Toaster position="top-right" />
+                      <Component {...pageProps} />
+                    </main>
+                  )}
                 </UserProfileProvider>
               </TurfProvider>
             </BookingProvider>
           </RequestProvider>
-        </Transition>
-      </SessionContextProvider>
+        </SessionContextProvider>
+      </Transition>
     </>
   );
 }

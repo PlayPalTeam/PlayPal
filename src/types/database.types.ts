@@ -47,23 +47,6 @@ export interface Database {
           updated_at?: string | null
         }
       }
-      moderator: {
-        Row: {
-          id: string
-          role: string | null
-          username: string | null
-        }
-        Insert: {
-          id: string
-          role?: string | null
-          username?: string | null
-        }
-        Update: {
-          id?: string
-          role?: string | null
-          username?: string | null
-        }
-      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -137,45 +120,42 @@ export interface Database {
           amenities: string[] | null
           capacity: number | null
           close_hour: string | null
-          created_at: string | null
           description: string | null
           open_hour: string | null
           price: number | null
           profile_id: string | null
           sports: string[] | null
           turf_id: string
+          turf_image: string | null
           turf_name: string | null
-          updated_at: string | null
         }
         Insert: {
           address?: string | null
           amenities?: string[] | null
           capacity?: number | null
           close_hour?: string | null
-          created_at?: string | null
           description?: string | null
           open_hour?: string | null
           price?: number | null
           profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
+          turf_image?: string | null
           turf_name?: string | null
-          updated_at?: string | null
         }
         Update: {
           address?: string | null
           amenities?: string[] | null
           capacity?: number | null
           close_hour?: string | null
-          created_at?: string | null
           description?: string | null
           open_hour?: string | null
           price?: number | null
           profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
+          turf_image?: string | null
           turf_name?: string | null
-          updated_at?: string | null
         }
       }
     }

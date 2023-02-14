@@ -1,11 +1,13 @@
-import { useUser } from '@supabase/auth-helpers-react';
-import { useUserProfile } from '../context/UserProfileContext';
-import Avatar from './Avatar';
-import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
-import { UserProfileData, UserProfileSchema } from '../types/types';
+import { useUserProfile } from '@context/UserProfileContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from './Button';
+import { useUser } from '@supabase/auth-helpers-react';
+import dynamic from 'next/dynamic';
+import { useCallback, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { UserProfileData, UserProfileSchema } from 'src/types/types';
+
+const Avatar = dynamic(() => import('@components/Avatar'));
+const Button = dynamic(() => import('@components/Button'));
 
 interface FormField {
   label: string;
@@ -44,7 +46,7 @@ const Profile = () => {
     register,
     reset,
     handleSubmit,
-    formState: { isSubmitting, errors }
+    formState: { isSubmitting }
   } = useForm({
     resolver: zodResolver(UserProfileSchema)
   });
@@ -65,13 +67,9 @@ const Profile = () => {
   }, [reset, userProfile]);
 
   return (
-    <div>
+    <div className="flex max-md:flex-col">
       <div className="mx-auto max-w-[15rem]">
-        <Avatar
-          size="200"
-          className="h-min w-min rounded-full"
-          showUploadButton={true}
-        />
+        <Avatar size="200" className="h-min w-min rounded-full" showUploadButton={true} />
       </div>
       <div className="mt-3 rounded-md border border-green-500 px-8 py-6">
         <div className="mt-3">
@@ -83,13 +81,12 @@ const Profile = () => {
               <label className="pb-2 text-sm" htmlFor={'email'}>
                 {'Email'} <span className="font-bold text-red-900">*</span>
               </label>
-              <p className="inputCss">{user?.email}</p>
+              <input className="input-primary input w-full" value={user?.email} />
             </div>
             {FormUI.map((field) => (
               <div key={field.name}>
                 <label className="pb-2 text-sm" htmlFor={field.name}>
-                  {field.label}{' '}
-                  <span className="font-bold text-red-900">*</span>
+                  {field.label} <span className="font-bold text-red-900">*</span>
                 </label>
                 <input
                   className="input-bordered input-primary input w-full"
@@ -104,11 +101,7 @@ const Profile = () => {
             ))}
           </div>
           <div className="text-center">
-            <Button
-              type="submit"
-              text="Update Profile"
-              isSubmitting={isSubmitting}
-            />
+            <Button type="submit" text="Update Profile" isSubmitting={isSubmitting} />
           </div>
         </form>
       </div>

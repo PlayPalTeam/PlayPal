@@ -1,20 +1,16 @@
-import Layout from '@components/Layout';
 import TurfCard from '@components/TurfCard';
 import { useTurfContext } from '@context/TurfContext';
 
-const Lister = () => {
+const ListerDashBoard = () => {
   const { turfs } = useTurfContext();
+
   return (
-    <Layout title="Lister">
-      <div className="w-full p-10">
-        {turfs.map((turf) => (
-          <div key={turf.turf_id}>
-            <TurfCard {...turf} />
-          </div>
-        ))}
-      </div>
-    </Layout>
+    <main>
+      {turfs.map((turf) => (
+        <TurfCard key={turf.turf_id} {...turf} />
+      ))}
+    </main>
   );
 };
 
-export default Lister;
+export default ListerDashBoard;
