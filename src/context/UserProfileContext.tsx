@@ -51,6 +51,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ childre
   useEffect(() => {
     if (user) {
       fetchData();
+      getData();
     }
   }, [fetchData, user, userProfile?.role]);
 
