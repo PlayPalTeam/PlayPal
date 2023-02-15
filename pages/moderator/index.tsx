@@ -1,55 +1,62 @@
+import BlockItem from '@components/BlockItem';
+import { useState } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
-import toast from 'react-hot-toast';
-import { supabase } from 'src/lib/supabase';
 
 const Index = () => {
   const { allData } = useUserProfile();
+  const [selectedOption, setSelectedOption] = useState('all');
+  const [searchBox, setSearchBox] = useState('');
+  const [displayValue, setDisplayValue] = useState("")
 
-  const updateProfileBlock = async (id: string, block: boolean) => {
-    const { status, error } = await supabase.from('profiles').update({ block: !block }).eq('id', id);
-
-    if (error) {
-      toast.error(error.message);
-    }
-
-    if (status === 204) {
-      toast.success(`Update done`);
-    }
-  };
-
+  const nowSearching =(e)=>{
+    console.log(e)
+  }
   return (
-    <div>
+    <>
       <div>
-        Users
-        <div>
-          {allData?.map(
-            (data, index) =>
-              data.role === 'user' && (
-                <div key={index} className="m-4 flex justify-around bg-green-300 text-lg text-black">
-                  <p> {data.username} </p>
+        <div className="flex gap-10">
+          <select
+            name="choice"
+            id="choice"
+            onChange={(e) => {
+              setSelectedOption(e.target.value);
+            }}
+          >
+            <option value="all">ALL</option>
+            <option value="users">USERS</option>
+            <option value="listers">LISTERS</option>
+          </select>
 
-                  <button onClick={() => updateProfileBlock(data.id, data.block)}>{data.block ? 'Unblock' : 'Block'}</button>
-                </div>
-              )
-          )}
+          <input
+            type="text"
+            name="psearch"
+            placeholder="Search By UserName"
+            onChange={(e) => {
+              setSearchBox(e.target.value);
+              nowSearching(e)
+            }}
+            value={searchBox}
+          />
+        </div>
+
+        <div>
+          <div>
+            {selectedOption === 'all' && (
+              <div>{allData?.map((data) => data.role !== 'moderator' && <BlockItem key={data.id} userData={data} />)}</div>
+            )}
+            {selectedOption === 'users' && <div>{allData?.map((data) => data.role === 'user' && <BlockItem key={data.id} userData={data} />)}</div>}
+            {selectedOption === 'listers' && (
+              <div>{allData?.map((data) => data.role === 'lister' && <BlockItem key={data.id} userData={data} />)}</div>
+            )}
+          </div>
+          <div className="mt-16">
+            {' '}
+            Search Box
+            {allData?.map((data) => data.username === searchBox && <BlockItem key={data.id} userData={data} />)}
+          </div>
         </div>
       </div>
-
-      <div className="mt-32">
-        Lister
-        <div>
-          {allData?.map(
-            (data, index) =>
-              data.role === 'lister' && (
-                <div key={index} className="m-4 flex justify-around bg-green-300 text-lg text-black">
-                  <p> {data.username}</p>
-                  <button onClick={() => updateProfileBlock(data.id, data.block)}>{data.block ? 'Unblock' : 'Block'}</button>
-                </div>
-              )
-          )}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
