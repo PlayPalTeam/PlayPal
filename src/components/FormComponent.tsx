@@ -81,7 +81,7 @@ const Form = ({ onSubmit, formFields, buttonText, buttonType, form, className }:
           )}
         </div>
       ))}
-      <Button type={buttonType} text={buttonText} isSubmitting={isSubmitting} />
+      <Button type={buttonType} text={buttonText} disabled={isSubmitting} />
     </form>
   );
 };

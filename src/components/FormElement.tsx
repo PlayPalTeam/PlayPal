@@ -75,25 +75,27 @@ const FormMultiSelect = ({ label, name, options }: FormMultiSelectProps) => {
   const { control } = useFormContext();
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      defaultValue={[]}
-      render={({ field }) => (
-        <CreatableSelect
-          options={options}
-          isMulti
-          {...field}
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              backgroundColor: 'black',
-              padding: '5px'
-            })
-          }}
-        />
-      )}
-    />
+    <FormLabel name={name} label={label}>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={[]}
+        render={({ field }) => (
+          <CreatableSelect
+            options={options}
+            isMulti
+            {...field}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                backgroundColor: 'black',
+                padding: '5px'
+              })
+            }}
+          />
+        )}
+      />
+    </FormLabel>
   );
 };
 

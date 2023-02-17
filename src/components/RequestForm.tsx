@@ -57,10 +57,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
     });
   }, [books, turf_id]);
 
-  const createRequestFormContent = (
-    turfs: RequestFormProps['options'],
-    dates: RequestFormProps['options']
-  ): RequestFormProps[] => {
+  const createRequestFormContent = (turfs: RequestFormProps['options'], dates: RequestFormProps['options']): RequestFormProps[] => {
     return [
       {
         label: 'Turf',
@@ -88,16 +85,10 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
     ];
   };
 
-  const RequestFormContent = useMemo(
-    () => createRequestFormContent(names_of_turf, dates),
-    [dates, names_of_turf]
-  );
+  const RequestFormContent = useMemo(() => createRequestFormContent(names_of_turf, dates), [dates, names_of_turf]);
 
   const onSubmit: SubmitHandler<RequestData> = async (formData) => {
-    const checkIfExist = requests.find(
-      (req) =>
-        req.game_date === formData.game_date && req.turf_id === formData.turf_id
-    );
+    const checkIfExist = requests.find((req) => req.game_date === formData.game_date && req.turf_id === formData.turf_id);
 
     if (checkIfExist) {
       ErrorMessage({
@@ -110,11 +101,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   };
 
   return (
-    <DialogBox
-      title={'Request For Players'}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-    >
+    <DialogBox title={'Request For Players'} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="mt-2">
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           {RequestFormContent.map((field, index) => (
@@ -123,12 +110,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
                 <span className="label-text">{field.label}</span>
               </label>
               {field.type === 'select' ? (
-                <select
-                  className="select-bordered select-primary select w-full"
-                  id={field.name}
-                  name={field.name}
-                  {...register(field.name)}
-                >
+                <select className="select-bordered select-primary select w-full" id={field.name} name={field.name} {...register(field.name)}>
                   {field.options?.map((option, index) => (
                     <option key={index} value={option.value}>
                       {option.label}
@@ -139,25 +121,19 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
                 <>
                   <input
                     type={field.type}
-                    className={`${
-                      errors[field.name] ? 'input-error' : ''
-                    } input-bordered input-primary input w-full`}
+                    className={`${errors[field.name] ? 'input-error' : ''} input-bordered input-primary input w-full`}
                     id={field.name}
                     name={field.name}
                     {...register(field.name, {
                       valueAsNumber: field.valueAsNumber
                     })}
                   />
-                  {errors[field.name] && (
-                    <p className="text-xs text-red-500">
-                      {errors[field.name].message}
-                    </p>
-                  )}
+                  {errors[field.name] && <p className="text-xs text-red-500">{errors[field.name].message}</p>}
                 </>
               )}
             </div>
           ))}
-          <Button type="submit" text="Submit" isSubmitting={isSubmitting} />
+          <Button type="submit" text="Submit" disabled={isSubmitting} />
         </form>
       </div>
     </DialogBox>

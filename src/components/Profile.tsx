@@ -101,7 +101,7 @@ const Profile = () => {
             ))}
           </div>
           <div className="text-center">
-            <Button type="submit" text="Update Profile" isSubmitting={isSubmitting} />
+            <Button type="submit" text="Update Profile" disabled={isSubmitting} />
           </div>
         </form>
       </div>

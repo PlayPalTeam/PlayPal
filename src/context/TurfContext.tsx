@@ -32,8 +32,8 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
 
   const user = useUser();
 
-  const fetchTurfs = useCallback(async (ownerId: string) => {
-    const { data, error } = await supabase.from('turfs').select('*').eq('owner', ownerId);
+  const fetchTurfs = useCallback(async (profileId: string) => {
+    const { data, error } = await supabase.from('turfs').select('*').eq('profile_id', profileId);
 
     if (error) {
       toast.error(error.message);
