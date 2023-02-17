@@ -49,11 +49,14 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ childre
   }, []);
 
   useEffect(() => {
-    if (user) {
+    if (user && userProfile?.role !== 'moderator') {
       fetchData();
+    }
+
+    if (user && userProfile?.role === 'moderator') {
       getData();
     }
-  }, [user]);
+  }, [fetchData, getData, user, userProfile?.role]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {

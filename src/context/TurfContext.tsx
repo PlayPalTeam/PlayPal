@@ -11,6 +11,7 @@ type TurfUpdate = Database['public']['Tables']['turfs']['Update'];
 
 interface TurfContextType {
   turfs: Turf[];
+  allTurfs: Turf[];
   addTurf: (turf: TurfInsert) => Promise<void>;
   updateTurf: (id: string, update: TurfUpdate) => Promise<void>;
   deleteTurf: (id: string) => Promise<void>;
@@ -18,6 +19,7 @@ interface TurfContextType {
 
 export const TurfContext = createContext<TurfContextType>({
   turfs: [],
+  allTurfs: [],
   addTurf: () => Promise.resolve(),
   updateTurf: () => Promise.resolve(),
   deleteTurf: () => Promise.resolve()
@@ -25,11 +27,12 @@ export const TurfContext = createContext<TurfContextType>({
 
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
+  const [allTurfs, setAllTurfs] = useState<Turf[]>([]);
   const { userProfile } = useUserProfile();
 
   const user = useUser();
 
-  const fetchTurfs = useCallback(async (ownerId:string) => {
+  const fetchTurfs = useCallback(async (ownerId: string) => {
     const { data, error } = await supabase.from('turfs').select('*').eq('owner', ownerId);
 
     if (error) {
@@ -41,15 +44,26 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const fetchAllTurfs = useCallback(async () => {
+    const { data, error } = await supabase.from('turfs').select('*');
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+    if (data) {
+      setAllTurfs(data);
+    }
+  }, []);
+
   useEffect(() => {
     if (user) {
-      if (userProfile?.role === 'user') {
-        fetchTurfs(null);
-      } else if (userProfile?.role === 'lister') {
-        fetchTurfs(user?.id);
-      }
+      fetchTurfs(user?.id);
     }
-  }, [user]);
+    if (user && userProfile?.role === 'user') {
+      fetchAllTurfs();
+    }
+  }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
 
   const addTurf = async (turf: TurfInsert) => {
     const { status, error } = await supabase.from('turfs').insert({ ...turf, owner: user?.id });
@@ -87,7 +101,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return <TurfContext.Provider value={{ turfs, addTurf, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
+  return <TurfContext.Provider value={{ turfs, allTurfs, addTurf, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
 };
 
 export const useTurfContext = () => {

@@ -22,10 +22,11 @@ const sports = [
 
 const Turf: NextPage = () => {
   const [step, setStep] = useState(() => {
-    // Get the step value from cookies or default to 1
     return parseInt(Cookies.get('step')) || 1;
   });
+
   const methods = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
+
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -60,10 +61,10 @@ const Turf: NextPage = () => {
   };
 
   const onSubmit = async (data: TurfFormValues) => {
-    const amenities = getValues().amenities.map((am) => am.value);
-    addTurf({
-      amenities: amenities
-    });
+    const amenities = getValues('amenities').map((am) => am.value);
+    const sports = getValues('sports').map((spo) => spo.value);
+    addTurf({ ...data, amenities: amenities, sports: sports });
+    Cookies.set('step', '1');
   };
 
   return (

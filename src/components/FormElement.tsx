@@ -42,7 +42,9 @@ const FormInput = ({ name, label, type = 'text', onUpload }: FormInputProps) => 
   return (
     <FormLabel name={name} label={label}>
       <input
-        className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full ${errors[name] ? 'input-error' : 'input-primary'}`}
+        className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full focus-within:outline-none ${
+          errors[name] ? 'input-error' : 'input-primary'
+        }`}
         type={type}
         id={name}
         onChange={onUpload}
@@ -60,7 +62,11 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
 
   return (
     <FormLabel name={name} label={label}>
-      <textarea className={`textarea w-full resize-none ${errors[name] ? 'textarea-error' : 'textarea-primary'}`} id={name} {...register(name)} />
+      <textarea
+        className={`textarea w-full resize-none focus-within:outline-none ${errors[name] ? 'textarea-error' : 'textarea-primary'}`}
+        id={name}
+        {...register(name)}
+      />
     </FormLabel>
   );
 };
@@ -69,9 +75,25 @@ const FormMultiSelect = ({ label, name, options }: FormMultiSelectProps) => {
   const { control } = useFormContext();
 
   return (
-    <FormLabel label={label} name={name}>
-      <Controller name={name} control={control} defaultValue={[]} render={({ field }) => <CreatableSelect options={options} isMulti {...field} />} />
-    </FormLabel>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={[]}
+      render={({ field }) => (
+        <CreatableSelect
+          options={options}
+          isMulti
+          {...field}
+          styles={{
+            control: (baseStyles, state) => ({
+              ...baseStyles,
+              backgroundColor: 'black',
+              padding: '5px'
+            })
+          }}
+        />
+      )}
+    />
   );
 };
 

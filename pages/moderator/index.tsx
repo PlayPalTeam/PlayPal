@@ -1,7 +1,7 @@
 import BlockItem from '@components/BlockItem';
 import { useState } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
-import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+
 const Index = () => {
   const { allData } = useUserProfile();
   const [selectedOption, setSelectedOption] = useState('all');
@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <>
       <div>
-        <div className="flex mt-16 mb-4 justify-between sm:ml-32 sm:mr-32  m-4">
+        <div className="m-4 mt-16 mb-4 flex justify-between sm:ml-32  sm:mr-32">
           <select
             name="choice"
             id="choice"
@@ -27,7 +27,7 @@ const Index = () => {
             onClick={() => {
               setSearchBox('');
             }}
-            className="pr-4 cursor-pointer rounded-xl sm:pl-2 "
+            className="select-primary select focus:outline-none"
           >
             <option value="all">ALL</option>
             <option value="users">USERS</option>
@@ -42,13 +42,12 @@ const Index = () => {
               setSearchBox(e.target.value);
             }}
             value={searchBox}
-            className="pt-2 pb-2 sm:pr-40 rounded-xl"
+            className="input-primary input focus:outline-none"
           />
         </div>
 
-        <div className='border  border-slate-600 sm:ml-32 sm:mr-32 rounded-xl  '>
-
-          <div className='flex justify-around border border-slate-600 pt-2 pb-2 rounded-xl'>
+        <div className="rounded-xl  border border-slate-600 sm:ml-32 sm:mr-32  ">
+          <div className="flex justify-around rounded-xl border border-slate-600 pt-2 pb-2">
             <div>USERNAME</div>
             <div>FULL NAME</div>
             <div>ACTION</div>

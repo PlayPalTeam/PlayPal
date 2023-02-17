@@ -52,7 +52,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*').eq('owner', user?.id);
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)').eq('owner', user?.id);
 
     if (error) {
       toast.error(error.message);
@@ -71,7 +71,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     if (user) {
       Bookings();
     }
-  }, [user]);
+  }, [Bookings, getBookings, user, userProfile?.role]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
     await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
