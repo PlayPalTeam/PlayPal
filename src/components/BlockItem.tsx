@@ -24,9 +24,10 @@ const BlockItem = ({ userData }) => {
       <div className="flex-1 p-6 sm:ml-16">{userData.username}</div>
       <div className="flex-1 p-6">{userData.full_name}</div>
       <div className="flex-1 pt-2 ">
-        <button onClick={handleBlockButtonClick} className=" hover:bg-red-400 hover:text-black pl-8 p-3 pr-8 rounded-xl bg-slate-800">{blockButtonText}</button>
+        <button onClick={handleBlockButtonClick} className=" rounded-xl bg-slate-800 p-3 pl-8 pr-8 hover:bg-red-400 hover:text-black">
+          {blockButtonText}
+        </button>
       </div>
-      
     </div>
   );
 };

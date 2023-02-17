@@ -13,7 +13,7 @@ const TurfCard = ({ turf_id, turf_name, address, book, showBookings }: TurfCardP
   return (
     <div className="card mx-auto mt-10 w-[90%] bg-base-100 lg:card-side">
       <figure>
-        <Image src="/exampleturfimage.webp" width={500} height={500} alt="Album" />
+        <Image src="/exampleturfimage.webp" width={200} height={200} alt="Album" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{turf_name}</h2>
