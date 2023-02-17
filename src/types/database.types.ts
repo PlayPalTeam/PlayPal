@@ -125,8 +125,8 @@ export interface Database {
           close_hour: string | null
           description: string | null
           open_hour: string | null
-          owner: string | null
           price: number | null
+          profile_id: string | null
           sports: string[] | null
           turf_id: string
           turf_image: string | null
@@ -139,8 +139,8 @@ export interface Database {
           close_hour?: string | null
           description?: string | null
           open_hour?: string | null
-          owner?: string | null
           price?: number | null
+          profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_image?: string | null
@@ -153,8 +153,8 @@ export interface Database {
           close_hour?: string | null
           description?: string | null
           open_hour?: string | null
-          owner?: string | null
           price?: number | null
+          profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_image?: string | null

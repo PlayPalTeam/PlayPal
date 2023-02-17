@@ -3,14 +3,14 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 type ButtonType = {
   type: 'submit' | 'reset' | 'button';
   text: string;
-  isSubmitting?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
-const Button = ({ isSubmitting, text, type, onClick }: ButtonType) => {
+const Button = ({ disabled, text, type, onClick }: ButtonType) => {
   return (
-    <button type={type} disabled={isSubmitting} onClick={onClick} className="btn-primary btn w-full">
-      {isSubmitting ? <AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" /> : <p>{text}</p>}
+    <button type={type} disabled={disabled} onClick={onClick} className="btn-primary btn w-full">
+      {disabled ? <AiOutlineLoading3Quarters className="h-6 w-6 animate-spin" /> : <p>{text}</p>}
     </button>
   );
 };

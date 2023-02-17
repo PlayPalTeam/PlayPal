@@ -90,7 +90,7 @@ const ChangePassword = () => {
                 type={field.type}
                 name={field.name}
                 placeholder={field.placeholder}
-                className={`input input-primary w-full`}
+                className={`input-primary input w-full`}
                 {...register(field.name)}
               />
               {field.name === 'password' && (
@@ -109,7 +109,7 @@ const ChangePassword = () => {
           </div>
         ))}
 
-        <Button type="submit" text="Reset Password" isSubmitting={isSubmitting} />
+        <Button type="submit" text="Reset Password" disabled={isSubmitting} />
       </form>
     </div>
   );

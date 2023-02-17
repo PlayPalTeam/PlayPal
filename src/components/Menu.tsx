@@ -33,7 +33,7 @@ export const Menu = ({ children, button, dropEnd }: MenuProps) => {
       <label tabIndex={0} className="btn-ghost btn">
         {button}
       </label>
-      <ul tabIndex={0} className="dropdown-content menu rounded-box mt-3 w-52 bg-base-100 p-2 shadow">
+      <ul tabIndex={0} className="dropdown-content menu rounded-box mt-3 w-52 bg-base-100 p-2 shadow-2xl">
         {children}
       </ul>
     </div>

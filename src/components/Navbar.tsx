@@ -68,7 +68,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="navbar bg-base-100">
+    <nav className="navbar shadow-md">
       <div className="navbar-start">
         <div className="lg:hidden">
           <Menu button={<HiOutlineMenuAlt1 className="h-8 w-8" />}>
@@ -89,7 +89,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu dropEnd={true} button={<Avatar className="w-10 rounded-full" size="40" />}>
+        <Menu dropEnd={true} button={<Avatar className="h-10 w-10 rounded-full" size="40" />}>
           {userProfile?.role && (
             <>
               <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />

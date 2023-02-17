@@ -3,10 +3,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AddTurfSchema, TurfFormValues } from 'src/types/types';
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import Button from '@components/Button';
-import { FormInput, FormMultiSelect, FormTextarea } from '@components/FormElement';
 import Cookies from 'js-cookie';
 import { useTurfContext } from '@context/TurfContext';
+import dynamic from 'next/dynamic';
+
+const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
+const FormMultiSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
+const FormTextarea = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTextarea));
+const Button = dynamic(() => import('@components/Button'));
 
 const amenities = [
   { label: 'Swimming pool', value: 'swimming-pool' },
@@ -20,9 +24,46 @@ const sports = [
   { label: 'Tennis', value: 'tennis' }
 ];
 
+const formSteps = [
+  {
+    Component: () => (
+      <>
+        <FormInput label="Name" name="turf_name" />
+        <FormInput label="Price" name="price" type={'string'} />
+        <FormInput label="Capacity" name="capacity" type={'string'} />
+      </>
+    )
+  },
+  {
+    Component: () => (
+      <>
+        <FormTextarea label="Description" name="description" />
+        <FormTextarea label="Address" name="address" />
+      </>
+    )
+  },
+  {
+    Component: () => (
+      <>
+        <FormInput label="Opening Time" name="open_hour" type="time" />
+        <FormInput label="Closing Time" name="close_hour" type="time" />
+      </>
+    )
+  },
+  {
+    Component: () => (
+      <>
+        <FormMultiSelect label="Amenities" name="amenities" options={amenities} />
+        <FormMultiSelect label="Sports" name="sports" options={sports} />
+      </>
+    )
+  }
+];
+
 const Turf: NextPage = () => {
   const [step, setStep] = useState(() => {
-    return parseInt(Cookies.get('step')) || 1;
+    const stepFromCookie = Cookies.get('step');
+    return stepFromCookie ? parseInt(stepFromCookie) : 1;
   });
 
   const methods = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
@@ -42,6 +83,10 @@ const Turf: NextPage = () => {
   }, [step]);
 
   const handleNextStep = async () => {
+    if (isSubmitting) {
+      return; // do nothing when the form is submitting
+    }
+
     const fieldsToValidate = {
       1: ['turf_name', 'price', 'capacity'],
       2: ['description', 'address'],
@@ -64,45 +109,17 @@ const Turf: NextPage = () => {
     const amenities = getValues('amenities').map((am) => am.value);
     const sports = getValues('sports').map((spo) => spo.value);
     addTurf({ ...data, amenities: amenities, sports: sports });
-    Cookies.set('step', '1');
+    setStep(1);
   };
 
   return (
     <main className="mx-auto mt-10 w-[90%] max-w-2xl pb-10">
       <FormProvider {...methods}>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-          {step === 1 && (
-            <>
-              <FormInput label="Name" name="turf_name" />
-              <FormInput label="Price" name="price" type={'string'} />
-              <FormInput label="Capacity" name="capacity" type={'string'} />
-              <Button type="button" onClick={handleNextStep} text="Next" />
-            </>
-          )}
-          {step === 2 && (
-            <>
-              <FormTextarea label="Description" name="description" />
-              <FormTextarea label="Address" name="address" />
-              <Button type="button" onClick={handleNextStep} text="Next" />
-              <Button type="button" onClick={handlePreviousStep} text="Previous" />
-            </>
-          )}
-          {step === 3 && (
-            <>
-              <FormInput label="Opening Time" name="open_hour" type="time" />
-              <FormInput label="Closing Time" name="close_hour" type="time" />
-              <Button type="button" onClick={handleNextStep} text="Next" />
-              <Button type="button" onClick={handlePreviousStep} text="Previous" />
-            </>
-          )}
-          {step === 4 && (
-            <>
-              <FormMultiSelect label="Amenities" name="amenities" options={amenities} />
-              <FormMultiSelect label="Sports" name="sports" options={sports} />
-              <Button type="submit" isSubmitting={isSubmitting} text="Add" />
-              <Button type="button" onClick={handlePreviousStep} text="Previous" />
-            </>
-          )}
+          {formSteps[step - 1].Component()}
+          {step !== 1 && <Button type="button" onClick={handlePreviousStep} text="Previous" />}
+          {step !== formSteps.length && <Button type="button" onClick={handleNextStep} text="Next" />}
+          {step === formSteps.length && <Button type="submit" disabled={isSubmitting} text="Add" />}
         </form>
       </FormProvider>
     </main>
