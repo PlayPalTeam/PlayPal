@@ -15,36 +15,39 @@ export interface Database {
           created_at: string | null
           date: string | null
           end_time: string | null
-          profile_id: string | null
+          owner: string | null
           selectedsport: string | null
           start_time: string | null
           times: string[] | null
           turf_id: string | null
           updated_at: string | null
+          user: string | null
         }
         Insert: {
           booking_id?: string
           created_at?: string | null
           date?: string | null
           end_time?: string | null
-          profile_id?: string | null
+          owner?: string | null
           selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
           turf_id?: string | null
           updated_at?: string | null
+          user?: string | null
         }
         Update: {
           booking_id?: string
           created_at?: string | null
           date?: string | null
           end_time?: string | null
-          profile_id?: string | null
+          owner?: string | null
           selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
           turf_id?: string | null
           updated_at?: string | null
+          user?: string | null
         }
       }
       profiles: {
@@ -122,8 +125,8 @@ export interface Database {
           close_hour: string | null
           description: string | null
           open_hour: string | null
+          owner: string | null
           price: number | null
-          profile_id: string | null
           sports: string[] | null
           turf_id: string
           turf_image: string | null
@@ -136,8 +139,8 @@ export interface Database {
           close_hour?: string | null
           description?: string | null
           open_hour?: string | null
+          owner?: string | null
           price?: number | null
-          profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_image?: string | null
@@ -150,8 +153,8 @@ export interface Database {
           close_hour?: string | null
           description?: string | null
           open_hour?: string | null
+          owner?: string | null
           price?: number | null
-          profile_id?: string | null
           sports?: string[] | null
           turf_id?: string
           turf_image?: string | null

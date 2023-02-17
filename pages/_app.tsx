@@ -36,34 +36,36 @@ function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="PlayPal Team" />
       </Head>
-      <Transition>
-        <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
-          <RequestProvider>
-            <BookingProvider>
-              <TurfProvider>
-                <UserProfileProvider>
-                  {router.pathname.includes('user') ||
-                  router.pathname === '/community' ||
-                  router.pathname.includes('lister') ||
-                  router.pathname.includes('moderator') ? (
-                    <Layout title="">
+      <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
+        <RequestProvider>
+          <BookingProvider>
+            <TurfProvider>
+              <UserProfileProvider>
+                {router.pathname.includes('user') ||
+                router.pathname === '/community' ||
+                router.pathname.includes('lister') ||
+                router.pathname.includes('moderator') ? (
+                  <Layout title="">
+                    <Transition>
                       <main className={inter.className}>
                         <Toaster position="top-right" />
                         <Component {...pageProps} />
                       </main>
-                    </Layout>
-                  ) : (
+                    </Transition>
+                  </Layout>
+                ) : (
+                  <Transition>
                     <main className={inter.className}>
                       <Toaster position="top-right" />
                       <Component {...pageProps} />
                     </main>
-                  )}
-                </UserProfileProvider>
-              </TurfProvider>
-            </BookingProvider>
-          </RequestProvider>
-        </SessionContextProvider>
-      </Transition>
+                  </Transition>
+                )}
+              </UserProfileProvider>
+            </TurfProvider>
+          </BookingProvider>
+        </RequestProvider>
+      </SessionContextProvider>
     </>
   );
 }

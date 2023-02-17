@@ -1,4 +1,5 @@
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import CreatableSelect from 'react-select/creatable';
 
 interface FormLabelProps {
   name: string;
@@ -10,6 +11,10 @@ interface FormLabelProps {
 interface FormInputProps extends FormLabelProps {
   type?: React.HTMLInputTypeAttribute;
   onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+}
+
+interface FormMultiSelectProps extends FormLabelProps {
+  options: Array<{ value: string; label: string }>;
 }
 
 const FormLabel = ({ name, label, children }: FormLabelProps) => {
@@ -60,4 +65,14 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
   );
 };
 
-export { FormInput, FormTextarea };
+const FormMultiSelect = ({ label, name, options }: FormMultiSelectProps) => {
+  const { control } = useFormContext();
+
+  return (
+    <FormLabel label={label} name={name}>
+      <Controller name={name} control={control} defaultValue={[]} render={({ field }) => <CreatableSelect options={options} isMulti {...field} />} />
+    </FormLabel>
+  );
+};
+
+export { FormInput, FormTextarea, FormMultiSelect };

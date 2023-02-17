@@ -1,5 +1,5 @@
-import dynamic from 'next/dynamic';
 import { useTurfContext } from '@context/TurfContext';
+import dynamic from 'next/dynamic';
 
 const TurfCard = dynamic(() => import('@components/TurfCard'));
 

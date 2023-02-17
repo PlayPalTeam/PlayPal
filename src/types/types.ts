@@ -165,10 +165,24 @@ export const AddTurfSchema = object().shape({
   close_hour: string()
     .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
     .required('Close hour is required'),
-  price: number().required('Price is required').positive().integer("Enter number"),
+  price: number().required('Price is required').positive().integer('Enter number'),
   capacity: number().required('Capacity is required').positive().integer(),
   address: string().trim().required('Address is required'),
-  description: string().trim().required('Description is required')
+  description: string().trim().required('Description is required'),
+  amenities: array()
+    .of(
+      object().shape({
+        value: string().required(),
+        label: string().required()
+      })
+    )
+    .required('Amenities is required'),
+  sports: array().of(
+    object().shape({
+      value: string().required(),
+      label: string().required()
+    })
+  ).required("Sports is required")
 });
 
 export type TurfFormValues = InferType<typeof AddTurfSchema>;

@@ -16,22 +16,26 @@ export type Booking = {
   turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
 };
 
+type Book = Database['public']['Tables']['bookings']['Row'];
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
 interface BookingContexType {
   books: Booking[];
+  listerbooks: Book[];
   addBooking: (id: string, booking: BookingInsert) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
 }
 
 const BookingContext = createContext<BookingContexType>({
   books: [],
+  listerbooks: [],
   addBooking: () => Promise.resolve(),
   deleteBooking: () => Promise.resolve()
 });
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Booking[]>([]);
+  const [listerbooks, setListerBooks] = useState<Book[]>([]);
   const { userProfile } = useUserProfile();
   const user = useUser();
 
@@ -47,11 +51,27 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user?.id]);
 
+  const Bookings = useCallback(async () => {
+    const { data, error } = await supabase.from('bookings').select('*').eq('owner', user?.id);
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+    if (data) {
+      setListerBooks(data);
+    }
+  }, [user?.id]);
+
   useEffect(() => {
     if (user && userProfile?.role === 'user') {
       getBookings();
     }
-  }, [getBookings, user, userProfile?.role]);
+
+    if (user) {
+      Bookings();
+    }
+  }, [user]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
     await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
@@ -64,7 +84,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     getBookings();
   };
 
-  return <BookingContext.Provider value={{ books, addBooking, deleteBooking }}>{children}</BookingContext.Provider>;
+  return <BookingContext.Provider value={{ books, listerbooks, addBooking, deleteBooking }}>{children}</BookingContext.Provider>;
 };
 
 export const useBookContext = () => {

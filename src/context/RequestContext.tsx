@@ -45,7 +45,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
     if (user && userProfile?.role === 'user') {
       getRequests();
     }
-  }, [getRequests, user, userProfile?.role]);
+  }, [user]);
 
   const addRequest = async (request: RequestInsert) => {
     const { error } = await supabase.from('requests').insert({ ...request, profile_id: user?.id });

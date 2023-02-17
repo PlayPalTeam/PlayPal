@@ -52,7 +52,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ childre
     if (user) {
       fetchData();
     }
-  }, [fetchData, user, userProfile?.role]);
+  }, [user]);
 
   const updateUserProfile = async (update: ProfileUpdate) => {
     try {
