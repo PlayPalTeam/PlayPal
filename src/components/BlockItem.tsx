@@ -20,14 +20,13 @@ const BlockItem = ({ userData }) => {
   const blockButtonText = userData.block ? 'Unblock' : 'Block';
 
   return (
-    <div className="border border-slate-600 p-4">
-      <div className="flex justify-around">
-        <div className="flex-1">{userData.username}</div>
-        <div className="flex-1">{userData.full_name}</div>
-        <div className="flex-1">
-          <button onClick={handleBlockButtonClick}>{blockButtonText}</button>
-        </div>
+    <div className="flex justify-around border border-slate-600  hover:bg-slate-800">
+      <div className="flex-1 p-6 sm:ml-16">{userData.username}</div>
+      <div className="flex-1 p-6">{userData.full_name}</div>
+      <div className="flex-1 pt-2 ">
+        <button onClick={handleBlockButtonClick} className=" hover:bg-red-400 hover:text-black pl-8 p-3 pr-8 rounded-xl bg-slate-800">{blockButtonText}</button>
       </div>
+      
     </div>
   );
 };

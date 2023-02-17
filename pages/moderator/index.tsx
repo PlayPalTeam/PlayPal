@@ -1,7 +1,7 @@
 import BlockItem from '@components/BlockItem';
 import { useState } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
-
+import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
 const Index = () => {
   const { allData } = useUserProfile();
   const [selectedOption, setSelectedOption] = useState('all');
@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <>
       <div>
-        <div className="m-4 mt-16 mb-4 flex justify-between sm:ml-32  sm:mr-32">
+        <div className="flex mt-16 mb-4 justify-between sm:ml-32 sm:mr-32  m-4">
           <select
             name="choice"
             id="choice"
@@ -27,7 +27,8 @@ const Index = () => {
             onClick={() => {
               setSearchBox('');
             }}
-            className="select-primary select focus:outline-none"
+            // className="pr-4 cursor-pointer rounded-xl sm:pl-2 "
+            className="select select-primary w-full max-w-xs"
           >
             <option value="all">ALL</option>
             <option value="users">USERS</option>
@@ -42,12 +43,14 @@ const Index = () => {
               setSearchBox(e.target.value);
             }}
             value={searchBox}
-            className="input-primary input focus:outline-none"
+            // className="pt-2 pb-2 sm:pr-40 rounded-xl"
+            className="input input-bordered input-primary w-full max-w-xs"
           />
         </div>
 
-        <div className="rounded-xl  border border-slate-600 sm:ml-32 sm:mr-32  ">
-          <div className="flex justify-around rounded-xl border border-slate-600 pt-2 pb-2">
+        <div className='border  border-slate-600 sm:ml-32 sm:mr-32 rounded-xl mt-12 '>
+
+          <div className='flex justify-around border border-slate-600 pt-4 pb-4 rounded-xl  '>
             <div>USERNAME</div>
             <div>FULL NAME</div>
             <div>ACTION</div>
