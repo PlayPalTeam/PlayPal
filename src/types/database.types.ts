@@ -15,7 +15,7 @@ export interface Database {
           created_at: string | null
           date: string | null
           end_time: string | null
-          owner: string | null
+          profile_id: string | null
           selectedsport: string | null
           start_time: string | null
           times: string[] | null
@@ -28,7 +28,7 @@ export interface Database {
           created_at?: string | null
           date?: string | null
           end_time?: string | null
-          owner?: string | null
+          profile_id?: string | null
           selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
@@ -41,7 +41,7 @@ export interface Database {
           created_at?: string | null
           date?: string | null
           end_time?: string | null
-          owner?: string | null
+          profile_id?: string | null
           selectedsport?: string | null
           start_time?: string | null
           times?: string[] | null
