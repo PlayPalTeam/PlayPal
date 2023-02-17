@@ -66,7 +66,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
 
   const addTurf = async (turf: TurfInsert) => {
-    const { status, error } = await supabase.from('turfs').insert({ ...turf, owner: user?.id });
+    const { status, error } = await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
 
     if (error) {
       toast.error(error.message);
