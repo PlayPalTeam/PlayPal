@@ -85,7 +85,7 @@ export default function Avatar({ showUploadButton, className, size, turf_image }
 
       if (turf_image) {
         updateTurf(userProfile?.id, { turf_image: path });
-        downloadImage(turfs.find((x) => x.profile_id === userProfile?.id).turf_image);
+        downloadImage(turfs.find((x) => x.owner === userProfile?.id).turf_image);
       } else {
         updateUserProfile({ avatar_url: path });
         downloadImage(path);
