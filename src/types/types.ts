@@ -3,7 +3,7 @@ import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 import { object, string, number, InferType, array, date } from 'yup';
 
-export type names = 'role' | 'email' | 'date' | 'password' | 'username' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
+export type names = 'role' | 'email' | 'password' | 'username' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
 
 export type registerType = SignInData | SignUpData | RequestData | ForgotPasswordData | ResetData;
 
@@ -168,11 +168,13 @@ today.setHours(0, 0, 0, 0);
 
 export const BookTurfSchema = object().shape({
   date: date().min(today, 'Date must be later than today.').required('Please select a date'),
-  slot: array().of(object()
-    .shape({
-      value: string().required(),
-      label: string().required()
-    }))
+  slot: array()
+    .of(
+      object().shape({
+        value: string().required(),
+        label: string().required()
+      })
+    )
     .required('Please pick a slot'),
   sport: object()
     .shape({
