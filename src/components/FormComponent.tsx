@@ -37,7 +37,6 @@ const Form = ({ onSubmit, formFields, buttonText, buttonType, form, className }:
   const formSchemas = {
     SignIn: SignInSchema,
     SignUp: SignUpSchema,
-    Booking: BookingSchema,
     Request: RequestSchema,
     Reset: ResetSchema,
     PasswordChange: ForgotPasswordSchema
