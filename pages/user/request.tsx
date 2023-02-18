@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Layout from '@components/Layout';
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import { NextPage } from 'next';

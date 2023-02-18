@@ -60,10 +60,10 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     if (user) {
       fetchTurfs(user?.id);
     }
-    if (user && userProfile?.role === 'user') {
+    if (user) {
       fetchAllTurfs();
     }
-  }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
+  }, [fetchAllTurfs, fetchTurfs, user]);
 
   const addTurf = async (turf: TurfInsert) => {
     const { status, error } = await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });

@@ -54,24 +54,10 @@ export const getServerSideProps: GetServerSideProps<ShowBookingsProps> = async (
   };
 };
 
-const eventStyleGetter = (event: any, start: Moment, end: Moment, isSelected: boolean) => {
-  const backgroundColor = isSelected ? event.selectedBgColor : event.bgColor;
-  const borderColor = isSelected ? event.selectedBorderColor : event.borderColor;
-
-  return {
-    style: {
-      backgroundColor,
-      borderColor
-    },
-    title: event.title,
-    description: event.description
-  };
-};
-
-const ShowBookings: React.FC<ShowBookingsProps> = ({ item }) => {
+const ShowBookings = ({ item }: ShowBookingsProps) => {
   return (
     <div style={{ height: 500 }}>
-      <Calendar localizer={localizer} events={item.times} startAccessor="start" endAccessor="end" eventPropGetter={eventStyleGetter} />
+      <Calendar localizer={localizer} events={item.times} startAccessor="start" endAccessor="end" />
     </div>
   );
 };
