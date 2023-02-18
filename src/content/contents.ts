@@ -1,10 +1,4 @@
-import {
-  BookingFormProps,
-  ForgotPasswordFormPassword,
-  ResetFormProps,
-  SignInFormProps,
-  SignUpFormProps,
-} from '../types/types';
+import { ForgotPasswordFormPassword, ResetFormProps, SignInFormProps, SignUpFormProps } from '../types/types';
 
 const SignUpForm: SignUpFormProps[] = [
   {
@@ -51,24 +45,6 @@ const SignInForm: SignInFormProps[] = [
   }
 ];
 
-const BookingForm: BookingFormProps[] = [
-  {
-    label: 'Date',
-    type: 'date',
-    name: 'date'
-  },
-  {
-    label: 'Start Time',
-    type: 'time',
-    name: 'start_time'
-  },
-  {
-    label: 'End Time',
-    type: 'time',
-    name: 'end_time'
-  }
-];
-
 const ResetPasswordForm: ResetFormProps[] = [
   {
     label: 'Email',
@@ -92,10 +68,4 @@ const ForgotformFields: ForgotPasswordFormPassword[] = [
   }
 ];
 
-export {
-  SignInForm,
-  SignUpForm,
-  BookingForm,
-  ResetPasswordForm,
-  ForgotformFields
-};
+export { SignInForm, SignUpForm, ResetPasswordForm, ForgotformFields };
