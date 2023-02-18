@@ -64,7 +64,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && userProfile?.role === 'user') {
+    if (user) {
       getBookings();
     }
 
@@ -74,9 +74,16 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [Bookings, getBookings, user, userProfile?.role]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
-    await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
+    const { error, status } = await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
+    if (error) {
+      toast.error(error.message);
+    }
 
-    getBookings();
+    if (status === 201) {
+      toast.success('Booking Done');
+    } else {
+      getBookings();
+    }
   };
 
   const deleteBooking = async (id: string) => {

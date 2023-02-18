@@ -1,20 +1,21 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 
 interface FormLabelProps {
   name: string;
   label: string;
   children?: React.ReactNode;
+}
+
+interface FormInputProps extends Omit<FormLabelProps, 'children'> {
+  type?: React.HTMLInputTypeAttribute;
   placeholder?: string;
 }
 
-interface FormInputProps extends FormLabelProps {
-  type?: React.HTMLInputTypeAttribute;
-  onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-}
-
-interface FormMultiSelectProps extends FormLabelProps {
+interface FormMultiSelectProps extends Omit<FormLabelProps, 'children'> {
   options: Array<{ value: string; label: string }>;
+  isMulti?: boolean;
 }
 
 const FormLabel = ({ name, label, children }: FormLabelProps) => {
@@ -33,7 +34,7 @@ const FormLabel = ({ name, label, children }: FormLabelProps) => {
   );
 };
 
-const FormInput = ({ name, label, type = 'text', onUpload }: FormInputProps) => {
+const FormInput = ({ name, label, type = 'text', placeholder }: FormInputProps) => {
   const {
     register,
     formState: { errors }
@@ -47,7 +48,7 @@ const FormInput = ({ name, label, type = 'text', onUpload }: FormInputProps) => 
         }`}
         type={type}
         id={name}
-        onChange={onUpload}
+        placeholder={placeholder}
         {...register(name)}
       />
     </FormLabel>
@@ -71,30 +72,12 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
   );
 };
 
-const FormMultiSelect = ({ label, name, options }: FormMultiSelectProps) => {
+const FormMultiSelect = ({ label, name, options, isMulti }: FormMultiSelectProps) => {
   const { control } = useFormContext();
 
   return (
     <FormLabel name={name} label={label}>
-      <Controller
-        name={name}
-        control={control}
-        defaultValue={[]}
-        render={({ field }) => (
-          <CreatableSelect
-            options={options}
-            isMulti
-            {...field}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                backgroundColor: 'black',
-                padding: '5px'
-              })
-            }}
-          />
-        )}
-      />
+      <Controller name={name} control={control} render={({ field }) => <CreatableSelect options={options} isMulti={isMulti} {...field} />} />
     </FormLabel>
   );
 };

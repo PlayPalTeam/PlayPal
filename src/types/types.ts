@@ -1,23 +1,11 @@
 import { HTMLInputTypeAttribute } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
-import { object, string, number, InferType, array } from 'yup';
+import { object, string, number, InferType, array, date } from 'yup';
 
-export type names =
-  | 'role'
-  | 'email'
-  | 'date'
-  | 'password'
-  | 'username'
-  | 'start_time'
-  | 'end_time'
-  | 'player_needed'
-  | 'turf_id'
-  | 'game'
-  | 'game_date'
-  | 'confirmPassword';
+export type names = 'role' | 'email' | 'date' | 'password' | 'username' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
 
-export type registerType = SignInData | SignUpData | BookingType | RequestData | ForgotPasswordData | ResetData;
+export type registerType = SignInData | SignUpData | RequestData | ForgotPasswordData | ResetData;
 
 export interface InputCommonProps {
   name: names;
@@ -114,20 +102,6 @@ export type ProfileFormProps = {
   disabled?: boolean;
 };
 
-export const BookingSchema = z.object({
-  date: z.string(),
-  start_time: z.string(),
-  end_time: z.string()
-});
-
-export type BookingFormProps = {
-  label: string;
-  name: 'date' | 'start_time' | 'end_time';
-  type: HTMLInputTypeAttribute;
-};
-
-export type BookingType = z.infer<typeof BookingSchema>;
-
 export const RequestSchema = z.object({
   player_needed: z.number().positive(),
   turf_id: z.string(),
@@ -177,12 +151,35 @@ export const AddTurfSchema = object().shape({
       })
     )
     .required('Amenities is required'),
-  sports: array().of(
-    object().shape({
-      value: string().required(),
-      label: string().required()
-    })
-  ).required("Sports is required")
+  sports: array()
+    .of(
+      object().shape({
+        value: string().required(),
+        label: string().required()
+      })
+    )
+    .required('Sports is required')
 });
 
 export type TurfFormValues = InferType<typeof AddTurfSchema>;
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+export const BookTurfSchema = object().shape({
+  date: date().min(today, 'Date must be later than today.').required('Please select a date'),
+  slot: array().of(object()
+    .shape({
+      value: string().required(),
+      label: string().required()
+    }))
+    .required('Please pick a slot'),
+  sport: object()
+    .shape({
+      value: string().required(),
+      label: string().required()
+    })
+    .required('Select a sports')
+});
+
+export type BookTurfType = InferType<typeof BookTurfSchema>;

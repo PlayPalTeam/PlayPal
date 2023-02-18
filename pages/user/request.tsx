@@ -4,8 +4,8 @@ import { useUserProfile } from '@context/UserProfileContext';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 
-const RequestForm = dynamic(() => import('@components/RequestForm'), { ssr: false });
-const RequestCard = dynamic(() => import('@components/RequestCard'), { ssr: false });
+const RequestForm = dynamic(() => import('@components/RequestForm'));
+const RequestCard = dynamic(() => import('@components/RequestCard'));
 
 const Request: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);

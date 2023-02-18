@@ -11,7 +11,11 @@ const LandingHeader = () => {
         <source src="/beach-soccer.mp4" type="video/mp4" />
       </video>
       <div className="relative z-10 text-center">
-        <nav className={`navbar justify-between max-md:px-5 px-10 ${applyBackground ? 'bg-base-200' : 'bg-transparent'} sticky top-0`}>
+        <nav
+          className={`navbar justify-between px-10 max-md:px-5 ${
+            applyBackground ? 'bg-gradient-to-b from-transparent to-base-200' : ''
+          } sticky top-0`}
+        >
           <p className="btn-ghost btn text-xl font-bold md:text-3xl">PlayPal</p>
           <Link href={'/auth/signin'} className="btn-primary btn gap-2">
             <IoLogIn className="h-6 w-6" />
