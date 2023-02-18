@@ -5,8 +5,6 @@ import {
   SignInData,
   SignUpSchema,
   SignUpData,
-  BookingSchema,
-  BookingType,
   RequestData,
   RequestSchema,
   ResetSchema,
@@ -28,7 +26,7 @@ interface FormProps {
     valueAsNumber?: boolean;
     options?: { value: string; label: string }[];
   }[];
-  onSubmit: SubmitHandler<SignInData | SignUpData | BookingType | RequestData>;
+  onSubmit: SubmitHandler<SignInData | SignUpData | RequestData>;
   form: 'SignIn' | 'SignUp' | 'Booking' | 'Request' | 'Reset' | 'PasswordChange' | 'Listing';
   buttonType: 'submit' | 'reset' | 'button';
   buttonText: string;
