@@ -7,16 +7,7 @@ interface InputProps extends InputCommonProps {
   valueAsNumber?: boolean;
 }
 
-const Input = ({
-  label,
-  name,
-  type,
-  register,
-  errors,
-  className,
-  placeholder,
-  valueAsNumber = false
-}: InputProps) => {
+const Input = ({ label, name, type, register, errors, className, placeholder, valueAsNumber = false }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -33,21 +24,12 @@ const Input = ({
           type={type === 'password' && showPassword ? 'text' : type}
           name={name}
           placeholder={placeholder}
-          className={`input-bordered input-primary input w-full  ${
-            errors[name] ? 'input-error' : ''
-          }`}
+          className={`input-bordered input-primary input w-full  ${errors[name] ? 'input-error' : ''}`}
           {...register(name, { valueAsNumber: valueAsNumber })}
         />
-        {type === 'password' && (
-          <ShowHideButton
-            handleShowPassword={toggleShowPassword}
-            showPassword={showPassword}
-          />
-        )}
+        {type === 'password' && <ShowHideButton handleShowPassword={toggleShowPassword} showPassword={showPassword} />}
       </div>
-      {errors[name] && (
-        <p className="text-xs text-red-500">{errors[name].message}</p>
-      )}
+      {errors[name] && <p className="text-xs text-red-500">{errors[name].message}</p>}
     </div>
   );
 };

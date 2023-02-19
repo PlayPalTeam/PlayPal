@@ -1,7 +1,9 @@
 import Form from '@components/FormComponent';
-import FormTitle from '@components/FormTitle';
 import { ForgotformFields } from '@content/contents';
 import useHelper from '@hooks/useHelper';
+import dynamic from 'next/dynamic';
+
+const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
 
 const ForgotPassword = () => {
   const { onPasswordSubmit } = useHelper();

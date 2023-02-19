@@ -1,5 +1,5 @@
 import { useUserProfile } from '@context/UserProfileContext';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useUser } from '@supabase/auth-helpers-react';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect } from 'react';
@@ -48,7 +48,7 @@ const Profile = () => {
     handleSubmit,
     formState: { isSubmitting }
   } = useForm({
-    resolver: zodResolver(UserProfileSchema)
+    resolver: yupResolver(UserProfileSchema)
   });
 
   const onSubmit = useCallback(

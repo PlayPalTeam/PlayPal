@@ -3,9 +3,9 @@ import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 import { object, string, number, InferType, array, date } from 'yup';
 
-export type names = 'role' | 'email' | 'password' | 'username' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
+export type names = 'email' | 'password' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
 
-export type registerType = SignInData | SignUpData | RequestData | ForgotPasswordData | ResetData;
+export type registerType = RequestData | ForgotPasswordData | ResetData;
 
 export interface InputCommonProps {
   name: names;
@@ -16,70 +16,33 @@ export interface InputCommonProps {
   errors?: any;
 }
 
-const usernameValidation = z
-  .string()
+const usernameValidation = string()
   .min(3)
   .max(20)
-  .trim()
-  .regex(/^[a-zA-Z0-9_]+$/);
-
-const emailValidation = z.string().email().trim();
+  .matches(/^[a-zA-Z0-9_]+$/);
 
 // Validates that the input is a non-empty string that is at least 8 characters long
 // contains at least one uppercase letter, one lowercase letter, one number, and one special character
-const passwordValidation = z
-  .string()
-  .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
-  .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-  .regex(new RegExp('.*\\d.*'), 'One number')
-  .regex(new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'), 'One special character')
-  .min(8, 'Must be at least 8 characters in length');
-
-export const SignUpSchema = z.object({
-  username: usernameValidation,
-  email: emailValidation,
-  password: passwordValidation,
-  role: z.enum(['user', 'lister'])
-});
-
-export type SignUpData = z.infer<typeof SignUpSchema>;
-
-export interface SignUpFormProps {
-  label: string;
-  type: 'text' | 'email' | 'password' | 'select';
-  name: keyof SignUpData;
-  placeholder?: string;
-  options?: { value: string; label: string }[];
-}
-
-// Schema for validating the input for a sign in form
-export const SignInSchema = z.object({
-  email: emailValidation,
-  password: passwordValidation
-});
-
-export type SignInFormProps = {
-  label: string;
-  type: HTMLInputTypeAttribute;
-  name: 'email' | 'password';
-  placeholder: string;
-};
-
-// Type representing the shape of an object that conforms to the SignInFormSchema
-export type SignInData = z.infer<typeof SignInSchema>;
+const passwordValidation = string()
+  .matches(new RegExp('.*[A-Z].*'), 'One uppercase character')
+  .matches(new RegExp('.*[a-z].*'), 'One lowercase character')
+  .matches(new RegExp('.*\\d.*'), 'One number')
+  .matches(new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'), 'One special character')
+  .min(8, 'Must be at least 8 characters in length')
+  .required('Enter password');
 
 // Schema for validatiSignInDatang the input for a user profile form
-export const UserProfileSchema = z.object({
+export const UserProfileSchema = object({
   username: usernameValidation,
-  full_name: z.string(),
-  phone_number: z.optional(z.number().positive())
+  full_name: string(),
+  phone_number: number().positive().integer().optional()
 });
 
 // Type representing the shape of an object that conforms to the UserProfileFormSchema
-export type UserProfileData = z.infer<typeof UserProfileSchema>;
+export type UserProfileData = InferType<typeof UserProfileSchema>;
 
 // Schema for validating the input for a password reset form
-export const ForgotPasswordSchema = z.object({
+export const ForgotPasswordSchema = object().shape({
   password: passwordValidation,
   confirmPassword: passwordValidation
 });
@@ -92,7 +55,7 @@ export interface ForgotPasswordFormPassword {
 }
 
 // Type representing the shape of an object that conforms to the ForgotPasswordSchema
-export type ForgotPasswordData = z.infer<typeof ForgotPasswordSchema>;
+export type ForgotPasswordData = InferType<typeof ForgotPasswordSchema>;
 
 export type ProfileFormProps = {
   label: string;
@@ -119,8 +82,8 @@ export interface RequestFormProps {
 
 export type RequestData = z.infer<typeof RequestSchema>;
 
-export const ResetSchema = z.object({
-  email: emailValidation
+export const ResetSchema = object().shape({
+  email: string().email().required('Enter email')
 });
 
 export interface ResetFormProps {
@@ -129,7 +92,23 @@ export interface ResetFormProps {
   type: 'email';
 }
 
-export type ResetData = z.infer<typeof ResetSchema>;
+export type ResetData = InferType<typeof ResetSchema>;
+
+export const SignInSchema = object().shape({
+  email: string().email().required('Enter email'),
+  password: passwordValidation
+});
+
+export type SignInType = InferType<typeof SignInSchema>;
+
+export const SignUpSchema = object().shape({
+  username: usernameValidation,
+  email: string().email().required('Enter email'),
+  password: passwordValidation,
+  role: string().required('Please select a role')
+});
+
+export type SignUpType = InferType<typeof SignUpSchema>;
 
 export const AddTurfSchema = object().shape({
   turf_name: string().required('Turf name is required').trim(),

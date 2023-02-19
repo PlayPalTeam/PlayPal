@@ -1,4 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '@lib/supabase';
 import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useCallback, useState } from 'react';
@@ -26,7 +26,7 @@ const ChangePassword = () => {
     reset,
     handleSubmit
   } = useForm<ForgotPasswordData>({
-    resolver: zodResolver(ForgotPasswordSchema)
+    resolver: yupResolver(ForgotPasswordSchema)
   });
 
   const { push } = useRouter();

@@ -1,21 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  SignInSchema,
-  SignInData,
-  SignUpSchema,
-  SignUpData,
-  RequestData,
-  RequestSchema,
-  ResetSchema,
-  names,
-  ForgotPasswordSchema,
-  registerType
-} from '../types/types';
+import { RequestData, RequestSchema, ResetSchema, names, ForgotPasswordSchema, registerType, ForgotPasswordData, ResetData } from '../types/types';
 import { HTMLInputTypeAttribute } from 'react';
 import Button from './Button';
 import Input from './Input';
 import SelectInput from './SelectInput';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 interface FormProps {
   formFields: {
@@ -26,8 +15,8 @@ interface FormProps {
     valueAsNumber?: boolean;
     options?: { value: string; label: string }[];
   }[];
-  onSubmit: SubmitHandler<SignInData | SignUpData | RequestData>;
-  form: 'SignIn' | 'SignUp' | 'Booking' | 'Request' | 'Reset' | 'PasswordChange' | 'Listing';
+  onSubmit: SubmitHandler<ForgotPasswordData | ResetData | RequestData>;
+  form: 'SignUp' | 'Request' | 'Reset' | 'PasswordChange';
   buttonType: 'submit' | 'reset' | 'button';
   buttonText: string;
   className?: string;
@@ -35,8 +24,6 @@ interface FormProps {
 
 const Form = ({ onSubmit, formFields, buttonText, buttonType, form, className }: FormProps) => {
   const formSchemas = {
-    SignIn: SignInSchema,
-    SignUp: SignUpSchema,
     Request: RequestSchema,
     Reset: ResetSchema,
     PasswordChange: ForgotPasswordSchema
@@ -48,7 +35,7 @@ const Form = ({ onSubmit, formFields, buttonText, buttonType, form, className }:
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<registerType>({
-    resolver: zodResolver(schema)
+    resolver: yupResolver(schema)
   });
 
   return (

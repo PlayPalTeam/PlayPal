@@ -46,7 +46,6 @@ const Booking = () => {
   }
 
   const filterSlot = books.filter((book) => book?.date === date?.toString()).flatMap((book) => book?.times);
-  console.log(filterSlot)
 
   const onSubmit: SubmitHandler<BookTurfType> = async (data) => {
     const slot = getValues('slot').map((t) => t.value);

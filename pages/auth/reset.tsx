@@ -1,8 +1,11 @@
 import Form from '@components/FormComponent';
-import FormTitle from '@components/FormTitle';
 import { ResetPasswordForm } from '@content/contents';
 import useHelper from '@hooks/useHelper';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+
+const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
+
 
 const ResetPasswordLink = () => {
   const { onResetSubmit } = useHelper();
