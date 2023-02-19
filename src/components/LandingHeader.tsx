@@ -17,7 +17,7 @@ const LandingHeader = () => {
           } sticky top-0`}
         >
           <p className="btn-ghost btn text-xl font-bold md:text-3xl">PlayPal</p>
-          <Link href={'/auth/signin'} className="btn-primary btn gap-2">
+          <Link href={'/auth/signin'} className="btn-outline btn-primary btn gap-2">
             <IoLogIn className="h-6 w-6" />
             <span>Sign In</span>
           </Link>

@@ -25,7 +25,7 @@ interface FormTitleProps {
 }
 
 const FormTitle = ({ title }: FormTitleProps) => {
-  return <h1 className="mb-4 text-center text-4xl">{title}</h1>;
+  return <h1 className="mb-4 text-center text-4xl underline">{title}</h1>;
 };
 
 const FormLabel = ({ name, label, children }: FormLabelProps) => {
@@ -60,9 +60,7 @@ const FormInput = ({ name, label, type = 'text', placeholder }: FormInputProps) 
     <FormLabel name={name} label={label}>
       <div className="relative">
         <input
-          className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full focus-within:outline-none ${
-            errors[name] ? 'input-error' : 'input-primary'
-          }`}
+          className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full  ${errors[name] ? 'input-error' : 'input-primary'}`}
           type={showPassword ? 'text' : type}
           id={name}
           placeholder={placeholder}
@@ -71,7 +69,7 @@ const FormInput = ({ name, label, type = 'text', placeholder }: FormInputProps) 
         {type === 'password' && (
           <button
             type="button"
-            className="absolute top-2 right-2 p-2"
+            className="absolute top-1 right-2 p-2"
             onClick={togglePasswordVisibility}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
@@ -127,7 +125,7 @@ const FormSelect = ({ label, name, options }: FormSelectProps) => {
 
   return (
     <FormLabel name={name} label={label}>
-      <Controller name={name} control={control} render={({ field }) => <Select options={options} {...field} />} />
+      <Controller name={name} control={control} render={({ field }) => <Select isSearchable={false} options={options} {...field} />} />
     </FormLabel>
   );
 };

@@ -1,7 +1,7 @@
 import { HTMLInputTypeAttribute } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
-import { object, string, number, InferType, array, date } from 'yup';
+import { object, string, number, InferType, array, date, ref } from 'yup';
 
 export type names = 'email' | 'password' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
 
@@ -17,8 +17,8 @@ export interface InputCommonProps {
 }
 
 const usernameValidation = string()
-  .min(3)
-  .max(20)
+  .min(3, 'Minimum 3 character')
+  .max(20, 'Maximum 20 character')
   .matches(/^[a-zA-Z0-9_]+$/);
 
 // Validates that the input is a non-empty string that is at least 8 characters long
@@ -103,41 +103,53 @@ export type SignInType = InferType<typeof SignInSchema>;
 
 export const SignUpSchema = object().shape({
   username: usernameValidation,
-  email: string().email().required('Enter email'),
+  email: string().email().required('Please enter your email'),
   password: passwordValidation,
-  role: string().required('Please select a role')
+  confirm_password: string().oneOf([ref('password'), null], 'Password must match'),
+  role: object()
+    .shape({
+      value: string().required(),
+      label: string().required()
+    })
+    .required('Please select a role')
 });
 
 export type SignUpType = InferType<typeof SignUpSchema>;
 
 export const AddTurfSchema = object().shape({
-  turf_name: string().required('Turf name is required').trim(),
+  turf_name: string().trim().required('Please enter a name for the turf'),
   open_hour: string()
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
-    .required('Open hour is required'),
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter a valid opening time (format: HH:mm)')
+    .required('Please enter the opening time for the turf'),
   close_hour: string()
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { excludeEmptyString: true })
-    .required('Close hour is required'),
-  price: number().required('Price is required').positive().integer('Enter number'),
-  capacity: number().required('Capacity is required').positive().integer(),
-  address: string().trim().required('Address is required'),
-  description: string().trim().required('Description is required'),
+    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter a valid closing time (format: HH:mm)')
+    .required('Please enter the closing time for the turf'),
+  price: number()
+    .integer('Please enter a whole number for the price')
+    .positive('Please enter a positive number for the price')
+    .required('Please enter a price for the turf'),
+  capacity: number()
+    .integer('Please enter a whole number for the capacity')
+    .positive('Please enter a positive number for the capacity')
+    .required('Please enter a capacity for the turf'),
+  address: string().trim().required('Please enter an address for the turf'),
+  description: string().trim().required('Please enter a description for the turf'),
   amenities: array()
     .of(
       object().shape({
-        value: string().required(),
-        label: string().required()
+        value: string().required('Please enter a value for this amenity'),
+        label: string().required('Please enter a label for this amenity')
       })
     )
-    .required('Amenities is required'),
+    .required('Please select at least one amenity for the turf'),
   sports: array()
     .of(
       object().shape({
-        value: string().required(),
-        label: string().required()
+        value: string().required('Please enter a value for this sport'),
+        label: string().required('Please enter a label for this sport')
       })
     )
-    .required('Sports is required')
+    .required('Please select at least one sport for the turf')
 });
 
 export type TurfFormValues = InferType<typeof AddTurfSchema>;

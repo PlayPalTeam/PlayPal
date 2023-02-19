@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { SignInSchema, SignInType } from '../../src/types/types';
@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { supabase } from '@lib/supabase';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
 const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
@@ -63,7 +63,9 @@ const SignIn = () => {
 
 export default SignIn;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const supabase = createServerSupabaseClient(context);
+
   const {
     data: { session }
   } = await supabase.auth.getSession();
