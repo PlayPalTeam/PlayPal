@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '@lib/supabase';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -51,7 +52,7 @@ const SignUp = () => {
       <Head>
         <title>Sign Up</title>
       </Head>
-      <main className="form-control mx-auto h-screen w-[80%] max-w-[34rem] justify-center space-y-5">
+      <main className="form-control mx-auto h-screen w-[80%] max-w-md justify-center space-y-5">
         <FormProvider {...method}>
           <FormTitle title="Sign Up" />
           <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
@@ -65,6 +66,11 @@ const SignUp = () => {
           <FormSelect name="role" label="Role" options={options} />
           <Button text="Sign Up" type="submit" onClick={method.handleSubmit(onSignUpSubmit)} disabled={method.formState.isSubmitting} />
         </FormProvider>
+        <div className="border-t-2 pt-4">
+          <Link className="btn-block btn" href={'signin'}>
+            Already have an account? Sign In
+          </Link>
+        </div>
       </main>
     </>
   );

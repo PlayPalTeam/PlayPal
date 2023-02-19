@@ -3,9 +3,9 @@ import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 import { object, string, number, InferType, array, date, ref } from 'yup';
 
-export type names = 'email' | 'password' | 'player_needed' | 'turf_id' | 'game' | 'game_date' | 'confirmPassword';
+export type names = 'player_needed' | 'turf_id' | 'game' | 'game_date';
 
-export type registerType = RequestData | ForgotPasswordData | ResetData;
+export type registerType = RequestData;
 
 export interface InputCommonProps {
   name: names;
@@ -41,22 +41,6 @@ export const UserProfileSchema = object({
 // Type representing the shape of an object that conforms to the UserProfileFormSchema
 export type UserProfileData = InferType<typeof UserProfileSchema>;
 
-// Schema for validating the input for a password reset form
-export const ForgotPasswordSchema = object().shape({
-  password: passwordValidation,
-  confirmPassword: passwordValidation
-});
-
-export interface ForgotPasswordFormPassword {
-  label: string;
-  name: 'password' | 'confirmPassword';
-  placeholder: string;
-  type: HTMLInputTypeAttribute;
-}
-
-// Type representing the shape of an object that conforms to the ForgotPasswordSchema
-export type ForgotPasswordData = InferType<typeof ForgotPasswordSchema>;
-
 export type ProfileFormProps = {
   label: string;
   name: 'email' | 'username' | 'full_name';
@@ -82,18 +66,6 @@ export interface RequestFormProps {
 
 export type RequestData = z.infer<typeof RequestSchema>;
 
-export const ResetSchema = object().shape({
-  email: string().email().required('Enter email')
-});
-
-export interface ResetFormProps {
-  label: string;
-  name: 'email';
-  type: 'email';
-}
-
-export type ResetData = InferType<typeof ResetSchema>;
-
 export const SignInSchema = object().shape({
   email: string().email().required('Enter email'),
   password: passwordValidation
@@ -115,6 +87,19 @@ export const SignUpSchema = object().shape({
 });
 
 export type SignUpType = InferType<typeof SignUpSchema>;
+
+export const ResetLinkSchema = object().shape({
+  email: string().email().required('Please enter your email')
+});
+
+export type ResetLinkType = InferType<typeof ResetLinkSchema>;
+
+export const PasswordSchema = object().shape({
+  password: passwordValidation,
+  confirm_password: string().oneOf([ref('password'), null], 'Password must match')
+});
+
+export type PasswordType = InferType<typeof PasswordSchema>;
 
 export const AddTurfSchema = object().shape({
   turf_name: string().trim().required('Please enter a name for the turf'),

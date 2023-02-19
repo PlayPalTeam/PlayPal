@@ -26,20 +26,11 @@
 			"@context/*": [
 				"src/context/*"
 			],
-			"@utils/*": [
-				"src/utils/*"
-			],
-			"@content/*": [
-				"src/content/*"
-			],
 			"@hooks/*": [
 				"src/hooks/*"
 			],
 			"@lib/*": [
 				"src/lib/*"
-			],
-			"@types/*": [
-				"src/types/*"
 			]
 		}
 	},

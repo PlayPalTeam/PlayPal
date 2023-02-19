@@ -1,54 +1,8 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import moment from 'moment';
-import { useRouter } from 'next/router';
-import { SubmitHandler } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { ResetData, ForgotPasswordData } from '../types/types';
 import { useUserProfile } from '@context/UserProfileContext';
 
 const useHelper = () => {
-  const { push } = useRouter();
   const { userProfile } = useUserProfile();
-
-  const supabase = useSupabaseClient();
-
-  const ErrorMessage = ({ message }: { message: string }) => {
-    return toast.error(message);
-  };
-
-  const SuccessMessage = ({ message }: { message: string }) => {
-    return toast.success(message);
-  };
-
-  const onResetSubmit: SubmitHandler<ResetData> = async (email) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email.email, {
-      redirectTo: 'http://localhost:3000/auth/forgot'
-    });
-
-    if (error) {
-      ErrorMessage({ message: error.message });
-    }
-
-    SuccessMessage({ message: 'Check your email' });
-  };
-
-  const onPasswordSubmit: SubmitHandler<ForgotPasswordData> = async ({ password, confirmPassword }) => {
-    if (password !== confirmPassword) {
-      ErrorMessage({ message: 'Passwords must match' });
-      return;
-    }
-
-    const { error } = await supabase.auth.updateUser({
-      password: password
-    });
-
-    if (error) {
-      ErrorMessage({ message: error.message });
-    }
-
-    SuccessMessage({ message: 'Password reset successful!' });
-    push('/auth/signin');
-  };
 
   const getRoleHref = (route: string) => {
     if (!route) {
@@ -84,11 +38,7 @@ const useHelper = () => {
   };
 
   return {
-    onResetSubmit,
-    onPasswordSubmit,
     getRoleHref,
-    ErrorMessage,
-    SuccessMessage,
     createOneHourSlot,
     convertTime
   };

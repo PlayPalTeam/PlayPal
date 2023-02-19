@@ -19,8 +19,6 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   const { books } = useBookContext();
   const { requests } = useRequestContext();
 
-  const { ErrorMessage } = useHelper();
-
   const {
     reset,
     register,
@@ -91,9 +89,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
     const checkIfExist = requests.find((req) => req.game_date === formData.game_date && req.turf_id === formData.turf_id);
 
     if (checkIfExist) {
-      ErrorMessage({
-        message: `Request aleady exsist for ${formData.game_date} `
-      });
+      toast.error(`Request aleady exsist for ${formData.game_date} `);
     } else {
       addRequest(formData);
       reset();

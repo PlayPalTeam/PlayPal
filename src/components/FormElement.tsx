@@ -25,7 +25,7 @@ interface FormTitleProps {
 }
 
 const FormTitle = ({ title }: FormTitleProps) => {
-  return <h1 className="mb-4 text-center text-4xl underline">{title}</h1>;
+  return <h1 className="mb-4 text-center text-4xl">{title}</h1>;
 };
 
 const FormLabel = ({ name, label, children }: FormLabelProps) => {
@@ -90,11 +90,7 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
 
   return (
     <FormLabel name={name} label={label}>
-      <textarea
-        className={`textarea w-full resize-none focus-within:outline-none ${errors[name] ? 'textarea-error' : 'textarea-primary'}`}
-        id={name}
-        {...register(name)}
-      />
+      <textarea className={`textarea w-full resize-none  ${errors[name] ? 'textarea-error' : 'textarea-primary'}`} id={name} {...register(name)} />
     </FormLabel>
   );
 };
