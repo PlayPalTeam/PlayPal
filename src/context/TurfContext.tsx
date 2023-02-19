@@ -28,7 +28,6 @@ export const TurfContext = createContext<TurfContextType>({
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
   const [allTurfs, setAllTurfs] = useState<Turf[]>([]);
-  const { userProfile } = useUserProfile();
 
   const user = useUser();
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useTurfContext } from '@context/TurfContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -51,7 +51,7 @@ const Booking = () => {
   const onSubmit: SubmitHandler<BookTurfType> = async (data) => {
     const slot = getValues('slot').map((t) => t.value);
     const sport = getValues('sport.value');
-    addBooking(turf?.turf_id, { date: format(data.date, 'yyyy-mM-dd'), times: slot, selectedsport: sport });
+    await addBooking(turf?.turf_id, { date: format(data.date, 'yyyy-mM-dd'), times: slot, selectedsport: sport });
     reset();
   };
 
@@ -113,4 +113,4 @@ const Booking = () => {
   );
 };
 
-export default Booking;
+export default memo(Booking);
