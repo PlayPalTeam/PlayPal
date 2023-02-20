@@ -11,12 +11,14 @@ interface UserProfileContextType {
   userProfile: Profile;
   allData: Profile[];
   updateUserProfile: (update: ProfileUpdate) => Promise<void>;
+  getData:()=>Promise<void>
 }
 
 const defaultValue: UserProfileContextType = {
   userProfile: null,
   allData: null,
-  updateUserProfile: () => Promise.resolve()
+  updateUserProfile: () => Promise.resolve(),
+  getData:()=>Promise.resolve()
 };
 
 export const UserProfileContext = createContext<UserProfileContextType>(defaultValue);
@@ -52,7 +54,6 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ childre
     if (user && userProfile?.role !== 'moderator') {
       fetchData();
     }
-
     if (user && userProfile?.role === 'moderator') {
       getData();
     }
@@ -68,7 +69,7 @@ export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ childre
     fetchData();
   };
 
-  return <UserProfileContext.Provider value={{ userProfile, allData, updateUserProfile }}>{children}</UserProfileContext.Provider>;
+  return <UserProfileContext.Provider value={{ userProfile, allData, updateUserProfile,getData }}>{children}</UserProfileContext.Provider>;
 };
 
 export const useUserProfile = () => useContext(UserProfileContext);

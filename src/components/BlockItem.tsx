@@ -1,7 +1,13 @@
+import { useUserProfile } from '@context/UserProfileContext';
 import toast from 'react-hot-toast';
 import { supabase } from 'src/lib/supabase';
 
+
+
 const BlockItem = ({ userData }) => {
+
+  const {getData} = useUserProfile()
+
   const updateProfileBlock = async (id: string, block: boolean) => {
     const { error } = await supabase.from('profiles').update({ block: !block }).eq('id', id);
 
@@ -9,8 +15,9 @@ const BlockItem = ({ userData }) => {
       toast.error(error.message);
       return;
     }
-
+     getData()
     toast.success(`User is blocked`);
+  
   };
 
   const handleBlockButtonClick = () => {
