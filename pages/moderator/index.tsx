@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <>
       <div>
-        <div className="m-4 mt-16 mb-4 flex justify-between sm:ml-32 sm:mr-32">
+        <div className="sm:m-4 sm:mt-16 mb-4 flex justify-between sm:ml-32 sm:mr-32 ml-3 mr-3  mt-10">
           <select
             name="choice"
             id="choice"
@@ -27,7 +27,7 @@ const Index = () => {
             onClick={() => {
               setSearchBox('');
             }}
-            className="select-primary select w-full max-w-xs"
+            className="select-primary select sm:w-full sm:max-w-xs"
           >
             <option value="all">ALL</option>
             <option value="users">USERS</option>
@@ -42,15 +42,15 @@ const Index = () => {
               setSearchBox(e.target.value);
             }}
             value={searchBox}
-            className="input-bordered input-primary input w-full max-w-xs"
+            className="input-bordered input-primary input sm:w-full sm:max-w-xs max-w-sm w-36 sm:placeholder:text-lg  placeholder:text-xs"
           />
         </div>
 
-        <div className="mt-12  rounded-xl sm:ml-44 sm:mr-44  ">
-          <div className="flex justify-around rounded-xl border  tracking-widest font-bold text-xl border-info">
-            <div className="flex flex-1 justify-center p-6 ">USERNAME</div>
-            <div className="flex flex-1 justify-center p-6">FULL NAME</div>
-            <div className="flex flex-1 justify-center p-6">ACTION</div>
+        <div className="mt-12  rounded-xl sm:ml-44 sm:mr-44 ml-3 mr-3 ">
+          <div className="flex justify-around rounded-xl border  sm:tracking-widest sm:font-bold sm:text-xl border-info text-xs">
+            <div className="flex flex-1 justify-center sm:p-6 p-5">USERNAME</div>
+            <div className="flex flex-1 justify-center sm:p-6 p-5">FULL-NAME</div>
+            <div className="flex flex-1 justify-center sm:p-6 p-5">ACTION</div>
           </div>
 
           <div className=" ">
