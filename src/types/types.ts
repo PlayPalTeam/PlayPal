@@ -1,20 +1,5 @@
-import { HTMLInputTypeAttribute } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 import { object, string, number, InferType, array, date, ref } from 'yup';
-
-export type names = 'player_needed' | 'turf_id' | 'game' | 'game_date';
-
-export type registerType = RequestData;
-
-export interface InputCommonProps {
-  name: names;
-  label: string;
-  placeholder?: string;
-  register: UseFormRegister<registerType>;
-  className?: string;
-  errors?: any;
-}
 
 const usernameValidation = string()
   .min(3, 'Minimum 3 character')
@@ -30,24 +15,6 @@ const passwordValidation = string()
   .matches(new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'), 'One special character')
   .min(8, 'Must be at least 8 characters in length')
   .required('Enter password');
-
-// Schema for validatiSignInDatang the input for a user profile form
-export const UserProfileSchema = object({
-  username: usernameValidation,
-  full_name: string(),
-  phone_number: number().positive().integer().optional()
-});
-
-// Type representing the shape of an object that conforms to the UserProfileFormSchema
-export type UserProfileData = InferType<typeof UserProfileSchema>;
-
-export type ProfileFormProps = {
-  label: string;
-  name: 'email' | 'username' | 'full_name';
-  type?: HTMLInputTypeAttribute;
-  placeholder?: string;
-  disabled?: boolean;
-};
 
 export const RequestSchema = z.object({
   player_needed: z.number().positive(),
@@ -100,6 +67,19 @@ export const PasswordSchema = object().shape({
 });
 
 export type PasswordType = InferType<typeof PasswordSchema>;
+
+// Schema for validatiSignInDatang the input for a user profile form
+export const ProfileSchema = object().shape({
+  username: usernameValidation.optional(),
+  full_name: string().optional().nullable(),
+  phone_number: string()
+    .matches(new RegExp(/((\+*)((0[ -]*)*|((91 )*))((\d{12})+|(\d{10})+))|\d{5}([- ]*)\d{6}/), 'Phone number is not valid')
+    .optional()
+    .nullable()
+});
+
+// Type representing the shape of an object that conforms to the UserProfileFormSchema
+export type ProfileType = InferType<typeof ProfileSchema>;
 
 export const AddTurfSchema = object().shape({
   turf_name: string().trim().required('Please enter a name for the turf'),

@@ -1,7 +1,6 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import { memo, useCallback, useState } from 'react';
-import { toast } from 'react-hot-toast';
 import { Database } from 'src/types/database.types';
 
 type RequestDataProps = Database['public']['Tables']['requests']['Row'];
@@ -35,14 +34,13 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     updateUserProfile({ request: [id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
-  const handleDeleteCreatedRequest = useCallback(() => {
-    deleteRequest(id);
-  }, [id, deleteRequest]);
+  const handleDeleteCreatedRequest =async () => {
+    await deleteRequest(id);
+  };
 
   const request = requests.find((req) => req.id === id);
 
   const handleDeleteAcceptedRequest = () => {
-    toast.success('Clicked');
     updateUserProfile({
       request: userProfile.request?.filter((request) => request !== id.toString())
     });
@@ -58,7 +56,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
   const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
   return (
-    <div className="card mx-auto w-[90%] bg-neutral text-neutral-content">
+    <div className="card bg-neutral text-neutral-content">
       <div className="card-body">
         <h2 className="card-title">{game}</h2>
         <p>Date: {game_date}</p>
@@ -79,10 +77,24 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
           ))}
         </ul>
         <div className="card-actions md:justify-end ">
-          <button type="button" onClick={handleAccept} className="btn-primary btn max-md:w-full">
-            Accept
+          {userProfile?.id === profile_id ? (
+            <span className="tooltip tooltip-info" data-tip="Delete the request you have created">
+              <button type="button" onClick={handleDeleteCreatedRequest} className="btn-outline btn-error btn max-md:w-full">
+                Delete Your Request
+              </button>
+            </span>
+          ) : userProfile?.request.includes(id.toString()) ? (
+            <button type="button" onClick={handleDeleteAcceptedRequest} className="btn-outline btn-error btn max-md:w-full">
+              Delete Request
+            </button>
+          ) : (
+            <button type="button" onClick={handleAccept} className="btn-primary btn max-md:w-full">
+              Accept Request
+            </button>
+          )}
+          <button className="btn" onClick={() => setIsOpen(!isOpen)}>
+            Show Players
           </button>
-          <button className="btn-secondary btn">Show Players</button>
         </div>
       </div>
     </div>

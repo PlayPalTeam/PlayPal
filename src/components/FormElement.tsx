@@ -13,6 +13,9 @@ interface FormLabelProps {
 interface FormInputProps extends Omit<FormLabelProps, 'children'> {
   type?: React.HTMLInputTypeAttribute;
   placeholder?: string;
+  defaultValue?: string | number | readonly string[];
+  disabled?: boolean;
+  className?: string;
 }
 
 interface FormSelectProps extends Omit<FormLabelProps, 'children'> {
@@ -44,7 +47,7 @@ const FormLabel = ({ name, label, children }: FormLabelProps) => {
   );
 };
 
-const FormInput = ({ name, label, type = 'text', placeholder }: FormInputProps) => {
+const FormInput = ({ name, label, type = 'text', placeholder, defaultValue, disabled, className }: FormInputProps) => {
   const {
     register,
     formState: { errors }
@@ -60,10 +63,14 @@ const FormInput = ({ name, label, type = 'text', placeholder }: FormInputProps) 
     <FormLabel name={name} label={label}>
       <div className="relative">
         <input
-          className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full  ${errors[name] ? 'input-error' : 'input-primary'}`}
+          className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full  ${
+            errors[name] ? 'input-error' : 'input-primary'
+          } ${className}`}
           type={showPassword ? 'text' : type}
           id={name}
           placeholder={placeholder}
+          defaultValue={defaultValue}
+          disabled={disabled}
           {...register(name)}
         />
         {type === 'password' && (

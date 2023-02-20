@@ -68,7 +68,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="navbar shadow-md">
+    <nav className="navbar shadow-md md:px-20">
       <div className="navbar-start">
         <div className="lg:hidden">
           <Menu button={<HiOutlineMenuAlt1 className="h-8 w-8" />}>
@@ -89,14 +89,13 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu dropEnd={true} button={<Avatar className="h-10 w-10 rounded-full" size="40" />}>
+        <Menu dropEnd={true} button={<Avatar className="h-12 w-12 rounded-full" size="40" />}>
           {userProfile?.role && (
             <>
               <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
-              <MenuItem href={getRoleHref('settings')} text="Settings" icon={<IoSettingsOutline />} />
             </>
           )}
-          <button className="btn-ghost btn-md btn" onClick={handleSignOut} type="submit">
+          <button className="btn-error btn-md btn" onClick={handleSignOut} type="submit">
             Sign Out
           </button>
         </Menu>

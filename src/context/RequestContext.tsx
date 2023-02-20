@@ -42,7 +42,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && userProfile?.role === 'user') {
+    if (user) {
       getRequests();
     }
   }, [getRequests, user, userProfile?.role]);
@@ -54,7 +54,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
       toast.error(error.message);
     }
 
-    toast.success('Your request is created');
+
   };
 
   async function updatePlayerNeeded(requestUpdate: RequestUpdate) {

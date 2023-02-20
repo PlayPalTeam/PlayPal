@@ -92,7 +92,6 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
       toast.error(`Request aleady exsist for ${formData.game_date} `);
     } else {
       addRequest(formData);
-      reset();
     }
   };
 

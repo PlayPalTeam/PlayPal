@@ -12,41 +12,29 @@ export interface Database {
       bookings: {
         Row: {
           booking_id: string
-          created_at: string | null
           date: string | null
-          end_time: string | null
           profile_id: string | null
           selectedsport: string | null
-          start_time: string | null
           times: string[] | null
           turf_id: string | null
-          updated_at: string | null
           user: string | null
         }
         Insert: {
           booking_id?: string
-          created_at?: string | null
           date?: string | null
-          end_time?: string | null
           profile_id?: string | null
           selectedsport?: string | null
-          start_time?: string | null
           times?: string[] | null
           turf_id?: string | null
-          updated_at?: string | null
           user?: string | null
         }
         Update: {
           booking_id?: string
-          created_at?: string | null
           date?: string | null
-          end_time?: string | null
           profile_id?: string | null
           selectedsport?: string | null
-          start_time?: string | null
           times?: string[] | null
           turf_id?: string | null
-          updated_at?: string | null
           user?: string | null
         }
       }
@@ -56,7 +44,7 @@ export interface Database {
           block: boolean | null
           full_name: string | null
           id: string
-          phone_number: number | null
+          phone_number: string | null
           request: string[] | null
           role: string | null
           username: string | null
@@ -66,7 +54,7 @@ export interface Database {
           block?: boolean | null
           full_name?: string | null
           id: string
-          phone_number?: number | null
+          phone_number?: string | null
           request?: string[] | null
           role?: string | null
           username?: string | null
@@ -76,7 +64,7 @@ export interface Database {
           block?: boolean | null
           full_name?: string | null
           id?: string
-          phone_number?: number | null
+          phone_number?: string | null
           request?: string[] | null
           role?: string | null
           username?: string | null

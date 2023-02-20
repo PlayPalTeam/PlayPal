@@ -22,7 +22,7 @@ const HomeUser: NextPage = () => {
   const bookingElement = books.map((book) => <BookingCard key={book.booking_id} {...book} />);
 
   return (
-    <main className="space-y-5 max-w-5xl mx-auto my-10">
+    <main className="mx-auto w-[90%] my-10 max-w-5xl space-y-5">
       <CardDisclosure title="Bookings" element={bookingElement} />
       <CardDisclosure title="Requests you created" element={requestCreateElement} />
       <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
