@@ -46,9 +46,9 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       toast.error(error.message);
     }
 
-    if (data) {
-      setBooks(data);
-    }
+    // if (data) {
+    //   setBooks(data);
+    // }
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
