@@ -55,11 +55,11 @@ export const SignUpSchema = object().shape({
 
 export type SignUpType = InferType<typeof SignUpSchema>;
 
-export const ResetLinkSchema = object().shape({
+export const EmailInputSchema = object().shape({
   email: string().email().required('Please enter your email')
 });
 
-export type ResetLinkType = InferType<typeof ResetLinkSchema>;
+export type EmailInputType = InferType<typeof EmailInputSchema>;
 
 export const PasswordSchema = object().shape({
   password: passwordValidation,

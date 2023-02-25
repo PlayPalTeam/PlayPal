@@ -6,7 +6,6 @@ import { MdSpaceDashboard } from 'react-icons/md';
 import { BiGitPullRequest } from 'react-icons/bi';
 import { CgCommunity } from 'react-icons/cg';
 import { AiOutlineProfile } from 'react-icons/ai';
-import { IoSettingsOutline } from 'react-icons/io5';
 import { GiTurtleShell } from 'react-icons/gi';
 import { supabase } from 'src/lib/supabase';
 import Avatar from './Avatar';

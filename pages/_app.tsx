@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
-import { Roboto } from '@next/font/google';
+import { Roboto } from 'next/font/google';
 import { useRouter } from 'next/router';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
@@ -11,9 +11,9 @@ import { RequestProvider } from '@context/RequestContext';
 import { TurfProvider } from '@context/TurfContext';
 import { UserProfileProvider } from '@context/UserProfileContext';
 import Transition from '@components/Transition';
+import Navbar from '@components/Navbar';
 
 import '../styles/globals.css';
-import Layout from '@components/Layout';
 
 const inter = Roboto({ weight: '400', subsets: ['latin'] });
 
@@ -37,6 +37,7 @@ function App({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
         <meta name="author" content="PlayPal Team" />
       </Head>
+      <Toaster position="top-right" />
       <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
         <RequestProvider>
           <BookingProvider>
@@ -46,20 +47,15 @@ function App({
                 router.pathname === '/community' ||
                 router.pathname.includes('lister') ||
                 router.pathname.includes('moderator') ? (
-                  <Layout title="">
+                  <>
+                    <Navbar />
                     <Transition>
-                      <main className={inter.className}>
-                        <Toaster position="top-right" />
-                        <Component {...pageProps} />
-                      </main>
+                      <Component {...pageProps} className={inter.className} />
                     </Transition>
-                  </Layout>
+                  </>
                 ) : (
                   <Transition>
-                    <main className={inter.className}>
-                      <Toaster position="top-right" />
-                      <Component {...pageProps} />
-                    </main>
+                    <Component {...pageProps} className={inter.className} />
                   </Transition>
                 )}
               </UserProfileProvider>

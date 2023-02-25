@@ -4,16 +4,16 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { ResetLinkSchema, ResetLinkType } from 'src/types/types';
+import { EmailInputSchema, EmailInputType } from 'src/types/types';
 
 const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
 const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
 const Button = dynamic(() => import('@components/Button'));
 
 const ResetPasswordLink = () => {
-  const method = useForm<ResetLinkType>({ resolver: yupResolver(ResetLinkSchema) });
+  const method = useForm<EmailInputType>({ resolver: yupResolver(EmailInputSchema) });
 
-  const onResetSubmit: SubmitHandler<ResetLinkType> = async (email) => {
+  const onResetSubmit: SubmitHandler<EmailInputType> = async (email) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email.email, {
       redirectTo: 'http://localhost:3000/auth/forgot'
     });

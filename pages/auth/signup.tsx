@@ -3,7 +3,6 @@ import { supabase } from '@lib/supabase';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { SignUpSchema, SignUpType } from 'src/types/types';
@@ -52,15 +51,15 @@ const SignUp = () => {
       <Head>
         <title>Sign Up</title>
       </Head>
-      <main className="form-control mx-auto h-screen w-[80%] max-w-md justify-center space-y-5">
+      <main className="mx-auto w-[80%] my-10 max-w-md space-y-5">
         <FormProvider {...method}>
           <FormTitle title="Sign Up" />
           <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
             <FormInput name="username" label="Username" placeholder="Enter the username you want.." />
           </div>
           <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
-            <FormInput name="password" label="Password" type={'password'} placeholder="Enter 8 character password..." />
-            <FormInput name="confirm_password" label="Retype Password" type={'password'} placeholder="Enter 8 character password..." />
+            <FormInput name="password" label="Password" type={'password'} placeholder="Enter your password..." />
+            <FormInput name="confirm_password" label="Retype Password" type={'password'} placeholder="Enter your password..." />
           </div>
           <FormInput name="email" label="Email" type="email" placeholder="Enter your email..." />
           <FormSelect name="role" label="Role" options={options} />
