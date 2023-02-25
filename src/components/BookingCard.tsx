@@ -4,11 +4,11 @@ import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
 
 const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
-  const {deleteBooking} = useBookContext()
+  const { deleteBooking } = useBookContext();
 
   const handleDelete = () => {
-    deleteBooking(booking_id)
-  }
+    deleteBooking(booking_id);
+  };
 
   return (
     <div className="card bg-neutral text-neutral-content">
@@ -34,7 +34,7 @@ const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
             </div>
           )}
           <hr className="my-5" />
-          <button onClick={handleDelete} type="button" className="btn-outline btn-primary btn">
+          <button onClick={handleDelete} type="button" className="btn-outline btn-error btn">
             Delete
           </button>
         </div>
