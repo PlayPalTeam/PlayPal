@@ -67,7 +67,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="navbar shadow-md md:px-20">
+    <nav className="navbar shadow-md md:px-48">
       <div className="navbar-start">
         <div className="lg:hidden">
           <Menu button={<HiOutlineMenuAlt1 className="h-8 w-8" />}>

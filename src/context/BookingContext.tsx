@@ -9,8 +9,6 @@ export type Booking = {
   booking_id: string;
   turf_id: string;
   date: string;
-  start_time: string;
-  end_time: string;
   times?: string[];
   selectedsport?: string;
   turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
@@ -19,14 +17,14 @@ export type Booking = {
 type Book = Database['public']['Tables']['bookings']['Row'];
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
-interface BookingContexType {
+interface BookingContextType {
   books: Booking[];
   listerbooks: Book[];
   addBooking: (id: string, booking: BookingInsert) => Promise<void>;
-  deleteBooking: (id: string) => Promise<void>;
+  deleteBooking: (booking_id: string) => Promise<void>;
 }
 
-const BookingContext = createContext<BookingContexType>({
+const BookingContext = createContext<BookingContextType>({
   books: [],
   listerbooks: [],
   addBooking: () => Promise.resolve(),
@@ -46,9 +44,9 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       toast.error(error.message);
     }
 
-    // if (data) {
-    //   setBooks(data);
-    // }
+    if (data) {
+      setBooks(data);
+    }
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
@@ -64,11 +62,11 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user) {
+    if (user && userProfile?.role !== 'lister') {
       getBookings();
     }
 
-    if (user) {
+    if (user && userProfile?.role === 'lister') {
       Bookings();
     }
   }, [Bookings, getBookings, user, userProfile?.role]);
@@ -86,14 +84,19 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deleteBooking = async (id: string) => {
-    await supabase.from('bookings').delete().eq('booking_id', id);
-    getBookings();
+  const deleteBooking = async (booking_id: string) => {
+    const { error } = await supabase.from('bookings').delete().eq('booking_id', booking_id);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      getBookings();
+    }
   };
 
   return <BookingContext.Provider value={{ books, listerbooks, addBooking, deleteBooking }}>{children}</BookingContext.Provider>;
 };
 
 export const useBookContext = () => {
-  return useContext<BookingContexType>(BookingContext);
+  return useContext<BookingContextType>(BookingContext);
 };

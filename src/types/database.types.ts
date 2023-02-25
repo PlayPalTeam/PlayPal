@@ -17,7 +17,6 @@ export interface Database {
           selectedsport: string | null
           times: string[] | null
           turf_id: string | null
-          user: string | null
         }
         Insert: {
           booking_id?: string
@@ -26,7 +25,6 @@ export interface Database {
           selectedsport?: string | null
           times?: string[] | null
           turf_id?: string | null
-          user?: string | null
         }
         Update: {
           booking_id?: string
@@ -35,7 +33,6 @@ export interface Database {
           selectedsport?: string | null
           times?: string[] | null
           turf_id?: string | null
-          user?: string | null
         }
       }
       profiles: {
@@ -72,7 +69,6 @@ export interface Database {
       }
       requests: {
         Row: {
-          created_at: string | null
           game: string | null
           game_date: string | null
           id: number
@@ -80,10 +76,8 @@ export interface Database {
           player_needed: number | null
           profile_id: string | null
           turf_id: string | null
-          updated_at: string | null
         }
         Insert: {
-          created_at?: string | null
           game?: string | null
           game_date?: string | null
           id?: number
@@ -91,10 +85,8 @@ export interface Database {
           player_needed?: number | null
           profile_id?: string | null
           turf_id?: string | null
-          updated_at?: string | null
         }
         Update: {
-          created_at?: string | null
           game?: string | null
           game_date?: string | null
           id?: number
@@ -102,7 +94,6 @@ export interface Database {
           player_needed?: number | null
           profile_id?: string | null
           turf_id?: string | null
-          updated_at?: string | null
         }
       }
       turfs: {
