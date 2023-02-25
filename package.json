@@ -10,8 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
-    "analyze": "cross-env ANALYZE=true next build"
+    "prepare": "husky install"
   },
   "dependencies": {
     "next": "^13.2.1",
@@ -37,7 +36,7 @@
     "date-fns-tz": "^2.0.0",
     "eslint": "^8.34.0",
     "eslint-config-next": "^13.2.1",
-    "framer-motion": "^9.1.7",
+    "framer-motion": "^10.0.0",
     "husky": "^8.0.3",
     "js-cookie": "^3.0.1",
     "postcss": "^8.4.21",
