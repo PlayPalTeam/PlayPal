@@ -1,7 +1,5 @@
-import Layout from '@components/Layout';
-
 const index = () => {
-  return <Layout title="Community">Work In Progress</Layout>;
+  return <main>Work In Progress</main>;
 };
 
 export default index;

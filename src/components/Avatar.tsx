@@ -1,9 +1,10 @@
-import { useMemo, useReducer } from 'react';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import Image from 'next/image';
-import { imageConvert } from 'upload-images-converter';
 import { Database } from 'src/types/database.types';
 import { supabase } from 'src/lib/supabase';
 import { useUserProfile } from 'src/context/UserProfileContext';
+import { toast } from 'react-hot-toast';
+import { useTurfContext } from '@context/TurfContext';
 
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 
@@ -14,7 +15,10 @@ type State = {
 
 type Action =
   | { type: 'SET_AVATAR_URL'; avatarUrl: Profiles['avatar_url'] }
-  | { type: 'SET_UPLOADING'; uploading: boolean };
+  | {
+      type: 'SET_UPLOADING';
+      uploading: boolean;
+    };
 
 const initialState: State = {
   avatarUrl: null,
@@ -34,41 +38,41 @@ function avatarReducer(state: State, action: Action): State {
 
 type Props = {
   showUploadButton?: boolean;
-  className: string;
-  size: string;
+  className?: string;
+  size?: string;
+  turf_image?: boolean;
 };
 
-export default function Avatar({ showUploadButton, className, size }: Props) {
+export default function Avatar({ showUploadButton, className, size, turf_image }: Props) {
   const [state, dispatch] = useReducer(avatarReducer, initialState);
   const { userProfile, updateUserProfile } = useUserProfile();
+  const { updateTurf, turfs } = useTurfContext();
 
   const downloadImage = async (path: string) => {
     try {
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .download(path);
+      const { data, error } = await supabase.storage.from('avatars').download(path);
       if (error) {
-        throw error;
+        toast.error(error.message);
       }
       const url = URL.createObjectURL(data);
-      dispatch({ type: 'SET_AVATAR_URL', avatarUrl: url });
+      dispatch({ type: 'SET_AVATAR_URL', avatarUrl: url }); 
     } catch (error) {
       console.log('Error downloading image: ', error);
     }
   };
 
-  useMemo(() => {
-    if (userProfile?.avatar_url) downloadImage(userProfile?.avatar_url);
+  useEffect(() => {
+    if (userProfile?.avatar_url) {
+      downloadImage(userProfile?.avatar_url);
+    }
   }, [userProfile?.avatar_url]);
 
-  const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
-  ) => {
+  const uploadAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
       dispatch({ type: 'SET_UPLOADING', uploading: true });
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.');
+        toast.error('You must select an image to upload.');
       }
 
       const file = event.target.files[0];
@@ -76,25 +80,24 @@ export default function Avatar({ showUploadButton, className, size }: Props) {
       const fileName = `${userProfile?.id}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      const convertedFile = await imageConvert(
-        event.target.files,
-        400,
-        400,
-        'image/webp',
-        true
-      );
+      const path = turf_image ? `turf/${filePath}` : `profile/${filePath}`;
 
-      let { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, convertedFile[0], { upsert: true });
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
 
       if (uploadError) {
-        throw uploadError.message;
+        toast.error(uploadError.message);
       }
 
-      updateUserProfile({ avatar_url: filePath });
-
-      downloadImage(userProfile?.avatar_url);
+      if (turf_image) {
+        updateTurf(userProfile?.id, { turf_image: path });
+        downloadImage(turfs.find((x) => x.profile_id === userProfile?.id).turf_image);
+      } else {
+        updateUserProfile({ avatar_url: path });
+        downloadImage(path);
+      }
     } catch (error) {
       alert('Error uploading avatar!');
       console.log(error);
@@ -104,15 +107,19 @@ export default function Avatar({ showUploadButton, className, size }: Props) {
   };
 
   return (
-    <div>
+    <>
       {state.avatarUrl ? (
-        <Image
-          src={state.avatarUrl}
-          alt="Avatar"
-          className={className}
-          width={400}
-          height={400}
-        />
+        <div className="flex flex-col items-center justify-center">
+          <Image src={state.avatarUrl} alt="Avatar" className={className} width={400} height={400} />
+          {showUploadButton && (
+            <div className="relative mt-5 text-center">
+              <label className="btn-primary btn" htmlFor="single">
+                {state.uploading ? 'Uploading ...' : 'Upload'}
+              </label>
+              <input className="absolute hidden" type="file" id="single" accept="image/*" onChange={uploadAvatar} disabled={state.uploading} />
+            </div>
+          )}
+        </div>
       ) : (
         <div
           className="animate-pulse overflow-hidden rounded-full bg-gray-500"
@@ -122,24 +129,6 @@ export default function Avatar({ showUploadButton, className, size }: Props) {
           }}
         />
       )}
-      {showUploadButton && (
-        <div className="relative mt-5 -translate-x-4 text-center">
-          <label
-            className="cursor-pointer rounded-md bg-emerald-300 px-4 py-2 hover:bg-emerald-400 active:bg-emerald-500"
-            htmlFor="single"
-          >
-            {state.uploading ? 'Uploading ...' : 'Upload'}
-          </label>
-          <input
-            className="absolute hidden"
-            type="file"
-            id="single"
-            accept="image/*"
-            onChange={uploadAvatar}
-            disabled={state.uploading}
-          />
-        </div>
-      )}
-    </div>
+    </>
   );
 }

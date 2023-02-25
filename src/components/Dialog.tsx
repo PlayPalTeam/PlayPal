@@ -1,5 +1,5 @@
 import { Transition, Dialog } from '@headlessui/react';
-import { FC, Fragment, SetStateAction } from 'react';
+import { Fragment, SetStateAction } from 'react';
 
 interface DialogBoxProps {
   title: string;
@@ -9,20 +9,10 @@ interface DialogBoxProps {
   setIsOpen: (value: SetStateAction<boolean>) => void;
 }
 
-const DialogBox = ({
-  isOpen,
-  setIsOpen,
-  title,
-  description,
-  children
-}: DialogBoxProps) => {
+const DialogBox = ({ isOpen, setIsOpen, title, description, children }: DialogBoxProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={() => setIsOpen(false)}
-      >
+      <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -46,18 +36,8 @@ const DialogBox = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel
-                className={
-                  'w-full max-w-md transform overflow-hidden rounded-2xl bg-base-100 p-6 text-left align-middle shadow-xl transition-all'
-                }
-              >
-                <Dialog.Title
-                  className={
-                    'text-center text-lg font-medium leading-6 text-gray-900'
-                  }
-                >
-                  {title}
-                </Dialog.Title>
+              <Dialog.Panel className={'w-full max-w-lg rounded-2xl bg-base-100 p-6 text-left align-middle shadow-xl'}>
+                <Dialog.Title className={'text-center text-lg font-medium leading-6'}>{title}</Dialog.Title>
                 {description && <Dialog.Description>Say</Dialog.Description>}
                 {children}
               </Dialog.Panel>

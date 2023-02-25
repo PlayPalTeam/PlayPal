@@ -1,20 +1,18 @@
-import Layout from '@components/Layout';
-import TurfCard from '@components/TurfCard';
 import { useTurfContext } from '@context/TurfContext';
+import dynamic from 'next/dynamic';
 
-const Lister = () => {
+const TurfCard = dynamic(() => import('@components/TurfCard'));
+const CardDisclosure = dynamic(() => import('@components/CardDisclosure'));
+
+const ListerDashBoard = () => {
   const { turfs } = useTurfContext();
+  const TurfELement = turfs.map((turf) => <TurfCard showBookings key={turf.turf_id} {...turf} />);
+
   return (
-    <Layout title="Lister">
-      <div className="w-full p-10">
-        {turfs.map((turf) => (
-          <div key={turf.turf_id}>
-            <TurfCard {...turf} />
-          </div>
-        ))}
-      </div>
-    </Layout>
+    <main className="mx-auto max-w-4xl">
+      <CardDisclosure title="Turfs" element={TurfELement} />
+    </main>
   );
 };
 
-export default Lister;
+export default ListerDashBoard;

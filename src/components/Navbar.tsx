@@ -6,13 +6,16 @@ import { MdSpaceDashboard } from 'react-icons/md';
 import { BiGitPullRequest } from 'react-icons/bi';
 import { CgCommunity } from 'react-icons/cg';
 import { AiOutlineProfile } from 'react-icons/ai';
-import { IoSettingsOutline } from 'react-icons/io5';
 import { GiTurtleShell } from 'react-icons/gi';
 import { supabase } from 'src/lib/supabase';
 import Avatar from './Avatar';
 import { useUserProfile } from '@context/UserProfileContext';
-import useHelper from '@utils/helper';
-import { Menu, MenuItem, MenuItemProps } from './Menu';
+import useHelper from '@hooks/useHelper';
+import { MenuItemProps } from './Menu';
+import dynamic from 'next/dynamic';
+
+const Menu = dynamic(() => import('@components/Menu').then((mod) => mod.Menu));
+const MenuItem = dynamic(() => import('@components/Menu').then((mod) => mod.MenuItem));
 
 const Navbar = () => {
   const { push } = useRouter();
@@ -64,7 +67,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="navbar bg-base-100">
+    <nav className="navbar shadow-md md:px-48">
       <div className="navbar-start">
         <div className="lg:hidden">
           <Menu button={<HiOutlineMenuAlt1 className="h-8 w-8" />}>
@@ -73,7 +76,7 @@ const Navbar = () => {
             ))}
           </Menu>
         </div>
-        <Link className="btn-ghost btn text-xl normal-case" href={userProfile?.role === 'lister' ? '/lister' : '/user'}>
+        <Link className="btn-ghost btn text-xl normal-case" href={getRoleHref('')}>
           PlayPal
         </Link>
       </div>
@@ -85,14 +88,13 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu dropEnd={true} button={<Avatar className="w-10 rounded-full" size="40" />}>
+        <Menu dropEnd={true} button={<Avatar className="h-12 w-12 rounded-full" size="40" />}>
           {userProfile?.role && (
             <>
               <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
-              <MenuItem href={getRoleHref('settings')} text="Settings" icon={<IoSettingsOutline />} />
             </>
           )}
-          <button className="btn-ghost btn-md btn" onClick={handleSignOut} type="submit">
+          <button className="btn-error btn-md btn" onClick={handleSignOut} type="submit">
             Sign Out
           </button>
         </Menu>

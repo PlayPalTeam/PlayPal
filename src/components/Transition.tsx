@@ -13,7 +13,7 @@ const variants = {
     opacity: 1,
     transition: {
       duration: 0.75,
-      delay: 0.5,
+      delay: 1,
       ease: 'easeInOut'
     }
   }
@@ -23,13 +23,7 @@ const Transition = ({ children }: { children: JSX.Element }) => {
   const { asPath } = useRouter();
   return (
     <AnimatePresence initial={false} presenceAffectsLayout>
-      <motion.div
-        key={asPath}
-        variants={variants}
-        animate="in"
-        initial="out"
-        exit="out"
-      >
+      <motion.div key={asPath} variants={variants} animate="in" initial="out" exit="out">
         {children}
       </motion.div>
     </AnimatePresence>

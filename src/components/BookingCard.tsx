@@ -2,17 +2,12 @@ import { Booking, useBookContext } from '@context/BookingContext';
 import { BsCalendarDate } from 'react-icons/bs';
 import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
-import { toast } from 'react-hot-toast';
 
-const BookingCard = ({ date, end_time, start_time, turfs, booking_id }: Booking) => {
+const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
   const { deleteBooking } = useBookContext();
 
   const handleDelete = () => {
-    toast.promise(deleteBooking(booking_id), {
-      loading: 'Deleting...',
-      success: 'Deleted',
-      error: 'Something went wrong'
-    });
+    deleteBooking(booking_id);
   };
 
   return (
@@ -24,7 +19,7 @@ const BookingCard = ({ date, end_time, start_time, turfs, booking_id }: Booking)
         </div>
         <div className="flex items-center gap-x-4">
           <BiTime />
-          {start_time} - {end_time}
+          {times}
         </div>
         <div className="mt-4">
           {Array.isArray(turfs) ? (
@@ -39,7 +34,7 @@ const BookingCard = ({ date, end_time, start_time, turfs, booking_id }: Booking)
             </div>
           )}
           <hr className="my-5" />
-          <button onClick={handleDelete} type="button" className="btn-outline btn-primary btn">
+          <button onClick={handleDelete} type="button" className="btn-outline btn-error btn">
             Delete
           </button>
         </div>

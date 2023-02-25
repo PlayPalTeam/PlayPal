@@ -1,8 +1,10 @@
 import { RequestResponse } from '@components/RequestCard';
+import { supabase } from '@lib/supabase';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
+import { useUserProfile } from './UserProfileContext';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
 
@@ -24,35 +26,35 @@ export const RequestContext = createContext<RequestContexType>({
 
 export const RequestProvider = ({ children }: { children: ReactNode }) => {
   const [requests, setRequest] = useState<RequestResponse[]>([]);
-  const supabase = useSupabaseClient<Database>();
   const user = useUser();
+  const { userProfile } = useUserProfile();
 
-  useEffect(() => {
-    const getRequests = async () => {
-      const { data, error } = await supabase.from('requests').select('*, profiles(full_name), turfs(turf_name, address)');
-
-      if (error) {
-        toast.error(error.message);
-      }
-
-      if (data) {
-        setRequest(data);
-      }
-    };
-
-    if (user) {
-      getRequests();
-    }
-  }, [supabase, user]);
-
-  const addRequest = async (request: RequestInsert) => {
-    const { error } = await supabase.from('requests').insert({ ...request, profile_id: user.id });
+  const getRequests = useCallback(async () => {
+    const { data, error } = await supabase.from('requests').select('*, profiles(full_name), turfs(turf_name, address)');
 
     if (error) {
       toast.error(error.message);
     }
 
-    toast.success('Your request is created');
+    if (data) {
+      setRequest(data);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      getRequests();
+    }
+  }, [getRequests, user, userProfile?.role]);
+
+  const addRequest = async (request: RequestInsert) => {
+    const { error } = await supabase.from('requests').insert({ ...request, profile_id: user?.id });
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+
   };
 
   async function updatePlayerNeeded(requestUpdate: RequestUpdate) {
