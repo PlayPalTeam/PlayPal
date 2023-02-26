@@ -90,13 +90,11 @@ export const AddTurfSchema = object().shape({
     .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter a valid closing time (format: HH:mm)')
     .required('Please enter the closing time for the turf'),
   price: number()
-    .integer('Please enter a whole number for the price')
-    .positive('Please enter a positive number for the price')
-    .required('Please enter a price for the turf'),
+    .transform((value, originalValue) => (originalValue === '' ? NaN : value))
+    .required('Please enter a value for price'),
   capacity: number()
-    .integer('Please enter a whole number for the capacity')
-    .positive('Please enter a positive number for the capacity')
-    .required('Please enter a capacity for the turf'),
+    .transform((value, originalValue) => (originalValue === '' ? NaN : value))
+    .required('Please enter a value for price'),
   address: string().trim().required('Please enter an address for the turf'),
   description: string().trim().required('Please enter a description for the turf'),
   amenities: array()

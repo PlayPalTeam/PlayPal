@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { useTurfContext } from '@context/TurfContext';
 import dynamic from 'next/dynamic';
 
+const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
 const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
 const FormMultiSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
 const FormTextarea = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTextarea));
@@ -28,9 +29,9 @@ const formSteps = [
   {
     Component: () => (
       <>
-        <FormInput label="Name" name="turf_name" />
-        <FormInput label="Price" name="price" type={'string'} />
-        <FormInput label="Capacity" name="capacity" type={'string'} />
+        <FormInput label="Name" name="turf_name" placeholder="Enter your turf name..." />
+        <FormInput label="Price(hour)" name="price" placeholder='Enter your price' />
+        <FormInput label="Capacity" name="capacity" placeholder='Enter your turf capacity' />
       </>
     )
   },
@@ -72,7 +73,8 @@ const Turf: NextPage = () => {
     handleSubmit,
     formState: { isSubmitting },
     trigger,
-    getValues
+    getValues,
+    reset
   } = methods;
 
   const { addTurf } = useTurfContext();
@@ -110,12 +112,14 @@ const Turf: NextPage = () => {
     const sports = getValues('sports').map((spo) => spo.value);
     addTurf({ ...data, amenities: amenities, sports: sports });
     setStep(1);
+    reset()
   };
 
   return (
     <main className="mx-auto mt-10 w-[90%] max-w-2xl pb-10">
       <FormProvider {...methods}>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <FormTitle title="Basic Information" />
           {formSteps[step - 1].Component()}
           {step !== 1 && <Button type="button" onClick={handlePreviousStep} text="Previous" />}
           {step !== formSteps.length && <Button type="button" onClick={handleNextStep} text="Next" />}
