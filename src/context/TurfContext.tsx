@@ -28,6 +28,7 @@ export const TurfContext = createContext<TurfContextType>({
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
   const [allTurfs, setAllTurfs] = useState<Turf[]>([]);
+  const { userProfile } = useUserProfile();
 
   const user = useUser();
 
@@ -56,13 +57,13 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      fetchTurfs(user?.id);
-    }
-    if (user) {
+    if (user && userProfile?.role === 'lister') {
       fetchAllTurfs();
     }
-  }, [fetchAllTurfs, fetchTurfs, user]);
+    if (user && userProfile?.role !== 'lister') {
+      fetchTurfs(user?.id);
+    }
+  }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
 
   const addTurf = async (turf: TurfInsert) => {
     const { status, error } = await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });

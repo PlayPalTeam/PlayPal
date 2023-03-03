@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Avatar from './Avatar';
 
 interface TurfCardProps {
   turf_id: string;
@@ -13,7 +14,7 @@ const TurfCard = ({ turf_id, turf_name, address, book, showBookings }: TurfCardP
   return (
     <div className="card mx-auto mt-10 w-[90%] bg-base-100 lg:card-side">
       <figure>
-        <Image src="/exampleturfimage.webp" width={200} height={200} alt="Album" />
+        <Avatar turf_image={true} />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{turf_name}</h2>
