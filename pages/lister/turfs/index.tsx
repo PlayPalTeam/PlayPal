@@ -30,8 +30,8 @@ const formSteps = [
     Component: () => (
       <>
         <FormInput label="Name" name="turf_name" placeholder="Enter your turf name..." />
-        <FormInput label="Price(hour)" name="price" placeholder='Enter your price' />
-        <FormInput label="Capacity" name="capacity" placeholder='Enter your turf capacity' />
+        <FormInput label="Price(hour)" name="price" placeholder="Enter your price" />
+        <FormInput label="Capacity" name="capacity" placeholder="Enter your turf capacity" />
       </>
     )
   },
@@ -112,7 +112,7 @@ const Turf: NextPage = () => {
     const sports = getValues('sports').map((spo) => spo.value);
     addTurf({ ...data, amenities: amenities, sports: sports });
     setStep(1);
-    reset()
+    reset();
   };
 
   return (

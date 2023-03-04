@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { object, string, number, InferType, array, date, ref } from 'yup';
+import { Database } from './database.types';
 
 const usernameValidation = string()
   .min(3, 'Minimum 3 character')
@@ -139,3 +140,5 @@ export const BookTurfSchema = object().shape({
 });
 
 export type BookTurfType = InferType<typeof BookTurfSchema>;
+
+export type Turf = Database['public']['Tables']['turfs']['Row'];
