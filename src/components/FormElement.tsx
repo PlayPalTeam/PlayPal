@@ -16,6 +16,7 @@ interface FormInputProps extends Omit<FormLabelProps, 'children'> {
   defaultValue?: string | number | readonly string[];
   disabled?: boolean;
   className?: string;
+  accept?: string;
 }
 
 interface FormSelectProps extends Omit<FormLabelProps, 'children'> {
@@ -47,7 +48,7 @@ const FormLabel = ({ name, label, children }: FormLabelProps) => {
   );
 };
 
-const FormInput = ({ name, label, type = 'text', placeholder, defaultValue, disabled, className }: FormInputProps) => {
+const FormInput = ({ name, label, type = 'text', accept, placeholder, defaultValue, disabled, className }: FormInputProps) => {
   const {
     register,
     formState: { errors }
@@ -71,6 +72,7 @@ const FormInput = ({ name, label, type = 'text', placeholder, defaultValue, disa
           placeholder={placeholder}
           defaultValue={defaultValue}
           disabled={disabled}
+          accept={accept}
           {...register(name)}
         />
         {type === 'password' && (
