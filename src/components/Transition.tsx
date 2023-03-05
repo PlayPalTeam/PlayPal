@@ -5,16 +5,14 @@ const variants = {
   out: {
     opacity: 0,
     transition: {
-      duration: 0.75,
-      ease: 'easeInOut'
+      duration: 0.75
     }
   },
   in: {
     opacity: 1,
     transition: {
       duration: 0.75,
-      delay: 1,
-      ease: 'easeInOut'
+      delay: 1
     }
   }
 };
