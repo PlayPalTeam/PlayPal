@@ -36,6 +36,7 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
   }, [src]);
 
   const uploadAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
     const file = event.target.files[0];
     const fileExt = file.name.split('.').pop();
     const fileName = `${id}.${fileExt}`;
@@ -52,10 +53,12 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
     }
 
     if (turf_image) {
+      console.log(path);
       updateTurf(id, { turf_image: path });
     } else {
       updateUserProfile({ avatar_url: path });
     }
+    setUploading(false);
   };
 
   return (
@@ -63,23 +66,17 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
       {avatarUrl ? (
         <div className="flex flex-col items-center justify-center">
           <Image src={avatarUrl} alt="Avatar" className={className} width={400} height={400} />
-          {showUploadButton && (
-            <div className="relative mt-5 text-center">
-              <label className="btn-primary btn" htmlFor="single">
-                {uploading ? 'Uploading ...' : 'Upload'}
-              </label>
-              <input className="absolute hidden" type="file" id="single" accept="image/*" onChange={uploadAvatar} disabled={uploading} />
-            </div>
-          )}
         </div>
       ) : (
-        <div
-          className="animate-pulse overflow-hidden rounded-full bg-gray-500"
-          style={{
-            width: `${size}px`,
-            height: `${size}px`
-          }}
-        />
+        <div className={`animate-pulse bg-gray-500 ${className}`} />
+      )}
+      {showUploadButton && (
+        <div className="relative mt-5 text-center">
+          <label className="btn-primary btn" htmlFor="single">
+            {uploading ? 'Uploading ...' : 'Upload'}
+          </label>
+          <input className="absolute hidden" type="file" id="single" accept="image/*" onChange={uploadAvatar} disabled={uploading} />
+        </div>
       )}
     </>
   );
