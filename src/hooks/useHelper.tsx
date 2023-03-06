@@ -1,17 +1,12 @@
 import moment from 'moment';
 import { useUserProfile } from '@context/UserProfileContext';
-import { ChangeEvent, ChangeEventHandler } from 'react';
-import { supabase } from '@lib/supabase';
-import { toast } from 'react-hot-toast';
 
 const useHelper = () => {
   const { userProfile } = useUserProfile();
 
   const getRoleHref = (route: string) => {
-    if (!route) {
-      return userProfile?.role === 'lister' ? '/lister' : '/user';
-    }
-    return userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
+    const role = userProfile?.role;
+    return !route ? (role === 'lister' ? '/lister' : '/user') : `/${role}/${route}`;
   };
 
   const convertTime = (value: string) => {
