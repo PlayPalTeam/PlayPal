@@ -20,7 +20,6 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   const { requests } = useRequestContext();
 
   const {
-    reset,
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
