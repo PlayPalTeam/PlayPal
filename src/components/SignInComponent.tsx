@@ -94,24 +94,3 @@ export const SignInUser = () => {
     </div>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
-
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-
-  const check = session?.user.user_metadata.role === undefined ? '/moderator' : `/${session?.user.user_metadata.role}`;
-
-  if (session) {
-    return {
-      redirect: {
-        destination: check,
-        permanent: false
-      }
-    };
-  }
-
-  return { props: {} };
-};
