@@ -1,13 +1,11 @@
 import { useUserProfile } from '@context/UserProfileContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '@lib/supabase';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next/types';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { SignInType, SignInSchema, EmailInputType, EmailInputSchema } from 'src/types/types';
@@ -93,25 +91,4 @@ export const SignInUser = () => {
       </div>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
-
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-
-  const check = session?.user.user_metadata.role === undefined ? '/moderator' : `/${session?.user.user_metadata.role}`;
-
-  if (session) {
-    return {
-      redirect: {
-        destination: check,
-        permanent: false
-      }
-    };
-  }
-
-  return { props: {} };
 };
