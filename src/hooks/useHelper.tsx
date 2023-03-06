@@ -5,10 +5,8 @@ const useHelper = () => {
   const { userProfile } = useUserProfile();
 
   const getRoleHref = (route: string) => {
-    if (!route) {
-      return userProfile?.role === 'lister' ? '/lister' : '/user';
-    }
-    return userProfile?.role === 'lister' ? `/lister/${route}` : `/user/${route}`;
+    const role = userProfile?.role;
+    return !route ? (role === 'lister' ? '/lister' : '/user') : `/${role}/${route}`;
   };
 
   const convertTime = (value: string) => {
