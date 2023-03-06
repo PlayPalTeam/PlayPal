@@ -55,23 +55,21 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && userProfile?.role === 'lister') {
+    if (user && userProfile?.role !== 'lister') {
       fetchAllTurfs();
     }
-    if (user && userProfile?.role !== 'lister') {
-      fetchTurfs(user?.id);
-    }
+    fetchTurfs(user?.id);
   }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
 
   const updateTurf = async (id: string, update: TurfUpdate) => {
-    const { status, error } = await supabase.from('turfs').update(update).eq('id', id);
+    const { status, error } = await supabase.from('turfs').update(update).eq('turf_id', id);
 
     if (error) {
       toast.error(error.message);
     }
 
     if (status === 204) {
-      toast.success(`Update done for ${update.turf_name}`);
+      toast.success(`Update done for ${id}`);
     }
   };
 
