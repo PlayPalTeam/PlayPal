@@ -1,5 +1,6 @@
 import { Transition, Dialog } from '@headlessui/react';
 import { Fragment, SetStateAction } from 'react';
+import { FaTimes } from 'react-icons/fa';
 
 interface DialogBoxProps {
   title: string;
@@ -37,8 +38,16 @@ const DialogBox = ({ isOpen, setIsOpen, title, description, children }: DialogBo
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className={'w-full max-w-lg rounded-2xl bg-base-100 p-6 text-left align-middle shadow-xl'}>
-                <Dialog.Title className={'text-center text-lg font-medium leading-6'}>{title}</Dialog.Title>
-                {description && <Dialog.Description>Say</Dialog.Description>}
+                <div className="mb-4 flex items-center justify-center">
+                  <Dialog.Title className={'flex-1 text-center text-lg font-medium leading-6'}>{title}</Dialog.Title>
+                  <button
+                    className="flex h-6 w-6 items-center justify-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaTimes className="h-4 w-4 text-neutral-700" />
+                  </button>
+                </div>
+                {description && <Dialog.Description>{description}</Dialog.Description>}
                 {children}
               </Dialog.Panel>
             </Transition.Child>
