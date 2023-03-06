@@ -61,14 +61,13 @@ export const Step4 = () => {
 
 interface Step5Props {
   id: string;
-  folder: string;
 }
 
-export const Step5 = ({ folder, id }: Step5Props) => {
+export const Step5 = ({ id }: Step5Props) => {
   return (
     <>
       <FormTitle title="Step 5: Add a photo of the turf" />
-      <Avatar upload={true} id={id} folder={folder} className="h-40 w-40" />
+      <Avatar  turf_image id={id} className="h-40 w-40 bg-gray-50" />
     </>
   );
 };
