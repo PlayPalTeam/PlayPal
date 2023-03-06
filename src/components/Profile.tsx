@@ -28,7 +28,7 @@ const Profile = () => {
     <main className="form-control mx-auto w-[90%] max-w-5xl max-md:py-20 md:py-40">
       <div className="flex max-md:flex-col max-md:gap-y-5">
         <section className="md:w-1/2">
-          <Avatar src={userProfile?.avatar_url} upload />
+          <Avatar showUploadButton id={userProfile?.id} src={userProfile?.avatar_url} />
         </section>
         <section className="space-y-8 md:w-1/2">
           <FormProvider {...method}>
