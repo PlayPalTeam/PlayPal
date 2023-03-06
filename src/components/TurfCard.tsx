@@ -1,37 +1,34 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import { Turf } from 'src/types/types';
+import dynamic from 'next/dynamic';
+import { FaMapMarkerAlt, FaFutbol } from 'react-icons/fa';
+import useHelper from '@hooks/useHelper';
 
 interface TurfCardProps {
-  turf_id: string;
-  turf_name: string;
-  address: string;
-  book?: boolean;
-  showBookings?: boolean;
+  turf: Turf;
+  href: string;
 }
 
-const TurfCard = ({ turf_id, turf_name, address, book, showBookings }: TurfCardProps) => {
+const Avatar = dynamic(() => import('@components/Ava'));
+
+const TurfCard = ({ turf, href }: TurfCardProps) => {
+  const { getRoleHref } = useHelper();
   return (
-    <div className="card mx-auto mt-10 w-[90%] bg-base-100 lg:card-side">
-      <figure>
-        <Image src="/exampleturfimage.webp" width={200} height={200} alt="Album" />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">{turf_name}</h2>
-        <p>{address}</p>
-        <div className="card-actions justify-end">
-          {book && (
-            <Link href="/user/booking/[id]" as={`/user/booking/${turf_id}`} className="btn-primary btn">
-              Book
-            </Link>
-          )}
-          {showBookings && (
-            <Link href="/lister/turf/[id]" as={`/lister/turf/${turf_id}`} className="btn-primary btn">
-              Show Booking
-            </Link>
-          )}
-        </div>
+    <Link className="w-full max-w-xs overflow-hidden rounded-lg shadow-md" href={getRoleHref(`${href}/${turf?.turf_id}`)}>
+      <div className="h-48">
+        <Avatar size="400" src={turf?.turf_image} className="h-full w-full" />
       </div>
-    </div>
+      <div className="p-4">
+        <h3 className="flex items-center text-lg font-semibold">
+          <FaFutbol className="mr-2" />
+          {turf?.turf_name}
+        </h3>
+        <p className="flex items-center text-gray-600">
+          <FaMapMarkerAlt className="mr-2" />
+          {turf?.address}
+        </p>
+      </div>
+    </Link>
   );
 };
 
