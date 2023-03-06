@@ -24,13 +24,13 @@ const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
         <div className="mt-4">
           {Array.isArray(turfs) ? (
             turfs.map((turf) => (
-              <div key={turf.turf_name} className="">
-                {turf.turf_name} - <ImLocation /> {turf.address}
+              <div key={turf?.turf_name} className="">
+                {turf?.turf_name} - <ImLocation /> {turf?.address}
               </div>
             ))
           ) : (
             <div className="flex items-center gap-x-4">
-              {turfs.turf_name} - <ImLocation /> {turfs.address}
+              {turfs?.turf_name} - <ImLocation /> {turfs?.address}
             </div>
           )}
           <hr className="my-5" />
