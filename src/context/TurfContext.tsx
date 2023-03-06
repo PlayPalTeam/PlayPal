@@ -12,7 +12,6 @@ type TurfUpdate = Database['public']['Tables']['turfs']['Update'];
 interface TurfContextType {
   turfs: Turf[];
   allTurfs: Turf[];
-  addTurf: (turf: TurfInsert) => Promise<void>;
   updateTurf: (id: string, update: TurfUpdate) => Promise<void>;
   deleteTurf: (id: string) => Promise<void>;
 }
@@ -20,7 +19,6 @@ interface TurfContextType {
 export const TurfContext = createContext<TurfContextType>({
   turfs: [],
   allTurfs: [],
-  addTurf: () => Promise.resolve(),
   updateTurf: () => Promise.resolve(),
   deleteTurf: () => Promise.resolve()
 });
@@ -65,18 +63,6 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
 
-  const addTurf = async (turf: TurfInsert) => {
-    const { status, error } = await supabase.from('turfs').insert({ ...turf, profile_id: user?.id });
-
-    if (error) {
-      toast.error(error.message);
-    }
-
-    if (status === 201) {
-      toast.success(`Insert for ${turf.turf_name}`);
-    }
-  };
-
   const updateTurf = async (id: string, update: TurfUpdate) => {
     const { status, error } = await supabase.from('turfs').update(update).eq('id', id);
 
@@ -101,7 +87,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return <TurfContext.Provider value={{ turfs, allTurfs, addTurf, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
+  return <TurfContext.Provider value={{ turfs, allTurfs, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
 };
 
 export const useTurfContext = () => {
