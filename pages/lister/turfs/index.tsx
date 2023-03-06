@@ -2,9 +2,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { AddTurfSchema, TurfFormValues } from 'src/types/types';
 import { NextPage } from 'next';
-import { useTurfContext } from '@context/TurfContext';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import { supabase } from '@lib/supabase';
+import { useUser } from '@supabase/auth-helpers-react';
+import { toast } from 'react-hot-toast';
 
 const Button = dynamic(() => import('@components/Button'));
 const Step1 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step1));
@@ -15,48 +17,44 @@ const Step5 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.
 
 const Turf: NextPage = () => {
   const [step, setStep] = useState(1);
-
+  const [turfId, setTurfId] = useState<string>();
   const methods = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
+  const user = useUser();
 
   const {
     handleSubmit,
     formState: { isSubmitting },
     trigger,
-    getValues,
-    reset
+    getValues
   } = methods;
 
-  const { addTurf } = useTurfContext();
-
   const handleNextStep = async () => {
-    if (isSubmitting) {
-      return; // do nothing when the form is submitting
-    }
-
-    const fieldsToValidate = {
-      1: ['turf_name', 'price', 'capacity'],
-      2: ['description', 'address'],
-      3: ['open_hour', 'close_hour'],
-      4: ['amenities', 'sports']
-    };
-
-    const valid = await trigger(fieldsToValidate[step]);
-
-    if (valid) {
-      setStep(step + 1); // move to next step
-    }
+    setStep(step + 1); // move to next step
   };
 
   const handlePreviousStep = () => {
     setStep(step - 1);
   };
 
-  const onSubmit: SubmitHandler<TurfFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<TurfFormValues> = async (info) => {
     const amenities = getValues('amenities').map((am) => am.value);
     const sports = getValues('sports').map((spo) => spo.value);
-    addTurf({ ...data, amenities: amenities, sports: sports });
-    setStep(1);
-    reset();
+
+    const { status, error, data } = await supabase
+      .from('turfs')
+      .insert({ ...info, amenities: amenities, sports: sports, profile_id: user?.id })
+      .select()
+      .single();
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+    if (status === 201) {
+      toast.success(`Turf ${info.turf_name} is Added`);
+      setTurfId(data.turf_id);
+      setStep(step + 1);
+    }
   };
 
   const formSteps = [Step1, Step2, Step3, Step4, Step5];
@@ -66,10 +64,10 @@ const Turf: NextPage = () => {
     <main className="mx-auto mt-10 w-[90%] max-w-2xl pb-10">
       <FormProvider {...methods}>
         <form className="space-y-5">
-          {step !== 5 ? <CurrentStep /> : <Step5 folder="/turf" id={getValues('turf_name')?.toLowerCase()} />}
-          {step !== 1 && <Button type="button" onClick={handlePreviousStep} text="Previous" />}
-          {step !== formSteps.length && <Button type="button" onClick={handleNextStep} text="Next" />}
-          {step === formSteps.length && <Button type="submit" disabled={isSubmitting} onClick={handleSubmit(onSubmit)} text="Add" />}
+          {step !== 5 ? <CurrentStep /> : turfId ? <Step5 id={turfId} /> : null}
+          {step !== 1 && step !== 5 && <Button type="button" onClick={handlePreviousStep} text="Previous" />}
+          {step !== 5 && <Button type="button" onClick={handleNextStep} text="Next" />}
+          {step === 4 && <Button type="submit" disabled={isSubmitting} onClick={handleSubmit(onSubmit)} text="Add" />}
         </form>
       </FormProvider>
     </main>
