@@ -47,7 +47,7 @@ const Navbar = () => {
     {
       icon: <GiTurtleShell />,
       text: 'Add Turf',
-      href: getRoleHref('turfs')
+      href: getRoleHref('turfs/addTurf')
     },
     {
       icon: <CgCommunity className="h-4 w-4" />,
