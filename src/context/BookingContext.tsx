@@ -14,12 +14,11 @@ export type Booking = {
   turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
 };
 
-type Book = Database['public']['Tables']['bookings']['Row'];
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
 interface BookingContextType {
   books: Booking[];
-  listerbooks: Book[];
+  listerbooks: Booking[];
   addBooking: (id: string, booking: BookingInsert) => Promise<void>;
   deleteBooking: (booking_id: string) => Promise<void>;
 }
@@ -33,7 +32,7 @@ const BookingContext = createContext<BookingContextType>({
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Booking[]>([]);
-  const [listerbooks, setListerBooks] = useState<Book[]>([]);
+  const [listerbooks, setListerBooks] = useState<Booking[]>([]);
   const { userProfile } = useUserProfile();
   const user = useUser();
 
@@ -66,9 +65,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       getBookings();
     }
 
-    if (user && userProfile?.role === 'lister') {
-      Bookings();
-    }
+    Bookings();
   }, [Bookings, getBookings, user, userProfile?.role]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
