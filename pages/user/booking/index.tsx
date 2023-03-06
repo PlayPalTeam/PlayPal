@@ -9,7 +9,7 @@ const BookingTurf = () => {
     <section className="flex w-full justify-center">
       <div className="sm:w-[70%] sm:space-y-5 ">
         {allTurfs.map((turf) => (
-          <TurfCard key={turf.turf_id} {...turf} book={true} />
+          <TurfCard href="booking" key={turf.turf_id} turf={turf} />
         ))}
       </div>
     </section>
