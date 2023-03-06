@@ -1,5 +1,7 @@
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next/types';
 import { useState } from 'react';
 import { memo } from 'react';
 
@@ -44,3 +46,24 @@ const SignIn = () => {
 };
 
 export default memo(SignIn);
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const supabase = createServerSupabaseClient(context);
+
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  const check = session?.user.user_metadata.role === undefined ? '/moderator' : `/${session?.user.user_metadata.role}`;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: check,
+        permanent: false
+      }
+    };
+  }
+
+  return { props: {} };
+};
