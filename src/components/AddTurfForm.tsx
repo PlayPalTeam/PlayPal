@@ -1,10 +1,10 @@
 import dynamic from 'next/dynamic';
-import Avatar from './Ava';
 
 const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
 const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
 const FormMultiSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
 const FormTextarea = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTextarea));
+const Avatar = dynamic(() => import('@components/Ava'));
 
 const amenities = [
   { label: 'Swimming pool', value: 'swimming-pool' },
@@ -67,7 +67,7 @@ export const Step5 = ({ id }: Step5Props) => {
   return (
     <>
       <FormTitle title="Step 5: Add a photo of the turf" />
-      <Avatar  turf_image id={id} className="h-40 w-40 bg-gray-50" />
+      <Avatar showUploadButton turf_image id={id} className="h-40 w-40" size="400" />
     </>
   );
 };
