@@ -3,6 +3,7 @@ import { Turf } from 'src/types/types';
 import dynamic from 'next/dynamic';
 import { FaMapMarkerAlt, FaFutbol } from 'react-icons/fa';
 import useHelper from '@hooks/useHelper';
+import { memo } from 'react';
 
 interface TurfCardProps {
   turf: Turf;
@@ -14,10 +15,11 @@ const Avatar = dynamic(() => import('@components/Ava'));
 const TurfCard = ({ turf, href }: TurfCardProps) => {
   const { getRoleHref } = useHelper();
   return (
-    <Link className="w-full max-w-xs overflow-hidden rounded-lg shadow-md" href={getRoleHref(`${href}/${turf?.turf_id}`)}>
-      <div className="h-48">
-        <Avatar size="400" src={turf?.turf_image} className="h-full w-full" />
-      </div>
+    <Link
+      className="w-full max-w-xs divide-y-2 divide-primary overflow-hidden rounded-2xl shadow-md hover:shadow-emerald-500"
+      href={getRoleHref(`${href}/${turf?.turf_id}`)}
+    >
+      <Avatar src={turf?.turf_image} className="h-auto w-full object-cover" />
       <div className="p-4">
         <h3 className="flex items-center text-lg font-semibold">
           <FaFutbol className="mr-2" />
@@ -32,4 +34,4 @@ const TurfCard = ({ turf, href }: TurfCardProps) => {
   );
 };
 
-export default TurfCard;
+export default memo(TurfCard);
