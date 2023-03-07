@@ -1,20 +1,16 @@
-import { SetStateAction, useMemo } from 'react';
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RequestFormProps, RequestData, RequestSchema } from '../types/types';
 import { useRequestContext } from '../context/RequestContext';
 import { useBookContext } from '../context/BookingContext';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-hot-toast';
-import DialogBox from './Dialog';
-import Button from './Button';
-import useHelper from '@hooks/useHelper';
+import dynamic from 'next/dynamic';
 
-interface Props {
-  isOpen: boolean;
-  setIsOpen: (value: SetStateAction<boolean>) => void;
-}
+const Dialog = dynamic(() => import('@components/Dialog'));
+const Button = dynamic(() => import('@components/Button'));
 
-const RequestForm = ({ setIsOpen, isOpen }: Props) => {
+const RequestForm = () => {
   const { addRequest } = useRequestContext();
   const { books } = useBookContext();
   const { requests } = useRequestContext();
@@ -95,7 +91,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
   };
 
   return (
-    <DialogBox title={'Request For Players'} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Dialog buttonText="Create Request" dialogId="createRequest" className="btn-primary btn">
       <div className="mt-2">
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           {RequestFormContent.map((field, index) => (
@@ -130,7 +126,7 @@ const RequestForm = ({ setIsOpen, isOpen }: Props) => {
           <Button type="submit" text="Submit" disabled={isSubmitting} />
         </form>
       </div>
-    </DialogBox>
+    </Dialog>
   );
 };
 
