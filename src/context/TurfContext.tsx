@@ -3,10 +3,8 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
-import { useUserProfile } from './UserProfileContext';
 
 type Turf = Database['public']['Tables']['turfs']['Row'];
-type TurfInsert = Database['public']['Tables']['turfs']['Insert'];
 type TurfUpdate = Database['public']['Tables']['turfs']['Update'];
 
 interface TurfContextType {
@@ -26,12 +24,11 @@ export const TurfContext = createContext<TurfContextType>({
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
   const [turfs, setTurfs] = useState<Turf[]>([]);
   const [allTurfs, setAllTurfs] = useState<Turf[]>([]);
-  const { userProfile } = useUserProfile();
 
   const user = useUser();
 
-  const fetchTurfs = useCallback(async (profileId: string) => {
-    const { data, error } = await supabase.from('turfs').select('*').eq('profile_id', profileId);
+  const fetchTurfs = useCallback(async () => {
+    const { data, error } = await supabase.from('turfs').select('*').eq('profile_id', user?.id);
 
     if (error) {
       toast.error(error.message);
@@ -40,7 +37,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     if (data) {
       setTurfs(data);
     }
-  }, []);
+  }, [user?.id]);
 
   const fetchAllTurfs = useCallback(async () => {
     const { data, error } = await supabase.from('turfs').select('*');
@@ -55,11 +52,11 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && userProfile?.role !== 'lister') {
-      fetchAllTurfs();
+    const role = user?.user_metadata.role;
+    if (user) {
+      role === 'lister' ? fetchTurfs() : fetchAllTurfs();
     }
-    fetchTurfs(user?.id);
-  }, [fetchAllTurfs, fetchTurfs, user, userProfile?.role]);
+  }, [fetchAllTurfs, fetchTurfs, user]);
 
   const updateTurf = async (id: string, update: TurfUpdate) => {
     const { status, error } = await supabase.from('turfs').update(update).eq('turf_id', id);
