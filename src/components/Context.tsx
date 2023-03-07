@@ -3,15 +3,17 @@ import { BookingProvider } from '@context/BookingContext';
 import { RequestProvider } from '@context/RequestContext';
 import { TurfProvider } from '@context/TurfContext';
 import { UserProfileProvider } from '@context/UserProfileContext';
-import { ReactNode } from 'react';
+import { memo, ReactNode, useState } from 'react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 interface ContextProps {
-  supabase: SupabaseClient<any, 'public', any>;
   initialSession: Session;
   children: ReactNode;
 }
 
-const Context = ({ children, initialSession, supabase }: ContextProps) => {
+const Context = ({ children, initialSession }: ContextProps) => {
+  const [supabase] = useState(() => createBrowserSupabaseClient());
+
   return (
     <SessionContextProvider supabaseClient={supabase} initialSession={initialSession}>
       <UserProfileProvider>
@@ -25,4 +27,4 @@ const Context = ({ children, initialSession, supabase }: ContextProps) => {
   );
 };
 
-export default Context;
+export default memo(Context);

@@ -34,7 +34,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     updateUserProfile({ request: [id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
-  const handleDeleteCreatedRequest =async () => {
+  const handleDeleteCreatedRequest = async () => {
     await deleteRequest(id);
   };
 

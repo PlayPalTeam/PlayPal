@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface Props {
   title: string;
   element: JSX.Element[] | JSX.Element;
@@ -13,4 +15,4 @@ const CardDisclosure = ({ title, element }: Props) => {
   );
 };
 
-export default CardDisclosure;
+export default memo(CardDisclosure);
