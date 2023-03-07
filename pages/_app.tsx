@@ -3,16 +3,14 @@ import { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 import { Roboto } from 'next/font/google';
 import { useRouter } from 'next/router';
-import { Session } from '@supabase/auth-helpers-react';
-import Transition from '@components/Transition';
-import Navbar from '@components/Navbar';
-
-import '../styles/globals.css';
 import dynamic from 'next/dynamic';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Session } from '@supabase/auth-helpers-nextjs';
+import '../styles/globals.css';
 
 const inter = Roboto({ weight: '400', subsets: ['latin'] });
 
+const Navbar = dynamic(() => import('@components/Navbar'));
+const Transition = dynamic(() => import('@components/Transition'));
 const Head = dynamic(() => import('@components/Head'));
 const Context = dynamic(() => import('@components/Context'));
 
@@ -22,29 +20,19 @@ function App({
 }: AppProps<{
   initialSession: Session;
 }>) {
-  const router = useRouter();
-  const [supabase] = useState(() => createBrowserSupabaseClient());
+  const { pathname } = useRouter();
+
+  const showNavbar = pathname.includes('user') || pathname === '/community' || pathname.includes('lister') || pathname.includes('moderator');
 
   return (
     <>
       <Head />
       <Toaster position="top-right" />
-      <Context initialSession={pageProps.initialSession} supabase={supabase}>
-        {router.pathname.includes('user') ||
-        router.pathname === '/community' ||
-        router.pathname.includes('lister') ||
-        router.pathname.includes('moderator') ? (
-          <>
-            <Navbar />
-            <Transition>
-              <Component {...pageProps} className={inter.className} />
-            </Transition>
-          </>
-        ) : (
-          <Transition>
-            <Component {...pageProps} className={inter.className} />
-          </Transition>
-        )}
+      <Context initialSession={pageProps.initialSession}>
+        {showNavbar && <Navbar />}
+        <Transition>
+          <Component {...pageProps} className={inter.className} />
+        </Transition>
       </Context>
     </>
   );
