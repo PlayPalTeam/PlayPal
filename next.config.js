@@ -2,7 +2,10 @@
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
-	output: "standalone"
+	output: "standalone",
+	compress: true,
+	productionBrowserSourceMaps: false,
+
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
