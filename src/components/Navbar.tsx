@@ -12,6 +12,7 @@ import { useUserProfile } from '@context/UserProfileContext';
 import useHelper from '@hooks/useHelper';
 import { MenuItemProps } from './Menu';
 import dynamic from 'next/dynamic';
+import { memo } from 'react';
 
 const Avatar = dynamic(() => import('@components/Ava'));
 const Menu = dynamic(() => import('@components/Menu').then((mod) => mod.Menu));
@@ -103,4 +104,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

@@ -1,20 +1,19 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { supabase } from 'src/lib/supabase';
 import { useUserProfile } from 'src/context/UserProfileContext';
-import { toast } from 'react-hot-toast';
 import { useTurfContext } from '@context/TurfContext';
+import { toast } from 'react-hot-toast';
 
 type Props = {
   src?: string;
   id?: string;
   showUploadButton?: boolean;
   className?: string;
-  size?: string;
   turf_image?: boolean;
 };
 
-export default function Avatar({ showUploadButton, className, size, turf_image, src, id }: Props) {
+function Avatar({ showUploadButton, className, turf_image, src, id }: Props) {
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const [uploading, setUploading] = useState(false);
   const { updateUserProfile } = useUserProfile();
@@ -45,6 +44,7 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
     const path = turf_image ? `turf/${filePath}` : `profile/${filePath}`;
 
     const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, {
+      cacheControl: '3600',
       upsert: true
     });
 
@@ -65,7 +65,7 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
     <>
       {avatarUrl ? (
         <div className="flex flex-col items-center justify-center">
-          <Image src={avatarUrl} alt="Avatar" className={className} width={400} height={400} />
+          <Image src={avatarUrl} alt="Avatar" className={className} width={100} height={100} />
         </div>
       ) : (
         <div className={`animate-pulse bg-gray-500 ${className}`} />
@@ -81,3 +81,5 @@ export default function Avatar({ showUploadButton, className, size, turf_image, 
     </>
   );
 }
+
+export default memo(Avatar);

@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '@lib/supabase';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { memo } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { PasswordSchema, PasswordType } from 'src/types/types';
@@ -45,4 +46,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default memo(ChangePassword);

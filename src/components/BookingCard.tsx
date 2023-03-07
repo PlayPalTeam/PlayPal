@@ -2,6 +2,7 @@ import { Booking, useBookContext } from '@context/BookingContext';
 import { BsCalendarDate } from 'react-icons/bs';
 import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
+import { memo } from 'react';
 
 const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
   const { deleteBooking } = useBookContext();
@@ -43,4 +44,4 @@ const BookingCard = ({ date, turfs, times, booking_id }: Booking) => {
   );
 };
 
-export default BookingCard;
+export default memo(BookingCard);

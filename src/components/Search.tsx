@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, memo } from 'react';
 import { motion } from 'framer-motion';
 
 interface SearchBarProps {
@@ -10,13 +10,7 @@ interface SearchBarProps {
 const SearchBar = ({ query, handleChange, className }: SearchBarProps) => {
   return (
     <div className={`relative ${className}`}>
-      <input
-        type="text"
-        className="input w-full input-primary"
-        placeholder="Search..."
-        value={query}
-        onChange={handleChange}
-      />
+      <input type="text" className="input-primary input w-full" placeholder="Search..." value={query} onChange={handleChange} />
       <motion.span
         className="absolute top-4 right-4 -translate-y-1/2"
         initial={{ opacity: 0, x: 10 }}
@@ -45,4 +39,4 @@ const SearchBar = ({ query, handleChange, className }: SearchBarProps) => {
   );
 };
 
-export default SearchBar;
+export default memo(SearchBar);

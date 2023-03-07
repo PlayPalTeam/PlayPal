@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { format, addHours } from 'date-fns';
 import { useUserProfile } from '@context/UserProfileContext';
 
 const useHelper = () => {
@@ -10,26 +10,25 @@ const useHelper = () => {
   };
 
   const convertTime = (value: string) => {
-    return moment(value, 'HH:mm:ss').format('h:mm A');
+    const date = new Date(`2000-01-01T${value}`);
+    return format(date, 'h:mm a');
   };
 
   const createOneHourSlot = (startTime: string, endTime: string, times: string[]): Array<{ value: string; label: string; disabled: boolean }> => {
-    const SlotOption = [];
     const start = new Date(`2023-02-18T${startTime}`);
     const end = new Date(`2023-02-18T${endTime}`);
-    let current = start;
 
-    while (current <= end) {
-      const endHour = new Date(current.getTime() + 60 * 60 * 1000).getHours();
-      const label = convertTime(current.toTimeString().slice(0, 8)) + ' - ' + convertTime(endHour + ':00:00');
-      const disabled = times.includes(label);
+    const SlotOption = [];
+
+    for (let current = start; current <= end; current = addHours(current, 1)) {
+      const endHour = addHours(current, 1);
+      const label = `${format(current, 'h:mm a')} - ${format(endHour, 'h:mm a')}`;
+      const isDisabled = times.includes(label);
       SlotOption.push({
         value: label,
         label: label,
-        isDisabled: disabled
+        isDisabled: isDisabled
       });
-      current = new Date(current.getTime() + 60 * 60 * 1000); // add one hour
-      if (current >= end) break; // break if current time is past the end time
     }
 
     return SlotOption;

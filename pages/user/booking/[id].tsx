@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { memo } from 'react';
 import { useTurfContext } from '@context/TurfContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -9,13 +9,13 @@ import useHelper from '@hooks/useHelper';
 import { useBookContext } from '@context/BookingContext';
 import { format } from 'date-fns';
 
+const Avatar = dynamic(() => import('@components/Ava'));
 const DialogBox = dynamic(() => import('@components/Dialog'));
 const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
 const MultiSlect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
 const Button = dynamic(() => import('@components/Button'));
 
 const Booking = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { query } = useRouter();
   const { id } = query;
 
@@ -46,7 +46,7 @@ const Booking = () => {
   }
 
   const filterSlot = books.filter((book) => book?.date === date?.toString()).flatMap((book) => book?.times);
-  
+
   const onSubmit: SubmitHandler<BookTurfType> = async (data) => {
     const slot = getValues('slot').map((t) => t.value);
     const sport = getValues('sport.value');
@@ -57,6 +57,7 @@ const Booking = () => {
   return (
     <main className="mx-auto my-10 w-[90%] max-w-4xl">
       <div className="space-y-5">
+        <Avatar src={turf?.turf_image} className="h-auto w-full rounded-2xl object-cover" />
         <section>
           <p>Name:{turf?.turf_name.toUpperCase()}</p>
           <p>Address:{turf?.address}</p>
@@ -86,8 +87,7 @@ const Booking = () => {
             </p>
           ))}
         </section>
-        <Button text="Book SLot" type="button" onClick={() => setIsOpen(!isOpen)} />
-        <DialogBox title={'Book Slot'} isOpen={isOpen} setIsOpen={setIsOpen}>
+        <DialogBox buttonText="Book Slot" dialogId="bookSlot" className="btn-primary btn">
           <div className="space-y-5">
             <FormProvider {...method}>
               <FormInput name="date" label="Date" type={'date'} />

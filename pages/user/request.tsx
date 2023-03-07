@@ -8,7 +8,6 @@ const RequestForm = dynamic(() => import('@components/RequestForm'));
 const RequestCard = dynamic(() => import('@components/RequestCard'));
 
 const Request: NextPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { requests } = useRequestContext();
   const { userProfile } = useUserProfile();
 
@@ -18,12 +17,7 @@ const Request: NextPage = () => {
 
   return (
     <main className="flex flex-col items-center space-y-5">
-      <section className="text-right">
-        <button className="btn-primary btn" onClick={() => setIsOpen(true)}>
-          Create Requests
-        </button>
-      </section>
-      <RequestForm isOpen={isOpen} setIsOpen={setIsOpen} />
+      <RequestForm />
       {filteredRequests && (
         <section className="space-y-5">
           {filteredRequests.map((req) => (

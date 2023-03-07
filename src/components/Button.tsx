@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 type ButtonType = {
@@ -15,4 +16,4 @@ const Button = ({ disabled, text, type, onClick }: ButtonType) => {
   );
 };
 
-export default Button;
+export default memo(Button);
