@@ -3,7 +3,6 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
-import { useUserProfile } from './UserProfileContext';
 
 export type Booking = {
   booking_id: string;
@@ -33,7 +32,6 @@ const BookingContext = createContext<BookingContextType>({
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Booking[]>([]);
   const [listerbooks, setListerBooks] = useState<Booking[]>([]);
-  const { userProfile } = useUserProfile();
   const user = useUser();
 
   const getBookings = useCallback(async () => {
@@ -61,12 +59,11 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (user && userProfile?.role !== 'lister') {
-      getBookings();
+    const role = user?.user_metadata.role;
+    if (user) {
+      role === 'lister' ? Bookings() : getBookings();
     }
-
-    Bookings();
-  }, [Bookings, getBookings, user, userProfile?.role]);
+  }, [Bookings, getBookings, user]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
     const { error, status } = await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });

@@ -8,7 +8,7 @@ const LandingHeader = () => {
   return (
     <header className="relative h-screen">
       <video className="absolute top-0 left-0 -z-50 h-full  w-full object-cover brightness-50" autoPlay loop muted>
-        <source src="/beach-soccer.mp4" type="video/mp4" />
+        <source src="/beach-soccer.webm" type="video/webm" />
       </video>
       <div className="relative z-10 text-center">
         <nav className={`navbar justify-between px-10 max-md:px-5 ${applyBackground ? 'bg-base-200' : ''} sticky top-0`}>
