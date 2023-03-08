@@ -37,13 +37,10 @@ const SignUp = () => {
 
     if (error) {
       toast.error(error.message);
-    } else {
-      toast.success('Check your email');
-      method.reset();
-      setTimeout(() => {
-        window.close(); // close the tab after success
-      }, 3000);
     }
+
+    toast.success('Check your email');
+    method.reset();
   };
 
   return (
@@ -51,19 +48,21 @@ const SignUp = () => {
       <Head>
         <title>Sign Up</title>
       </Head>
-      <main className="mx-auto w-[80%] my-10 max-w-md space-y-5">
+      <main className="mx-auto my-10 w-[80%] max-w-[30rem] ">
         <FormProvider {...method}>
-          <FormTitle title="Sign Up" />
-          <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
-            <FormInput name="username" label="Username" placeholder="Enter the username you want.." />
-          </div>
-          <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
-            <FormInput name="password" label="Password" type={'password'} placeholder="Enter your password..." />
-            <FormInput name="confirm_password" label="Retype Password" type={'password'} placeholder="Enter your password..." />
-          </div>
-          <FormInput name="email" label="Email" type="email" placeholder="Enter your email..." />
-          <FormSelect name="role" label="Role" options={options} />
-          <Button text="Sign Up" type="submit" onClick={method.handleSubmit(onSignUpSubmit)} disabled={method.formState.isSubmitting} />
+          <form className="mb-4 space-y-5">
+            <FormTitle title="Sign Up" />
+            <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
+              <FormInput name="username" label="Username" placeholder="Enter the username you want.." />
+            </div>
+            <div className="flex items-center gap-x-5 max-md:flex-col max-md:gap-y-5">
+              <FormInput name="password" label="Password" type={'password'} placeholder="Enter your password..." />
+              <FormInput name="confirm_password" label="Retype Password" type={'password'} placeholder="Enter your password..." />
+            </div>
+            <FormInput name="email" label="Email" type="email" placeholder="Enter your email..." />
+            <FormSelect name="role" label="Role" options={options} />
+            <Button text="Sign Up" type="submit" onClick={method.handleSubmit(onSignUpSubmit)} disabled={method.formState.isSubmitting} />
+          </form>
         </FormProvider>
         <div className="border-t-2 pt-4">
           <Link className="btn-block btn" href={'signin'}>
