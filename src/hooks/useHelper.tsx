@@ -2,13 +2,6 @@ import { format, addHours } from 'date-fns';
 import { useUserProfile } from '@context/UserProfileContext';
 
 const useHelper = () => {
-  const { userProfile } = useUserProfile();
-
-  const getRoleHref = (route: string) => {
-    const role = userProfile?.role;
-    return !route ? (role === 'lister' ? '/lister' : '/user') : `/${role}/${route}`;
-  };
-
   const convertTime = (value: string) => {
     const date = new Date(`2000-01-01T${value}`);
     return format(date, 'h:mm a');
@@ -33,7 +26,6 @@ const useHelper = () => {
 
     return SlotOption;
   };
-  
 
   return {
     getRoleHref,
