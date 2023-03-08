@@ -26,6 +26,7 @@ const useHelper = () => {
 
     return SlotOption;
   };
+
   return {
     getRoleHref,
     createOneHourSlot,
