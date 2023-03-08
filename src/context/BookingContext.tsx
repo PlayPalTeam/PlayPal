@@ -73,8 +73,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 201) {
       toast.success('Booking Done');
-    } else {
-      getBookings();
     }
   };
 
@@ -83,8 +81,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
     if (error) {
       toast.error(error.message);
-    } else {
-      getBookings();
     }
   };
 
