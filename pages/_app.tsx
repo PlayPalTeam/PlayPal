@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import '../styles/globals.css';
+import Navbar from '@components/Navbar';
 
-const Navbar = dynamic(() => import('@components/Navbar'));
 const Transition = dynamic(() => import('@components/Transition'));
 const Head = dynamic(() => import('@components/Head'));
 const Context = dynamic(() => import('@components/Context'));

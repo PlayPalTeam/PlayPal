@@ -37,6 +37,7 @@ export interface Database {
       bookings: {
         Row: {
           booking_id: string
+          cost: number
           date: string | null
           profile_id: string | null
           selectedsport: string | null
@@ -45,6 +46,7 @@ export interface Database {
         }
         Insert: {
           booking_id?: string
+          cost?: number
           date?: string | null
           profile_id?: string | null
           selectedsport?: string | null
@@ -53,6 +55,7 @@ export interface Database {
         }
         Update: {
           booking_id?: string
+          cost?: number
           date?: string | null
           profile_id?: string | null
           selectedsport?: string | null
@@ -118,6 +121,32 @@ export interface Database {
           people?: string[] | null
           player_needed?: number | null
           profile_id?: string | null
+          turf_id?: string | null
+        }
+      }
+      sales: {
+        Row: {
+          buyer_id: string | null
+          created_at: string | null
+          sale_date: string | null
+          sale_price: number | null
+          sales_id: string
+          turf_id: string | null
+        }
+        Insert: {
+          buyer_id?: string | null
+          created_at?: string | null
+          sale_date?: string | null
+          sale_price?: number | null
+          sales_id?: string
+          turf_id?: string | null
+        }
+        Update: {
+          buyer_id?: string | null
+          created_at?: string | null
+          sale_date?: string | null
+          sale_price?: number | null
+          sales_id?: string
           turf_id?: string | null
         }
       }
@@ -276,6 +305,15 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      can_insert_object: {
+        Args: {
+          bucketid: string
+          name: string
+          owner: string
+          metadata: Json
+        }
+        Returns: undefined
+      }
       extension: {
         Args: {
           name: string

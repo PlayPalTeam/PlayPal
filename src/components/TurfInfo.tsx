@@ -4,7 +4,7 @@ import useHelper from '@hooks/useHelper';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import { Turf } from 'src/types/types';
 
 const Avatar = dynamic(() => import('@components/Ava'));
@@ -83,4 +83,4 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
   );
 };
 
-export default TurfInfo;
+export default memo(TurfInfo);

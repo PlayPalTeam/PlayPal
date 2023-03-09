@@ -10,7 +10,7 @@ export type Booking = {
   date: string;
   times?: string[];
   selectedsport?: string;
-  turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
+  turfs: { turf_name: string; address: string; price: number } | { turf_name: string; address: string; price: number }[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -35,7 +35,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getBookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)').eq('profile_id', user?.id);
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address, price)').eq('profile_id', user?.id);
 
     if (error) {
       toast.error(error.message);
@@ -47,7 +47,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)');
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address, price)');
 
     if (error) {
       toast.error(error.message);

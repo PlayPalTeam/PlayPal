@@ -22,10 +22,7 @@ const LoadingLine = () => {
 
   return (
     <progress
-      className={`progress progress-primary ${isloading ? 'w-full transition-all duration-500 ease-in-out' : 'hidden'}`}
-      value={100}
-      max={100}
-      style={{ position: 'fixed', top: 0 }}
+      className={`progress progress-primary fixed top-0 ${isloading ? 'w-full transition-all duration-500 ease-in-out' : 'hidden'}`}
     ></progress>
   );
 };

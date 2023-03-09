@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
@@ -104,7 +104,7 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
   );
 };
 
-const customStyles = {
+const customStyles: StylesConfig = {
   control: (provided) => ({
     ...provided,
     backgroundColor: '#282a36',
@@ -120,8 +120,7 @@ const customStyles = {
     ...provided,
     backgroundColor: '#282a36',
     borderRadius: '1rem',
-    overflow: 'hidden',
-    minHeight: '10rem'
+    overflow: 'hidden'
   }),
   singleValue: (provided) => ({
     ...provided,
@@ -136,9 +135,7 @@ const customStyles = {
     color: '#ff79c6',
     '&:hover': {
       color: '#ff79c6'
-    },
-    transform: state.menuIsOpen ? 'rotate(180deg)' : null,
-    transition: 'transform 0.2s ease'
+    }
   }),
   // Added disabled option style
   option: (provided, state) => ({
@@ -177,7 +174,7 @@ const FormMultiSelect = ({ label, name, options, isMulti }: FormSelectProps): JS
   );
 };
 
-const FormSelect = ({ label, name, options, isMulti }: FormSelectProps) => {
+const FormSelect = ({ label, name, options, isMulti = false }: FormSelectProps) => {
   const { control } = useFormContext();
 
   return (
@@ -186,7 +183,7 @@ const FormSelect = ({ label, name, options, isMulti }: FormSelectProps) => {
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Select isMulti={isMulti} styles={customStyles} options={options} {...field} />}
+        render={({ field }) => <Select isMulti={isMulti} isClearable styles={customStyles} options={options} {...field} />}
       />
     </div>
   );

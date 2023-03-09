@@ -14,7 +14,7 @@ const Dialog = ({ children, dialogId, buttonText, className }: DialogProps) => {
         {buttonText}
       </label>
       <input type="checkbox" id={dialogId} className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
+      <div className={`modal modal-bottom sm:modal-middle`}>
         <div className="modal-box relative">
           <label htmlFor={dialogId} className="btn-sm btn-circle btn absolute right-4 top-4">
             ✕
