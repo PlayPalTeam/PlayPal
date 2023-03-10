@@ -5,13 +5,8 @@ import { toast } from 'react-hot-toast';
 import { Book } from 'src/types/types';
 import { Database } from '../types/database.types';
 
-export type Booking = {
-  booking_id: string;
-  turf_id: string;
-  date: string;
-  times?: string[];
-  selectedsport?: string;
-  turfs: { turf_name: string; address: string; price: number;turf_image:string } | { turf_name: string; address: string; price: number ; turf_image:string}[];
+export type Booking = Book & {
+  turfs: { turf_name: string; address: string; price: number , turf_image:string } | { turf_name: string; address: string; price: number,turf_image:string}[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
