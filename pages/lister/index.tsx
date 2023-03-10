@@ -9,7 +9,7 @@ const SearchBar = dynamic(() => import('@components/Search'));
 
 const ListerDashBoard = () => {
   const [query, setQuery] = useState('');
-const { turfs } = useTurfContext();
+  const { turfs } = useTurfContext();
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   }, []);
@@ -25,7 +25,7 @@ const { turfs } = useTurfContext();
       </Head>
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="my-8 flex items-center justify-between">
-          <SearchBar query={query} handleChange={handleInputChange} className="mr-4 w-[35%]" />
+          <SearchBar placeholder="Search by turf name" query={query} handleChange={handleInputChange} className="mr-4 w-[35%]" />
           <Link href={'/lister/turfs/addTurf'} className="btn-primary btn">
             Add Turf
           </Link>
