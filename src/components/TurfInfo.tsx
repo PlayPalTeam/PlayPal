@@ -37,6 +37,8 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
             <h2 className="mb-4 text-3xl font-bold">{turf?.turf_name}</h2>
             {userProfile?.role === 'lister' && (
               <DeletButton
+                error
+                buttonText="Delete Turf"
                 title="Confirm Turf Deletion"
                 description="Are you sure you want to delete this turf? This action cannot be undone. All data associated with this turf will be permanently removed from the system."
                 onClick={DeleteTurf}

@@ -37,7 +37,7 @@ const BookingSlotDialog = ({ close_hour, open_hour, price, sports, turf_id }: Bo
   };
 
   return (
-    <DialogBox buttonText="Book Slot" dialogId="bookSlot" className="btn-primary btn w-full">
+    <DialogBox title='Booking Form' buttonText="Book Slot" dialogId="bookSlot" className="btn-primary btn w-full">
       <FormProvider {...method}>
         <form className="space-y-5">
           <FormInput name="date" label="Date" type={'date'} />

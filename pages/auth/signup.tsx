@@ -22,7 +22,10 @@ const SignUp = () => {
 
 
   const onSignUpSubmit: SubmitHandler<SignUpType> = async (data) => {
-    const { error } = await supabase.auth.signUp({
+    const {
+      error,
+      data: { user }
+    } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -30,7 +33,7 @@ const SignUp = () => {
           username: data.username,
           role: data.role.value
         },
-        emailRedirectTo: "https://playpal.vercel.app/auth/signin" 
+        emailRedirectTo: 'https://playpal.vercel.app/auth/signin'
       }
     });
 
@@ -38,8 +41,11 @@ const SignUp = () => {
       toast.error(error.message);
     }
 
-    toast.success('Check your email');
     method.reset();
+    toast.success('Check your email');
+    setTimeout(() => {
+      window.close(); // close the tab after success
+    }, 3000);
   };
 
   return (

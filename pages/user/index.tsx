@@ -4,6 +4,7 @@ import { useUserProfile } from '@context/UserProfileContext';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import useHelper from '@hooks/useHelper';
 
 const RequestCard = dynamic(() => import('@components/RequestCard'));
 const BookingCard = dynamic(() => import('@components/BookingCard'));
@@ -14,30 +15,33 @@ const HomeUser: NextPage = () => {
   const { requests } = useRequestContext();
   const { userProfile } = useUserProfile();
 
-  const requestCreateElement = requests?.filter((req) => req.profile_id === userProfile?.id).map((req) => <RequestCard key={req.id} {...req} />);
+  const { dateToString } = useHelper();
 
-  const requestAcceptElement = requests
-    ?.filter((req) => userProfile?.request?.includes(req.id.toString()))
+  const today = dateToString(new Date());
+  const requestCreateElement = requests
+    ?.filter(
+      (req) => req.profile_id === userProfile?.id && req.game_date >= today // Filter by user profile ID and game_date being later than current date
+    )
     .map((req) => <RequestCard key={req.id} {...req} />);
 
-  let currentDate = new Date().toJSON().slice(0, 10);  
+  const requestAcceptElement = requests
+    ?.filter((req) => userProfile?.request?.includes(req.id.toString()) && req.game_date >= today)
+    .map((req) => <RequestCard key={req.id} {...req} />);
 
-  const activeBookings = books.filter((book)=>book.date>=currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
-  const pastBookings = books.filter((book)=>book.date<currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
-
-  const bookingElement = books.map((book) => <BookingCard key={book.booking_id} {...book} />);
+  const activeBookings = books.filter((book) => book.date >= today).map((book) => <BookingCard key={book.booking_id} show {...book} />);
+  const pastBookings = books.filter((book) => book.date < today).map((book) => <BookingCard key={book.booking_id} {...book} />);
 
   return (
     <>
-    <Head>
-      <title>Dashboard</title>
-    </Head>
-    <main className="mx-auto my-10 w-[90%] max-w-6xl space-y-5">
-      <CardDisclosure title=" Active Bookings" element={activeBookings} />
-      <CardDisclosure title='Past Bookings' element={pastBookings} />
-      <CardDisclosure title="Requests you created" element={requestCreateElement} />
-      <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
-    </main>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
+      <main className="mx-auto my-10 w-[90%] max-w-6xl space-y-5">
+        <CardDisclosure title=" Active Bookings" element={activeBookings} />
+        <CardDisclosure title="Past Bookings" element={pastBookings} />
+        <CardDisclosure title="Requests you created" element={requestCreateElement} />
+        <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
+      </main>
     </>
   );
 };
