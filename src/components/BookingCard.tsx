@@ -4,6 +4,7 @@ import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
 import { memo, useCallback } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
+import Avatar from './Ava';
 
 const BookingCard = ({ date, turfs, times, booking_id, cost }: Booking) => {
   const { deleteBooking } = useBookContext();
@@ -27,12 +28,14 @@ const BookingCard = ({ date, turfs, times, booking_id, cost }: Booking) => {
           {times}
         </div>
         <div className="mt-4">
+          
           {turfList().map((turf) => (
             <div key={turf?.turf_name} className="flex items-center">
               {turf?.turf_name} <ImLocation className="ml-4 mr-2" />
               {turf?.address}
             </div>
           ))}
+          
           <div className="mt-4 text-lg font-medium">Total cost: &#8377;{cost}</div>
           {userProfile?.role === 'user' && (
             <>

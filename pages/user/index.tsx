@@ -20,6 +20,11 @@ const HomeUser: NextPage = () => {
     ?.filter((req) => userProfile?.request?.includes(req.id.toString()))
     .map((req) => <RequestCard key={req.id} {...req} />);
 
+  let currentDate = new Date().toJSON().slice(0, 10);  
+
+  const activeBookings = books.filter((book)=>book.date>=currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
+  const pastBookings = books.filter((book)=>book.date<currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
+
   const bookingElement = books.map((book) => <BookingCard key={book.booking_id} {...book} />);
 
   return (
@@ -28,7 +33,8 @@ const HomeUser: NextPage = () => {
       <title>Dashboard</title>
     </Head>
     <main className="mx-auto my-10 w-[90%] max-w-6xl space-y-5">
-      <CardDisclosure title="Bookings" element={bookingElement} />
+      <CardDisclosure title=" Active Bookings" element={activeBookings} />
+      <CardDisclosure title='Past Bookings' element={pastBookings} />
       <CardDisclosure title="Requests you created" element={requestCreateElement} />
       <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
     </main>
