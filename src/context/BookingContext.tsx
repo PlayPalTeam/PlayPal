@@ -2,14 +2,10 @@ import { supabase } from '@lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Book } from 'src/types/types';
 import { Database } from '../types/database.types';
 
-export type Booking = {
-  booking_id: string;
-  turf_id: string;
-  date: string;
-  times?: string[];
-  selectedsport?: string;
+export type Booking = Book & {
   turfs: { turf_name: string; address: string; price: number } | { turf_name: string; address: string; price: number }[];
 };
 
