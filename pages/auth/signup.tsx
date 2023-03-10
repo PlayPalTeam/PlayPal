@@ -20,7 +20,6 @@ const options = [
 const SignUp = () => {
   const method = useForm<SignUpType>({ resolver: yupResolver(SignUpSchema) });
 
-
   const onSignUpSubmit: SubmitHandler<SignUpType> = async (data) => {
     const {
       error,
