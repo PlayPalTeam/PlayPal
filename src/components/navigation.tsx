@@ -58,7 +58,7 @@ const FilteredNavigation = (role: string) => {
       case 'lister':
         return !(nav.text === 'Request' || nav.text === 'Booking');
       case 'user':
-        return !(nav.text === 'Add Turf');
+        return !(nav.text === 'Add Turf' || nav.text === "Sales");
       default:
         return false;
     }

@@ -7,7 +7,7 @@ interface Props {
 
 const CardDisclosure = ({ title, element }: Props) => {
   return (
-    <div tabIndex={0} className="collapse-arrow rounded-box collapse">
+    <div tabIndex={0} className="collapse-arrow  rounded-box collapse">
       <input type="checkbox" />
       <h2 className="collapse-title text-xl font-medium">{title}</h2>
       <div className="collapse-content">{element}</div>
