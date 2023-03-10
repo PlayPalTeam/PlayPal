@@ -82,4 +82,4 @@ function Avatar({ showUploadButton, className, turf_image, src, id }: Props) {
   );
 }
 
-export default Avatar;
+export default memo(Avatar);
