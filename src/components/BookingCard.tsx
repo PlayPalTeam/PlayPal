@@ -4,9 +4,13 @@ import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
 import { memo, useCallback } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
-import Avatar from './Ava';
+import Delete from './Delete';
 
-const BookingCard = ({ date, turfs, times, booking_id, cost }: Booking) => {
+type BookingCardProps = Booking & {
+  show?: boolean;
+};
+
+const BookingCard = ({ date, turfs, times, booking_id, cost, show = false }: BookingCardProps) => {
   const { deleteBooking } = useBookContext();
   const { userProfile } = useUserProfile();
 
@@ -28,21 +32,24 @@ const BookingCard = ({ date, turfs, times, booking_id, cost }: Booking) => {
           {times}
         </div>
         <div className="mt-4">
-          
           {turfList().map((turf) => (
             <div key={turf?.turf_name} className="flex items-center">
               {turf?.turf_name} <ImLocation className="ml-4 mr-2" />
               {turf?.address}
             </div>
           ))}
-          
+
           <div className="mt-4 text-lg font-medium">Total cost: &#8377;{cost}</div>
-          {userProfile?.role === 'user' && (
+          {userProfile?.role === 'user' && show && (
             <>
               <hr className="my-5" />
-              <button onClick={handleDelete} type="button" className="btn-outline btn-error btn">
-                Delete
-              </button>
+              <Delete
+                error
+                buttonText="Cancel Booking"
+                title="Confirm Turf Booking Deletion"
+                description="Are you sure you want to delete this turf booking? This action cannot be undone. Please confirm below if you wish to proceed with the deletion."
+                onClick={handleDelete}
+              />
             </>
           )}
         </div>
