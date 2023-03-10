@@ -1,30 +1,21 @@
-import { useMemo } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { RequestFormProps, RequestData, RequestSchema } from '../types/types';
-import { useRequestContext } from '../context/RequestContext';
-import { useBookContext } from '../context/BookingContext';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'react-hot-toast';
-import dynamic from 'next/dynamic';
-
-const Dialog = dynamic(() => import('@components/Dialog'));
-const Button = dynamic(() => import('@components/Button'));
+import { useBookContext } from '@context/BookingContext';
+import { useRequestContext } from '@context/RequestContext';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { memo, useMemo } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { RequestSchema, RequestType } from 'src/types/types';
+import Button from './Button';
+import Dialog from './Dialog';
+import { FormInput, FormSelect } from './FormElement';
 
 const RequestForm = () => {
+  const method = useForm<RequestType>({ resolver: yupResolver(RequestSchema) });
   const { addRequest } = useRequestContext();
   const { books } = useBookContext();
   const { requests } = useRequestContext();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-    watch
-  } = useForm<RequestData>({
-    resolver: zodResolver(RequestSchema)
-  });
-
-  const turf_id = watch('turf_id');
+  const id = method.watch('turf_id');
 
   const names_of_turf = useMemo(() => {
     const uniqueIds = Array.from(new Set(books.map((book) => book.turf_id)));
@@ -44,90 +35,36 @@ const RequestForm = () => {
   }, [books]);
 
   const dates = useMemo(() => {
-    const filteredBooks = books.filter((book) => book.turf_id === turf_id);
-    return filteredBooks.map((book) => {
-      return { value: book.date, label: book.date };
-    });
-  }, [books, turf_id]);
+    const today = new Date();
+    return books
+      .filter((book) => book?.turf_id === id?.value && new Date(book?.date) >= today)
+      .map((book) => ({ value: book?.date, label: book?.date }));
+  }, [books, id?.value]);
 
-  const createRequestFormContent = (turfs: RequestFormProps['options'], dates: RequestFormProps['options']): RequestFormProps[] => {
-    return [
-      {
-        label: 'Turf',
-        name: 'turf_id',
-        type: 'select',
-        options: [{ value: '', label: 'Select a turf' }, ...turfs]
-      },
-      {
-        label: 'Date',
-        name: 'game_date',
-        type: 'select',
-        options: [{ value: '', label: 'Select a date' }, ...dates]
-      },
-      {
-        label: 'Player Needed',
-        type: 'text',
-        name: 'player_needed',
-        valueAsNumber: true
-      },
-      {
-        label: 'Sports type',
-        type: 'text',
-        name: 'game'
-      }
-    ];
-  };
-
-  const RequestFormContent = useMemo(() => createRequestFormContent(names_of_turf, dates), [dates, names_of_turf]);
-
-  const onSubmit: SubmitHandler<RequestData> = async (formData) => {
+  const onSubmit: SubmitHandler<RequestType> = async (formData) => {
     const checkIfExist = requests.find((req) => req.game_date === formData.game_date && req.turf_id === formData.turf_id);
 
     if (checkIfExist) {
       toast.error(`Request aleady exsist for ${formData.game_date} `);
     } else {
-      addRequest(formData);
+      addRequest({ ...formData, turf_id: method.getValues('turf_id').value, game_date: method.getValues('game_date').value });
+      method.reset();
     }
   };
 
   return (
-    <Dialog buttonText="Create Request" dialogId="createRequest" className="btn-primary btn">
-      <div className="mt-2">
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-          {RequestFormContent.map((field, index) => (
-            <div key={index} className="form-group">
-              <label className="label" htmlFor={field.name}>
-                <span className="label-text">{field.label}</span>
-              </label>
-              {field.type === 'select' ? (
-                <select className="select-bordered select-primary select w-full" id={field.name} name={field.name} {...register(field.name)}>
-                  {field.options?.map((option, index) => (
-                    <option key={index} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <>
-                  <input
-                    type={field.type}
-                    className={`${errors[field.name] ? 'input-error' : ''} input-bordered input-primary input w-full`}
-                    id={field.name}
-                    name={field.name}
-                    {...register(field.name, {
-                      valueAsNumber: field.valueAsNumber
-                    })}
-                  />
-                  {errors[field.name] && <p className="text-xs text-red-500">{errors[field.name].message}</p>}
-                </>
-              )}
-            </div>
-          ))}
-          <Button type="submit" text="Submit" disabled={isSubmitting} />
+    <Dialog buttonText="Create Request" title="Create Request for Players" className="btn-primary btn" dialogId="createRequest">
+      <FormProvider {...method}>
+        <form className="space-y-5">
+          <FormSelect options={names_of_turf} label={'Turf'} name={'turf_id'} />
+          <FormSelect options={dates} name={'game_date'} label={'Date'} />
+          <FormInput label="Player Need" name="player_needed" />
+          <FormInput label="Game" name="game" />
+          <Button type="submit" text="Submit" onClick={method.handleSubmit(onSubmit)} disabled={method.formState.isSubmitting} />
         </form>
-      </div>
+      </FormProvider>
     </Dialog>
   );
 };
 
-export default RequestForm;
+export default memo(RequestForm);
