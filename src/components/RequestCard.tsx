@@ -83,7 +83,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
                 Delete Your Request
               </button>
             </span>
-          ) : userProfile?.request.includes(id.toString()) ? (
+          ) : userProfile?.request?.includes(id.toString()) ? (
             <button type="button" onClick={handleDeleteAcceptedRequest} className="btn-outline btn-error btn max-md:w-full">
               Delete Request
             </button>
