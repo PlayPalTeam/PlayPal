@@ -20,7 +20,6 @@ const options = [
 const SignUp = () => {
   const method = useForm<SignUpType>({ resolver: yupResolver(SignUpSchema) });
 
-  const redirectURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/auth/signin' : 'https://playpal.vercel.app/auth/signin';
 
   const onSignUpSubmit: SubmitHandler<SignUpType> = async (data) => {
     const { error } = await supabase.auth.signUp({
@@ -31,7 +30,7 @@ const SignUp = () => {
           username: data.username,
           role: data.role.value
         },
-        emailRedirectTo: redirectURL
+        emailRedirectTo: "https://playpal.vercel.app/auth/signin" 
       }
     });
 
