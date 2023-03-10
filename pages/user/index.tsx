@@ -33,7 +33,8 @@ const HomeUser: NextPage = () => {
       <title>Dashboard</title>
     </Head>
     <main className="mx-auto my-10 w-[90%] max-w-6xl space-y-5">
-      <CardDisclosure title="Bookings" element={bookingElement} />
+      <CardDisclosure title=" Active Bookings" element={activeBookings} />
+      <CardDisclosure title='Past Bookings' element={pastBookings} />
       <CardDisclosure title="Requests you created" element={requestCreateElement} />
       <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
     </main>
