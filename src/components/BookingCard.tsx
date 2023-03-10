@@ -16,7 +16,7 @@ const BookingCard = ({ date, turfs, times, booking_id, cost }: Booking) => {
   const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
   return (
-    <div className="card bg-neutral text-neutral-content">
+    <div className="card mb-5 bg-neutral text-neutral-content">
       <div className="card-body">
         <div className="flex items-center gap-x-4 text-lg font-medium">
           <BsCalendarDate />

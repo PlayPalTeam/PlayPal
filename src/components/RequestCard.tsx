@@ -47,7 +47,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     updatePlayerNeeded({
       id: id,
       player_needed: player_needed + 1,
-      people: request.people.filter((e) => e !== userProfile?.id)
+      people: request.people?.filter((e) => e !== userProfile?.id)
     });
   };
 
