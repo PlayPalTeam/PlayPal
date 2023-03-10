@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { object, string, number, InferType, array, date, ref } from 'yup';
 import { Database } from './database.types';
 
@@ -17,22 +16,20 @@ const passwordValidation = string()
   .min(8, 'Must be at least 8 characters in length')
   .required('Enter password');
 
-export const RequestSchema = z.object({
-  player_needed: z.number().positive(),
-  turf_id: z.string(),
-  game: z.string(),
-  game_date: z.string()
+export const RequestSchema = object().shape({
+  player_needed: number().positive(),
+  turf_id: object().shape({
+    value: string().required(),
+    label: string().required()
+  }),
+  game: string(),
+  game_date: object().shape({
+    value: string().required(),
+    label: string().required()
+  })
 });
 
-export interface RequestFormProps {
-  label: string;
-  name: 'player_needed' | 'turf_id' | 'game' | 'game_date';
-  type: 'select' | 'text';
-  options?: { value: string; label: string }[];
-  valueAsNumber?: boolean;
-}
-
-export type RequestData = z.infer<typeof RequestSchema>;
+export type RequestType = InferType<typeof RequestSchema>;
 
 export const SignInSchema = object().shape({
   email: string().email().required('Enter email'),
@@ -143,3 +140,4 @@ export type BookTurfType = InferType<typeof BookTurfSchema>;
 
 export type Turf = Database['public']['Tables']['turfs']['Row'];
 export type Book = Database['public']['Tables']['bookings']['Row'];
+export type Request = Database['public']['Tables']['requests']['Row'];
