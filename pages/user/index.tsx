@@ -25,7 +25,7 @@ const HomeUser: NextPage = () => {
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const requestAcceptElement = requests
-    ?.filter((req) => userProfile?.request?.includes(req.id.toString()))
+    ?.filter((req) => userProfile?.request?.includes(req.id.toString()) && req.game_date < today)
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const activeBookings = books.filter((book) => book.date >= today).map((book) => <BookingCard key={book.booking_id} show {...book} />);
