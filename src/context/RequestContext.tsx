@@ -1,13 +1,12 @@
 import { RequestResponse } from '@components/RequestCard';
 import { supabase } from '@lib/supabase';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Database } from '../types/database.types';
 import { useUserProfile } from './UserProfileContext';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
-
 type RequestUpdate = Database['public']['Tables']['requests']['Update'];
 
 interface RequestContexType {

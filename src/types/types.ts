@@ -142,3 +142,4 @@ export const BookTurfSchema = object().shape({
 export type BookTurfType = InferType<typeof BookTurfSchema>;
 
 export type Turf = Database['public']['Tables']['turfs']['Row'];
+export type Book = Database['public']['Tables']['bookings']['Row'];

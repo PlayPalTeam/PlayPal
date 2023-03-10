@@ -47,7 +47,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     updatePlayerNeeded({
       id: id,
       player_needed: player_needed + 1,
-      people: request.people.filter((e) => e !== userProfile?.id)
+      people: request.people?.filter((e) => e !== userProfile?.id)
     });
   };
 
@@ -83,7 +83,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
                 Delete Your Request
               </button>
             </span>
-          ) : userProfile?.request.includes(id.toString()) ? (
+          ) : userProfile?.request?.includes(id.toString()) ? (
             <button type="button" onClick={handleDeleteAcceptedRequest} className="btn-outline btn-error btn max-md:w-full">
               Delete Request
             </button>

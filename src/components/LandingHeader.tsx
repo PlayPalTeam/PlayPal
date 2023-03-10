@@ -1,17 +1,14 @@
-import useNavBackgroundOnScroll from '@hooks/useNavBackgroundOnScroll';
 import Link from 'next/link';
 import { IoLogIn } from 'react-icons/io5';
 
 const LandingHeader = () => {
-  const applyBackground = useNavBackgroundOnScroll();
-
   return (
     <header className="relative h-screen">
       <video className="absolute top-0 left-0 -z-50 h-full  w-full object-cover brightness-50" autoPlay loop muted>
         <source src="/beach-soccer.webm" type="video/webm" />
       </video>
       <div className="relative z-10 text-center">
-        <nav className={`navbar justify-between px-10 max-md:px-5 ${applyBackground ? 'bg-base-200' : ''} sticky top-0`}>
+        <nav className={`navbar justify-between px-10 max-md:px-5`}>
           <p className="btn-ghost btn text-xl font-bold md:text-3xl">PlayPal</p>
           <Link href={'/auth/signin'} className="btn-outline btn-primary btn gap-2">
             <IoLogIn className="h-6 w-6" />

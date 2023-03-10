@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
@@ -66,7 +66,7 @@ const FormInput = ({ name, label, type = 'text', accept, placeholder, defaultVal
         <input
           className={`${type === 'file' ? 'file-input-bordered file-input' : 'input'} w-full  ${
             errors[name] ? 'input-error' : 'input-primary'
-          } ${className}`}
+          } ${className} focus:outline-none`}
           type={showPassword ? 'text' : type}
           id={name}
           placeholder={placeholder}
@@ -104,6 +104,51 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
   );
 };
 
+const customStyles: StylesConfig = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: '#282a36',
+    borderColor: '#ff79c6',
+    '&:hover': { borderColor: '#ff79c6' },
+    boxShadow: 'none',
+    borderRadius: '10px',
+    height: '3rem',
+    padding: '0 0.5rem',
+    cursor: 'pointer'
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: '#282a36',
+    borderRadius: '1rem',
+    overflow: 'hidden'
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: '#f8f8f2'
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: 'none'
+  }),
+  dropdownIndicator: (provided, state) => ({
+    ...provided,
+    color: '#ff79c6',
+    '&:hover': {
+      color: '#ff79c6'
+    }
+  }),
+  // Added disabled option style
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? '#ff79c6' : state.isDisabled ? '#282a36' : '#44475a',
+    color: state.isDisabled ? '#666' : '#f8f8f2',
+    cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+    '&:hover': {
+      backgroundColor: state.isDisabled ? null : '#bd93f9'
+    }
+  })
+};
+
 /**
  * A select field component that uses the react-select and react-hook-form libraries.
  * You can add your own option if not available
@@ -120,18 +165,27 @@ const FormMultiSelect = ({ label, name, options, isMulti }: FormSelectProps): JS
 
   return (
     <FormLabel name={name} label={label}>
-      <Controller name={name} control={control} render={({ field }) => <CreatableSelect options={options} isMulti={isMulti} {...field} />} />
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => <CreatableSelect styles={customStyles} options={options} isMulti={isMulti} {...field} />}
+      />
     </FormLabel>
   );
 };
 
-const FormSelect = ({ label, name, options }: FormSelectProps) => {
+const FormSelect = ({ label, name, options, isMulti = false }: FormSelectProps) => {
   const { control } = useFormContext();
 
   return (
-    <FormLabel name={name} label={label}>
-      <Controller name={name} control={control} render={({ field }) => <Select isSearchable={false} options={options} {...field} />} />
-    </FormLabel>
+    <div>
+      <label htmlFor={name}>{label}</label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => <Select isMulti={isMulti} isClearable styles={customStyles} options={options} {...field} />}
+      />
+    </div>
   );
 };
 

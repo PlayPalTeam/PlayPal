@@ -2,15 +2,13 @@ import { supabase } from '@lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Book } from 'src/types/types';
 import { Database } from '../types/database.types';
 
-export type Booking = {
-  booking_id: string;
-  turf_id: string;
-  date: string;
-  times?: string[];
-  selectedsport?: string;
-  turfs: { turf_name: string; address: string } | { turf_name: string; address: string }[];
+export type Booking = Book & {
+  turfs:
+    | { turf_name: string; address: string; price: number; turf_image: string }
+    | { turf_name: string; address: string; price: number; turf_image: string }[];
 };
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -35,7 +33,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const user = useUser();
 
   const getBookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)').eq('profile_id', user?.id);
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address, price, turf_image,turf_image)').eq('profile_id', user?.id);
 
     if (error) {
       toast.error(error.message);
@@ -47,7 +45,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address)');
+    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address, price, turf_image,turf_image)');
 
     if (error) {
       toast.error(error.message);
@@ -73,8 +71,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 201) {
       toast.success('Booking Done');
-    } else {
-      getBookings();
     }
   };
 
@@ -83,8 +79,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
     if (error) {
       toast.error(error.message);
-    } else {
-      getBookings();
     }
   };
 

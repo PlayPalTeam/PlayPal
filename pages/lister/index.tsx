@@ -9,8 +9,7 @@ const SearchBar = dynamic(() => import('@components/Search'));
 
 const ListerDashBoard = () => {
   const [query, setQuery] = useState('');
-  const { turfs } = useTurfContext();
-
+const { turfs } = useTurfContext();
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   }, []);

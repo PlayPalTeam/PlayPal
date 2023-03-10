@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useEffect, useState } from 'react';
+import { ChangeEvent, memo, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { supabase } from 'src/lib/supabase';
 import { useUserProfile } from 'src/context/UserProfileContext';
@@ -28,7 +28,7 @@ function Avatar({ showUploadButton, className, turf_image, src, id }: Props) {
     setAvatarUrl(url);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (src) {
       downloadImage(src);
     }
