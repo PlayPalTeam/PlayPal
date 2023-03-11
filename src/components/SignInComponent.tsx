@@ -21,7 +21,7 @@ export const SigninModerator = () => {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: formData.email,
       options: {
-        emailRedirectTo: 'http://localhost:3000/moderator',
+        emailRedirectTo: 'https://playpal.vercel.app/moderator',
         shouldCreateUser: false
       }
     });
