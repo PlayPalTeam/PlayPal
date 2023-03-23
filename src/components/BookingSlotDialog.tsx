@@ -1,14 +1,11 @@
 import { useBookContext } from '@context/BookingContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useHelper from '@hooks/useHelper';
-import dynamic from 'next/dynamic';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { BookTurfSchema, BookTurfType } from 'src/types/types';
-
-const DialogBox = dynamic(() => import('@components/Dialog'));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const FormSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormSelect));
-const Button = dynamic(() => import('@components/Button'));
+import Button from './Button';
+import Dialog from './Dialog';
+import { FormInput, FormSelect } from './FormElement';
 
 interface BookingSlotDialogProps {
   turf_id: string;
@@ -37,7 +34,7 @@ const BookingSlotDialog = ({ close_hour, open_hour, price, sports, turf_id }: Bo
   };
 
   return (
-    <DialogBox title='Booking Form' buttonText="Book Slot" dialogId="bookSlot" className="btn-primary btn w-full">
+    <Dialog title="Booking Form" buttonText="Book Slot" dialogId="bookSlot" className="btn-primary btn w-full">
       <FormProvider {...method}>
         <form className="space-y-5">
           <FormInput name="date" label="Date" type={'date'} />
@@ -51,7 +48,7 @@ const BookingSlotDialog = ({ close_hour, open_hour, price, sports, turf_id }: Bo
           <Button disabled={method.formState.isSubmitting} text="Book" type="submit" onClick={method.handleSubmit(onSubmit)} />
         </form>
       </FormProvider>
-    </DialogBox>
+    </Dialog>
   );
 };
 

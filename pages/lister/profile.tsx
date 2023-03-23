@@ -1,9 +1,8 @@
-import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 
 const Profile = dynamic(() => import('@components/Profile'));
 
-const listerprofile: NextPage = () => {
+const listerprofile = () => {
   return <Profile />;
 };
 

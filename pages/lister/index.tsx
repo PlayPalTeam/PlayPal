@@ -10,6 +10,7 @@ const SearchBar = dynamic(() => import('@components/Search'));
 const ListerDashBoard = () => {
   const [query, setQuery] = useState('');
   const { turfs } = useTurfContext();
+
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   }, []);
@@ -19,14 +20,14 @@ const ListerDashBoard = () => {
   const TurfElement = useMemo(() => filteredTurfs.map((turf) => <TurfCard href="turfs" key={turf?.turf_id} turf={turf} />), [filteredTurfs]);
 
   return (
-    <>
+  <>
       <Head>
         <title>Dashboard</title>
       </Head>
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="my-8 flex items-center justify-between">
           <SearchBar placeholder="Search by turf name" query={query} handleChange={handleInputChange} className="mr-4 w-[35%]" />
-          <Link href={'/lister/turfs/addTurf'} className="btn-primary btn">
+          <Link prefetch={false} href={'/lister/turfs/addTurf'} className="btn-primary btn">
             Add Turf
           </Link>
         </div>

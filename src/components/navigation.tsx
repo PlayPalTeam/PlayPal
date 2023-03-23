@@ -35,30 +35,13 @@ const FilteredNavigation = (role: string) => {
       icon: <icons.booking className="h-4 w-4" />,
       text: 'Booking',
       href: memoizedGetRoleHref('booking')
-    },
-    {
-      icon: <icons.addTurf />,
-      text: 'Add Turf',
-      href: memoizedGetRoleHref('turfs/addTurf')
-    },
-    {
-      icon: <icons.sales />,
-      text: 'Sales',
-      href: memoizedGetRoleHref('sales')
-    },
-    {
-      icon: <icons.community className="h-4 w-4" />,
-      text: 'Community',
-      href: '/community'
     }
   ];
 
   return navigations.filter((nav) => {
     switch (role) {
       case 'lister':
-        return !(nav.text === 'Request' || nav.text === 'Booking');
-      case 'user':
-        return !(nav.text === 'Add Turf' || nav.text === "Sales");
+        return !(nav.text === 'Request' || nav.text === 'Booking' || nav.text === "DashBoard");
       default:
         return false;
     }

@@ -14,7 +14,8 @@ const TurfCard = ({ turf, href }: TurfCardProps) => {
   const { getRoleHref } = useHelper();
   return (
     <Link
-      className="w-full max-w-xs divide-y-2 divide-primary overflow-hidden rounded-2xl shadow-md hover:shadow-emerald-500"
+      prefetch={false}
+      className="max-h-[300px] w-full max-w-xs divide-y-2 divide-primary overflow-hidden rounded-2xl shadow-md hover:shadow-emerald-500"
       href={getRoleHref(`${href}/${turf?.turf_id}`)}
     >
       <Ava src={turf?.turf_image} className="h-auto w-full object-cover" />
