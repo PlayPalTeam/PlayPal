@@ -40,7 +40,7 @@
     "postcss": "^8.4.21",
     "prettier": "^2.8.6",
     "prettier-plugin-tailwindcss": "^0.2.5",
-    "react-hook-form": "^7.43.7",
+    "react-hook-form": "^7.43.8",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
     "react-select": "^5.7.2",
