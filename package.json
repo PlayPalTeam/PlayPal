@@ -38,7 +38,7 @@
     "husky": "^8.0.3",
     "js-cookie": "^3.0.1",
     "postcss": "^8.4.21",
-    "prettier": "^2.8.6",
+    "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.5",
     "react-hook-form": "^7.43.7",
     "react-hot-toast": "^2.4.0",
