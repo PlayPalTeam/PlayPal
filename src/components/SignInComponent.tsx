@@ -19,7 +19,7 @@ export const SigninModerator = () => {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: formData.email,
       options: {
-        emailRedirectTo: 'http://localhost:3000/moderator',
+        emailRedirectTo: 'https://playpal.vercel.app/moderator',
         shouldCreateUser: false
       }
     });
@@ -37,7 +37,12 @@ export const SigninModerator = () => {
     <section className="flex flex-col space-y-5">
       <FormProvider {...method}>
         <FormInput label="Email" name="email" type="email" placeholder="Enter your email..." />
-        <Button type="submit" text="Log In" onClick={method.handleSubmit(signInWithEmail)} disabled={method.formState.isSubmitting} />
+        <Button
+          type="submit"
+          text="Log In"
+          onClick={method.handleSubmit(signInWithEmail)}
+          disabled={method.formState.isSubmitting}
+        />
       </FormProvider>
     </section>
   );
@@ -63,25 +68,33 @@ export const SignInUser = () => {
       toast.error(error.message);
     }
 
-   
-    if (session?.user.user_metadata) {
-      await push(`/${session.user.user_metadata.role}`);
-    }
-
     if (userProfile?.block) {
       supabase.auth.signOut();
       Cookies.remove('supabase-auth-token');
       push('/auth/signin');
     }
 
+    if (session?.user.user_metadata) {
+      await push(`/${session.user.user_metadata.role}`);
+    }
   };
 
   return (
     <div className="space-y-5">
       <FormProvider {...methods}>
         <FormInput name="email" label="Email" placeholder={'Enter your email...'} />
-        <FormInput name="password" label="Password" type="password" placeholder={'Enter your password...'} />
-        <Button onClick={methods.handleSubmit(onSignInSubmit)} text="Log In" disabled={methods.formState.isSubmitting} type="submit" />
+        <FormInput
+          name="password"
+          label="Password"
+          type="password"
+          placeholder={'Enter your password...'}
+        />
+        <Button
+          onClick={methods.handleSubmit(onSignInSubmit)}
+          text="Log In"
+          disabled={methods.formState.isSubmitting}
+          type="submit"
+        />
       </FormProvider>
       <div className="flex flex-col space-y-5 border-t-2 pt-4">
         <Link prefetch={false} className="btn hover:text-primary" href={'reset'}>
