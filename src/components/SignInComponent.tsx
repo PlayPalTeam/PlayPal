@@ -63,13 +63,17 @@ export const SignInUser = () => {
       toast.error(error.message);
     }
 
-    if (userProfile?.block) {
-      Cookies.remove('supabase-auth-token');
-    }
-
+   
     if (session?.user.user_metadata) {
       await push(`/${session.user.user_metadata.role}`);
     }
+
+    if (userProfile?.block) {
+      supabase.auth.signOut();
+      Cookies.remove('supabase-auth-token');
+      push('/auth/signin');
+    }
+
   };
 
   return (
