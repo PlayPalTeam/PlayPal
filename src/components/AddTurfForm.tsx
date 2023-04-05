@@ -62,8 +62,8 @@ export const Step5 = ({ id }: Step5Props) => {
   return (
     <>
       <FormTitle title="Step 5: Add a photo of the turf" />
-      <Avatar showUploadButton turf_image id={id} className="h-40 w-40" />
-      <Link href='/lister' className='btn-primary btn w-full '>Return Home</Link>
+      <Ava showUploadButton turf_image id={id} className="h-40 w-40" />
+      {/* <Link href='localhost:3000/lister'>Return Home</Link> */}
     </>
   );
 };
