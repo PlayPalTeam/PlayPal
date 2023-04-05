@@ -39,7 +39,7 @@ const RequestCard = ({
     updatePlayerNeeded({
       id: id,
       player_needed: player_needed - 1,
-      people: [userProfile?.full_name]
+      people: [userProfile?.full_name || userProfile?.username]
     });
     updateUserProfile({ request: [...userProfile?.request, id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
