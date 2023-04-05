@@ -13,7 +13,7 @@ const Step3 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.
 const Step4 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step4));
 const Step5 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step5));
 
-const editTurf = () => {
+const EditTurf = () => {
   const { turfs } = useTurfContext();
   const method = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
 
@@ -45,4 +45,4 @@ const editTurf = () => {
   </>
 };
 
-export default editTurf;
+export default EditTurf;
