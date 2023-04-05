@@ -8,6 +8,7 @@ import { Turf } from 'src/types/types';
 import Ava from './Ava';
 import Delete from './Delete';
 import Link from 'next/link';
+import useDialog from '@hooks/useDialog';
 
 
 interface TurfInfoProps {
@@ -16,6 +17,7 @@ interface TurfInfoProps {
 }
 
 const TurfInfo = ({ turf, children }: TurfInfoProps) => {
+  const { closeDialog, isOpen, openDialog } = useDialog();
   const { push } = useRouter();
   const  router  =useRouter();
   const { deleteTurf  } = useTurfContext();
@@ -40,6 +42,9 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
             {userProfile?.role === 'lister' && (
               <div className='flex gap-6 mb-4'>
               <Delete
+handleClose={closeDialog}
+handleOpen={openDialog}
+isOpen={isOpen}
                 error
                 buttonText="Delete Turf"
                 title="Confirm Turf Deletion"
