@@ -29,6 +29,7 @@ const HomeUser: NextPage = () => {
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   const activeBookings = books.filter((book) => book.date >= today).map((book) => <BookingCard key={book.booking_id} show {...book} />);
+
   const pastBookings = books.filter((book) => book.date < today).map((book) => <BookingCard key={book.booking_id} {...book} />);
 
   return (

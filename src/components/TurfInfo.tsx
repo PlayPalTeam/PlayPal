@@ -7,6 +7,8 @@ import { memo, ReactNode } from 'react';
 import { Turf } from 'src/types/types';
 import Ava from './Ava';
 import Delete from './Delete';
+import Link from 'next/link';
+
 
 interface TurfInfoProps {
   turf: Turf;
@@ -15,7 +17,8 @@ interface TurfInfoProps {
 
 const TurfInfo = ({ turf, children }: TurfInfoProps) => {
   const { push } = useRouter();
-  const { deleteTurf } = useTurfContext();
+  const  router  =useRouter();
+  const { deleteTurf  } = useTurfContext();
   const { userProfile } = useUserProfile();
   const { convertTime } = useHelper();
 
@@ -23,6 +26,7 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
     await deleteTurf(turf?.turf_id);
     push('/lister');
   };
+  const data = router.query;
   return (
     <>
       <Head>
@@ -34,13 +38,25 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
           <div className="flex items-center justify-between">
             <h2 className="mb-4 text-3xl font-bold">{turf?.turf_name}</h2>
             {userProfile?.role === 'lister' && (
+              <div className='flex gap-6 mb-4'>
               <Delete
                 error
                 buttonText="Delete Turf"
                 title="Confirm Turf Deletion"
                 description="Are you sure you want to delete this turf? This action cannot be undone. All data associated with this turf will be permanently removed from the system."
                 onClick={DeleteTurf}
-              />
+                />
+              <Link
+                href={{
+                  pathname:'/lister/turfs/editTurf',
+                  query:data,
+                }}
+              >
+              EDIT
+              </Link>
+             
+                </div>
+            
             )}
           </div>
           <p className="mb-4 text-lg">{turf?.description}</p>
