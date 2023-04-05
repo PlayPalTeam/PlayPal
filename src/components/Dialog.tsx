@@ -6,22 +6,34 @@ interface DialogProps {
   children: ReactNode;
   buttonText: string;
   className?: string;
+  handleOpen: () => void;
+  handleClose: () => void;
+  isOpen: boolean;
   error?: boolean;
 }
 
-const Dialog = ({ children, dialogId, buttonText, title, className, error }: DialogProps) => {
+const Dialog = ({
+  children,
+  dialogId,
+  buttonText,
+  title,
+  className,
+  error,
+  handleOpen,
+  handleClose,
+  isOpen
+}: DialogProps) => {
   return (
     <div>
-      <label htmlFor={dialogId} className={className}>
+      <label htmlFor={dialogId} onClick={handleOpen} className={className}>
         {buttonText}
       </label>
-      <input type="checkbox" id={dialogId} className="modal-toggle" />
 
-      <div className={`modal modal-bottom sm:modal-middle`}>
+      <div className={`modal ${isOpen ? 'modal-open' : ''} modal-bottom sm:modal-middle`}>
         <div className="modal-box">
           <div className="flex items-center justify-between">
             <h1 className={`flex-1 text-center text-xl ${error ? 'text-error' : ''}`}>{title}</h1>
-            <label htmlFor={dialogId} className="btn-sm btn-circle btn">
+            <label onClick={handleClose} className="btn-sm btn-circle btn">
               ✕
             </label>
           </div>

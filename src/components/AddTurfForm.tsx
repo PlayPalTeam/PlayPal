@@ -1,11 +1,5 @@
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-
-const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const FormMultiSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
-const FormTextarea = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTextarea));
-const Avatar = dynamic(() => import('@components/Ava'));
+import Ava from './Ava';
+import { FormTitle, FormInput, FormTextarea, FormMultiSelect } from './FormElement';
 
 const amenities = [
   { label: 'Swimming pool', value: 'swimming-pool' },
@@ -68,7 +62,7 @@ export const Step5 = ({ id }: Step5Props) => {
   return (
     <>
       <FormTitle title="Step 5: Add a photo of the turf" />
-      <Avatar showUploadButton turf_image id={id} className="h-40 w-40" />
+      <Ava showUploadButton turf_image id={id} className="h-40 w-40" />
       {/* <Link href='localhost:3000/lister'>Return Home</Link> */}
     </>
   );

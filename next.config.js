@@ -4,8 +4,6 @@ const nextConfig = {
 	swcMinify: true,
 	output: "standalone",
 	compress: true,
-	productionBrowserSourceMaps: false,
-
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

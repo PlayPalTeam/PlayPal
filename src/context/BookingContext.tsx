@@ -48,7 +48,9 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [user?.id]);
 
   const Bookings = useCallback(async () => {
-    const { data, error } = await supabase.from('bookings').select('*, turfs(turf_name, address, price, turf_image,turf_image)');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('*, turfs(turf_name, address, price, turf_image,turf_image)');
 
     if (error) {
       toast.error(error.message);
@@ -67,13 +69,16 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   }, [Bookings, getBookings, user]);
 
   const addBooking = async (turf_id: string, book: BookingInsert) => {
-    const { error, status } = await supabase.from('bookings').insert({ ...book, profile_id: user?.id, turf_id: turf_id });
+    const { error, status } = await supabase
+      .from('bookings')
+      .insert({ ...book, profile_id: user?.id, turf_id: turf_id });
     if (error) {
       toast.error(error.message);
     }
 
     if (status === 201) {
       toast.success('Booking Done');
+      getBookings();
     }
   };
 
@@ -83,9 +88,14 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     if (error) {
       toast.error(error.message);
     }
+    getBookings();
   };
 
-  return <BookingContext.Provider value={{ books, listerbooks, addBooking, deleteBooking }}>{children}</BookingContext.Provider>;
+  return (
+    <BookingContext.Provider value={{ books, listerbooks, addBooking, deleteBooking }}>
+      {children}
+    </BookingContext.Provider>
+  );
 };
 
 export const useBookContext = () => {

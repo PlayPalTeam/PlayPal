@@ -3,15 +3,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '@lib/supabase';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Cookies from 'js-cookie';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { SignInType, SignInSchema, EmailInputType, EmailInputSchema } from 'src/types/types';
-
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const Button = dynamic(() => import('@components/Button'));
+import Button from './Button';
+import { FormInput } from './FormElement';
 
 export const SigninModerator = () => {
   const method = useForm<EmailInputType>({ resolver: yupResolver(EmailInputSchema) });
@@ -39,7 +37,12 @@ export const SigninModerator = () => {
     <section className="flex flex-col space-y-5">
       <FormProvider {...method}>
         <FormInput label="Email" name="email" type="email" placeholder="Enter your email..." />
-        <Button type="submit" text="Log In" onClick={method.handleSubmit(signInWithEmail)} disabled={method.formState.isSubmitting} />
+        <Button
+          type="submit"
+          text="Log In"
+          onClick={method.handleSubmit(signInWithEmail)}
+          disabled={method.formState.isSubmitting}
+        />
       </FormProvider>
     </section>
   );
@@ -66,7 +69,9 @@ export const SignInUser = () => {
     }
 
     if (userProfile?.block) {
+      supabase.auth.signOut();
       Cookies.remove('supabase-auth-token');
+      push('/auth/signin');
     }
 
     if (session?.user.user_metadata) {
@@ -78,14 +83,24 @@ export const SignInUser = () => {
     <div className="space-y-5">
       <FormProvider {...methods}>
         <FormInput name="email" label="Email" placeholder={'Enter your email...'} />
-        <FormInput name="password" label="Password" type="password" placeholder={'Enter your password...'} />
-        <Button onClick={methods.handleSubmit(onSignInSubmit)} text="Log In" disabled={methods.formState.isSubmitting} type="submit" />
+        <FormInput
+          name="password"
+          label="Password"
+          type="password"
+          placeholder={'Enter your password...'}
+        />
+        <Button
+          onClick={methods.handleSubmit(onSignInSubmit)}
+          text="Log In"
+          disabled={methods.formState.isSubmitting}
+          type="submit"
+        />
       </FormProvider>
       <div className="flex flex-col space-y-5 border-t-2 pt-4">
-        <Link className="btn hover:text-primary" href={'reset'}>
+        <Link prefetch={false} className="btn hover:text-primary" href={'reset'}>
           Forgot Passowrd
         </Link>
-        <Link className="btn hover:text-primary" href={'signup'}>
+        <Link prefetch={false} className="btn hover:text-primary" href={'signup'}>
           Don&apos;t have an account? Sign Up
         </Link>
       </div>

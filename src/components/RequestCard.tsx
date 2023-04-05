@@ -3,9 +3,11 @@ import { useUserProfile } from '@context/UserProfileContext';
 import { memo, useCallback } from 'react';
 import { Request } from 'src/types/types';
 import Delete from './Delete';
+import useDialog from '@hooks/useDialog';
 
 interface RequestProfile {
   full_name: string;
+  username: string;
 }
 
 interface RequestTurf {
@@ -18,7 +20,17 @@ export interface RequestResponse extends Request {
   turfs: RequestTurf | RequestTurf[];
 }
 
-const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
+const RequestCard = ({
+  id,
+  game,
+  game_date,
+  player_needed,
+  profiles,
+  turfs,
+  profile_id
+}: RequestResponse) => {
+  const { closeDialog, isOpen, openDialog } = useDialog();
+
   const { deleteRequest } = useRequestContext();
   const { userProfile, updateUserProfile } = useUserProfile();
   const { updatePlayerNeeded, requests } = useRequestContext();
@@ -27,7 +39,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     updatePlayerNeeded({
       id: id,
       player_needed: player_needed - 1,
-      people: [userProfile?.full_name]
+      people: [userProfile?.full_name || userProfile?.username]
     });
     updateUserProfile({ request: [...userProfile?.request, id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
@@ -49,7 +61,10 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
     });
   };
 
-  const profileList = useCallback(() => (Array.isArray(profiles) ? profiles : [profiles]), [profiles]);
+  const profileList = useCallback(
+    () => (Array.isArray(profiles) ? profiles : [profiles]),
+    [profiles]
+  );
 
   const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
@@ -63,7 +78,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
           {profileList().map((profile) => (
             <li key={profile.full_name}>
               <span>Created By: </span>
-              {profile.full_name}
+              {profile.full_name || profile.username}
             </li>
           ))}
         </ul>
@@ -78,6 +93,9 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
           {userProfile?.id === profile_id ? (
             <span className="tooltip tooltip-info" data-tip="Delete the request you have created">
               <Delete
+                handleClose={closeDialog}
+                handleOpen={openDialog}
+                isOpen={isOpen}
                 error
                 buttonText="Cancel Request"
                 title="Confirm Request Deletion"
@@ -87,6 +105,9 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
             </span>
           ) : userProfile?.request?.includes(id.toString()) ? (
             <Delete
+              handleClose={closeDialog}
+              handleOpen={openDialog}
+              isOpen={isOpen}
               buttonText="Cancel Request"
               title="Confirm Request Deletion"
               description="Are you sure you want to delete this request? This action cannot be undone. Please confirm below if you wish to proceed with the deletion."

@@ -39,7 +39,7 @@ const ResetPasswordLink = () => {
         </form>
       </FormProvider>
       <div className="border-t-2 pt-4">
-        <Link className="btn-block btn" href="signin">
+        <Link prefetch={false} className="btn-block btn" href="signin">
           Already have an account? Sign In
         </Link>
       </div>

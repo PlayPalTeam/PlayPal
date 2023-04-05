@@ -12,13 +12,15 @@ interface TurfContextType {
   allTurfs: Turf[];
   updateTurf: (id: string, update: TurfUpdate) => Promise<void>;
   deleteTurf: (id: string) => Promise<void>;
+  fetchOne: (id: string) => Promise<void>;
 }
 
 export const TurfContext = createContext<TurfContextType>({
   turfs: [],
   allTurfs: [],
   updateTurf: () => Promise.resolve(),
-  deleteTurf: () => Promise.resolve()
+  deleteTurf: () => Promise.resolve(),
+  fetchOne: () => Promise.resolve()
 });
 
 export const TurfProvider = ({ children }: { children: ReactNode }) => {
@@ -38,6 +40,18 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
       setTurfs(data);
     }
   }, [user?.id]);
+
+  const fetchOne = async (id: string) => {
+    const { error, status } = await supabase.from('turfs').select('*').eq('turf_id', id);
+
+    if (error) {
+      toast.error(error.message);
+    }
+
+    if (status === 204) {
+      toast.success(`Deleted ${id}`);
+    }
+  };
 
   const fetchAllTurfs = useCallback(async () => {
     const { data, error } = await supabase.from('turfs').select('*');
@@ -82,7 +96,11 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return <TurfContext.Provider value={{ turfs, allTurfs, updateTurf, deleteTurf }}>{children}</TurfContext.Provider>;
+  return (
+    <TurfContext.Provider value={{ turfs, allTurfs, updateTurf, deleteTurf, fetchOne }}>
+      {children}
+    </TurfContext.Provider>
+  );
 };
 
 export const useTurfContext = () => {

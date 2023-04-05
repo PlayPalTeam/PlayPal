@@ -28,8 +28,13 @@ const HomeUser: NextPage = () => {
     ?.filter((req) => userProfile?.request?.includes(req.id.toString()) && req.game_date >= today)
     .map((req) => <RequestCard key={req.id} {...req} />);
 
-  const activeBookings = books.filter((book) => book.date >= today).map((book) => <BookingCard key={book.booking_id} show {...book} />);
-  const pastBookings = books.filter((book) => book.date < today).map((book) => <BookingCard key={book.booking_id} {...book} />);
+  const activeBookings = books
+    .filter((book) => book.date >= today)
+    .map((book) => <BookingCard key={book.booking_id} show {...book} />);
+
+  const pastBookings = books
+    .filter((book) => book.date < today)
+    .map((book) => <BookingCard key={book.booking_id} {...book} />);
 
   return (
     <>

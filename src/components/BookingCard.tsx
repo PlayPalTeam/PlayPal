@@ -5,17 +5,21 @@ import { ImLocation } from 'react-icons/im';
 import { memo, useCallback } from 'react';
 import { useUserProfile } from '@context/UserProfileContext';
 import Delete from './Delete';
+import useDialog from '@hooks/useDialog';
 
 type BookingCardProps = Booking & {
   show?: boolean;
 };
 
 const BookingCard = ({ date, turfs, times, booking_id, cost, show = false }: BookingCardProps) => {
+  const { closeDialog, isOpen, openDialog } = useDialog();
+
   const { deleteBooking } = useBookContext();
   const { userProfile } = useUserProfile();
 
-  const handleDelete = () => {
-    deleteBooking(booking_id);
+  const handleDelete = async () => {
+    await deleteBooking(booking_id);
+    closeDialog();
   };
 
   const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
@@ -44,6 +48,9 @@ const BookingCard = ({ date, turfs, times, booking_id, cost, show = false }: Boo
             <>
               <hr className="my-5" />
               <Delete
+                isOpen={isOpen}
+                handleOpen={openDialog}
+                handleClose={closeDialog}
                 error
                 buttonText="Cancel Booking"
                 title="Confirm Turf Booking Deletion"
