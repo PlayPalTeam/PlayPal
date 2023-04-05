@@ -7,6 +7,7 @@ import useDialog from '@hooks/useDialog';
 
 interface RequestProfile {
   full_name: string;
+  username: string;
 }
 
 interface RequestTurf {
@@ -77,7 +78,7 @@ const RequestCard = ({
           {profileList().map((profile) => (
             <li key={profile.full_name}>
               <span>Created By: </span>
-              {profile.full_name}
+              {profile.full_name || profile.username}
             </li>
           ))}
         </ul>
@@ -92,9 +93,9 @@ const RequestCard = ({
           {userProfile?.id === profile_id ? (
             <span className="tooltip tooltip-info" data-tip="Delete the request you have created">
               <Delete
-              handleClose={closeDialog}
-              handleOpen={openDialog}
-              isOpen={isOpen}
+                handleClose={closeDialog}
+                handleOpen={openDialog}
+                isOpen={isOpen}
                 error
                 buttonText="Cancel Request"
                 title="Confirm Request Deletion"
@@ -104,9 +105,9 @@ const RequestCard = ({
             </span>
           ) : userProfile?.request?.includes(id.toString()) ? (
             <Delete
-            handleClose={closeDialog}
-            handleOpen={openDialog}
-            isOpen={isOpen}
+              handleClose={closeDialog}
+              handleOpen={openDialog}
+              isOpen={isOpen}
               buttonText="Cancel Request"
               title="Confirm Request Deletion"
               description="Are you sure you want to delete this request? This action cannot be undone. Please confirm below if you wish to proceed with the deletion."

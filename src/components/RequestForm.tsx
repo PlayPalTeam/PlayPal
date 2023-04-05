@@ -21,7 +21,6 @@ const RequestForm = () => {
   const { requests } = useRequestContext();
 
   const id = method.watch('turf_id');
-  console.log(id);
 
   const today = dateToString(new Date());
 
@@ -45,18 +44,20 @@ const RequestForm = () => {
   }, [books, id?.value, today]);
 
   const onSubmit: SubmitHandler<RequestType> = async (formData) => {
-    const checkIfExist = requests.find(
-      (req) => req.game_date === formData.game_date && req.turf_id === formData.turf_id
+    const { game_date, turf_id } = formData;
+    const requestExists = requests.some(
+      (req) => req.game_date === game_date.value && req.turf_id === turf_id.value
     );
 
-    if (checkIfExist) {
-      toast.error(`Request aleady exsist for ${formData.game_date} `);
+    if (requestExists) {
+      toast.error(`A request already exists for ${game_date.value}`);
     } else {
-      addRequest({
+      const newRequest = {
         ...formData,
-        turf_id: method.getValues('turf_id').value,
-        game_date: method.getValues('game_date').value
-      });
+        game_date: game_date.value,
+        turf_id: turf_id.value
+      };
+      addRequest(newRequest);
       method.reset();
       closeDialog();
     }
