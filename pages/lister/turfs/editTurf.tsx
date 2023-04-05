@@ -18,31 +18,31 @@ const EditTurf = () => {
   const method = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
 
   const router = useRouter();
-  const data = router.query
-  const  ids = data?.id
-  console.log(ids)
+  const data = router.query;
+  const ids = data?.id;
+  console.log(ids);
 
-    const oneTurf = turfs.filter((turf)=>turf.turf_id === ids)
-    console.log(oneTurf)
+  const oneTurf = turfs.filter((turf) => turf.turf_id === ids);
+  console.log(oneTurf);
 
-    // useEffect(() => {
-    //     method.reset(turfs);
-    //   }, [method, turfs]);
-    
+  // useEffect(() => {
+  //     method.reset(turfs);
+  //   }, [method, turfs]);
 
-  return  <>
-  <div>
-          <FormProvider {...method}>
-        <form className="w-[800px] m-auto ">
-          <Step1 />
-          <Step2 />
-          <Step3 />
-          <Step4 />
-   
-        </form>
-      </FormProvider>
-  </div>
-  </>
+  return (
+    <>
+      <div>
+        <FormProvider {...method}>
+          <form className="m-auto w-[800px] ">
+            <Step1 />
+            <Step2 />
+            <Step3 />
+            <Step4 />
+          </form>
+        </FormProvider>
+      </div>
+    </>
+  );
 };
 
 export default EditTurf;
