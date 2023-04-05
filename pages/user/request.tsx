@@ -23,7 +23,7 @@ const Request: NextPage = () => {
   const filteredRequests = requests.filter((request) => {
     return (
       request.profile_id !== userProfile.id &&
-      !userProfile.request.includes(request.id.toString()) &&
+      !userProfile.request?.includes(request.id.toString()) &&
       request.game_date >= dateToString(new Date()) &&
       (query.length === 0 ||
         (Array.isArray(request.turfs)
