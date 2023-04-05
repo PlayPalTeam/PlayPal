@@ -41,8 +41,6 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user?.id]);
 
-
-  
   const fetchOne = async (id: string) => {
     const { error, status } = await supabase.from('turfs').select('*').eq('turf_id', id);
 
@@ -54,8 +52,6 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
       toast.success(`Deleted ${id}`);
     }
   };
-
-
 
   const fetchAllTurfs = useCallback(async () => {
     const { data, error } = await supabase.from('turfs').select('*');
@@ -100,7 +96,11 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return <TurfContext.Provider value={{ turfs, allTurfs, updateTurf, deleteTurf ,fetchOne }}>{children}</TurfContext.Provider>;
+  return (
+    <TurfContext.Provider value={{ turfs, allTurfs, updateTurf, deleteTurf, fetchOne }}>
+      {children}
+    </TurfContext.Provider>
+  );
 };
 
 export const useTurfContext = () => {

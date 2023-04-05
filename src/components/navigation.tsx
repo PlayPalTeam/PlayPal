@@ -41,9 +41,9 @@ const FilteredNavigation = (role: string) => {
   return navigations.filter((nav) => {
     switch (role) {
       case 'lister':
-        return !(nav.text === 'Request' || nav.text === 'Booking' || nav.text === "DashBoard");
+        return !(nav.text === 'Request' || nav.text === 'Booking' || nav.text === 'DashBoard');
       default:
-        return false;
+        return true;
     }
   });
 };

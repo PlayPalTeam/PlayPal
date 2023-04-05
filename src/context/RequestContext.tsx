@@ -55,6 +55,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 201) {
       toast.success('Request created');
+      getRequests()
     }
   };
 
