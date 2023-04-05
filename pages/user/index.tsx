@@ -21,6 +21,8 @@ const HomeUser: NextPage = () => {
     .map((req) => <RequestCard key={req.id} {...req} />);
 
   let currentDate = new Date().toJSON().slice(0, 10);  
+  let currentTime = new Date().getHours();
+  console.log(currentTime)
 
   const activeBookings = books.filter((book)=>book.date>=currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
   const pastBookings = books.filter((book)=>book.date<currentDate).map((book) => <BookingCard key={book.booking_id} {...book}/>)
