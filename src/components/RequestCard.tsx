@@ -1,9 +1,8 @@
 import { useRequestContext } from '@context/RequestContext';
 import { useUserProfile } from '@context/UserProfileContext';
-import { memo, useCallback, useState } from 'react';
-import { Database } from 'src/types/database.types';
-
-type RequestDataProps = Database['public']['Tables']['requests']['Row'];
+import { memo, useCallback } from 'react';
+import { Request } from 'src/types/types';
+import Delete from './Delete';
 
 interface RequestProfile {
   full_name: string;
@@ -14,13 +13,12 @@ interface RequestTurf {
   address: string;
 }
 
-export interface RequestResponse extends RequestDataProps {
+export interface RequestResponse extends Request {
   profiles: RequestProfile | RequestProfile[];
   turfs: RequestTurf | RequestTurf[];
 }
 
 const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, profile_id }: RequestResponse) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { deleteRequest } = useRequestContext();
   const { userProfile, updateUserProfile } = useUserProfile();
   const { updatePlayerNeeded, requests } = useRequestContext();
@@ -31,7 +29,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
       player_needed: player_needed - 1,
       people: [userProfile?.full_name]
     });
-    updateUserProfile({ request: [id.toString()] });
+    updateUserProfile({ request: [...userProfile?.request, id.toString()] });
   }, [id, player_needed, updatePlayerNeeded, updateUserProfile, userProfile]);
 
   const handleDeleteCreatedRequest = async () => {
@@ -56,7 +54,7 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
   const turfList = useCallback(() => (Array.isArray(turfs) ? turfs : [turfs]), [turfs]);
 
   return (
-    <div className="card bg-neutral text-neutral-content">
+    <div className="card mb-5 bg-neutral text-neutral-content">
       <div className="card-body">
         <h2 className="card-title">{game}</h2>
         <p>Date: {game_date}</p>
@@ -79,22 +77,26 @@ const RequestCard = ({ id, game, game_date, player_needed, profiles, turfs, prof
         <div className="card-actions md:justify-end ">
           {userProfile?.id === profile_id ? (
             <span className="tooltip tooltip-info" data-tip="Delete the request you have created">
-              <button type="button" onClick={handleDeleteCreatedRequest} className="btn-outline btn-error btn max-md:w-full">
-                Delete Your Request
-              </button>
+              <Delete
+                error
+                buttonText="Cancel Request"
+                title="Confirm Request Deletion"
+                description="Are you sure you want to delete this request? This action cannot be undone. Please confirm below if you wish to proceed with the deletion."
+                onClick={handleDeleteCreatedRequest}
+              />
             </span>
           ) : userProfile?.request?.includes(id.toString()) ? (
-            <button type="button" onClick={handleDeleteAcceptedRequest} className="btn-outline btn-error btn max-md:w-full">
-              Delete Request
-            </button>
+            <Delete
+              buttonText="Cancel Request"
+              title="Confirm Request Deletion"
+              description="Are you sure you want to delete this request? This action cannot be undone. Please confirm below if you wish to proceed with the deletion."
+              onClick={handleDeleteAcceptedRequest}
+            />
           ) : (
             <button type="button" onClick={handleAccept} className="btn-primary btn max-md:w-full">
               Accept Request
             </button>
           )}
-          <button className="btn" onClick={() => setIsOpen(!isOpen)}>
-            Show Players
-          </button>
         </div>
       </div>
     </div>

@@ -33,15 +33,15 @@ const ForgotPassword = () => {
       <Head>
         <title>Forgot Password</title>
       </Head>
-      <div className="form-control mx-auto h-screen w-[80%] max-w-sm justify-center">
-        <div className="space-y-5">
-          <FormProvider {...method}>
+      <div className="my-28 mx-auto w-[80%] max-w-[22rem]">
+        <FormProvider {...method}>
+          <form className="space-y-5">
             <FormTitle title="Reset Password" />
             <FormInput name="password" label="Password" placeholder="Enter 8 character password" type={'password'} />
             <FormInput name="confirm_password" label="Retype Password" placeholder="Retype password" type={'password'} />
             <Button text="Reset Password" type="submit" disabled={method.formState.isSubmitting} onClick={method.handleSubmit(onPasswordSubmit)} />
-          </FormProvider>
-        </div>
+          </form>
+        </FormProvider>
       </div>
     </>
   );

@@ -1,15 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useUser } from '@supabase/auth-helpers-react';
-import dynamic from 'next/dynamic';
 import { memo, useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { ProfileSchema, ProfileType } from 'src/types/types';
 import { useUserProfile } from '@context/UserProfileContext';
-
-const Avatar = dynamic(() => import('@components/Ava'));
-const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const Button = dynamic(() => import('@components/Button'));
+import Ava from './Ava';
+import Button from './Button';
+import { FormTitle, FormInput } from './FormElement';
 
 const Profile = () => {
   const method = useForm<ProfileType>({ resolver: yupResolver(ProfileSchema) });
@@ -28,7 +25,12 @@ const Profile = () => {
     <main className="form-control mx-auto w-[90%] max-w-5xl max-md:py-20 md:py-40">
       <div className="flex max-md:flex-col max-md:gap-y-5">
         <section className="md:w-1/2">
-          <Avatar showUploadButton id={userProfile?.id} className="h-auto w-full md:w-2/3 md:h-2/3 rounded-2xl object-contain" src={userProfile?.avatar_url} />
+          <Ava
+            showUploadButton
+            id={userProfile?.id}
+            className="h-auto w-full rounded-2xl object-contain md:h-2/3 md:w-2/3"
+            src={userProfile?.avatar_url}
+          />
         </section>
         <section className="space-y-8 md:w-1/2">
           <FormProvider {...method}>

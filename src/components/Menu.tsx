@@ -19,7 +19,7 @@ export const MenuItem = ({ href, text, icon }: MenuItemProps) => {
 
   return (
     <li>
-      <Link className={`${isActive ? 'text-primary' : ''} link-hover link-primary rounded-md hover:no-underline`} href={href}>
+      <Link prefetch={false} className={`${isActive ? 'text-primary' : ''} link-hover link-primary rounded-md hover:no-underline`} href={href}>
         {icon}
         {text}
       </Link>

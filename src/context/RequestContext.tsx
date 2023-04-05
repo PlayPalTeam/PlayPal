@@ -29,7 +29,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   const { userProfile } = useUserProfile();
 
   const getRequests = useCallback(async () => {
-    const { data, error } = await supabase.from('requests').select('*, profiles(full_name), turfs(turf_name, address)');
+    const { data, error } = await supabase.from('requests').select('*, profiles(full_name, username), turfs(turf_name, address)');
 
     if (error) {
       toast.error(error.message);
@@ -47,10 +47,14 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   }, [getRequests, user, userProfile?.role]);
 
   const addRequest = async (request: RequestInsert) => {
-    const { error } = await supabase.from('requests').insert({ ...request, profile_id: user?.id });
+    const { error, status } = await supabase.from('requests').insert({ ...request, profile_id: user?.id });
 
     if (error) {
       toast.error(error.message);
+    }
+
+    if (status === 201) {
+      toast.success('Request created');
     }
   };
 
@@ -75,6 +79,7 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 204) {
       toast.success('Your request is deleted');
+      getRequests();
     }
   };
 

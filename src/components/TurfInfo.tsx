@@ -1,14 +1,12 @@
 import { useTurfContext } from '@context/TurfContext';
 import { useUserProfile } from '@context/UserProfileContext';
 import useHelper from '@hooks/useHelper';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { memo, ReactNode } from 'react';
 import { Turf } from 'src/types/types';
-
-const Avatar = dynamic(() => import('@components/Ava'));
-const DeletButton = dynamic(() => import('@components/Delete'));
+import Ava from './Ava';
+import Delete from './Delete';
 
 interface TurfInfoProps {
   turf: Turf;
@@ -32,11 +30,13 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
       </Head>
       <main className="mx-auto mt-5 max-w-7xl px-4 sm:px-6 lg:px-8">
         <section>
-          <Avatar className="mx-auto mb-8 h-auto w-full rounded-2xl" src={turf?.turf_image} />
+          <Ava className="mx-auto mb-8 h-auto w-full rounded-2xl" src={turf?.turf_image} />
           <div className="flex items-center justify-between">
             <h2 className="mb-4 text-3xl font-bold">{turf?.turf_name}</h2>
             {userProfile?.role === 'lister' && (
-              <DeletButton
+              <Delete
+                error
+                buttonText="Delete Turf"
                 title="Confirm Turf Deletion"
                 description="Are you sure you want to delete this turf? This action cannot be undone. All data associated with this turf will be permanently removed from the system."
                 onClick={DeleteTurf}

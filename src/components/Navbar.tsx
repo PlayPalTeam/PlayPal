@@ -6,12 +6,9 @@ import { AiOutlineProfile } from 'react-icons/ai';
 import { supabase } from 'src/lib/supabase';
 import { useUserProfile } from '@context/UserProfileContext';
 import useHelper from '@hooks/useHelper';
-import dynamic from 'next/dynamic';
 import FilteredNavigation from './navigation';
-
-const Avatar = dynamic(() => import('@components/Ava'));
-const Menu = dynamic(() => import('@components/Menu').then((mod) => mod.Menu));
-const MenuItem = dynamic(() => import('@components/Menu').then((mod) => mod.MenuItem));
+import Ava from './Ava';
+import { Menu, MenuItem } from './Menu';
 
 const Navbar = () => {
   const { push } = useRouter();
@@ -36,7 +33,7 @@ const Navbar = () => {
             ))}
           </Menu>
         </div>
-        <Link className="btn-ghost btn text-xl normal-case" href={getRoleHref('')}>
+        <Link prefetch={false} className="btn-ghost btn text-xl normal-case" href={getRoleHref('')}>
           PlayPal
         </Link>
       </div>
@@ -48,7 +45,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu dropEnd={true} button={<Avatar src={userProfile?.avatar_url} className="h-16 w-16 rounded-full object-contain" />}>
+        <Menu dropEnd={true} button={<Ava src={userProfile?.avatar_url} className="h-16 w-16 rounded-full object-contain" />}>
           {userProfile?.role && (
             <>
               <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />

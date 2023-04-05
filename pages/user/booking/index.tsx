@@ -24,7 +24,7 @@ const BookingTurf = () => {
         <title>Booking</title>
       </Head>
       <section className="mx-auto mt-5 max-w-7xl space-y-5 px-4 sm:px-6 lg:px-8">
-        <SearchBar query={query} handleChange={handleInputChange} className="mr-4 w-[35%]" />
+        <SearchBar placeholder='Search by name..' query={query} handleChange={handleInputChange} className="mr-4 w-[35%]" />
         <div className="grid grid-cols-1 gap-8 max-md:justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">{TurfElement}</div>
       </section>
     </>

@@ -1,12 +1,5 @@
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import Button from './Button';
-
-const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const FormMultiSelect = dynamic(() => import('@components/FormElement').then((mod) => mod.FormMultiSelect));
-const FormTextarea = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTextarea));
-const Avatar = dynamic(() => import('@components/Ava'));
+import Ava from './Ava';
+import { FormTitle, FormInput, FormTextarea, FormMultiSelect } from './FormElement';
 
 const amenities = [
   { label: 'Swimming pool', value: 'swimming-pool' },
