@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
-	swcMinify: true
-
+	swcMinify: true,
+	output: "standalone",
+	compress: true,
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
