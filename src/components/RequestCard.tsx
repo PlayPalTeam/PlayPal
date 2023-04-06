@@ -127,19 +127,19 @@ const RequestCard = ({
     <div className=" bg-gray  card mb-5 border-2 border-gray-800  text-white shadow-2xl  lg:card-side ">
     {turfList().map((turf) => (
       <>
-        <figure className='h-[250px] w-[370px] '>
+        <figure className='sm:h-[250px] sm:w-[370px] h-[250px]'>
           {/* <Ava src={turf?.turf_image} className="sm:h-[250px] sm:w-[370px]  h-[20px] w-[300px] mt-2  sm:mt-0" /> */}
           {/* <Image src={"https://source.unsplash.com/random/900×700/?fruit"} width={100} height={100}/> */}
           {
             game === "football" && (
               // <img src='https://source.unsplash.com/random/500×300/?football' ></img>
-              <Image src={'https://source.unsplash.com/random/500×300/?football'} alt={"football"} width={100} height={100}/>
+              <Image src={'https://source.unsplash.com/random/500×300/?football'} alt={"football"} width={270} height={260}/>
             ) || game === "tennis" && (
-              <Image src={'https://source.unsplash.com/random/500×300/?tennis'} alt={"tennis"} width={100} height={100}/>
+              <Image src={'https://source.unsplash.com/random/500×300/?tennis'} alt={"tennis"} width={270} height={260}/>
             ) || game === "Box Cricket" && (
-              <Image src={'https://source.unsplash.com/random/500×300/?cricket'} alt={"Box Cricket"} width={100} height={100}/>
+              <Image src={'https://source.unsplash.com/random/500×300/?cricket'} alt={"Box Cricket"} width={270} height={260}/>
             ) || game === "soccer" && (
-              <Image src={'https://source.unsplash.com/random/500×300/?soccer'} alt={"soccer"} width={100} height={100}/>
+              <Image src={'https://source.unsplash.com/random/500×300/?soccer'} alt={"soccer"} width={270} height={260}/>
             ) 
           }
         </figure>
