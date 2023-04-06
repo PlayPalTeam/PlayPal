@@ -18,9 +18,9 @@ const TurfCard = ({ turf, href }: TurfCardProps) => {
       className="max-h-[300px] w-full max-w-xs divide-y-2 divide-primary overflow-hidden rounded-2xl shadow-md hover:shadow-emerald-500"
       href={getRoleHref(`${href}/${turf?.turf_id}`)}
     >
-      <Ava src={turf?.turf_image} className="h-auto w-full object-cover" />
+      <Ava src={turf?.turf_image} className="h-[200px] w-full object-cover" />
       <div className="p-4">
-        <h3 className="flex items-center text-lg font-semibold">
+        <h3 className="flex items-center  font-semibold text-md">
           <FaFutbol className="mr-2" />
           {turf?.turf_name}
         </h3>

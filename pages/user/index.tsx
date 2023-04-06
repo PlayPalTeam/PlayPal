@@ -30,11 +30,11 @@ const HomeUser: NextPage = () => {
 
   const activeBookings = books
     .filter((book) => book.date >= today)
-    .map((book) => (<div className=''><BookingCard key={book.booking_id} show {...book} /></div>) );
+    .map((book) => (<div className='' key={book.booking_id}><BookingCard key={book.booking_id} show {...book} /></div>) );
 
   const pastBookings = books
     .filter((book) => book.date < today)
-    .map((book) => (<div className='  '><BookingCard key={book.booking_id} {...book} /></div>));
+    .map((book) => (<div className='  ' key={book.booking_id}><BookingCard key={book.booking_id} {...book} /></div>));
 
     let arr = ["dsasd","assax"]
   return (

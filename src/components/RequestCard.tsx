@@ -4,6 +4,7 @@ import { memo, useCallback } from 'react';
 import { Request } from 'src/types/types';
 import Delete from './Delete';
 import useDialog from '@hooks/useDialog';
+import Image from 'next/image'
 
 interface RequestProfile {
   full_name: string;
@@ -131,15 +132,15 @@ const RequestCard = ({
           {/* <Image src={"https://source.unsplash.com/random/900×700/?fruit"} width={100} height={100}/> */}
           {
             game === "football" && (
-              <img src='https://source.unsplash.com/random/500×300/?football' ></img>
+              // <img src='https://source.unsplash.com/random/500×300/?football' ></img>
+              <Image src={'https://source.unsplash.com/random/500×300/?football'} alt={"football"} width={100} height={100}/>
             ) || game === "tennis" && (
-              <img src='https://source.unsplash.com/random/900×700/?tennis' ></img>
+              <Image src={'https://source.unsplash.com/random/500×300/?tennis'} alt={"tennis"} width={100} height={100}/>
             ) || game === "Box Cricket" && (
-              <img src='https://source.unsplash.com/random/900×700/?cricket' ></img>
+              <Image src={'https://source.unsplash.com/random/500×300/?cricket'} alt={"Box Cricket"} width={100} height={100}/>
             ) || game === "soccer" && (
-              <img src='https://source.unsplash.com/random/900×700/?soccer' ></img>
+              <Image src={'https://source.unsplash.com/random/500×300/?soccer'} alt={"soccer"} width={100} height={100}/>
             ) 
-            
           }
         </figure>
         <div className=" sm:ml-[30px] sm:mt-[20px] sm:mr-12 m-3 ">

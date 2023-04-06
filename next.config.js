@@ -4,6 +4,10 @@ const nextConfig = {
 	swcMinify: true,
 	output: "standalone",
 	compress: true,
+	images: {
+		domains: ["source.unsplash.com"],
+	  },
+	
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
