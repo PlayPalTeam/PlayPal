@@ -71,7 +71,10 @@ export const ProfileSchema = object().shape({
   username: usernameValidation.optional(),
   full_name: string().optional().nullable(),
   phone_number: string()
-    .matches(new RegExp(/((\+*)((0[ -]*)*|((91 )*))((\d{12})+|(\d{10})+))|\d{5}([- ]*)\d{6}/), 'Phone number is not valid')
+    .matches(
+      new RegExp(/((\+*)((0[ -]*)*|((91 )*))((\d{12})+|(\d{10})+))|\d{5}([- ]*)\d{6}/),
+      'Phone number is not valid'
+    )
     .optional()
     .nullable()
 });
@@ -82,10 +85,16 @@ export type ProfileType = InferType<typeof ProfileSchema>;
 export const AddTurfSchema = object().shape({
   turf_name: string().trim().required('Please enter a name for the turf'),
   open_hour: string()
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter a valid opening time (format: HH:mm)')
+    .matches(
+      /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+      'Please enter a valid opening time (format: HH:mm)'
+    )
     .required('Please enter the opening time for the turf'),
   close_hour: string()
-    .matches(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Please enter a valid closing time (format: HH:mm)')
+    .matches(
+      /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+      'Please enter a valid closing time (format: HH:mm)'
+    )
     .required('Please enter the closing time for the turf'),
   price: number()
     .transform((value, originalValue) => (originalValue === '' ? NaN : value))
@@ -114,6 +123,24 @@ export const AddTurfSchema = object().shape({
 });
 
 export type TurfFormValues = InferType<typeof AddTurfSchema>;
+
+export const EditTurfSchema = object({
+  turf_name: string().trim(),
+  open_hour: string().matches(
+    /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+    'Please enter a valid opening time (format: HH:mm)'
+  ),
+  close_hour: string().matches(
+    /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+    'Please enter a valid closing time (format: HH:mm)'
+  ),
+  price: number().transform((value, originalValue) => (originalValue === '' ? NaN : value)),
+  capacity: number().transform((value, originalValue) => (originalValue === '' ? NaN : value)),
+  address: string().trim(),
+  description: string().trim()
+});
+
+export type EditTurfType = InferType<typeof EditTurfSchema>
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);

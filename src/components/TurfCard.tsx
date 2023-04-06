@@ -24,7 +24,7 @@ const TurfCard = ({ turf, href }: TurfCardProps) => {
           <FaFutbol className="mr-2" />
           {turf?.turf_name}
         </h3>
-        <p className="flex items-center text-gray-600">
+        <p className="flex items-center text-gray-400">
           <FaMapMarkerAlt className="mr-2" />
           <span className="truncate">{turf?.address}</span>
         </p>

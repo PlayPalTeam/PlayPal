@@ -1,48 +1,45 @@
+import React, { useEffect, useState } from 'react';
 import { useTurfContext } from '@context/TurfContext';
-import { yupResolver } from '@hookform/resolvers/yup';
-import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { AddTurfSchema, TurfFormValues } from 'src/types/types';
+import { EditTurfType } from 'src/types/types';
+import TurfForm from '@components/TurfForm';
 
-const Button = dynamic(() => import('@components/Button'));
-const Step1 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step1));
-const Step2 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step2));
-const Step3 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step3));
-const Step4 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step4));
-const Step5 = dynamic(() => import('@components/AddTurfForm').then((mod) => mod.Step5));
-
-const EditTurf = () => {
-  const { turfs } = useTurfContext();
-  const method = useForm<TurfFormValues>({ resolver: yupResolver(AddTurfSchema) });
-
+const EditTurfPage = () => {
+  const { turfs, updateTurf } = useTurfContext();
   const router = useRouter();
-  const data = router.query;
-  const ids = data?.id;
-  console.log(ids);
+  const { id } = router.query;
 
-  const oneTurf = turfs.filter((turf) => turf.turf_id === ids);
-  console.log(oneTurf);
+  const [oneTurf, setOneTurf] = useState<EditTurfType>();
 
-  // useEffect(() => {
-  //     method.reset(turfs);
-  //   }, [method, turfs]);
+  useEffect(() => {
+    const selectedTurf = turfs.find((turf) => turf.turf_id === id);
+    if (selectedTurf) {
+      const { turf_id, amenities, sports, turf_image, open_hour, close_hour, ...oneTurf } =
+        selectedTurf;
+      setOneTurf({
+        ...oneTurf,
+        open_hour: open_hour.slice(0, 5),
+        close_hour: close_hour.slice(0, 5)
+      });
+    }
+  }, [turfs, id]);
+
+  const onSubmit = (data: EditTurfType) => {
+    updateTurf(id as string, data);
+  };
 
   return (
     <>
-      <div>
-        <FormProvider {...method}>
-          <form className="m-auto w-[800px] ">
-            <Step1 />
-            <Step2 />
-            <Step3 />
-            <Step4 />
-          </form>
-        </FormProvider>
+      <Head>
+        <title>Edit | {oneTurf?.turf_name}</title>
+      </Head>
+      <div className="mx-auto max-w-4xl rounded-lg p-8 shadow-lg">
+        <h1 className="mb-4 text-center text-3xl font-bold">Edit {oneTurf?.turf_name}</h1>
+        <TurfForm initialValues={oneTurf} onSubmit={onSubmit} />
       </div>
     </>
   );
 };
 
-export default EditTurf;
+export default EditTurfPage;

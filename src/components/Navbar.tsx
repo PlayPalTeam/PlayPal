@@ -45,7 +45,12 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Menu dropEnd={true} button={<Ava src={userProfile?.avatar_url} className="h-16 w-16 rounded-full object-contain" />}>
+        <Menu
+          dropEnd={true}
+          button={
+            <Ava src={userProfile?.avatar_url} className="h-16 w-16 rounded-full object-contain" />
+          }
+        >
           {userProfile?.role && (
             <>
               <MenuItem href={getRoleHref('profile')} text="Profile" icon={<AiOutlineProfile />} />
