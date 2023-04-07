@@ -13,57 +13,91 @@ const sports = [
   { label: 'Tennis', value: 'tennis' }
 ];
 
-export const Step1 = () => {
+interface StepProps {
+  title?: string;
+}
+
+export const Step1: React.FC<StepProps> = ({ title }) => {
   return (
-    <>
-      <FormTitle title="Step 1: Turf Information" />
-      <FormInput label="Name" name="turf_name" placeholder="Enter your turf name..." />
-      <FormInput label="Price(hour)" name="price" placeholder="Enter your price" />
-      <FormInput label="Capacity" name="capacity" placeholder="Enter your turf capacity" />
-    </>
+    <div className="mb-6 flex flex-wrap justify-between">
+      {title && <FormTitle title={title} />}
+      <div className="mb-2 w-full px-3 md:w-1/3">
+        <FormInput
+          label="Name"
+          name="turf_name"
+          placeholder="Enter your turf name..."
+          className="ocus:border-blue-500 focus:outline-none"
+        />
+      </div>
+      <div className="mb-2 w-full px-3 md:w-1/3">
+        <FormInput
+          label="Price(hour)"
+          name="price"
+          placeholder="Enter your price"
+          className="ocus:border-blue-500 focus:outline-none"
+        />
+      </div>
+      <div className="mb-2 w-full px-3 md:w-1/3">
+        <FormInput
+          label="Capacity"
+          name="capacity"
+          placeholder="Enter your turf capacity"
+          className="focus:border-blue-500 focus:outline-none"
+        />
+      </div>
+    </div>
   );
 };
 
-export const Step2 = () => {
+export const Step2: React.FC<StepProps> = ({ title }) => {
   return (
     <>
-      <FormTitle title="Step 2: Description and Address" />
+      {title && <FormTitle title={title} />}
       <FormTextarea label="Description" name="description" />
       <FormTextarea label="Address" name="address" />
     </>
   );
 };
 
-export const Step3 = () => {
+export const Step3: React.FC<StepProps> = ({ title }) => {
   return (
     <>
-      <FormTitle title="Step 3: Opening and Closing Time" />
-      <FormInput label="Opening Time" name="open_hour" type="time" />
-      <FormInput label="Closing Time" name="close_hour" type="time" />
+      {title && <FormTitle title={title} />}
+      <div className="grid grid-cols-2 gap-6">
+        <div>
+          <FormInput label="Opening Time (24h)" name="open_hour" type="time" className="focus:border-blue-500 focus:outline-none" />
+        </div>
+        <div>
+          <FormInput label="Closing Time (24h)" name="close_hour" type="time" className="focus:border-blue-500 focus:outline-none"  />
+        </div>
+      </div>
+      <p className="text-sm text-gray-500 mt-2">
+        Please enter opening and closing time in 24-hour format. For example, 14:00 for 2:00 PM.
+      </p>
     </>
   );
 };
 
-export const Step4 = () => {
+
+export const Step4: React.FC<StepProps> = ({ title }) => {
   return (
     <>
-      <FormTitle title="Step 4: Amenities and Sports" />
+      {title && <FormTitle title={title} />}
       <FormMultiSelect isMulti label="Amenities" name="amenities" options={amenities} />
       <FormMultiSelect isMulti label="Sports" name="sports" options={sports} />
     </>
   );
 };
 
-interface Step5Props {
+interface Step5Props extends StepProps {
   id: string;
 }
 
-export const Step5 = ({ id }: Step5Props) => {
+export const Step5 = ({ id, title }: Step5Props) => {
   return (
     <>
-      <FormTitle title="Step 5: Add a photo of the turf" />
+      {title && <FormTitle title={title} />}
       <Ava showUploadButton turf_image id={id} className="h-40 w-40" />
-      {/* <Link href='localhost:3000/lister'>Return Home</Link> */}
     </>
   );
 };

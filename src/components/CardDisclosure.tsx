@@ -1,11 +1,21 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 interface Props {
   title: string;
   element: JSX.Element[] | JSX.Element;
+  arr: string []
 }
 
-const CardDisclosure = ({ title, element }: Props) => {
+const CardDisclosure = ({ title, element,arr }: Props) => {
+  // let dataset= {}
+  // useEffect(()=>{
+  //   element?.map((d)=>{
+  //     dataset = d.props
+  //   })
+  //   console.log(dataset)
+  // },[dataset])
+
+
   return (
     <div tabIndex={0} className="collapse-arrow  rounded-box collapse">
       <input type="checkbox" />

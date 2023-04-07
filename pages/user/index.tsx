@@ -30,22 +30,23 @@ const HomeUser: NextPage = () => {
 
   const activeBookings = books
     .filter((book) => book.date >= today)
-    .map((book) => <BookingCard key={book.booking_id} show {...book} />);
+    .map((book) => (<div className='' key={book.booking_id}><BookingCard key={book.booking_id} show {...book} /></div>) );
 
   const pastBookings = books
     .filter((book) => book.date < today)
-    .map((book) => <BookingCard key={book.booking_id} {...book} />);
+    .map((book) => (<div className='  ' key={book.booking_id}><BookingCard key={book.booking_id} {...book} /></div>));
 
+    let arr = ["dsasd","assax"]
   return (
     <>
       <Head>
         <title>Dashboard</title>
       </Head>
       <main className="mx-auto my-10 w-[90%] max-w-6xl space-y-5">
-        <CardDisclosure title=" Active Bookings" element={activeBookings} />
-        <CardDisclosure title="Past Bookings" element={pastBookings} />
-        <CardDisclosure title="Requests you created" element={requestCreateElement} />
-        <CardDisclosure title="Requests you accepted" element={requestAcceptElement} />
+        <CardDisclosure title=" Active Bookings" element={activeBookings} arr={arr}/>
+        <CardDisclosure title="Past Bookings" element={pastBookings} arr={arr} />
+        <CardDisclosure title="Requests you created" element={requestCreateElement}arr={arr} />
+        <CardDisclosure title="Requests you accepted" element={requestAcceptElement} arr={arr}/>
       </main>
     </>
   );

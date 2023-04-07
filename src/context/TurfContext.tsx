@@ -81,6 +81,7 @@ export const TurfProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 204) {
       toast.success(`Update done for ${id}`);
+      fetchOne(id);
     }
   };
 

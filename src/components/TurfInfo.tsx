@@ -10,7 +10,6 @@ import Delete from './Delete';
 import Link from 'next/link';
 import useDialog from '@hooks/useDialog';
 
-
 interface TurfInfoProps {
   turf: Turf;
   children?: ReactNode;
@@ -19,8 +18,8 @@ interface TurfInfoProps {
 const TurfInfo = ({ turf, children }: TurfInfoProps) => {
   const { closeDialog, isOpen, openDialog } = useDialog();
   const { push } = useRouter();
-  const  router  =useRouter();
-  const { deleteTurf  } = useTurfContext();
+  const router = useRouter();
+  const { deleteTurf } = useTurfContext();
   const { userProfile } = useUserProfile();
   const { convertTime } = useHelper();
 
@@ -40,28 +39,27 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
           <div className="flex items-center justify-between">
             <h2 className="mb-4 text-3xl font-bold">{turf?.turf_name}</h2>
             {userProfile?.role === 'lister' && (
-              <div className='flex gap-6 mb-4'>
-              <Delete
-handleClose={closeDialog}
-handleOpen={openDialog}
-isOpen={isOpen}
-                error
-                buttonText="Delete Turf"
-                title="Confirm Turf Deletion"
-                description="Are you sure you want to delete this turf? This action cannot be undone. All data associated with this turf will be permanently removed from the system."
-                onClick={DeleteTurf}
+              <div className="mb-4 flex gap-6">
+                <Link
+                  className="btn-primary btn w-20"
+                  href={{
+                    pathname: '/lister/turfs/editTurf',
+                    query: data
+                  }}
+                >
+                  EDIT
+                </Link>
+                <Delete
+                  handleClose={closeDialog}
+                  handleOpen={openDialog}
+                  isOpen={isOpen}
+                  error
+                  buttonText="Delete Turf"
+                  title="Confirm Turf Deletion"
+                  description="Are you sure you want to delete this turf? This action cannot be undone. All data associated with this turf will be permanently removed from the system."
+                  onClick={DeleteTurf}
                 />
-              <Link
-                href={{
-                  pathname:'/lister/turfs/editTurf',
-                  query:data,
-                }}
-              >
-              EDIT
-              </Link>
-             
-                </div>
-            
+              </div>
             )}
           </div>
           <p className="mb-4 text-lg">{turf?.description}</p>
@@ -70,10 +68,12 @@ isOpen={isOpen}
               <span className="mr-2 font-bold">Address:</span> {turf?.address}
             </p>
             <p className="w-full md:w-1/3">
-              <span className="mr-2 font-bold">Open Hours:</span> {convertTime(turf?.open_hour)} - {convertTime(turf?.open_hour)}
+              <span className="mr-2 font-bold">Open Hours:</span> {convertTime(turf?.open_hour)} -{' '}
+              {convertTime(turf?.open_hour)}
             </p>
             <p className="w-full md:w-1/3">
-              <span className="mr-2 font-bold">Price:</span> {turf?.price} <span>&#8377; (Per hour)</span>
+              <span className="mr-2 font-bold">Price:</span> {turf?.price}{' '}
+              <span>&#8377; (Per hour)</span>
             </p>
             <p className="w-full md:w-1/3">
               <span className="mr-2 font-bold">Capacity:</span> {turf?.capacity}

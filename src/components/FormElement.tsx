@@ -48,7 +48,16 @@ const FormLabel = ({ name, label, children }: FormLabelProps) => {
   );
 };
 
-const FormInput = ({ name, label, type = 'text', accept, placeholder, defaultValue, disabled, className }: FormInputProps) => {
+const FormInput = ({
+  name,
+  label,
+  type = 'text',
+  accept,
+  placeholder,
+  defaultValue,
+  disabled,
+  className
+}: FormInputProps) => {
   const {
     register,
     formState: { errors }
@@ -78,12 +87,16 @@ const FormInput = ({ name, label, type = 'text', accept, placeholder, defaultVal
         {type === 'password' && (
           <button
             type="button"
-            className="absolute top-1 right-2 p-2"
+            className="absolute right-2 top-1 p-2"
             onClick={togglePasswordVisibility}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             <span className="sr-only">{showPassword ? 'Hide' : 'Show'}</span>
-            {showPassword ? <AiFillEyeInvisible className="h-6 w-6" /> : <AiFillEye className="h-6 w-6" />}
+            {showPassword ? (
+              <AiFillEyeInvisible className="h-6 w-6" />
+            ) : (
+              <AiFillEye className="h-6 w-6" />
+            )}
           </button>
         )}
       </div>
@@ -99,7 +112,13 @@ const FormTextarea = ({ name, label }: FormLabelProps) => {
 
   return (
     <FormLabel name={name} label={label}>
-      <textarea className={`textarea w-full resize-none  ${errors[name] ? 'textarea-error' : 'textarea-primary'}`} id={name} {...register(name)} />
+      <textarea
+        className={`textarea w-full resize-none  ${
+          errors[name] ? 'textarea-error' : 'textarea-primary'
+        }`}
+        id={name}
+        {...register(name)}
+      />
     </FormLabel>
   );
 };
@@ -168,7 +187,9 @@ const FormMultiSelect = ({ label, name, options, isMulti }: FormSelectProps): JS
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <CreatableSelect styles={customStyles} options={options} isMulti={isMulti} {...field} />}
+        render={({ field }) => (
+          <CreatableSelect styles={customStyles} options={options} isMulti={isMulti} {...field} />
+        )}
       />
     </FormLabel>
   );
@@ -183,7 +204,15 @@ const FormSelect = ({ label, name, options, isMulti = false }: FormSelectProps) 
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Select isMulti={isMulti} isClearable styles={customStyles} options={options} {...field} />}
+        render={({ field }) => (
+          <Select
+            isMulti={isMulti}
+            isClearable
+            styles={customStyles}
+            options={options}
+            {...field}
+          />
+        )}
       />
     </div>
   );
