@@ -22,6 +22,7 @@ const Request: NextPage = () => {
 
   const filteredRequests = requests.filter((request) => {
     return (
+      request.player_needed > 0 &&
       request.profile_id !== userProfile.id &&
       !userProfile.request?.includes(request.id.toString()) &&
       request.game_date >= dateToString(new Date()) &&
@@ -46,10 +47,10 @@ const Request: NextPage = () => {
           />
           <RequestForm />
         </div>
-        <section className="space-y-5">
-          {filteredRequests.length > 0 ?( filteredRequests.map((req) => (
-            <RequestCard key={req.id} {...req} />
-          ))) : (
+        <section className="space-y-5 my-10">
+          {filteredRequests.length > 0 ? (
+            filteredRequests.map((req, index) => <RequestCard key={index} {...req} />)
+          ) : (
             <p className="text-center">No Request Available</p>
           )}
         </section>
