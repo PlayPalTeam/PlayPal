@@ -37,7 +37,7 @@
     "framer-motion": "^10.12.2",
     "husky": "^8.0.3",
     "js-cookie": "^3.0.1",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.22",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",
     "react-hook-form": "^7.43.9",
