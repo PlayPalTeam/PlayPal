@@ -33,7 +33,7 @@
     "cross-env": "^7.0.3",
     "daisyui": "^2.51.5",
     "eslint": "^8.38.0",
-    "eslint-config-next": "^13.3.0",
+    "eslint-config-next": "^13.4.5",
     "framer-motion": "^10.12.2",
     "husky": "^8.0.3",
     "js-cookie": "^3.0.1",
