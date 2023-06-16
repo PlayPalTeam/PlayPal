@@ -1,8 +1,5 @@
 import { ChangeEvent, memo, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { supabase } from 'src/lib/supabase';
-import { useUserProfile } from 'src/context/UserProfileContext';
-import { useTurfContext } from '@context/TurfContext';
 import { toast } from 'react-hot-toast';
 
 type Props = {
@@ -75,7 +72,14 @@ function Avatar({ showUploadButton, className, turf_image, src, id }: Props) {
           <label className="btn-primary btn" htmlFor="single">
             {uploading ? 'Uploading ...' : 'Upload'}
           </label>
-          <input className="absolute hidden" type="file" id="single" accept="image/*" onChange={uploadAvatar} disabled={uploading} />
+          <input
+            className="absolute hidden"
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
         </div>
       )}
     </>
