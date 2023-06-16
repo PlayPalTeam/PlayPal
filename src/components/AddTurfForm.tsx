@@ -1,5 +1,5 @@
 import Ava from './Ava';
-import { FormTitle, FormInput, FormTextarea, FormMultiSelect } from './FormElement';
+import { FormInput, FormMultiSelect, FormTextarea, FormTitle } from './FormElement';
 
 const amenities = [
   { label: 'Swimming pool', value: 'swimming-pool' },
@@ -65,19 +65,28 @@ export const Step3: React.FC<StepProps> = ({ title }) => {
       {title && <FormTitle title={title} />}
       <div className="grid grid-cols-2 gap-6">
         <div>
-          <FormInput label="Opening Time (24h)" name="open_hour" type="time" className="focus:border-blue-500 focus:outline-none" />
+          <FormInput
+            label="Opening Time (24h)"
+            name="open_hour"
+            type="time"
+            className="focus:border-blue-500 focus:outline-none"
+          />
         </div>
         <div>
-          <FormInput label="Closing Time (24h)" name="close_hour" type="time" className="focus:border-blue-500 focus:outline-none"  />
+          <FormInput
+            label="Closing Time (24h)"
+            name="close_hour"
+            type="time"
+            className="focus:border-blue-500 focus:outline-none"
+          />
         </div>
       </div>
-      <p className="text-sm text-gray-500 mt-2">
+      <p className="mt-2 text-sm text-gray-500">
         Please enter opening and closing time in 24-hour format. For example, 14:00 for 2:00 PM.
       </p>
     </>
   );
 };
-
 
 export const Step4: React.FC<StepProps> = ({ title }) => {
   return (
