@@ -1,15 +1,15 @@
-import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  // We need to create a response and hand it to the supabase client to be able to modify the response headers.
+  // We need to create a respmdonse and hand it to the supabase client to be able to modify the response headers.
 
   const res = NextResponse.next();
 
   const redirectUrl = req.nextUrl.clone();
 
   // Create authenticated Supabase Client.
-  const supabase = createMiddlewareSupabaseClient({ req, res });
+  const supabase = createMiddlewareClient({ req, res });
   // Check if we have a session
   const {
     data: { session }

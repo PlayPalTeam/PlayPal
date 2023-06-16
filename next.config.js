@@ -2,8 +2,6 @@
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
-	output: "standalone",
-	compress: true,
 	images: {
 		domains: ["source.unsplash.com"],
 	  },
