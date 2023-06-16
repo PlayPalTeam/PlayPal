@@ -1,8 +1,8 @@
-import { supabase } from '@lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
-import { Database } from '../types/database.types';
+import {Database} from "@/lib/database.types";
 
 type Turf = Database['public']['Tables']['turfs']['Row'];
 type TurfUpdate = Database['public']['Tables']['turfs']['Update'];

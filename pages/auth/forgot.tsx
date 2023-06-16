@@ -1,15 +1,11 @@
+import Button from '@/components/Button';
+import { FormInput, FormTitle } from '@/components/FormElement';
+import { supabase } from '@/lib/supabase';
+import { PasswordSchema, type PasswordType } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { supabase } from '@lib/supabase';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import { PasswordSchema, PasswordType } from 'src/types/types';
-
-const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const Button = dynamic(() => import('@components/Button'));
+import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
   const method = useForm<PasswordType>({ resolver: yupResolver(PasswordSchema) });
@@ -29,21 +25,40 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>Forgot Password</title>
-      </Head>
-      <div className="my-28 mx-auto w-[80%] max-w-[22rem]">
-        <FormProvider {...method}>
-          <form className="space-y-5">
-            <FormTitle title="Reset Password" />
-            <FormInput name="password" label="Password" placeholder="Enter 8 character password" type={'password'} />
-            <FormInput name="confirm_password" label="Retype Password" placeholder="Retype password" type={'password'} />
-            <Button text="Reset Password" type="submit" disabled={method.formState.isSubmitting} onClick={method.handleSubmit(onPasswordSubmit)} />
-          </form>
-        </FormProvider>
-      </div>
-    </>
+    <div className="mx-auto my-28 w-[80%] max-w-[22rem]">
+      <FormProvider {...method}>
+        <form className="space-y-5">
+          <FormTitle title="Reset Password" />
+          <FormInput name="password" label="Password" placeholder="Enter 8 character password" />
+          <FormInput name="confirm_p" label="Retype {'password'}" />
+          <FormInput
+            name="confirm_password"
+            placeholder="Retype password"
+            type={'password'}
+            label={''}
+          />
+          <Button text="Reset Password" type="submit" />
+          <Button
+            text="Reset Password"
+            type="submit"
+            disabled={method.formState.isSubmitting}
+            onClick={method.handleSubmit(onPasswordSubmit)}
+          />
+          <FormInput
+            name="confirm_password"
+            label="Retype Password"
+            placeholder="Retype password"
+            type={'password'}
+          />
+          <Button
+            text="Reset Password"
+            type="submit"
+            disabled={method.formState.isSubmitting}
+            onClick={method.handleSubmit(onPasswordSubmit)}
+          />
+        </form>
+      </FormProvider>
+    </div>
   );
 };
 

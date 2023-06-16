@@ -1,7 +1,7 @@
-import { useUserProfile } from '@context/UserProfileContext';
+import { useUserProfile } from '@/context/UserProfileContext';
 import { memo } from 'react';
 import toast from 'react-hot-toast';
-import { supabase } from 'src/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 const BlockItem = ({ userData }) => {
   const { getData } = useUserProfile();

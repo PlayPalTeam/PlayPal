@@ -1,10 +1,10 @@
-import { useTurfContext } from '@context/TurfContext';
+import { useTurfContext } from '@/context/TurfContext';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ChangeEvent, useState, useMemo, useCallback } from 'react';
 
-const TurfCard = dynamic(() => import('@components/TurfCard'));
-const SearchBar = dynamic(() => import('@components/Search'));
+const TurfCard = dynamic(() => import('@/components/TurfCard'));
+const SearchBar = dynamic(() => import('@/components/Search'));
 
 const BookingTurf = () => {
   const [query, setQuery] = useState('');
@@ -14,7 +14,7 @@ const BookingTurf = () => {
     setQuery(event.target.value);
   }, []);
 
-  const filteredTurfs = useMemo(() => turfs.filter((turf) => turf.turf_name.toLowerCase().includes(query.toLowerCase())), [turfs, query]);
+  const filteredTurfs = useMemo(() => turfs.filter((turf) => turf.turf_name!.toLowerCase().includes(query.toLowerCase())), [turfs, query]);
 
   const TurfElement = useMemo(() => filteredTurfs.map((turf) => <TurfCard href="booking" key={turf?.turf_id} turf={turf} />), [filteredTurfs]);
 

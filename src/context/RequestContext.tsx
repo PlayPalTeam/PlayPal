@@ -1,9 +1,9 @@
-import { RequestResponse } from '@components/RequestCard';
-import { supabase } from '@lib/supabase';
+import { RequestResponse } from '@/components/RequestCard';
+import { Database } from '@/lib/database.types';
+import { supabase } from '@/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { Database } from '../types/database.types';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useUserProfile } from './UserProfileContext';
 
 type RequestInsert = Database['public']['Tables']['requests']['Insert'];
@@ -29,7 +29,9 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   const { userProfile } = useUserProfile();
 
   const getRequests = useCallback(async () => {
-    const { data, error } = await supabase.from('requests').select('*, profiles(full_name, username), turfs(turf_name, address)');
+    const { data, error } = await supabase
+      .from('requests')
+      .select('*, profiles(full_name, username), turfs(turf_name, address)');
 
     if (error) {
       toast.error(error.message);
@@ -47,7 +49,9 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
   }, [getRequests, user, userProfile?.role]);
 
   const addRequest = async (request: RequestInsert) => {
-    const { error, status } = await supabase.from('requests').insert({ ...request, profile_id: user?.id });
+    const { error, status } = await supabase
+      .from('requests')
+      .insert({ ...request, profile_id: user?.id });
 
     if (error) {
       toast.error(error.message);
@@ -55,12 +59,15 @@ export const RequestProvider = ({ children }: { children: ReactNode }) => {
 
     if (status === 201) {
       toast.success('Request created');
-      getRequests()
+      getRequests();
     }
   };
 
   async function updatePlayerNeeded(requestUpdate: RequestUpdate) {
-    const { status, error } = await supabase.from('requests').update(requestUpdate).eq('id', requestUpdate?.id);
+    const { status, error } = await supabase
+      .from('requests')
+      .update(requestUpdate)
+      .eq('id', requestUpdate?.id);
 
     if (status === 204) {
       toast.success('Success');

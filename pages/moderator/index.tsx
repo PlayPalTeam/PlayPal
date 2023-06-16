@@ -1,6 +1,6 @@
-import BlockItem from '@components/BlockItem';
+import BlockItem from '@/components/BlockItem';
 import { useState } from 'react';
-import { useUserProfile } from '@context/UserProfileContext';
+import { useUserProfile } from '@/context/UserProfileContext';
 
 const Index = () => {
   const { allData } = useUserProfile();
@@ -11,7 +11,7 @@ const Index = () => {
     if (searchBox === '') {
       return el;
     } else {
-      return el.username?.toLowerCase().includes(searchBox.toLowerCase());
+      return el!.username?.toLowerCase().includes(searchBox.toLowerCase());
     }
   });
   return (
@@ -58,11 +58,11 @@ const Index = () => {
               <div>
                 <div>
                   {filteredData?.map((item) => (
-                    <BlockItem key={item.id} userData={item} />
+                    <BlockItem key={item!.id} userData={item} />
                   ))}
                 </div>
                 <div>
-                  {filteredData.length === 0 && (
+                  {filteredData!.length === 0 && (
                     <div className="flex justify-center p-12 text-2xl font-bold tracking-widest text-red-400">No Match Found</div>
                   )}
                 </div>
@@ -70,13 +70,13 @@ const Index = () => {
             )}
 
             {searchBox.length === 0 && selectedOption === 'all' && (
-              <div>{allData?.map((data) => data.role !== 'moderator' && <BlockItem key={data.id} userData={data} />)}</div>
+              <div>{allData?.map((data) => data!.role !== 'moderator' && <BlockItem key={data!.id} userData={data} />)}</div>
             )}
             {searchBox.length === 0 && selectedOption === 'users' && (
-              <div>{allData?.map((data) => data.role === 'user' && <BlockItem key={data.id} userData={data} />)}</div>
+              <div>{allData?.map((data) => data!.role === 'user' && <BlockItem key={data!.id} userData={data} />)}</div>
             )}
             {searchBox.length === 0 && selectedOption === 'listers' && (
-              <div className=''>{allData?.map((data) => data.role === 'lister' && <BlockItem key={data.id} userData={data} />)}</div>
+              <div className=''>{allData?.map((data) => data!.role === 'lister' && <BlockItem key={data!.id} userData={data} />)}</div>
             )}
           </div>
         </div>

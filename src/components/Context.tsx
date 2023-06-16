@@ -1,7 +1,7 @@
-import { BookingProvider } from '@context/BookingContext';
-import { RequestProvider } from '@context/RequestContext';
-import { TurfProvider } from '@context/TurfContext';
-import { UserProfileProvider } from '@context/UserProfileContext';
+import { BookingProvider } from '@/context/BookingContext';
+import { RequestProvider } from '@/context/RequestContext';
+import { TurfProvider } from '@/context/TurfContext';
+import { UserProfileProvider } from '@/context/UserProfileContext';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import { ReactNode, memo, useState } from 'react';

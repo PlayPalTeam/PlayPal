@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
 import { AiOutlineProfile } from 'react-icons/ai';
-import { supabase } from 'src/lib/supabase';
-import { useUserProfile } from '@context/UserProfileContext';
-import useHelper from '@hooks/useHelper';
+import { supabase } from '@/lib/supabase';
+import { useUserProfile } from '@/context/UserProfileContext';
+import useHelper from '@/hooks/useHelper';
 import FilteredNavigation from './navigation';
 import Ava from './Ava';
 import { Menu, MenuItem } from './Menu';
@@ -15,7 +15,7 @@ const Navbar = () => {
   const { userProfile } = useUserProfile();
   const { getRoleHref } = useHelper();
 
-  const navigations = FilteredNavigation(userProfile?.role);
+  const navigations = FilteredNavigation(userProfile?.role!);
 
   const handleSignOut = () => {
     supabase.auth.signOut();

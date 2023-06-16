@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useTurfContext } from '@context/TurfContext';
-import Head from 'next/head';
+import { useTurfContext } from '@/context/TurfContext';
 import { useRouter } from 'next/router';
-import { EditTurfType } from 'src/types/types';
-import TurfForm from '@components/TurfForm';
+import { useState } from 'react';
+import { EditTurfType } from '@/types/types';
+import Head from 'next/head';
 
 const EditTurfPage = () => {
   const { turfs, updateTurf } = useTurfContext();
@@ -12,18 +11,18 @@ const EditTurfPage = () => {
 
   const [oneTurf, setOneTurf] = useState<EditTurfType>();
 
-  useEffect(() => {
-    const selectedTurf = turfs.find((turf) => turf.turf_id === id);
-    if (selectedTurf) {
-      const { turf_id, amenities, sports, turf_image, open_hour, close_hour, ...oneTurf } =
-        selectedTurf;
-      setOneTurf({
-        ...oneTurf,
-        open_hour: open_hour.slice(0, 5),
-        close_hour: close_hour.slice(0, 5)
-      });
-    }
-  }, [turfs, id]);
+  //  useEffect(() => {
+  //    const selectedTurf = turfs.find((turf) => turf.turf_id === id);
+  //    if (selectedTurf) {
+  //      const { turf_id, amenities, sports, turf_image, open_hour, close_hour, ...oneTurf } =
+  //        selectedTurf;
+  //      setOneTurf({
+  //        ...oneTurf,
+  //        open_hour: open_hour.slice(0, 5),
+  //        close_hour: close_hour.slice(0, 5)
+  //      });
+  //    }
+  //  }, [turfs, id]);
 
   const onSubmit = (data: EditTurfType) => {
     updateTurf(id as string, data);
@@ -36,7 +35,7 @@ const EditTurfPage = () => {
       </Head>
       <div className="mx-auto max-w-4xl rounded-lg p-8 shadow-lg">
         <h1 className="mb-4 text-center text-3xl font-bold">Edit {oneTurf?.turf_name}</h1>
-        <TurfForm initialValues={oneTurf} onSubmit={onSubmit} />
+        {/*<TurfForm initialValues={oneTurf} onSubmit={onSubmit} />*/}
       </div>
     </>
   );

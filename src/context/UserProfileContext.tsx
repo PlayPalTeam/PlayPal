@@ -1,15 +1,15 @@
-import { supabase } from '@lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
-import { Database } from '../types/database.types';
+import {Database} from "@/lib/database.types";
 
 type Profile = Database['public']['Tables']['profiles']['Row'] | null;
 type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 
 interface UserProfileContextType {
   userProfile: Profile;
-  allData: Profile[];
+  allData: Profile[] | null;
   updateUserProfile: (update: ProfileUpdate) => Promise<void>;
   getData: () => Promise<void>;
 }
@@ -25,7 +25,7 @@ export const UserProfileContext = createContext<UserProfileContextType>(defaultV
 
 export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userProfile, setUserProfile] = useState<Profile>(null);
-  const [allData, setAllData] = useState<Profile[]>(null);
+  const [allData, setAllData] = useState<Profile[] | null>(null);
 
   const user = useUser();
 

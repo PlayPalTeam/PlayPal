@@ -1,13 +1,12 @@
-import { useBookContext } from '@context/BookingContext';
+import { useBookContext } from '@/context/BookingContext';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useHelper from '@hooks/useHelper';
+import useHelper from '@/hooks/useHelper';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { BookTurfSchema, BookTurfType } from 'src/types/types';
 import Button from './Button';
 import Dialog from './Dialog';
 import { FormInput, FormSelect } from './FormElement';
-import { useState } from 'react';
-import useDialog from '@hooks/useDialog';
+import useDialog from '@/hooks/useDialog';
+import {BookTurfSchema, BookTurfType} from "@/types/types";
 
 interface BookingSlotDialogProps {
   turf_id: string;
@@ -47,7 +46,7 @@ const BookingSlotDialog = ({
     });
 
     method.reset();
-    closeDialog()
+    closeDialog();
   };
 
   return (

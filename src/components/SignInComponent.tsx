@@ -1,13 +1,13 @@
-import { useUserProfile } from '@context/UserProfileContext';
+import { useUserProfile } from '@/context/UserProfileContext';
+import { supabase } from '@/lib/supabase';
+import { EmailInputSchema, EmailInputType, SignInSchema, SignInType } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { supabase } from '@lib/supabase';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { SignInType, SignInSchema, EmailInputType, EmailInputSchema } from 'src/types/types';
 import Button from './Button';
 import { FormInput } from './FormElement';
 

@@ -1,14 +1,14 @@
-import { useTurfContext } from '@context/TurfContext';
-import { useUserProfile } from '@context/UserProfileContext';
-import useHelper from '@hooks/useHelper';
+import { useTurfContext } from '@/context/TurfContext';
+import { useUserProfile } from '@/context/UserProfileContext';
+import useHelper from '@/hooks/useHelper';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { memo, ReactNode } from 'react';
-import { Turf } from 'src/types/types';
+import { Turf } from '@/types/types';
 import Ava from './Ava';
 import Delete from './Delete';
 import Link from 'next/link';
-import useDialog from '@hooks/useDialog';
+import useDialog from '@/hooks/useDialog';
 
 interface TurfInfoProps {
   turf: Turf;

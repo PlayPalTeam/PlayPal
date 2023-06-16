@@ -1,9 +1,9 @@
-import { supabase } from '@lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Book } from 'src/types/types';
-import { Database } from '../types/database.types';
+import { Book } from '@/types/types';
+import { Database } from '@/lib/database.types';
 
 export type Booking = Book & {
   turfs:

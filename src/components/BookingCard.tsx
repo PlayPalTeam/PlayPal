@@ -1,12 +1,12 @@
-import { Booking, useBookContext } from '@context/BookingContext';
+import { Booking, useBookContext } from '@/context/BookingContext';
 import { BsCalendarDate } from 'react-icons/bs';
 import { BiTime } from 'react-icons/bi';
 import { ImLocation } from 'react-icons/im';
 import { memo, useCallback } from 'react';
-import { useUserProfile } from '@context/UserProfileContext';
+import { useUserProfile } from '@/context/UserProfileContext';
 import Delete from './Delete';
-import useDialog from '@hooks/useDialog';
-import { supabase } from '@lib/supabase';
+import useDialog from '@/hooks/useDialog';
+import { supabase } from '@/lib/supabase';
 import toast from 'react-hot-toast';
 import Ava from './Ava';
 

@@ -43,7 +43,6 @@ const FormLabel = ({ name, label, children }: FormLabelProps) => {
         <span>{label}</span>
       </label>
       {children}
-      {errors[name] && <>{errors[name].message}</>}
     </div>
   );
 };
@@ -157,15 +156,15 @@ const customStyles: StylesConfig = {
     }
   }),
   // Added disabled option style
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? '#ff79c6' : state.isDisabled ? '#282a36' : '#44475a',
-    color: state.isDisabled ? '#666' : '#f8f8f2',
-    cursor: state.isDisabled ? 'not-allowed' : 'pointer',
-    '&:hover': {
-      backgroundColor: state.isDisabled ? null : '#bd93f9'
-    }
-  })
+//  option: (provided, state) => ({
+//    ...provided,
+//    backgroundColor: state.isSelected ? '#ff79c6' : state.isDisabled ? '#282a36' : '#44475a',
+//    color: state.isDisabled ? '#666' : '#f8f8f2',
+//    cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+//    '&:hover': {
+//      backgroundColor: state.isDisabled ? null : '#bd93f9'
+//    }
+//  })
 };
 
 /**

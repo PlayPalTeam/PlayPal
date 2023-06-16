@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Turf } from 'src/types/types';
+import { Turf } from '@/types/types';
 import { FaMapMarkerAlt, FaFutbol } from 'react-icons/fa';
-import useHelper from '@hooks/useHelper';
+import useHelper from '@/hooks/useHelper';
 import { memo } from 'react';
 import Ava from './Ava';
 

@@ -1,14 +1,11 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { supabase } from '@lib/supabase';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import { EmailInputSchema, EmailInputType } from 'src/types/types';
-
-const FormTitle = dynamic(() => import('@components/FormElement').then((mod) => mod.FormTitle));
-const FormInput = dynamic(() => import('@components/FormElement').then((mod) => mod.FormInput));
-const Button = dynamic(() => import('@components/Button'));
+import Button from "@/components/Button";
+import { FormInput, FormTitle } from "@/components/FormElement";
+import { supabase } from "@/lib/supabase";
+import { EmailInputSchema, EmailInputType } from "@/types/types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const ResetPasswordLink = () => {
   const method = useForm<EmailInputType>({ resolver: yupResolver(EmailInputSchema) });
@@ -30,12 +27,17 @@ const ResetPasswordLink = () => {
   };
 
   return (
-    <main className="my-28 mx-auto w-[80%] max-w-[22rem]">
+    <main className="mx-auto my-28 w-[80%] max-w-[22rem]">
       <FormProvider {...method}>
         <form className="mb-5 space-y-5">
           <FormTitle title="Reset Password" />
           <FormInput name="email" label="Email" placeholder="Enter your email" />
-          <Button text="Send Link" type="submit" disabled={method.formState.isSubmitting} onClick={method.handleSubmit(onResetSubmit)} />
+          <Button
+            text="Send Link"
+            type="submit"
+            disabled={method.formState.isSubmitting}
+            onClick={method.handleSubmit(onResetSubmit)}
+          />
         </form>
       </FormProvider>
       <div className="border-t-2 pt-4">

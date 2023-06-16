@@ -1,11 +1,8 @@
-import { useBookContext } from '@context/BookingContext';
-import { useTurfContext } from '@context/TurfContext';
-import dynamic from 'next/dynamic';
+import BookingCard from '@/components/BookingCard';
+import TurfInfo from '@/components/TurfInfo';
+import { useBookContext } from '@/context/BookingContext';
+import { useTurfContext } from '@/context/TurfContext';
 import { useRouter } from 'next/router';
-import { memo } from 'react';
-
-const BookingCard = dynamic(() => import('@components/BookingCard'));
-const TurfInfo = dynamic(() => import('@components/TurfInfo'));
 
 const Turf = () => {
   const { query } = useRouter();
@@ -28,4 +25,4 @@ const Turf = () => {
   );
 };
 
-export default memo(Turf);
+export default Turf;

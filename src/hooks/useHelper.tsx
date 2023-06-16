@@ -1,4 +1,4 @@
-import { useUserProfile } from '@context/UserProfileContext';
+import { useUserProfile } from '@/context/UserProfileContext';
 
 const useHelper = () => {
   const { userProfile } = useUserProfile();

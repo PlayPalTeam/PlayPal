@@ -1,15 +1,15 @@
-import { useBookContext } from '@context/BookingContext';
-import { useRequestContext } from '@context/RequestContext';
+import { useBookContext } from '@/context/BookingContext';
+import { useRequestContext } from '@/context/RequestContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { memo, useMemo } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { RequestSchema, RequestType } from 'src/types/types';
+import { RequestSchema, RequestType } from '@/types/types';
 import Button from './Button';
 import Dialog from './Dialog';
 import { FormInput, FormSelect } from './FormElement';
-import useDialog from '@hooks/useDialog';
-import useHelper from '@hooks/useHelper';
+import useDialog from '@/hooks/useDialog';
+import useHelper from '@/hooks/useHelper';
 
 const RequestForm = () => {
   const { closeDialog, isOpen, openDialog } = useDialog();
@@ -43,25 +43,25 @@ const RequestForm = () => {
       .map((book) => ({ value: book?.date, label: book?.date }));
   }, [books, id?.value, today]);
 
-  const onSubmit: SubmitHandler<RequestType> = async (formData) => {
-    const { game_date, turf_id } = formData;
-    const requestExists = requests.some(
-      (req) => req.game_date === game_date.value && req.turf_id === turf_id.value
-    );
+  // const onSubmit: SubmitHandler<RequestType> = async (formData) => {
+  //   const { game_date, turf_id } = formData;
+  //   const requestExists = requests.some(
+  //     (req) => req.game_date === game_date.value && req.turf_id === turf_id.value
+  //   );
 
-    if (requestExists) {
-      toast.error(`A request already exists for ${game_date.value}`);
-    } else {
-      const newRequest = {
-        ...formData,
-        game_date: game_date.value,
-        turf_id: turf_id.value
-      };
-      addRequest(newRequest);
-      method.reset();
-      closeDialog();
-    }
-  };
+  //   if (requestExists) {
+  //     toast.error(`A request already exists for ${game_date.value}`);
+  //   } else {
+  //     const newRequest = {
+  //       ...formData,
+  //       game_date: game_date.value,
+  //       turf_id: turf_id.value
+  //     };
+  //     addRequest(newRequest);
+  //     method.reset();
+  //     closeDialog();
+  //   }
+  // };
 
   return (
     <Dialog
@@ -75,14 +75,14 @@ const RequestForm = () => {
     >
       <FormProvider {...method}>
         <form className="space-y-5">
-          <FormSelect options={names_of_turf} label={'Turf'} name={'turf_id'} />
+          {/* <FormSelect options={names_of_turf} label={'Turf'} name={'turf_id'} /> */}
           <FormSelect options={dates} name={'game_date'} label={'Date'} />
           <FormInput label="Player Need" name="player_needed" />
           <FormInput label="Game" name="game" />
           <Button
             type="submit"
             text="Submit"
-            onClick={method.handleSubmit(onSubmit)}
+            // onClick={method.handleSubmit(onSubmit)}
             disabled={method.formState.isSubmitting}
           />
         </form>

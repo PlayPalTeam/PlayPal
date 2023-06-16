@@ -1,10 +1,10 @@
 import { memo } from 'react';
-import { useTurfContext } from '@context/TurfContext';
+import { useTurfContext } from '@/context/TurfContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
-const TurfInfo = dynamic(() => import('@components/TurfInfo'));
-const BookSlot = dynamic(() => import('@components/BookingSlotDialog'));
+const TurfInfo = dynamic(() => import('@/components/TurfInfo'));
+const BookSlot = dynamic(() => import('@/components/BookingSlotDialog'));
 
 const Booking = () => {
   const { query } = useRouter();
@@ -17,7 +17,7 @@ const Booking = () => {
   return (
     <TurfInfo turf={turf}>
       <div className="mb-5">
-        <BookSlot {...turf} />
+        {/* <BookSlot /> */}
       </div>
     </TurfInfo>
   );

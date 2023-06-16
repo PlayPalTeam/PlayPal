@@ -1,16 +1,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { EditTurfSchema, EditTurfType } from 'src/types/types';
+
 import { Step1, Step2, Step3 } from './AddTurfForm';
 import Button from './Button';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
+import {EditTurfSchema, EditTurfType} from "@/types/types";
 
 interface Props {
   initialValues: EditTurfType;
   onSubmit: (data: EditTurfType) => void;
 }
 
-const TurfForm: React.FC<Props> = ({ initialValues, onSubmit }) => {
+const TurfForm: FC<Props> = ({ initialValues, onSubmit }) => {
   const method = useForm<EditTurfType>({
     resolver: yupResolver(EditTurfSchema)
   });

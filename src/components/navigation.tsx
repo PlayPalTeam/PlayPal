@@ -3,7 +3,7 @@ import { BiGitPullRequest, BiBookAdd } from 'react-icons/bi';
 import { CgCommunity } from 'react-icons/cg';
 import { GiTurtleShell } from 'react-icons/gi';
 import { FcSalesPerformance } from 'react-icons/fc';
-import useHelper from '@hooks/useHelper';
+import useHelper from '@/hooks/useHelper';
 import { useMemo } from 'react';
 
 const icons = {

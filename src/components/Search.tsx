@@ -1,4 +1,4 @@
-import { ChangeEvent, memo } from 'react';
+import { ChangeEvent } from 'react';
 import { motion } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
 
@@ -12,9 +12,15 @@ interface SearchBarProps {
 const SearchBar = ({ query, handleChange, className, placeholder }: SearchBarProps) => {
   return (
     <div className={`relative ${className}`}>
-      <input type="text" className="input-primary input w-full" placeholder={placeholder} value={query} onChange={handleChange} />
+      <input
+        type="text"
+        className="input-primary input w-full"
+        placeholder={placeholder}
+        value={query}
+        onChange={handleChange}
+      />
       <motion.span
-        className="absolute top-4 right-4 -translate-y-1/2"
+        className="absolute right-4 top-4 -translate-y-1/2"
         initial={{ opacity: 0, x: 10 }}
         animate={query ? { opacity: 1, x: 0 } : { opacity: 0, x: 10 }}
         transition={{ duration: 0.2 }}
@@ -22,7 +28,7 @@ const SearchBar = ({ query, handleChange, className, placeholder }: SearchBarPro
         <AiOutlineSearch className="h-6 w-6 text-gray-400" />
         {query && (
           <motion.span
-            className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-xs text-white"
+            className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-xs text-white"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.2 }}
@@ -35,4 +41,4 @@ const SearchBar = ({ query, handleChange, className, placeholder }: SearchBarPro
   );
 };
 
-export default memo(SearchBar);
+export default SearchBar;
