@@ -27,7 +27,9 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
     await deleteTurf(turf?.turf_id);
     push('/lister');
   };
+
   const data = router.query;
+
   return (
     <>
       <Head>
@@ -36,10 +38,10 @@ const TurfInfo = ({ turf, children }: TurfInfoProps) => {
       <main className="mx-auto mt-5 max-w-7xl px-4 sm:px-6 lg:px-8">
         <section>
           <Ava className="mx-auto mb-8 h-auto w-full rounded-2xl" src={turf?.turf_image} />
-          <div className="flex items-center justify-between">
+          <div className="flex items-center max-md:flex-wrap justify-between">
             <h2 className="mb-4 text-3xl font-bold">{turf?.turf_name}</h2>
             {userProfile?.role === 'lister' && (
-              <div className="mb-4 flex gap-6">
+              <div className="mb-4 justify-end w-full flex gap-6">
                 <Link
                   className="btn-primary btn w-20"
                   href={{

@@ -1,10 +1,10 @@
-import { SessionContextProvider, Session, SupabaseClient } from '@supabase/auth-helpers-react';
 import { BookingProvider } from '@context/BookingContext';
 import { RequestProvider } from '@context/RequestContext';
 import { TurfProvider } from '@context/TurfContext';
 import { UserProfileProvider } from '@context/UserProfileContext';
-import { memo, ReactNode, useState } from 'react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
+import { ReactNode, memo, useState } from 'react';
 
 interface ContextProps {
   initialSession: Session;
@@ -12,10 +12,11 @@ interface ContextProps {
 }
 
 const Context = ({ children, initialSession }: ContextProps) => {
-  const [supabase] = useState(() => createBrowserSupabaseClient());
+  // Create a new supabase browser client on every first render.
+  const [supabaseClient] = useState(() => createPagesBrowserClient());
 
   return (
-    <SessionContextProvider supabaseClient={supabase} initialSession={initialSession}>
+    <SessionContextProvider supabaseClient={supabaseClient} initialSession={initialSession}>
       <UserProfileProvider>
         <RequestProvider>
           <BookingProvider>
