@@ -1,5 +1,5 @@
-import Flower from '@/components/Icons/Flower';
-import HourGlass from '@/components/Icons/HourGlass';
+import {Flower} from '@/components/Icons/Flower';
+import {HourGlass} from '@/components/Icons/HourGlass';
 
 export default function Text() {
   return (
