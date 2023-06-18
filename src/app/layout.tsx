@@ -4,7 +4,7 @@ import './globals.css';
 import { Manrope, Staatliches } from 'next/font/google';
 
 const manrope = Manrope({
-  weight: ['700'],
+  weight: ['700', "500"],
   style: 'normal',
   fallback: ['sans-serif'],
   subsets: ['latin'],
