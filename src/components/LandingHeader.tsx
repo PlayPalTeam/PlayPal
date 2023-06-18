@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { IoLogIn } from 'react-icons/io5';
 
-const LandingHeader = () => {
+export default function LandingHeader() {
   return (
     <header className="relative h-screen">
       <video
@@ -19,7 +19,7 @@ const LandingHeader = () => {
         <div className="mt-48 tracking-widest">
           <h1 className="text-3xl font-bold md:text-7xl">YOUR NEAREST TURF</h1>
           <p className="mt-2 text-lg text-primary">IS JUST A TAP AWAY</p>
-          <Link prefetch={false} href={'/auth/login'} className="btn-primary btn mt-5">
+          <Link href={'/auth/login'} className="btn-primary btn mt-5">
             <IoLogIn className="h-6 w-6" />
             <span>Get Started</span>
           </Link>
@@ -27,6 +27,4 @@ const LandingHeader = () => {
       </div>
     </header>
   );
-};
-
-export default LandingHeader;
+}
