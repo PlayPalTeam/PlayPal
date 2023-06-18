@@ -1,5 +1,5 @@
-import { object, string, number, InferType, array, date, ref } from 'yup';
-import { Database } from './database.types';
+import { array, date, InferType, number, object, ref, string } from 'yup';
+import {  Database  } from "@/lib/database.types";
 
 const usernameValidation = string()
   .min(3, 'Minimum 3 character')
@@ -140,7 +140,7 @@ export const EditTurfSchema = object({
   description: string().trim()
 });
 
-export type EditTurfType = InferType<typeof EditTurfSchema>
+export type EditTurfType = InferType<typeof EditTurfSchema>;
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
