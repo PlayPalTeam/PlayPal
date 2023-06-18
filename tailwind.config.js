@@ -2,6 +2,14 @@
 module.exports = {
   content: ['./src/**/*.tsx'],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        staat: ['var(--staatliches)'],
+        manrope: ['var(--manrope)']
+      },
+      lineHeight: {
+        default: '1.2'
+      }
+    }
   }
 };
