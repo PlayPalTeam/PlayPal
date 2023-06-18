@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.tsx'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -9,6 +9,9 @@ module.exports = {
       },
       lineHeight: {
         default: '1.2'
+      },
+      aspectRatio: {
+        custom: '0.98/1'
       }
     }
   }
