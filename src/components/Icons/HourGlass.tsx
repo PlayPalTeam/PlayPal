@@ -1,4 +1,4 @@
-const HourGlass = () => {
+export const HourGlass = () => {
   return (
     <svg
       width="300"
@@ -30,5 +30,3 @@ const HourGlass = () => {
     </svg>
   );
 };
-
-export default HourGlass;

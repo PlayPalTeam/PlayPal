@@ -1,4 +1,4 @@
-export default function Flower() {
+export function Flower() {
   return (
     <svg
       width="300"
