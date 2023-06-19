@@ -13,7 +13,7 @@ export default function CallToAction() {
         today and brace for infinite sports thrills.
       </p>
       <div className="flex flex-row flex-nowrap content-center items-center justify-center gap-[10px] overflow-hidden pt-[10px] text-center font-manrope text-sm leading-default">
-        <Link href={'/'} className="rounded-lg bg-[#70e000] p-[15px]">
+        <Link href={'/auth/login'} className="rounded-lg bg-[#70e000] p-[15px]">
           Book Turf
         </Link>
         <Link href={'/'} className="rounded-lg bg-[#70e000] p-[15px]">
