@@ -7,11 +7,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
+    <div>
       <Hero />
       <Text />
       <CallToAction />
       <Footer />
-    </>
+    </div>
   );
 }
