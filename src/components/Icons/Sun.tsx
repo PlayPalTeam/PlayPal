@@ -27,8 +27,8 @@ export function Sun({ endColor, height, startColor, width, angle }: SunProps) {
           gradientTransform={`rotate(${angle})`}
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0509862" stop-color={startColor} />
-          <stop offset="1" stop-color={endColor} />
+          <stop offset="0.0509862" stopColor={startColor} />
+          <stop offset="1" stopColor={endColor} />
         </linearGradient>
 
         <clipPath id="clip0_103_17">
