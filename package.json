@@ -19,7 +19,7 @@
     "@supabase/auth-helpers-react": "^0.4.0",
     "@supabase/supabase-js": "^2.26.0",
     "daisyui": "^3.1.5",
-    "framer-motion": "^10.12.16",
+    "framer-motion": "^10.16.3",
     "js-cookie": "^3.0.5",
     "next": "^13.4.6",
     "react": "^18.2.0",
