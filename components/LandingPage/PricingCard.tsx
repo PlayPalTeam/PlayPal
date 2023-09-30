@@ -51,7 +51,7 @@ export default function PricingCard({
           {buttonText}
         </p>
       </button>
-      <Emoji symbol={symbol} size={42} className="-top-3 -right-2 absolute" />
+      <Emoji symbol={symbol} size={42} className="absolute -right-2 -top-3" />
     </div>
   );
 }

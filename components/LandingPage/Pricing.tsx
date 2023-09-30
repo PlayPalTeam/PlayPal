@@ -42,7 +42,7 @@ const Pricing_Features: PricingCardProps[] = [
 export default function Pricing() {
   return (
     <div className="flex h-min w-full flex-col items-center justify-start bg-white p-5 md:p-[100px]">
-      <div className="flex h-min w-full max-w-[1000px] flex-1 flex-col md:flex-row items-start justify-center gap-[20px]">
+      <div className="flex h-min w-full max-w-[1000px] flex-1 flex-col items-start justify-center gap-[20px] md:flex-row">
         {Pricing_Features.map((card) => (
           <PricingCard key={card.title} {...card} />
         ))}

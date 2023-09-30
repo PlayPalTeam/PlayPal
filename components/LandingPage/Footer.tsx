@@ -27,7 +27,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full h-min flex flex-col"></div>
+      <div className="flex h-min w-full flex-col"></div>
     </div>
   );
 }
