@@ -35,8 +35,12 @@ export async function POST(request: Request) {
       },
     });
 
+    const message = encodeURIComponent("Check your email");
+
     // Redirect to the homepage after successful registration
-    return NextResponse.redirect(reqUrl.origin, { status: 301 });
+    return NextResponse.redirect(`${reqUrl.origin}/login?message=${message}`, {
+      status: 301,
+    });
   } catch (error) {
     console.error("Error during user registration:", error);
     // Handle and log any unexpected errors

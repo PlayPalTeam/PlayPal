@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Width and color of the scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Width and color of the scrollbar in Firefox */
+/* Note: Firefox supports scrollbar-color and scrollbar-width properties */
+/* For Firefox 64+ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 2px;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Thumb when active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #333;
+}
+
+/* Track for Firefox */
+/* Note: Firefox supports scrollbar-color and scrollbar-width properties */
+/* For Firefox 64+ */
+* {
+  scrollbar-color: #888 #f1f1f1;
+}

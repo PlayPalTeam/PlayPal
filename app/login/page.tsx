@@ -7,7 +7,7 @@ const LoginPage = () => {
       <form
         action="/auth/login"
         method="post"
-        className="flex border px-8 bg-secondary text-white py-4 border-secondary shadow-pricing-card-shadow rounded-lg w-[90%] max-w-md flex-col space-y-5"
+        className="flex  border px-8 bg-secondary text-white py-4 border-secondary shadow-pricing-card-shadow rounded-lg w-[90%] max-w-md flex-col space-y-5"
       >
         <div className="flex flex-col gap-y-1">
           <label htmlFor="email" className="font-margarine font-medium">
@@ -53,7 +53,7 @@ const LoginPage = () => {
             Log in
           </button>
           <button
-            formAction="/auth/signup"
+            formAction="/auth/sign-up"
             className="rounded-md border border-black px-4 py-2 bg-white text-secondary transition hover:bg-secondary hover:border-white hover:text-white"
           >
             Sign Up
