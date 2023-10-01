@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       const errorMessage = encodeURIComponent("Invalid email or password");
       return NextResponse.redirect(
         `${reqUrl.origin}/login?error=${errorMessage}`,
-        { status: 301 }
+        { status: 301 },
       );
     }
 

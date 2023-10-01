@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const page: React.FC = () => {
   return (
-    <div className="flex flex-col justify-center items-center gap-y-10 min-h-screen w-full">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-y-10">
       <div className="flex flex-row gap-10">
         <UserCard
           role="owner"

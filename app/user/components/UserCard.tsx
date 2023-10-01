@@ -21,12 +21,12 @@ const UserCard: React.FC<UserCardProps> = ({
         query: { role: role },
       }}
     >
-      <div className="p-4 border border-gray-300 rounded-lg cursor-pointer hover:shadow hover:border-secondary hover:bg-secondary/10 transition">
+      <div className="cursor-pointer rounded-lg border border-gray-300 p-4 transition hover:border-secondary hover:bg-secondary/10 hover:shadow">
         <div className="flex flex-col items-center">
-          <div className="relative w-[300px] h-[300px] rounded-full overflow-hidden">
+          <div className="relative h-[300px] w-[300px] overflow-hidden rounded-full">
             <Image src={imageSrc} alt={userType} fill objectFit="cover" />
           </div>
-          <h2 className="text-2xl font-semibold mt-3">{userType}</h2>
+          <h2 className="mt-3 text-2xl font-semibold">{userType}</h2>
           <p className="mt-2 text-gray-600">{description}</p>
         </div>
       </div>

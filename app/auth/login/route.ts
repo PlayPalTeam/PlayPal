@@ -3,6 +3,8 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Handles user authentication by signing in with email and password.
  *
@@ -21,9 +23,7 @@ export const POST = async (request: Request): Promise<NextResponse> => {
 
     // Valiadate email and password
     if (!isValidEmail(email) || !isValidPassword(password)) {
-      const errorMessage = encodeURIComponent(
-        "Invalid email or password",
-      );
+      const errorMessage = encodeURIComponent("Invalid email or password");
 
       return NextResponse.redirect(
         `${reqUrl.origin}/login?error=${errorMessage}`,
